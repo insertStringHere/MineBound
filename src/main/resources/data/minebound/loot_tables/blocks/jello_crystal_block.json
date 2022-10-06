@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:block",
+  "pools": [{
+    "rolls": 4.0,
+    "entries": [{
+      "type": "minecraft:item",
+      "name": "minebound:jello_item"
+    }]
+  }]
+}

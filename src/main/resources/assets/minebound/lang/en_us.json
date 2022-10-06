@@ -1,4 +1,5 @@
 {
   "item.minebound.jello_item": "Jello",
-  "itemGroup.minebound": "MineBound Tab"
+  "itemGroup.minebound": "MineBound Tab",
+  "block.minebound.jello_crystal_block": "Jello Crystal Block"
 }

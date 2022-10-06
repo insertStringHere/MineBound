@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "minebound:block/jello_crystal_block"
+    }
+  }
+}
