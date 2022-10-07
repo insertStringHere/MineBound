@@ -1,3 +1,5 @@
 {
-  "item.examplemod.flarp": "Flarp"
+  "item.examplemod.flarp": "Flarp",
+
+  "sounds.examplemod.flarp_played_with": "Flarp Noise"
 }

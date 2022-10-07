@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import com.example.examplemod.item.ModItems;
+import com.example.examplemod.sound.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +33,7 @@ public class ExampleMod
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(eventBus);
+        ModSounds.register(eventBus);
 
         // Register the setup method for modloading
         eventBus.addListener(this::setup);
