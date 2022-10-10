@@ -1,9 +1,7 @@
 {
-<<<<<<< HEAD
-  "effect.examplemod.fire_barrier": "Fire Barrier",
-=======
   "item.examplemod.flarp": "Flarp",
 
   "sounds.examplemod.flarp_played_with": "Flarp Noise",
->>>>>>> origin/MB-10-initial-prototype
+
+  "effect.examplemod.fire_barrier": "Fire Barrier"
 }
