@@ -1,7 +1,7 @@
-package com.example.examplemod.item;
+package com.mineboundteam.minebound.item;
 
-import com.example.examplemod.ExampleMod;
-import com.example.examplemod.item.custom.FlarpItem;
+import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.item.custom.FlarpItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, ExampleMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ITEMS, MineBound.MOD_ID);
 
     public static final RegistryObject<Item> FLARP = ITEMS.register("flarp",
             () -> new FlarpItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

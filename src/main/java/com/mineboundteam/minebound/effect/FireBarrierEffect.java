@@ -1,4 +1,4 @@
-package com.example.examplemod.effect;
+package com.mineboundteam.minebound.effect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

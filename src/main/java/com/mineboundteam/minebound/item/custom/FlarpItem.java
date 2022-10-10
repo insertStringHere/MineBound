@@ -1,6 +1,6 @@
-package com.example.examplemod.item.custom;
+package com.mineboundteam.minebound.item.custom;
 
-import com.example.examplemod.sound.ModSounds;
+import com.mineboundteam.minebound.sound.ModSounds;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
