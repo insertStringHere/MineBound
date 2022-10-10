@@ -1,6 +1,8 @@
 package com.example.examplemod;
 
 import com.example.examplemod.effect.ModEffects;
+import com.example.examplemod.item.ModItems;
+import com.example.examplemod.sound.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -30,14 +32,20 @@ public class ExampleMod
     public ExampleMod()
     {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModItems.register(eventBus);
+        ModSounds.register(eventBus);
+        ModEffects.register(eventBus);
+
         // Register the setup method for modloading
         eventBus.addListener(this::setup);
         // Register the enqueueIMC method for modloading
         eventBus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
         eventBus.addListener(this::processIMC);
+        eventBus.addListener(this::processIMC);
 
-        ModEffects.register(eventBus);
+        
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
