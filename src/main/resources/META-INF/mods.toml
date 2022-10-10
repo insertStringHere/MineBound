@@ -6,8 +6,8 @@ modId="minebound"
 version="${file.jarVersion}"
 displayName="MineBound"
 logoFile=""
-credits="Thanks for MineBound goes to Mason team"
-authors="Mason team"
+credits="Thanks for MineBound goes to the MineBoundTeam"
+authors="MineBoundTeam"
 description='''
 We add magic to minecraft.
 '''

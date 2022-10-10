@@ -15,7 +15,7 @@ apply plugin: 'net.minecraftforge.gradle'
 
 
 version = '1.0'
-group = 'com.mason.minebound'
+group = 'com.mineboundteam.minebound'
 archivesBaseName = 'minebound'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -86,11 +86,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "MineBound",
-                "Specification-Vendor"    : "Mason",
+                "Specification-Vendor"    : "MineBoundTeam",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "Mason",
+                "Implementation-Vendor"   : "MineBoundTeam",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

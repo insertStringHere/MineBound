@@ -1,7 +1,7 @@
-package com.mason.minebound;
+package com.mineboundteam.minebound;
 
-import com.mason.minebound.init.BlockInit;
-import com.mason.minebound.init.ItemInit;
+import com.mineboundteam.minebound.init.BlockInit;
+import com.mineboundteam.minebound.init.ItemInit;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,7 +20,7 @@ public class MineBound {
     public static final CreativeModeTab MINEBOUND_TAB = new CreativeModeTab(MOD_ID) {
         @OnlyIn(Dist.CLIENT)
         @Override
-        public ItemStack makeIcon() { return new ItemStack(ItemInit.JELLO_ITEM.get()); }
+        public ItemStack makeIcon() { return new ItemStack(ItemInit.JELLO.get()); }
     };
 
     public MineBound() {
