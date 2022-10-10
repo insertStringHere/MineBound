@@ -1,5 +1,6 @@
 package com.example.examplemod;
 
+import com.example.examplemod.effect.ModEffects;
 import com.example.examplemod.item.ModItems;
 import com.example.examplemod.sound.ModSounds;
 import com.mojang.logging.LogUtils;
@@ -21,11 +22,11 @@ import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("examplemod")
+@Mod(ExampleMod.MOD_ID)
 public class ExampleMod
 {
-    // Directly reference a slf4j logger
     public static final String MOD_ID = "examplemod";
+    // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public ExampleMod()
@@ -34,6 +35,7 @@ public class ExampleMod
 
         ModItems.register(eventBus);
         ModSounds.register(eventBus);
+        ModEffects.register(eventBus);
 
         // Register the setup method for modloading
         eventBus.addListener(this::setup);
@@ -41,7 +43,7 @@ public class ExampleMod
         eventBus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
         eventBus.addListener(this::processIMC);
-
+        
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
