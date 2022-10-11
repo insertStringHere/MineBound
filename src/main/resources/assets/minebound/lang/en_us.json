@@ -5,5 +5,7 @@
 
     "effect.minebound.fire_barrier": "Fire Barrier",
 
-    "block.minebound.boom_button": "Suspicious-looking button"
+    "block.minebound.boom_button": "Suspicious-looking button",
+
+    "block.minebound.dusty_block": "Dusty-looking block"
 }
