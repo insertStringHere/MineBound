@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"## ",
+		"## ",
+		"   "
+	],
+	"key": {
+		"#": {
+			"item": "minebound:jello"
+		}
+	},
+	"result": {
+		"item": "minebound:jello_crystal_block"
+	}
+}
