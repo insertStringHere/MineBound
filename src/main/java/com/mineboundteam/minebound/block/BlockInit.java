@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.block;
 
+import com.mineboundteam.minebound.MineBound;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.mineboundteam.minebound.MineBound;
@@ -26,6 +27,7 @@ public class BlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
     public static RegistryObject<Block> BOOM_BUTTON = BLOCKS.register("boom_button", () -> new BoomButton(Block.Properties.copy(Blocks.STONE_BUTTON)));
     public static final RegistryObject<Block> JELLO_CRYSTAL_BLOCK = BLOCKS.register("jello_crystal_block", () -> new GlassBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_RED).strength(1.0f).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> DUSTY_BLOCK = BLOCKS.register("dusty_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).strength(9f).requiresCorrectToolForDrops()));
 
     @SubscribeEvent
     public static void onRegisterItems(final RegistryEvent.Register<Item> event){
