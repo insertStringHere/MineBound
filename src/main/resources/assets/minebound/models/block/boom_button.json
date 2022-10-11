@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "minebound:blocks/rod",
-		"1": "minebound:blocks/button",
-		"particle": "minebound:blocks/rod"
+		"0": "minebound:block/rod",
+		"1": "minebound:block/button",
+		"particle": "minebound:block/rod"
 	},
 	"elements": [
 		{
