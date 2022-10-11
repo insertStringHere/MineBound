@@ -38,8 +38,6 @@ public class BlockInit {
         }
     }
 
-
-
     public static void register(IEventBus eventBus){
         BlockInit.BLOCKS.register(eventBus);
     }

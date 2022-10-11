@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "minebound:block/dusty_block"
+    "variants": {
+      "": {
+        "model": "minebound:block/dusty_block"
     }
   }
 }
