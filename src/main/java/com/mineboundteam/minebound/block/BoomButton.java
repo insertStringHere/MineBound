@@ -21,16 +21,14 @@ public class BoomButton extends Block {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult){
-        if (level.isClientSide()) {
+        if (level.isClientSide())
             player.sendMessage(new TextComponent("Explosion imminent; beginning countdown"), UUID.randomUUID());
-        }
         new Thread(() -> {
             try {
                 for(int i = 5; i > 0; i--){
                     Thread.sleep(1000);
-                    if(level.isClientSide) {
+                    if (level.isClientSide)
                         player.sendMessage(new TextComponent(String.format("%d", i)), UUID.randomUUID());
-                    }
                 }
 
                 if (!level.isClientSide()) {
