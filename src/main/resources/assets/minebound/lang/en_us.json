@@ -1,11 +1,12 @@
 {
-    "item.minebound.flarp": "Flarp",
-
-    "sounds.minebound.flarp_played_with": "Flarp Noise",
-
-    "effect.minebound.fire_barrier": "Fire Barrier",
-
     "block.minebound.boom_button": "Suspicious-looking button",
+    "block.minebound.jello_crystal_block": "Jello Crystal Block",
+    "block.minebound.dusty_block": "Dusty-looking block",
+    "effect.minebound.fire_barrier": "Fire Barrier",
+    "item.minebound.flarp": "Flarp",
+    "item.minebound.jello": "Jello",
+    "itemGroup.minebound": "MineBound Tab",
+    "sounds.minebound.flarp_played_with": "Flarp Noise"
 
-    "block.minebound.dusty_block": "Dusty-looking block"
+
 }

@@ -1,6 +1,6 @@
-package com.mineboundteam.minebound.item.custom;
+package com.mineboundteam.minebound.item;
 
-import com.mineboundteam.minebound.sound.ModSounds;
+import com.mineboundteam.minebound.sound.SoundInit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -8,14 +8,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class FlarpItem extends Item {
-    public FlarpItem(Properties properties) {
+public class Flarp extends Item {
+    public Flarp(Properties properties) {
         super(properties);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        player.playSound(ModSounds.FLARP_PLAYED_WITH.get(), 1f, 1f);
+        player.playSound(SoundInit.FLARP_PLAYED_WITH.get(), 1f, 1f);
         return super.use(level, player, interactionHand);
     }
 }
