@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    " / ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bread"
+    },
+    "/": {
+      "item": "minebound:cheese_wedge"
+    }
+  },
+  "result": {
+    "item": "minebound:cheese_sandwich"
+  }
+}

@@ -28,6 +28,7 @@ public class BlockInit {
     public static RegistryObject<Block> BOOM_BUTTON = BLOCKS.register("boom_button", () -> new BoomButton(Block.Properties.copy(Blocks.STONE_BUTTON)));
     public static final RegistryObject<Block> JELLO_CRYSTAL_BLOCK = BLOCKS.register("jello_crystal_block", () -> new GlassBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_RED).strength(1.0f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> DUSTY_BLOCK = BLOCKS.register("dusty_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).strength(9f).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> WHEEL_OF_CHEESE = BLOCKS.register("wheel_of_cheese", () -> new Block(Block.Properties.copy(Blocks.CAKE)));
 
     @SubscribeEvent
     public static void onRegisterItems(final RegistryEvent.Register<Item> event){

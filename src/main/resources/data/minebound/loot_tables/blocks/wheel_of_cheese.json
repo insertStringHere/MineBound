@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 8.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minebound:cheese_wedge"
+        }
+      ]
+    }
+  ]
+}
