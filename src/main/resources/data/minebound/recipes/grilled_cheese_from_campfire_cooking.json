@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "minebound:cheese_sandwich"
+  },
+  "result": "minebound:grilled_cheese",
+  "experience": 0.0,
+  "cookingtime": 600
+}

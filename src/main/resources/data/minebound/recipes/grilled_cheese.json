@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "minebound:cheese_sandwich"
+  },
+  "result": "minebound:grilled_cheese",
+  "experience": 0.35,
+  "cookingtime": 200
+}

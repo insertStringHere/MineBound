@@ -1,8 +1,12 @@
 {
     "block.minebound.boom_button": "Suspicious-looking button",
     "block.minebound.jello_crystal_block": "Jello Crystal Block",
+    "block.minebound.wheel_of_cheese": "Wheel of Cheese",
     "effect.minebound.fire_barrier": "Fire Barrier",
+    "item.minebound.cheese_wedge": "Cheese Wedge",
+    "item.minebound.cheese_sandwich": "Cheese Sandwich",
     "item.minebound.flarp": "Flarp",
+    "item.minebound.grilled_cheese": "Grilled Cheese",
     "item.minebound.jello": "Jello",
     "itemGroup.minebound": "MineBound Tab",
     "sounds.minebound.flarp_played_with": "Flarp Noise"

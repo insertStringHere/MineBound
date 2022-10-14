@@ -16,4 +16,7 @@ public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MineBound.MOD_ID);
     public static final RegistryObject<Item> FLARP = ITEMS.register("flarp", () -> new Flarp(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> JELLO = ITEMS.register("jello", () -> new SwordItem(Tiers.DIAMOND, 11, 2f, new Item.Properties().tab(MineBound.MINEBOUND_TAB).food(new FoodProperties.Builder().nutrition(8).saturationMod(14.4f).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200, 0), 0.5F).build())));
+    public static final RegistryObject<Item> CHEESE_WEDGE = ITEMS.register("cheese_wedge", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(2).build()).tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> CHEESE_SANDWICH = ITEMS.register("cheese_sandwich", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(3).build()).tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> GRILLED_CHEESE = ITEMS.register("grilled_cheese", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(15).build()).tab(MineBound.MINEBOUND_TAB)));
 }
