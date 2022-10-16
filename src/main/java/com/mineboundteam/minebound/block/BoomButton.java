@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-
 public class BoomButton extends Block {
     public BoomButton(Properties properties) {
         super(properties);
@@ -37,9 +36,9 @@ public class BoomButton extends Block {
                 }
             } catch(InterruptedException interruptedException) {
                 System.err.println("Could not complete BoomButton detonation.");
-                System.err.println(interruptedException);
+                System.err.println(interruptedException.getMessage());
             }
-        }).run();
+        }).start();
         return InteractionResult.SUCCESS;
     }
 }
