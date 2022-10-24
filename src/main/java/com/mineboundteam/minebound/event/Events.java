@@ -18,6 +18,7 @@ public class Events {
             // Destroy block if clicked on with a stick
             if(player.getMainHandItem().getItem() == Items.STICK) {
                 // This is really the important code we will likely need down the line
+                // World#destroyBlock(BlockPos, boolean dropBlock)
                 event.getWorld().destroyBlock(event.getPos(), true);
             }
         }
