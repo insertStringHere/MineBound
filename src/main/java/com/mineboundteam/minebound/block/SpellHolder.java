@@ -4,8 +4,7 @@ import com.mineboundteam.minebound.blockentity.BlockEntityRegistry;
 import com.mineboundteam.minebound.blockentity.SpellHolderBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SpellHolder extends Block implements EntityBlock {
-    public SpellHolder(Properties properties) {
-        super(properties);
+public class SpellHolder extends ChestBlock {
+    public SpellHolder(Properties p_51490_) {
+        super(p_51490_, BlockEntityRegistry.SPELL_HOLDER_BLOCK_ENTITY::get);
     }
 
     @Nullable
