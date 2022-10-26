@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class Flarp extends Item {
     public Flarp(Properties properties) {
@@ -14,7 +15,7 @@ public class Flarp extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
         player.playSound(SoundInit.FLARP_PLAYED_WITH.get(), 1f, 1f);
         return super.use(level, player, interactionHand);
     }

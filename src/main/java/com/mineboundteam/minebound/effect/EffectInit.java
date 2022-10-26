@@ -1,14 +1,13 @@
 package com.mineboundteam.minebound.effect;
 
 import com.mineboundteam.minebound.MineBound;
-
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class EffectInit {
   public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MineBound.MOD_ID);

@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound;
 
 import com.mineboundteam.minebound.block.BlockInit;
+import com.mineboundteam.minebound.blockentity.BlockEntityRegistry;
 import com.mineboundteam.minebound.effect.EffectInit;
 import com.mineboundteam.minebound.item.ItemInit;
 import com.mineboundteam.minebound.sound.SoundInit;
@@ -15,6 +16,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(MineBound.MOD_ID)
 public class MineBound {
@@ -22,7 +24,7 @@ public class MineBound {
     public static final CreativeModeTab MINEBOUND_TAB = new CreativeModeTab(MOD_ID) {
         @OnlyIn(Dist.CLIENT)
         @Override
-        public ItemStack makeIcon() { return new ItemStack(ItemInit.JELLO.get()); }
+        public @NotNull ItemStack makeIcon() { return new ItemStack(ItemInit.JELLO.get()); }
     };
 
     public MineBound(){
@@ -30,6 +32,7 @@ public class MineBound {
 
         MinecraftForge.EVENT_BUS.register(this);
 
+        BlockEntityRegistry.BLOCK_ENTITIES.register(iEventBus);
         BlockInit.BLOCKS.register(iEventBus);
         EffectInit.MOB_EFFECTS.register(iEventBus);
         ItemInit.ITEMS.register(iEventBus);
