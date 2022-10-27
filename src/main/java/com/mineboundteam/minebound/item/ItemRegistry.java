@@ -11,7 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ItemInit {
+public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MineBound.MOD_ID);
     public static final RegistryObject<Item> CHEESE_SANDWICH = ITEMS.register("cheese_sandwich", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(3).build()).tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> CHEESE_WEDGE = ITEMS.register("cheese_wedge", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(2).build()).tab(MineBound.MINEBOUND_TAB)));

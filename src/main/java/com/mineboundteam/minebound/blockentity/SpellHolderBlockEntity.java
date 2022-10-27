@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -15,6 +16,22 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class SpellHolderBlockEntity extends ChestBlockEntity {
+    private final ContainerData containerData = new ContainerData() {
+        @Override
+        public int get(int index) {
+            return progress;
+        }
+
+        @Override
+        public void set(int index, int value) {
+            if (index == 0) progress = value;
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    };
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(69);
     private final LazyOptional<IItemHandlerModifiable> lazyOptional = LazyOptional.of(() -> itemStackHandler);
     private int progress = 0;
@@ -49,12 +66,20 @@ public class SpellHolderBlockEntity extends ChestBlockEntity {
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction direction) {
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @NotNull Direction direction) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? lazyOptional.cast() : super.getCapability(capability, direction);
     }
 
     @Override
     public void invalidateCaps() {
         lazyOptional.invalidate();
+    }
+
+    public ItemStackHandler getItemStackHandler() {
+        return itemStackHandler;
+    }
+
+    public ContainerData getContainerData() {
+        return containerData;
     }
 }

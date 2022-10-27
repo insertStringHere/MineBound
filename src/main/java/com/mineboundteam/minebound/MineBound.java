@@ -1,10 +1,13 @@
 package com.mineboundteam.minebound;
 
-import com.mineboundteam.minebound.block.BlockInit;
+import com.mineboundteam.minebound.block.BlockRegistry;
 import com.mineboundteam.minebound.blockentity.BlockEntityRegistry;
-import com.mineboundteam.minebound.effect.EffectInit;
-import com.mineboundteam.minebound.item.ItemInit;
-import com.mineboundteam.minebound.sound.SoundInit;
+import com.mineboundteam.minebound.container.ContainerRegistry;
+import com.mineboundteam.minebound.container.SpellHolderScreen;
+import com.mineboundteam.minebound.effect.EffectRegistry;
+import com.mineboundteam.minebound.item.ItemRegistry;
+import com.mineboundteam.minebound.sound.SoundRegistry;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,7 +27,7 @@ public class MineBound {
     public static final CreativeModeTab MINEBOUND_TAB = new CreativeModeTab(MOD_ID) {
         @OnlyIn(Dist.CLIENT)
         @Override
-        public @NotNull ItemStack makeIcon() { return new ItemStack(ItemInit.JELLO.get()); }
+        public @NotNull ItemStack makeIcon() { return new ItemStack(ItemRegistry.JELLO.get()); }
     };
 
     public MineBound(){
@@ -33,15 +36,17 @@ public class MineBound {
         MinecraftForge.EVENT_BUS.register(this);
 
         BlockEntityRegistry.BLOCK_ENTITIES.register(iEventBus);
-        BlockInit.BLOCKS.register(iEventBus);
-        EffectInit.MOB_EFFECTS.register(iEventBus);
-        ItemInit.ITEMS.register(iEventBus);
-        SoundInit.SOUND_EVENTS.register(iEventBus);
+        BlockRegistry.BLOCKS.register(iEventBus);
+        ContainerRegistry.CONTAINERS.register(iEventBus);
+        EffectRegistry.MOB_EFFECTS.register(iEventBus);
+        ItemRegistry.ITEMS.register(iEventBus);
+        SoundRegistry.SOUND_EVENTS.register(iEventBus);
 
         iEventBus.addListener(this::clientSetup);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.JELLO_CRYSTAL_BLOCK.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.JELLO_CRYSTAL_BLOCK.get(), RenderType.translucent());
+        MenuScreens.register(ContainerRegistry.SPELL_HOLDER_CONTAINER.get(), SpellHolderScreen::new);
     }
 }

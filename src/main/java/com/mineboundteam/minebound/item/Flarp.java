@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.item;
 
-import com.mineboundteam.minebound.sound.SoundInit;
+import com.mineboundteam.minebound.sound.SoundRegistry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +16,7 @@ public class Flarp extends Item {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionHand) {
-        player.playSound(SoundInit.FLARP_PLAYED_WITH.get(), 1f, 1f);
+        player.playSound(SoundRegistry.FLARP_PLAYED_WITH.get(), 1f, 1f);
         return super.use(level, player, interactionHand);
     }
 }
