@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
-public class Events {
+public class BreakBlockEvent {
 
     @SubscribeEvent
     public static void destroyBlock(PlayerInteractEvent.LeftClickBlock event) {
