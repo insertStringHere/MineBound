@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
-public class Events {
+public class PlayerDamageEvent {
 
     @SubscribeEvent
     public static void cancelDamage(LivingAttackEvent event) {
