@@ -19,6 +19,7 @@ public class CreativeFlightEvent {
             if (player.getMainHandItem().getItem() == Items.FEATHER) {
                 // Toggle the ability for the player to use creative flight
                 player.getAbilities().mayfly = !player.getAbilities().mayfly;
+                // boolean player.getAbilities().flying will set if they are currently flying
                 // Execute updates so ability change takes effect
                 player.onUpdateAbilities();
                 player.sendMessage(new TextComponent("Flying " + (player.getAbilities().mayfly ? "enabled" : "disabled")), UUID.randomUUID());
