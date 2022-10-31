@@ -4,7 +4,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-//@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
+//@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = com.mineboundteam.minebound.MineBound.MOD_ID)
 public class Raycast {
     // Test method; uncomment to test
     // @net.minecraftforge.eventbus.api.SubscribeEvent
