@@ -20,7 +20,7 @@ public class MoveEntityEvent {
                 Entity targetEntity = event.getTarget();
                 // How far to move the entity
                 // distance in blocks ~= intensity * 2.5
-                float intensity = 10f;
+                float intensity = 2f;
                 // The direction the player is looking
                 float direction = player.getRotationVector().y;
                 // Calculate the delta X and Z to move the entity on the XZ plane based on where the player is looking and intensity
