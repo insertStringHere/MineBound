@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -11,26 +12,25 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class BoomButton extends Block {
+
     public BoomButton(Properties properties) {
         super(properties);
     }
 
     @Override
     public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState p_60569_, boolean p_60570_) {
-        new Thread(() -> {
-            try {
-                // Block will be destroyed 3 seconds after being placed.
-                for (int i = 3; i > 0; i--) {
-                    Thread.sleep(1000);
-                }
-                level.destroyBlock(blockPos, false);
-            } catch (InterruptedException interruptedException) {
-                System.err.println(interruptedException.getMessage());
-            }
-        }).start();
+        // Schedule a tick for 60 ticks in the future (3 seconds, 20 ticks per second)
+        level.scheduleTick(blockPos, blockState.getBlock(), 60);
+    }
+
+    @Override
+    public void tick(BlockState p_60462_, ServerLevel level, BlockPos blockPos, Random p_60465_) {
+        // Runs when scheduled in onPlace and destroys the block
+        level.destroyBlock(blockPos, false);
     }
 
     @Override
