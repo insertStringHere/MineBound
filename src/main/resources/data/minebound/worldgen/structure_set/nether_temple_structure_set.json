@@ -1,0 +1,15 @@
+{
+    "structures" : [
+        {
+            "structure" : "minebound:nether_temple",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spread_type": "triangular",
+        "spacing": 10,
+        "separation": 5,
+        "salt": 25584284
+    }
+}
