@@ -7,5 +7,7 @@ public class Registry {
     public static void RegisterMod(IEventBus iEventBus){
         BlockRegistry.BLOCKS.register(iEventBus);
 
+
+        KeyRegistry.register();
     }
 }

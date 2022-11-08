@@ -1,4 +1,5 @@
 {
   "block.minebound.boom_button": "Suspicious-looking button",
-  "itemGroup.minebound": "MineBound"
+  "itemGroup.minebound": "MineBound",
+  "key.minebound.toggle_glow": "Toggle Glowing"
 }
