@@ -1,0 +1,10 @@
+{
+    "type": "minebound:nether_temple",
+    "biomes": ["minecraft:nether_wastes", "minecraft:desert", "minecraft:badlands", "minecraft:plains", "minecraft:forest"],
+    "adapt_noise": false,
+    "spawn_overrides": {},
+    "config": {
+        "start_pool": "minebound:nether_temple_template",
+        "size": 1
+    }
+}
