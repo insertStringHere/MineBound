@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.registry;
 
+
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class Registry {

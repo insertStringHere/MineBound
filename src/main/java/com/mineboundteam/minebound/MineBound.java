@@ -21,7 +21,6 @@ public class MineBound {
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         MinecraftForge.EVENT_BUS.register(this);
-
         Registry.RegisterMod(iEventBus);
 
         iEventBus.addListener(this::clientSetup);
