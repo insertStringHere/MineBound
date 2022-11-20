@@ -1,4 +1,9 @@
 {
+  "itemGroup.minebound": "MineBound",
+
+  "item.minebound.jello": "Jello",
+
   "block.minebound.boom_button": "Suspicious-looking button",
-  "itemGroup.minebound": "MineBound"
+
+  "effect.minebound.fire_barrier": "Fire Barrier"
 }
