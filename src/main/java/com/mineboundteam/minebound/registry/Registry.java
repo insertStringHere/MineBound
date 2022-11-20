@@ -10,5 +10,6 @@ public class Registry {
         ContainerRegistry.CONTAINERS.register(iEventBus);
         ItemRegistry.ITEMS.register(iEventBus);
         StructureRegistry.STRUCTURES.register(iEventBus);
+        EffectRegistry.MOB_EFFECTS.register(iEventBus);
     }
 }

@@ -12,12 +12,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
 @Mod(MineBound.MOD_ID)
 public class MineBound {
@@ -33,13 +38,20 @@ public class MineBound {
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        MinecraftForge.EVENT_BUS.register(this);
         Registry.RegisterMod(iEventBus);
 
         iEventBus.addListener(this::clientSetup);
+        iEventBus.addListener(this::enqueueIMC);
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         MenuScreens.register(ContainerRegistry.SPELL_HOLDER_CONTAINER.get(), SpellHolderScreen::new);
+    }
+
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+        // Curios ring
+        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.RING.getMessageBuilder().build());
     }
 }
