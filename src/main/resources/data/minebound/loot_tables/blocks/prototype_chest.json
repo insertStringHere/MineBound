@@ -1,0 +1,30 @@
+{
+    "pools": [
+        {
+          "rolls": {
+            "min": 2,
+            "max": 3
+          },
+          "entries": [
+            {
+              "type": "minecraft:item",
+              "weight": 1,
+              "name": "minecraft:diamond_sword",
+              "quality": 1
+            },
+            {
+              "type": "minecraft:item",
+              "weight": 1,
+              "name": "minecraft:iron_sword",
+              "quality": 2
+            },
+            {
+              "type": "minecraft:item",
+              "weight": 1,
+              "name": "minecraft:wooden_sword",
+              "quality": 3
+            }
+          ]
+        }
+    ]
+}

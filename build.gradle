@@ -31,6 +31,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'minebound'
 
+            // Curios
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             mods {
                 minebound {
                     source sourceSets.main
@@ -43,6 +47,11 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'minebound'
+
+            // Curios
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             mods {
                 minebound {
                     source sourceSets.main
@@ -78,9 +87,20 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {}
+repositories {
+    maven {
+        // Curios
+        url = "https://maven.theillusivec4.top/"
+    }
+}
 
-dependencies { minecraft 'net.minecraftforge:forge:1.18.2-40.1.0' }
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+
+    // Curios
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1:api")
+}
 
 jar {
     manifest {
