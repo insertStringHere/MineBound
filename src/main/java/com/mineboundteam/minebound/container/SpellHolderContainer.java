@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.container;
 
-import com.mineboundteam.minebound.blockentity.SpellHolderBlockEntity;
+import com.mineboundteam.minebound.blockentity.AlloyFurnaceBlockEntity;
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;
 import net.minecraft.core.BlockPos;
@@ -56,8 +56,8 @@ public class SpellHolderContainer extends AbstractContainerMenu {
         return new SpellHolderContainer(id, inventory, new ItemStackHandler(69), BlockPos.ZERO, new SimpleContainerData(1));
     }
 
-    public static MenuConstructor getServerContainer(SpellHolderBlockEntity spellHolderBlockEntity, BlockPos blockPos) {
-        return (id, inventory, player) -> new SpellHolderContainer(id, inventory, spellHolderBlockEntity.getItemStackHandler(), blockPos, spellHolderBlockEntity.getContainerData());
+    public static MenuConstructor getServerContainer(AlloyFurnaceBlockEntity alloyFurnaceBlockEntity, BlockPos blockPos) {
+        return (id, inventory, player) -> new SpellHolderContainer(id, inventory, alloyFurnaceBlockEntity.getItemStackHandler(), blockPos, alloyFurnaceBlockEntity.getContainerData());
     }
 
     @Override

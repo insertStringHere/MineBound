@@ -2,7 +2,7 @@ package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.block.BoomButton;
-import com.mineboundteam.minebound.block.SpellHolder;
+import com.mineboundteam.minebound.block.AlloyFurnace;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
     public static final RegistryObject<Block> BOOM_BUTTON = BLOCKS.register("boom_button", () -> new BoomButton(Block.Properties.copy(Blocks.STONE_BUTTON)));
-    public static final RegistryObject<Block> SPELL_HOLDER = BLOCKS.register("spell_holder", () -> new SpellHolder(BlockBehaviour.Properties.of(Material.METAL).strength(99999999999f)));
+    public static final RegistryObject<Block> SPELL_HOLDER = BLOCKS.register("spell_holder", () -> new AlloyFurnace(BlockBehaviour.Properties.of(Material.METAL).strength(99999999999f)));
 
     @SubscribeEvent
     public static void onRegisterItems(final RegistryEvent.Register<Item> event){
