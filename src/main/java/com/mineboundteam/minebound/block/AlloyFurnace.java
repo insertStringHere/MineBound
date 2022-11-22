@@ -27,11 +27,12 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlloyFurnace extends Block implements EntityBlock {
+public class AlloyFurnace extends BaseEntityBlock {
     public AlloyFurnace(Properties properties) {
         super(properties);
     }
 
+    // block methods - michael 11/21/2022
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.HORIZONTAL_FACING);
@@ -52,25 +53,41 @@ public class AlloyFurnace extends Block implements EntityBlock {
         return blockState.setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
-    @Nullable
+    // entity methods - michael 11/21/2022
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
+        return RenderShape.MODEL;
+    }
+
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get().create(blockPos, blockState);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
-        return level.isClientSide() ? null : ($0, $1, $2, blockEntity) -> {if (blockEntity instanceof AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) alloyFurnaceBlockEntity.tick();};
+        return new AlloyFurnaceBlockEntity(blockPos, blockState);
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            player.openMenu(new SimpleMenuProvider(SpellHolderContainer.getServerContainer((SpellHolderBlockEntity) level.getBlockEntity(blockPos), blockPos), new TranslatableComponent("container." + MineBound.MOD_ID + ".spell_holder")));
-            return InteractionResult.CONSUME;
+    public void onRemove(@NotNull BlockState prevState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState newState, boolean isMoving) {
+        if (prevState.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof AlloyFurnaceBlockEntity) {
+                ((AlloyFurnaceBlockEntity) blockEntity).dropContents();
+            }
         }
+        super.onRemove(prevState, level, blockPos, newState, isMoving);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult) {
+        if (!level.isClientSide()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof AlloyFurnaceBlockEntity) {
+                NetworkHooks.openGui(((ServerPlayer) player), (AlloyFurnaceBlockEntity) blockEntity, blockPos);
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
     }
 }

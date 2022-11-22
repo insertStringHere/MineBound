@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,33 +26,40 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider {
-//    private final ContainerData containerData = new ContainerData() {
-//        @Override
-//        public int get(int index) {
-//            return progress;
-//        }
-//
-//        @Override
-//        public void set(int index, int value) {
-//            if (index == 0) progress = value;
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return 1;
-//        }
-//    };
-    private final ItemStackHandler itemStackHandler = new ItemStackHandler(4) {
+    private final ContainerData containerData;
+    private final ItemStackHandler itemStackHandler = new ItemStackHandler(size) {
         @Override
         protected void onContentsChanged(int slots) {
             setChanged();
         }
     };
     private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
-//    private int progress = 0;
+    private int progress = 0;
+    private final int size = 4;
 
     public AlloyFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), blockPos, blockState);
+        containerData = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> progress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0 -> progress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return size;
+            }
+        };
     }
 
     @Override
@@ -102,6 +110,9 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
         compoundTag.put("itemStackHandler", itemStackHandler.serializeNBT());
         super.saveAdditional(compoundTag);
     }
+
+    public static void tick(Level level, BlockPos blockPos, BlockState blockState, AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
+    }
 //
 //    public ContainerData getContainerData() {
 //        return containerData;
@@ -111,15 +122,4 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
 //        return itemStackHandler;
 //    }
 //
-//    public void tick() {
-//        if (level == null) return;
-//
-//        progress++;
-//        if (progress > 1000) {
-//            progress = 0;
-//            Bat bat = new Bat(EntityType.BAT, level);
-//            bat.setPos(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
-//            level.addFreshEntity(bat);
-//        }
-//    }
 }
