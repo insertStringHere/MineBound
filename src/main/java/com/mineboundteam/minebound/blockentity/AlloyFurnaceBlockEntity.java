@@ -14,6 +14,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -112,8 +114,46 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
+        if (level.isClientSide()) {
+            return;
+        }
+
+        if (canSmeltItem(alloyFurnaceBlockEntity)) {
+            alloyFurnaceBlockEntity.progress++;
+            setChanged(level, blockPos, blockState);
+
+            if (alloyFurnaceBlockEntity.progress >= 78) {
+                smeltItem(alloyFurnaceBlockEntity);
+            }
+        } else {
+            alloyFurnaceBlockEntity.progress = 0;
+            setChanged(level, blockPos, blockState);
+        }
     }
-//
+
+    private static boolean canSmeltItem(AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
+        SimpleContainer simpleContainer = new SimpleContainer(alloyFurnaceBlockEntity.itemStackHandler.getSlots());
+        for (int i = 0; i < alloyFurnaceBlockEntity.itemStackHandler.getSlots(); i++) {
+            simpleContainer.setItem(i, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(i));
+        }
+
+        boolean hasRawGemInFirstSlot = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(1).getItem() == Items.COAL;
+        boolean canInsertAmountIntoOutputSlot = simpleContainer.getItem(2).getMaxStackSize() > simpleContainer.getItem(2).getCount();
+        boolean canInsertItemIntoOutputSlot = simpleContainer.getItem(2).getItem() == new ItemStack(Items.DIAMOND, 1).getItem() || simpleContainer.getItem(2).isEmpty();
+
+        return hasRawGemInFirstSlot && canInsertAmountIntoOutputSlot && canInsertItemIntoOutputSlot;
+    }
+
+    private static void craftItem(GemInfusingStationBlockEntity pEntity) {
+
+        if(hasRecipe(pEntity)) {
+            pEntity.itemStackHandler.extractItem(1, 1, false);
+            pEntity.itemStackHandler.setStackInSlot(2, new ItemStack(ModItems.ZIRCON.get(),
+                    pEntity.itemStackHandler.getStackInSlot(2).getCount() + 1));
+
+            pEntity.resetProgress();
+        }
+    }
 //    public ContainerData getContainerData() {
 //        return containerData;
 //    }
@@ -121,5 +161,4 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
 //    public ItemStackHandler getItemStackHandler() {
 //        return itemStackHandler;
 //    }
-//
 }
