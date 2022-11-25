@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.blockentity;
 
+import com.mineboundteam.minebound.container.AlloyFurnaceContainer;
 import com.mineboundteam.minebound.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,8 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -25,10 +24,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider {
     private final ContainerData containerData;
+    public static int containerDataCount = 1;
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(size) {
         @Override
         protected void onContentsChanged(int slots) {
@@ -36,8 +35,9 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
         }
     };
     private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
+    public static int maxProgress = 78;
     private int progress = 0;
-    private final int size = 4;
+    public static int size = 4;
 
     public AlloyFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -59,14 +59,14 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
 
             @Override
             public int getCount() {
-                return size;
+                return containerDataCount;
             }
         };
     }
 
     @Override
     public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
-        return null;
+        return new AlloyFurnaceContainer(id, inventory, this, this.containerData);
     }
 
     public void dropContents() {
@@ -122,7 +122,7 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
             alloyFurnaceBlockEntity.progress++;
             setChanged(level, blockPos, blockState);
 
-            if (alloyFurnaceBlockEntity.progress >= 78) {
+            if (alloyFurnaceBlockEntity.progress >= maxProgress) {
                 smeltItem(alloyFurnaceBlockEntity);
             }
         } else {
@@ -137,28 +137,16 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
             simpleContainer.setItem(i, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(i));
         }
 
-        boolean hasRawGemInFirstSlot = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(1).getItem() == Items.COAL;
-        boolean canInsertAmountIntoOutputSlot = simpleContainer.getItem(2).getMaxStackSize() > simpleContainer.getItem(2).getCount();
-        boolean canInsertItemIntoOutputSlot = simpleContainer.getItem(2).getItem() == new ItemStack(Items.DIAMOND, 1).getItem() || simpleContainer.getItem(2).isEmpty();
+        boolean hasIngredients = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(1).getItem() == Items.COAL;
+        boolean canEnterOutput = simpleContainer.getItem(4).isEmpty() || simpleContainer.getItem(4).getItem() == Items.DIAMOND;
+        boolean hasEnoughRoomInOutput = simpleContainer.getItem(4).getCount() < simpleContainer.getItem(4).getMaxStackSize();
 
-        return hasRawGemInFirstSlot && canInsertAmountIntoOutputSlot && canInsertItemIntoOutputSlot;
+        return hasIngredients && canEnterOutput && hasEnoughRoomInOutput;
     }
 
-    private static void craftItem(GemInfusingStationBlockEntity pEntity) {
-
-        if(hasRecipe(pEntity)) {
-            pEntity.itemStackHandler.extractItem(1, 1, false);
-            pEntity.itemStackHandler.setStackInSlot(2, new ItemStack(ModItems.ZIRCON.get(),
-                    pEntity.itemStackHandler.getStackInSlot(2).getCount() + 1));
-
-            pEntity.resetProgress();
-        }
+    private static void smeltItem(AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
+        alloyFurnaceBlockEntity.itemStackHandler.extractItem(1, 1, false);
+        alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(4, new ItemStack(Items.DIAMOND, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(4).getCount() + 1));
+        alloyFurnaceBlockEntity.progress = 0;
     }
-//    public ContainerData getContainerData() {
-//        return containerData;
-//    }
-//
-//    public ItemStackHandler getItemStackHandler() {
-//        return itemStackHandler;
-//    }
 }

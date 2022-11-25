@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class SpellHolderScreen extends AbstractContainerScreen<SpellHolderContainer> {
+public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceContainer> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MineBound.MOD_ID,"textures/block/spell_holder.png");
 
-    public SpellHolderScreen(SpellHolderContainer spellHolderContainer, Inventory inventory, Component component) {
-        super(spellHolderContainer, inventory, component);
+    public AlloyFurnaceScreen(AlloyFurnaceContainer alloyFurnaceContainer, Inventory inventory, Component component) {
+        super(alloyFurnaceContainer, inventory, component);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mineboundteam.minebound;
 
 
-import com.mineboundteam.minebound.container.SpellHolderScreen;
+import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;
 import com.mineboundteam.minebound.registry.Registry;
@@ -44,7 +44,7 @@ public class MineBound {
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-        MenuScreens.register(ContainerRegistry.SPELL_HOLDER_CONTAINER.get(), SpellHolderScreen::new);
+        MenuScreens.register(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
