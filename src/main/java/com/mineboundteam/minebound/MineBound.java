@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound;
 
-
-import com.mineboundteam.minebound.container.SpellHolderScreen;
+import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;
 import com.mineboundteam.minebound.registry.Registry;
@@ -37,17 +36,14 @@ public class MineBound {
 
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
         Registry.RegisterMod(iEventBus);
-
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(this::enqueueIMC);
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-        MenuScreens.register(ContainerRegistry.SPELL_HOLDER_CONTAINER.get(), SpellHolderScreen::new);
+        MenuScreens.register(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

@@ -8,9 +8,9 @@ public class Registry {
         BlockRegistry.BLOCKS.register(iEventBus);
         BlockEntityRegistry.BLOCK_ENTITIES.register(iEventBus);
         ContainerRegistry.CONTAINERS.register(iEventBus);
+        EffectRegistry.MOB_EFFECTS.register(iEventBus);
         ItemRegistry.ITEMS.register(iEventBus);
         StructureRegistry.STRUCTURES.register(iEventBus);
         KeyRegistry.register();
-        EffectRegistry.MOB_EFFECTS.register(iEventBus);
     }
 }

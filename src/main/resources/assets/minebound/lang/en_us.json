@@ -1,12 +1,8 @@
 {
-  "itemGroup.minebound": "MineBound",
-
-  "item.minebound.jello": "Jello",
-
-  "block.minebound.boom_button": "Suspicious-looking button",
-
-  "itemGroup.minebound": "MineBound",
-  "key.minebound.toggle_glow": "Toggle Glowing",
-
-  "effect.minebound.fire_barrier": "Fire Barrier"
+    "block.minebound.alloy_furnace": "Alloy Furnace",
+    "block.minebound.boom_button": "Suspicious-looking button",
+    "effect.minebound.fire_barrier": "Fire Barrier",
+    "item.minebound.jello": "Jello",
+    "itemGroup.minebound": "MineBound",
+    "key.minebound.toggle_glow": "Toggle Glowing"
 }
