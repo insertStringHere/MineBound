@@ -25,7 +25,7 @@ public class AlloyFurnace extends BaseEntityBlock {
         super(properties);
     }
 
-    // block methods - michael 11/21/2022
+    // block methods - michael tran 11/21/2022
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.HORIZONTAL_FACING);
@@ -46,7 +46,7 @@ public class AlloyFurnace extends BaseEntityBlock {
         return blockState.setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
-    // entity methods - michael 11/21/2022
+    // entity methods - michael tran 11/21/2022
     public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
