@@ -1,6 +1,5 @@
 package com.mineboundteam.minebound;
 
-
 import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;

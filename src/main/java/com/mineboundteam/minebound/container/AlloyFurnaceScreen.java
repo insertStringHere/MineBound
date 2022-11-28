@@ -11,8 +11,6 @@ import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceContainer> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MineBound.MOD_ID,"textures/block/spell_holder.png");
-
     public AlloyFurnaceScreen(AlloyFurnaceContainer alloyFurnaceContainer, Inventory inventory, Component component) {
         super(alloyFurnaceContainer, inventory, component);
     }
@@ -30,13 +28,16 @@ public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceCont
     }
 
     @Override
-    protected void renderBg(@NotNull PoseStack poseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(@NotNull PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, new ResourceLocation(MineBound.MOD_ID,"textures/screen/alloy_furnace.png"));
+
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
+        if (menu.getProgressPercent() > 0) {
+            blit(poseStack, x + 105, y + 33, 176, 0, 8, (int) menu.getProgressPercent() * 26);
+        }
     }
 }

@@ -137,16 +137,16 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
             simpleContainer.setItem(i, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(i));
         }
 
-        boolean hasIngredients = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(1).getItem() == Items.COAL;
-        boolean canEnterOutput = simpleContainer.getItem(4).isEmpty() || simpleContainer.getItem(4).getItem() == Items.DIAMOND;
-        boolean hasEnoughRoomInOutput = simpleContainer.getItem(4).getCount() < simpleContainer.getItem(4).getMaxStackSize();
+        boolean hasIngredients = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(0).getItem() == Items.COAL;
+        boolean canEnterOutput = simpleContainer.getItem(3).isEmpty() || simpleContainer.getItem(3).getItem() == Items.DIAMOND;
+        boolean hasEnoughRoomInOutput = simpleContainer.getItem(3).getCount() < simpleContainer.getItem(3).getMaxStackSize();
 
         return hasIngredients && canEnterOutput && hasEnoughRoomInOutput;
     }
 
     private static void smeltItem(AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
-        alloyFurnaceBlockEntity.itemStackHandler.extractItem(1, 1, false);
-        alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(4, new ItemStack(Items.DIAMOND, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(4).getCount() + 1));
+        alloyFurnaceBlockEntity.itemStackHandler.extractItem(0, 1, false);
+        alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(3, new ItemStack(Items.DIAMOND, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(3).getCount() + 1));
         alloyFurnaceBlockEntity.progress = 0;
     }
 }
