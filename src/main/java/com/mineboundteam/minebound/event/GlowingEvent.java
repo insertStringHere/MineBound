@@ -4,15 +4,12 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.registry.KeyRegistry;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OutlineBufferSource;
-import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEnity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -43,7 +40,7 @@ public class GlowingEvent {
             }
 
             LivingEntity entity = e.getEntity();
-            if (!entity.equals(mc.player) && glowActive && entity.distanceTo(mc.player) < 200) {
+            if (!entity.equals(mc.player) && entity.distanceTo(mc.player) < 200) {
                 EntityRenderDispatcher erd = mc.getEntityRenderDispatcher();    
                 float f = Mth.lerp(e.getPartialTick(), entity.yRotO, entity.getYRot());
                 isRendering = true;
