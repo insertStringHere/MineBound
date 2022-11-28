@@ -1,8 +1,10 @@
 package com.mineboundteam.minebound;
 
-
+import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.registry.BlockRegistry;
+import com.mineboundteam.minebound.registry.ContainerRegistry;
 import com.mineboundteam.minebound.registry.Registry;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,17 +36,14 @@ public class MineBound {
 
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
         Registry.RegisterMod(iEventBus);
-
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(this::enqueueIMC);
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-       
+        MenuScreens.register(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
