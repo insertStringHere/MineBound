@@ -29,10 +29,10 @@ public class AlloyFurnaceContainer extends AbstractContainerMenu {
         addInventory(inventory);
         addHotBar(inventory);
         alloyFurnaceBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 12, 15));
-            this.addSlot(new SlotItemHandler(iItemHandler, 1, 86, 15));
-            this.addSlot(new SlotItemHandler(iItemHandler, 2, 86, 60));
-            this.addSlot(new SlotItemHandler(iItemHandler, 3, 86, 80));
+            this.addSlot(new SlotItemHandler(iItemHandler, 0, 21, 36));
+            this.addSlot(new SlotItemHandler(iItemHandler, 1, 45, 36));
+            this.addSlot(new SlotItemHandler(iItemHandler, 2, 69, 36));
+            this.addSlot(new SlotItemHandler(iItemHandler, 3, 139, 36));
         });
         addDataSlots(containerData);
     }
