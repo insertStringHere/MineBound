@@ -1,24 +1,18 @@
 package com.mineboundteam.minebound.event;
 
 import org.lwjgl.glfw.GLFW;
-import org.stringtemplate.v4.compiler.CodeGenerator.primary_return;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -42,18 +36,20 @@ public class GlowingEvent {
     // https://github.com/TeamLapen/Vampirism/blob/1.18/src/main/java/de/teamlapen/vampirism/client/render/RenderHandler.java
     @SubscribeEvent
     public static void displayGlowing(RenderLivingEvent.Post<?,?> e) {
-        if(outlineBufferSource == null){
-            GlowingEvent.outlineBufferSource = new OutlineBufferSource(GlowingEvent.mc.renderBuffers().bufferSource());
-            GlowingEvent.outlineBufferSource.setColor(0xee, 0xee, 0xee, 255);
-        }
+        if(!isRendering && glowActive){
+            if(outlineBufferSource == null){
+                outlineBufferSource = new OutlineBufferSource(GlowingEvent.mc.renderBuffers().bufferSource());
+                outlineBufferSource.setColor(0xee, 0xee, 0xee, 255);
+            }
 
-        LivingEntity entity = e.getEntity();
-        if (!isRendering && entity != mc.player && glowActive && entity.distanceTo(mc.player) < 200) {
-            EntityRenderDispatcher erd = mc.getEntityRenderDispatcher();    
-            float f = Mth.lerp(e.getPartialTick(), entity.yRotO, entity.getYRot());
-            isRendering = true;
-            erd.getRenderer(entity).render(entity, f, e.getPartialTick(), e.getPoseStack(), outlineBufferSource, erd.getPackedLightCoords(entity, e.getPartialTick()));
-            isRendering = false;
+            LivingEntity entity = e.getEntity();
+            if (!entity.equals(mc.player) && glowActive && entity.distanceTo(mc.player) < 200) {
+                EntityRenderDispatcher erd = mc.getEntityRenderDispatcher();    
+                float f = Mth.lerp(e.getPartialTick(), entity.yRotO, entity.getYRot());
+                isRendering = true;
+                erd.getRenderer(entity).render(entity, f, e.getPartialTick(), e.getPoseStack(), outlineBufferSource, erd.getPackedLightCoords(entity, e.getPartialTick()));
+                isRendering = false;
+            }
         }
     }
 
