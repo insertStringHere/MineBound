@@ -84,3 +84,10 @@ public class AlloyFurnace extends BaseEntityBlock {
         return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
     }
 }
+
+// TODO         - michael tran 12/2/2022
+// fix item in hand texture
+// fix item in inventory texture
+// add progress bar
+// add next machine
+// add item entity
