@@ -86,3 +86,10 @@ public class AlloyFurnace extends BaseEntityBlock {
 
     // TODO add recipe, hud, side container, item entity
 }
+
+// TODO         - michael tran 12/2/2022
+// fix item in hand texture
+// fix item in inventory texture
+// add progress bar
+// add next machine
+// add item entity
