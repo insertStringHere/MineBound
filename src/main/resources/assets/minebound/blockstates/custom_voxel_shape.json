@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=north": {
+			"model": "minebound:block/custom_voxel_shape"
+		},
+		"facing=south": {
+			"model": "minebound:block/custom_voxel_shape",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "minebound:block/custom_voxel_shape",
+			"y": 270
+		},
+		"facing=east": {
+			"model": "minebound:block/custom_voxel_shape",
+			"y": 90
+		}
+	}
+}
