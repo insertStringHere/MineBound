@@ -83,13 +83,4 @@ public class AlloyFurnace extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
         return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
     }
-
-    // TODO add recipe, hud, side container, item entity
 }
-
-// TODO         - michael tran 12/2/2022
-// fix item in hand texture
-// fix item in inventory texture
-// add progress bar
-// add next machine
-// add item entity
