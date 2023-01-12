@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound;
 
 
+import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
@@ -32,6 +33,7 @@ public class MineBound {
         Registry.RegisterMod(iEventBus);
 
         iEventBus.addListener(this::clientSetup);
+        iEventBus.addListener(EntityRegistry::registerAttributes);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {

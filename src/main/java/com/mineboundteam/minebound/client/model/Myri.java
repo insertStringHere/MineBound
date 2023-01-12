@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.client.models;
+package com.mineboundteam.minebound.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -38,21 +38,21 @@ public class Myri<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition thighR = Chest.addOrReplaceChild("thighR", CubeListBuilder.create(), PartPose.offset(2.0F, 0.0F, 2.0F));
 
-		PartDefinition cube_r1 = thighR.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(28, 0).addBox(-3.0F, -7.0F, -3.0F, 5.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.2637F, -15.2386F, 0.262F, 0.3417F, 0.4985F, 0.3407F));
+		thighR.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(28, 0).addBox(-3.0F, -7.0F, -3.0F, 5.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.2637F, -15.2386F, 0.262F, 0.3417F, 0.4985F, 0.3407F));
 
 		PartDefinition shinR = thighR.addOrReplaceChild("shinR", CubeListBuilder.create(), PartPose.offset(-2.0F, 0.0F, -6.0F));
 
-		PartDefinition cube_r2 = shinR.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(50, 27).addBox(-1.0F, -4.0F, -1.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -8.0F, 6.0F, -0.4037F, 0.3834F, -0.8615F));
+		shinR.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(50, 27).addBox(-1.0F, -4.0F, -1.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -8.0F, 6.0F, -0.4037F, 0.3834F, -0.8615F));
 
 		PartDefinition footR = shinR.addOrReplaceChild("footR", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition cube_r3 = footR.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(16, 61).addBox(-1.0F, -6.0F, -2.0F, 2.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 6.0F, 0.1733F, 0.3542F, 0.4674F));
+		footR.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(16, 61).addBox(-1.0F, -6.0F, -2.0F, 2.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 6.0F, 0.1733F, 0.3542F, 0.4674F));
 
-		PartDefinition cube_r4 = footR.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(60, 15).addBox(-6.0F, 0.0F, -2.0F, 6.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, -1.0F, 6.0F, -0.0317F, 0.3477F, -0.0928F));
+		footR.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(60, 15).addBox(-6.0F, 0.0F, -2.0F, 6.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, -1.0F, 6.0F, -0.0317F, 0.3477F, -0.0928F));
 
 		PartDefinition thighL = Chest.addOrReplaceChild("thighL", CubeListBuilder.create(), PartPose.offset(2.0F, 0.0F, -6.0F));
 
-		PartDefinition cube_r5 = thighL.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 27).addBox(-3.0F, -7.0F, -2.0F, 5.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.2637F, -15.2386F, -0.262F, -0.3417F, -0.4985F, 0.3407F));
+		thighL.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 27).addBox(-3.0F, -7.0F, -2.0F, 5.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.2637F, -15.2386F, -0.262F, -0.3417F, -0.4985F, 0.3407F));
 
 		PartDefinition shinL = thighL.addOrReplaceChild("shinL", CubeListBuilder.create(), PartPose.offset(-2.0F, 0.0F, 6.0F));
 

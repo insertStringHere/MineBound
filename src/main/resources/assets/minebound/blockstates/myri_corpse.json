@@ -1,8 +1,0 @@
-{
-    "variants" : {
-        "facing=east": {"model": "block/myri_corpse"},
-        "facing=north": {"model": "block/myri_corpse", "y":270},
-        "facing=west": {"model": "block/myri_corpse", "y":180},
-        "facing=south": {"model": "block/myri_corpse", "y":90}
-    }
-}
