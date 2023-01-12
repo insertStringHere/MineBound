@@ -1,8 +1,11 @@
 package com.mineboundteam.minebound;
 
 
+import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +27,6 @@ public class MineBound {
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-       
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS_BLOCK.get(), RenderType.translucent());
     }
 }
