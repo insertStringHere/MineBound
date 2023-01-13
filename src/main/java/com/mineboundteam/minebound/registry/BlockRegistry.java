@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.block.MyrialConsoleBlock;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -19,8 +20,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
     
-    public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 10)));
-    
+    public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new MyrialConsoleBlock(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 8)));
+
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
         IForgeRegistry<Item> registry = event.getRegistry();

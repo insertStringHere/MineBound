@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "minebound:block/myrial_console",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "minebound:block/myrial_console"
+        },
+        "facing=south": {
+            "model": "minebound:block/myrial_console",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "minebound:block/myrial_console",
+            "y": 270
+        }
+    }
+}
