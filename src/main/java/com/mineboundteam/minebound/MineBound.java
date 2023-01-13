@@ -35,6 +35,6 @@ public class MineBound {
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-       
+
     }
 }
