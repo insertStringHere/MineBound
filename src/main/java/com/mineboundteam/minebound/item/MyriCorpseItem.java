@@ -23,6 +23,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+/***
+ * Taken from ArmorStand, creates an item for spawning the corpse (For debug/creative mode)
+ */
 public class MyriCorpseItem extends Item{
 
     public MyriCorpseItem(Properties p_41383_) {
@@ -30,6 +33,7 @@ public class MyriCorpseItem extends Item{
     }
 
     @Override
+    // When using the item, spawn the corpse at the targeted block if possible
     public InteractionResult useOn(UseOnContext context) {
         Direction direction = context.getClickedFace();
         if (direction == Direction.DOWN) {
