@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.client.model;
 
+import com.mineboundteam.minebound.entities.MyriCorpse;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -13,22 +14,19 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 // Made with Blockbench 4.5.2
 // Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
-@OnlyIn(Dist.CLIENT)
-public class MyriCorpseModel<T extends Entity> extends EntityModel<T> {
+
+public class MyriCorpseModel extends EntityModel<MyriCorpse> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("minebound", "myri_corpse"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "myri_converted"), "main");
 	private final ModelPart VoxelShapes;
 
-	public MyriCorpseModel(ModelPart root) {
-		this.VoxelShapes = root.getChild("VoxelShapes");
+	public MyriCorpseModel() {
+		this.VoxelShapes = createBodyLayer().bakeRoot().getChild("VoxelShapes");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -43,7 +41,7 @@ public class MyriCorpseModel<T extends Entity> extends EntityModel<T> {
 		.texOffs(0, 29).addBox(-23.3583F, 0.8554F, -14.1718F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.0F))
 		.texOffs(53, 16).addBox(-17.695F, 2.8554F, -12.8753F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 54).addBox(-20.3583F, 1.8554F, -8.1718F, 4.0F, 6.0F, 5.0F, new CubeDeformation(0.0F))
-		.texOffs(52, 38).addBox(-21.4389F, -0.1657F, -14.9187F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 16.0F, 8.0F));
+		.texOffs(52, 38).addBox(-21.4389F, -0.1657F, -14.9187F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, 16.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
 
 		VoxelShapes.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(48, 7).addBox(-2.0F, -1.0F, -3.5F, 4.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-20.7863F, 1.6334F, -15.9578F, 0.3927F, 0.0F, 0.0F));
 
@@ -59,9 +57,9 @@ public class MyriCorpseModel<T extends Entity> extends EntityModel<T> {
 
 		VoxelShapes.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(0, 46).addBox(-7.1511F, -5.1182F, -1.8276F, 9.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(18.7301F, 8.1226F, -17.7105F, 0.0F, 0.0F, -0.3927F));
 
-		VoxelShapes.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(46, 0).addBox(-5.5749F, -3.7008F, -1.7868F, 7.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(18.7301F, 8.1226F, -17.7105F, 0.0F, 0.0F, 0.7854F));
+		VoxelShapes.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(46, 0).addBox(-2.5749F, -4.7008F, -1.7868F, 7.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(18.7301F, 8.1226F, -17.7105F, 0.0F, 0.0F, 0.2618F));
 
-		VoxelShapes.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(39, 55).addBox(3.0795F, 0.2892F, -2.2132F, 2.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(18.7301F, 4.1226F, -17.7105F, 0.0F, 0.0F, 0.3927F));
+		VoxelShapes.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(39, 55).addBox(4.0795F, -1.7108F, -2.2132F, 2.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(18.7301F, 4.1226F, -17.7105F, 0.0F, 0.0F, 0.3927F));
 
 		VoxelShapes.addOrReplaceChild("cube_r10", CubeListBuilder.create().texOffs(25, 24).addBox(1.9567F, -2.5549F, -0.7147F, 12.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.4822F, 5.543F, -11.0F, 0.0F, -0.3927F, 0.0F));
 
@@ -69,7 +67,7 @@ public class MyriCorpseModel<T extends Entity> extends EntityModel<T> {
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(MyriCorpse entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
@@ -77,4 +75,5 @@ public class MyriCorpseModel<T extends Entity> extends EntityModel<T> {
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		VoxelShapes.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
+
 }

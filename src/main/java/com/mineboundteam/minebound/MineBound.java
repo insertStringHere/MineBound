@@ -2,6 +2,7 @@ package com.mineboundteam.minebound;
 
 
 import com.mineboundteam.minebound.registry.EntityRegistry;
+import com.mineboundteam.minebound.registry.EntityRendererRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
@@ -28,15 +29,15 @@ public class MineBound {
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        MinecraftForge.EVENT_BUS.register(this);
-
         Registry.RegisterMod(iEventBus);
 
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(EntityRegistry::registerAttributes);
+        
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-       
+        EntityRendererRegistry.register();
     }
 }

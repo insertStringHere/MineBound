@@ -11,12 +11,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.DistExecutor.SafeCallable;
+import net.minecraft.world.entity.*;
 
 public class MyriCorpse extends LivingEntity {
 
@@ -56,6 +57,21 @@ public class MyriCorpse extends LivingEntity {
     }
 
     @Override
+    public void kill() {
+        this.remove(Entity.RemovalReason.KILLED);
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    protected void doPush(Entity e) {
+        e.setDeltaMovement(e.getDeltaMovement().multiply((double) .2f, 1.0D, (double) .2f));
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float damage) {
         if (!this.level.isClientSide && !this.isRemoved()) {
             if (DamageSource.OUT_OF_WORLD.equals(source))
@@ -66,7 +82,7 @@ public class MyriCorpse extends LivingEntity {
                     this.kill();
                 } else {
                     if (source.getEntity() instanceof Player)
-                        if(!((Player)source.getEntity()).getAbilities().mayBuild) {
+                        if (!((Player) source.getEntity()).getAbilities().mayBuild) {
                         } else if (source.isCreativePlayer()) {
                             this.playBrokenSound();
                             this.showBreakingParticles();
@@ -79,7 +95,7 @@ public class MyriCorpse extends LivingEntity {
                             return true;
                         }
                 }
-            } 
+            }
         }
         return false;
     }
