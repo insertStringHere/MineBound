@@ -1,8 +1,15 @@
 {
-  "itemGroup.minebound": "MineBound",
+  "item.minebound.alien_circuitry": "Alien Circuitry",
+  "item.minebound.energized_focus": "Energized Focus",
+  "item.minebound.energized_iron_ingot": "Energized Iron Ingot",
   "item.minebound.gilded_diamond_ingot": "Gilded Diamond Ingot",
+  "item.minebound.gilded_diamond_wire": "Gilded Diamond Wire",
+  "item.minebound.illuminant_steel_ingot": "Illuminant Steel Ingot",
   "item.minebound.myrial_diamond_ingot": "Myrial Diamond Ingot",
   "item.minebound.myrial_steel_ingot": "Myrial Steel Ingot",
   "item.minebound.myri_chunk": "Chunk of My'ri",
-  "item.minebound.myri_manasac": "My'ri Manasac"
+  "item.minebound.myri_manasac": "My'ri Manasac",
+  "item.minebound.myri_corpse": "My'ri Corpse"
+
+  "itemGroup.minebound": "MineBound"
 }
