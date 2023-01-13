@@ -51,7 +51,7 @@ public class MyriCorpseModel extends EntityModel<MyriCorpse> {
 
 		VoxelShapes.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(28, 34).addBox(-3.4693F, 0.0F, -5.6955F, 10.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-10.3579F, 3.0609F, -14.1269F, 0.0F, 0.3927F, 0.0F));
 
-		VoxelShapes.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 14).addBox(-3.148F, 0.0F, -2.7284F, 4.0F, 4.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.6158F, 2.6067F, -1.5552F, 0.0F, 0.3927F, 0.0F));
+		VoxelShapes.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 14).addBox(-3.148F, 0.0F, -4.7284F, 4.0F, 4.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.6158F, 2.6067F, -1.5552F, 0.0F, 0.3927F, 0.0F));
 
 		VoxelShapes.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(19, 14).addBox(1.9567F, -2.5549F, -4.2853F, 12.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.4822F, 5.543F, -11.0F, 0.0F, 0.3927F, 0.0F));
 
