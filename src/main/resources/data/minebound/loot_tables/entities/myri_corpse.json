@@ -1,0 +1,30 @@
+{
+    "pools":[
+        {
+            "rolls":{
+                "min":1,
+                "max":2
+            },
+            "entries":[
+                {
+                    "type":"minecraft:item",
+                    "weight":1,
+                    "name":"minebound:myri_manasac"
+                }
+            ]
+        },
+        {
+            "rolls":{
+                "min":0,
+                "max":3
+            },
+            "entries":[
+                {
+                    "type":"minecraft:item",
+                    "weight":1,
+                    "name":"minebound:myri_chunk"
+                }
+            ]
+        }
+    ]
+}
