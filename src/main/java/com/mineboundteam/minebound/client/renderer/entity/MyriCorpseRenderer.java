@@ -2,7 +2,7 @@ package com.mineboundteam.minebound.client.renderer.entity;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.client.model.MyriCorpseModel;
-import com.mineboundteam.minebound.entities.MyriCorpse;
+import com.mineboundteam.minebound.entity.MyriCorpse;
 
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

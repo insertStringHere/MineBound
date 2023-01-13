@@ -1,10 +1,12 @@
-package com.mineboundteam.minebound.entities;
+package com.mineboundteam.minebound.entity;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,9 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.DistExecutor.SafeCallable;
 import net.minecraft.world.entity.*;
 
 public class MyriCorpse extends LivingEntity {
@@ -69,6 +68,9 @@ public class MyriCorpse extends LivingEntity {
     @Override
     protected void doPush(Entity e) {
         e.setDeltaMovement(e.getDeltaMovement().multiply((double) .2f, 1.0D, (double) .2f));
+        if(level.getGameTime() % 25 == 0 && random.nextInt(2) == 0){
+            level.playLocalSound(getX(), getY(), getZ(), random.nextInt(2) == 1 ? SoundEvents.SLIME_BLOCK_STEP : SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS, 1, 1, false);
+        }
     }
 
     @Override
@@ -126,7 +128,7 @@ public class MyriCorpse extends LivingEntity {
     }
 
     private void playBrokenSound() {
-        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_PLACE,
+        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_BREAK,
                 this.getSoundSource(), 1.0F, 1.0F);
     }
 

@@ -1,7 +1,7 @@
 package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.entities.MyriCorpse;
+import com.mineboundteam.minebound.entity.MyriCorpse;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

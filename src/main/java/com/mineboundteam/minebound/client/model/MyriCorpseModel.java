@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.client.model;
 
-import com.mineboundteam.minebound.entities.MyriCorpse;
+import com.mineboundteam.minebound.entity.MyriCorpse;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
