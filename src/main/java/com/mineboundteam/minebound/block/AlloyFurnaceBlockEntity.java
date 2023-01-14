@@ -37,7 +37,7 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
     private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
     public static int maxProgress = 78;
     private int progress = 0;
-    public static int size = 4;
+    public static int size = 5;
 
     public AlloyFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -138,15 +138,15 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
         }
 
         boolean hasIngredients = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(0).getItem() == Items.COAL;
-        boolean canEnterOutput = simpleContainer.getItem(3).isEmpty() || simpleContainer.getItem(3).getItem() == Items.NETHERITE_INGOT;
-        boolean hasEnoughRoomInOutput = simpleContainer.getItem(3).getCount() < simpleContainer.getItem(3).getMaxStackSize();
+        boolean canEnterOutput = simpleContainer.getItem(4).isEmpty() || simpleContainer.getItem(4).getItem() == Items.DIAMOND;
+        boolean hasEnoughRoomInOutput = simpleContainer.getItem(4).getCount() < simpleContainer.getItem(4).getMaxStackSize();
 
         return hasIngredients && canEnterOutput && hasEnoughRoomInOutput;
     }
 
     private static void smeltItem(AlloyFurnaceBlockEntity alloyFurnaceBlockEntity) {
         alloyFurnaceBlockEntity.itemStackHandler.extractItem(0, 1, false);
-        alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(3, new ItemStack(Items.NETHERITE_INGOT, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(3).getCount() + 1));
+        alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(4, new ItemStack(Items.DIAMOND, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(4).getCount() + 1));
         alloyFurnaceBlockEntity.progress = 0;
     }
 }
