@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minebound:gilded_diamond_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:gilded_diamond_wire"
+  }
+}
