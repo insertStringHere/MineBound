@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:CUSTOM",
+  "pattern": [
+  ],
+  "key": {
+
+  },
+  "result": {
+    "item": "minebound:myrial_glass"
+  }
+}
