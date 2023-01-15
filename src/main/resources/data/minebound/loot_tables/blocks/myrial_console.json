@@ -1,0 +1,66 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "minebound:alien_circuitry"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 2,
+                    "name": "minebound:myrial_glass"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 5,
+                    "name": "minebound:myrial_steel_ingot"
+                }
+            ]
+        },
+        {
+            "rolls": {
+                "min": 0,
+                "max": 1
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "minebound:alien_circuitry"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "minebound:gilded_diamond_wire"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "minebound:myrial_steel_ingot"
+                }
+            ]
+        },
+        {
+            "rolls": {
+                "min": 2,
+                "max": 4
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "minebound:gilded_diamond_wire"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "minebound:myrial_steel_ingot"
+                }
+            ]
+        }
+    ]
+}
