@@ -22,9 +22,11 @@ public class KeyRegistry {
     public static final String MINEBOUND_CATEGORY = "key.categories.minebound";
 
     public static final KeyMapping PRIMARY_MAGIC = new KeyMapping(getName("primary_magic"), InputConstants.Type.MOUSE, 4, MINEBOUND_CATEGORY);
+    public static final KeyMapping SECONDARY_MAGIC = new KeyMapping(getName("secondary_magic"), InputConstants.Type.MOUSE, 3, MINEBOUND_CATEGORY);
 
     public static void register(){
         ClientRegistry.registerKeyBinding(PRIMARY_MAGIC);
+        ClientRegistry.registerKeyBinding(SECONDARY_MAGIC);
     }
 
     private static String getName(String name){
@@ -50,6 +52,8 @@ public class KeyRegistry {
 
             if(key == KeyRegistry.PRIMARY_MAGIC.getKey().getValue())
                         System.out.println("Primary Magic Pressed");
+            if(key == KeyRegistry.SECONDARY_MAGIC.getKey().getValue())
+                        System.out.println("Secondary Magic Pressed");
         }
 
         

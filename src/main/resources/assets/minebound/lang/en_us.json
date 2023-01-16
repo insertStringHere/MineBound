@@ -15,6 +15,7 @@
 
   "key.categories.minebound": "Minebound",
   "key.minebound.primary_magic": "Left Hand Magic",
+  "key.minebound.secondary_magic": "Right Hand Magic",
 
   "itemGroup.minebound": "MineBound"
 }
