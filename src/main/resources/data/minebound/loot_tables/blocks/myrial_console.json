@@ -12,7 +12,7 @@
                 {
                     "type": "minecraft:item",
                     "weight": 2,
-                    "name": "minebound:myrial_glass"
+                    "name": "minebound:myrial_glass_block"
                 },
                 {
                     "type": "minecraft:item",
