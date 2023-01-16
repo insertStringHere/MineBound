@@ -4,6 +4,7 @@ package com.mineboundteam.minebound;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.EntityRendererRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
 import net.minecraft.world.item.CreativeModeTab;
@@ -39,5 +40,6 @@ public class MineBound {
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         EntityRendererRegistry.register();
+        KeyRegistry.register();
     }
 }

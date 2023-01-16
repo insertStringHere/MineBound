@@ -13,5 +13,8 @@
 
   "block.minebound.myrial_console": "Myrial Console",
 
+  "key.categories.minebound": "Minebound",
+  "key.minebound.primary_magic": "Left Hand Magic",
+
   "itemGroup.minebound": "MineBound"
 }
