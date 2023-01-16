@@ -1,8 +1,4 @@
 {
-  "replace": false,
-  "values": [
-    "minebound:myrial_glass_block"
-  ],
     "replace":false,
     "values":[
         "minebound:myrial_console"

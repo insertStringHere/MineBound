@@ -1,33 +1,48 @@
 package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.block.MyrialConsoleBlock;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 
+@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
+
+    public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new MyrialConsoleBlock(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 8)));
+    // TODO: Replace with actual myrial glass implementation; only added to allow testing of drop table
+    public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).strength(400f, 50f)));
     public static final RegistryObject<Block> MYRIAL_GLASS_BLOCK = registerBlock("myrial_glass_block", () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().strength(1f).requiresCorrectToolForDrops()), MineBound.MINEBOUND_TAB);
 
-
-
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
-        RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab);
-        return toReturn;
+    @SubscribeEvent
+    public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
+        IForgeRegistry<Item> registry = event.getRegistry();
+        for(RegistryObject<Block> b : BLOCKS.getEntries()){
+            BlockItem blockItem = new BlockItem(b.get(), new Item.Properties().tab(MineBound.MINEBOUND_TAB));
+            blockItem.setRegistryName(b.getId());
+            if(!registry.containsKey(blockItem.getRegistryName()))
+                registry.register(blockItem);
+        }
     }
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
-        return ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(tab)));
-    }
+
 }
