@@ -80,7 +80,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {}
 
-dependencies { minecraft 'net.minecraftforge:forge:1.18.2-40.1.0' }
+dependencies { minecraft 'net.minecraftforge:forge:1.18.2-40.2.0' }
 
 jar {
     manifest {
