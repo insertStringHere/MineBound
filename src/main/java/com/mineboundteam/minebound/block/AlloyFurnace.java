@@ -29,23 +29,23 @@ public class AlloyFurnace extends BaseEntityBlock {
         builder.add(BlockStateProperties.HORIZONTAL_FACING);
     }
 
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
+        return RenderShape.MODEL;
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         return this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
-        return blockState.rotate(mirror.getRotation(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
     }
 
     @Override
-    public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
-        return blockState.setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
-    }
-
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
-        return RenderShape.MODEL;
+    public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
+        return blockState.rotate(mirror.getRotation(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
     @Override
@@ -65,6 +65,11 @@ public class AlloyFurnace extends BaseEntityBlock {
     }
 
     @Override
+    public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
+        return blockState.setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
+    }
+
+    @Override
     public @NotNull InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
@@ -74,10 +79,5 @@ public class AlloyFurnace extends BaseEntityBlock {
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
     }
 }

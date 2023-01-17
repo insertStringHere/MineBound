@@ -13,6 +13,6 @@ import static com.mineboundteam.minebound.MineBound.MOD_ID;
 public class EventBusSubscriber {
     @SubscribeEvent
     public static void registerRecipeTypes(final RegistryEvent.Register<RecipeSerializer<?>> event) {
-        Registry.register(Registry.RECIPE_TYPE, AlloyFurnaceRecipe.Type.ID, AlloyFurnaceRecipe.Type.INSTANCE);
+        Registry.register(Registry.RECIPE_TYPE, AlloyFurnaceRecipe.Type.ID, AlloyFurnaceRecipe.Type.TYPE);
     }
 }

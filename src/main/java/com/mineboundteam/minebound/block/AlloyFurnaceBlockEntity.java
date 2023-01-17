@@ -136,7 +136,7 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
         for (int i = 0; i < alloyFurnaceBlockEntity.itemStackHandler.getSlots(); i++) {
             simpleContainer.setItem(i, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(i));
         }
-        Optional<AlloyFurnaceRecipe> alloyFurnaceRecipe = alloyFurnaceBlockEntity.level.getRecipeManager().getRecipeFor(AlloyFurnaceRecipe.Type.INSTANCE, simpleContainer, alloyFurnaceBlockEntity.level);
+        Optional<AlloyFurnaceRecipe> alloyFurnaceRecipe = alloyFurnaceBlockEntity.level.getRecipeManager().getRecipeFor(AlloyFurnaceRecipe.Type.TYPE, simpleContainer, alloyFurnaceBlockEntity.level);
 
         if (canSmeltItem(simpleContainer, alloyFurnaceRecipe)) {
             alloyFurnaceBlockEntity.progress++;

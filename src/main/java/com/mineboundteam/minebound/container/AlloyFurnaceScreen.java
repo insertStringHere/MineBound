@@ -33,11 +33,11 @@ public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceCont
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, new ResourceLocation(MineBound.MOD_ID,"textures/screen/alloy_furnace.png"));
 
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
+        int topLeftX = (width - imageWidth) / 2;
+        int topLeftY = (height - imageHeight) / 2;
+        blit(poseStack, topLeftX, topLeftY, 0, 0, imageWidth, imageHeight);
         if (menu.getProgressPercent() > 0) {
-            blit(poseStack, x + 100, y + 50, 177, 0, (int) (26 * menu.getProgressPercent()), 8);
+            blit(poseStack, topLeftX + 100, topLeftY + 50, 177, 0, (int) (26 * menu.getProgressPercent()), 8);
         }
     }
 }

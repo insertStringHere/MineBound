@@ -42,17 +42,17 @@ public class AlloyFurnaceContainer extends AbstractContainerMenu {
         this(id, inventory, inventory.player.level.getBlockEntity(friendlyByteBuf.readBlockPos()), new SimpleContainerData(AlloyFurnaceBlockEntity.containerDataCount));
     }
 
+    private void addHotBar(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+        }
+    }
+
     private void addInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
                 this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 86 + i * 18));
             }
-        }
-    }
-
-    private void addHotBar(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }
     }
 
@@ -62,7 +62,7 @@ public class AlloyFurnaceContainer extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        // This code is from https://github.com/diesieben07/SevenCommons            - michael tran 11/25/2022
+        // This code is from https://github.com/diesieben07/SevenCommons            - michael 11/25/2022
         int vanillaSlotCount = 36;
         int vanillaIndex = 0;
         int teInventoryIndex = vanillaIndex + vanillaSlotCount;
