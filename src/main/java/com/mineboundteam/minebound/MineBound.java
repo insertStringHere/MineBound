@@ -42,7 +42,7 @@ public class MineBound {
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS_BLOCK.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.myrial_glass.get(), RenderType.translucent());
         EntityRendererRegistry.register();
     }
 }
