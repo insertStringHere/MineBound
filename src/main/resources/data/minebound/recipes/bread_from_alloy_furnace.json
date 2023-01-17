@@ -1,0 +1,11 @@
+{
+	"ingredients": [
+		{
+			"item": "minecraft:diamond"
+		}
+	],
+	"output": {
+		"item": "minecraft:stick"
+	},
+	"type": "minebound:alloy_furnace"
+}
