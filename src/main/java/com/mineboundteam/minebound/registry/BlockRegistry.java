@@ -23,7 +23,7 @@ public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
 
     public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new MyrialConsoleBlock(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 8)));
-    public static final RegistryObject<Block> myrial_glass = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
+    public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
 
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
