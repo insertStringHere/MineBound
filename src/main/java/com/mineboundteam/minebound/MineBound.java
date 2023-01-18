@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.EntityRendererRegistry;
 
 import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -44,5 +45,6 @@ public class MineBound {
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
         EntityRendererRegistry.register();
+        KeyRegistry.register();
     }
 }
