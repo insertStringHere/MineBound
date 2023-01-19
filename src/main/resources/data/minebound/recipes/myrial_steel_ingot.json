@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "myrial_steel_ingot",
   "ingredients": [
     {
       "item": "minebound:myrial_steel_block"
