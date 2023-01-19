@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RWL",
+    "WIW",
+    "LWR"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "W": {
+      "item": "minebound:gilded_diamond_wire"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minebound:energized_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:alien_circuitry"
+  }
+}

@@ -1,3 +1,26 @@
 {
-    "block.minebound.alloy_furnace": "Alloy Furnace"
+  "block.minebound.alloy_furnace": "Alloy Furnace",
+  "block.minebound.myrial_console": "Myrial Console",
+  "block.minebound.myrial_glass": "Myrial Glass",
+  "block.minebound.myrial_steel_block": "Myrial Steel Block",
+
+  "item.minebound.alien_circuitry": "Alien Circuitry",
+  "item.minebound.energized_focus": "Energized Focus",
+  "item.minebound.energized_iron_ingot": "Energized Iron Ingot",
+  "item.minebound.gilded_diamond_ingot": "Gilded Diamond Ingot",
+  "item.minebound.gilded_diamond_wire": "Gilded Diamond Wire",
+  "item.minebound.illuminant_steel_ingot": "Illuminant Steel Ingot",
+  "item.minebound.myrial_diamond_ingot": "Myrial Diamond Ingot",
+  "item.minebound.myrial_steel_ingot": "Myrial Steel Ingot",
+  "item.minebound.myri_chunk": "Chunk of My'ri",
+  "item.minebound.myri_manasac": "My'ri Manasac",
+  "item.minebound.myri_corpse": "My'ri Corpse",
+
+  "itemGroup.minebound": "MineBound",
+
+  "key.categories.minebound": "Minebound",
+  "key.minebound.primary_magic": "Left Hand Magic",
+  "key.minebound.primary_magic_select": "Select Left Hand Magic",
+  "key.minebound.secondary_magic": "Right Hand Magic",
+  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
 }
