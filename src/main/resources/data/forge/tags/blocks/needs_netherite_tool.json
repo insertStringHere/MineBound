@@ -3,6 +3,7 @@
     "values":[
         "minebound:myrial_console",
         "minebound:myrial_glass",
-        "minebound:myrial_steel_block"
+        "minebound:myrial_steel_block",
+        "minebound:myrial_locker"
     ]
 }
