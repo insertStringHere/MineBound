@@ -14,6 +14,14 @@
     "facing=west": {
       "model": "minebound:block/myrial_locker",
       "y": 270
+    },
+    "facing=up": {
+      "model": "minebound:block/myrial_locker",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "minebound:block/myrial_locker",
+      "x": 90
     }
   }
 }
