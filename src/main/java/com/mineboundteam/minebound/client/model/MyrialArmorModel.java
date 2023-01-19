@@ -16,10 +16,10 @@ public class MyrialArmorModel extends AnimatedGeoModel<MyrialArmorItem> {
     private static final HashMap<ArmorTier, ResourceLocation> textures = new HashMap<>();
 
     static{
-        textures.put(ArmorTier.EFFIGY, new ResourceLocation(MineBound.MOD_ID, "textures/item/armor/myrial_effigy.png"));
-        textures.put(ArmorTier.SUIT, new ResourceLocation(MineBound.MOD_ID, "item/armor/myrial_suit.png"));
-        textures.put(ArmorTier.SYNERGY, new ResourceLocation(MineBound.MOD_ID, "item/armor/myrial_synergy.png"));
-        textures.put(ArmorTier.SINGULARITY, new ResourceLocation(MineBound.MOD_ID, "item/armor/myrial_singularity.png"));
+        textures.put(ArmorTier.EFFIGY, new ResourceLocation(MineBound.MOD_ID, "textures/models/armor/myrial_effigy.png"));
+        textures.put(ArmorTier.SUIT, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_suit.png"));
+        textures.put(ArmorTier.SYNERGY, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_synergy.png"));
+        textures.put(ArmorTier.SINGULARITY, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_singularity.png"));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MyrialArmorModel extends AnimatedGeoModel<MyrialArmorItem> {
         if(textures.containsKey(object.getTier()))
             return textures.get(object.getTier());
         
-        textures.put(object.getTier(), new ResourceLocation(object.getRegistryName().getNamespace(), "item/armor" + object.getRegistryName().getPath() + ".png"));
+        textures.put(object.getTier(), new ResourceLocation(object.getRegistryName().getNamespace(), "models/armor" + object.getRegistryName().getPath() + ".png"));
         return textures.get(object.getTier());
     }
     
