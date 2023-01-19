@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/myrial_steel_block"
+    "all": "minebound:block/myrial_steel_block"
   }
 }
