@@ -1,9 +1,13 @@
 package com.mineboundteam.minebound.item.armor;
 
+import java.util.function.Consumer;
+
 import com.mineboundteam.minebound.config.ArmorConfig;
 
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -25,6 +29,12 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         super(pMaterial, pSlot, pProperties.durability(pConfig.ENERGY.get()));
         this.config = pConfig;
         this.tier = pTier;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken){
+        // Remove normal damage, we're not using durability for durability
+        return 0;
     }
 
     public ArmorConfig getConfig(){

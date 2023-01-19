@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
@@ -13,8 +12,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
