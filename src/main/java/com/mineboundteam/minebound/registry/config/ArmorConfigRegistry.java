@@ -1,7 +1,10 @@
 package com.mineboundteam.minebound.registry.config;
 
+import java.util.HashMap;
+
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.config.IConfig;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -14,7 +17,8 @@ public class ArmorConfigRegistry implements IConfig{
     public static final ArmorConfig EFFIGY_LEGGINGS = new ArmorConfig("Myrial Effigy Leggings", 20, 0, 200, 1, 0);
     public static final ArmorConfig EFFIGY_BOOTS = new ArmorConfig("Myrial Effigy Boots", 20, 0, 200, 1, 0);
     
-    
+    public static HashMap<ArmorTier, ArmorConfig> SET_BONUS_MAP = new HashMap<>();
+
     @Override
     public void build(Builder builder) {
         builder.push("Myrial Effigy (Tier 1)");
@@ -24,6 +28,7 @@ public class ArmorConfigRegistry implements IConfig{
         EFFIGY_BOOTS.build(builder);
         EFFIGY_SET.build(builder);
         builder.pop();
+        SET_BONUS_MAP.put(ArmorTier.EFFIGY, EFFIGY_SET);
         
         builder.push("Myrial Suit (Tier 2)");
         builder.pop();

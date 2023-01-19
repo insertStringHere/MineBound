@@ -1,15 +1,16 @@
 package com.mineboundteam.minebound.config;
 
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class ArmorConfig implements IConfig {
 
-    public int MANAPOOL;
-    public int RECOVERY;
-    public int ENERGY;
-    public int STORAGE_SLOTS;
-    public int UTILITY_SLOTS;
+    public IntValue MANAPOOL;
+    public IntValue RECOVERY;
+    public IntValue ENERGY;
+    public IntValue STORAGE_SLOTS;
+    public IntValue UTILITY_SLOTS;
 
     private final int defaultManapool;
     private final int defaultRecovery;
@@ -32,11 +33,11 @@ public class ArmorConfig implements IConfig {
     @Override
     public void build(Builder builder) {
         builder.push(name);
-        MANAPOOL = builder.comment("Manapool increase").defineInRange("manapool_increase", defaultManapool, 0, 10000).get();
-        RECOVERY = builder.comment("Recovery speed increase").defineInRange("recovery_increase", defaultRecovery, 0, 10000).get();
-        ENERGY = builder.comment("Armor piece energy").defineInRange("armor_energy", defaultEnergy, 0, 10000).get();
-        STORAGE_SLOTS = builder.comment("Storage slot count").defineInRange("storage_slots", defaultStorage, 0, 10000).get();
-        UTILITY_SLOTS = builder.comment("Utility slot count").defineInRange("utility_slots", defaultUtility, 0, 10000).get();
+        MANAPOOL = builder.comment("Manapool increase").defineInRange("manapool_increase", defaultManapool, 0, 10000);
+        RECOVERY = builder.comment("Recovery speed increase").defineInRange("recovery_increase", defaultRecovery, 0, 10000);
+        ENERGY = builder.comment("Armor piece energy").defineInRange("armor_energy", defaultEnergy, 0, 10000);
+        STORAGE_SLOTS = builder.comment("Storage slot count").defineInRange("storage_slots", defaultStorage, 0, 10000);
+        UTILITY_SLOTS = builder.comment("Utility slot count").defineInRange("utility_slots", defaultUtility, 0, 10000);
 
         builder.pop();
         
