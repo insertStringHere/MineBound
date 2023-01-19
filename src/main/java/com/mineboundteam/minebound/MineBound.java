@@ -3,8 +3,7 @@ package com.mineboundteam.minebound;
 
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
-import com.mineboundteam.minebound.registry.EntityRendererRegistry;
-
+import com.mineboundteam.minebound.registry.RendererRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mineboundteam.minebound.registry.Registry;
@@ -44,7 +43,7 @@ public class MineBound {
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
-        EntityRendererRegistry.register();
+        RendererRegistry.register();
         KeyRegistry.register();
     }
 }
