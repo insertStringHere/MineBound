@@ -2,6 +2,9 @@
 	"ingredients": [
 		{
 			"item": "minecraft:diamond"
+		},
+		{
+			"item": "#minecraft:coals"
 		}
 	],
 	"output": {
