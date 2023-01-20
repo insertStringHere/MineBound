@@ -57,7 +57,7 @@ public class AlloyFurnaceContainer extends AbstractContainerMenu {
     }
 
     public double getProgressPercent() {
-        return (double) containerData.get(0) / AlloyFurnaceBlockEntity.maxProgress;
+        return (double) containerData.get(0) / AlloyFurnaceBlockEntity.MAX_PROGRESS;
     }
 
     @Override

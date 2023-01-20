@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.block;
 
 import com.mineboundteam.minebound.container.AlloyFurnaceContainer;
+import com.mineboundteam.minebound.container.MineboundEnergyStorage;
 import com.mineboundteam.minebound.recipe.AlloyFurnaceRecipe;
 import com.mineboundteam.minebound.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -18,8 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -30,14 +35,22 @@ import java.util.Optional;
 public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider {
     private final ContainerData containerData;
     public static int containerDataCount = 1;
+    public static final int ENERGY_REQUIRED = 32;
+    private final EnergyStorage energyStorage = new MineboundEnergyStorage(65536, 65536) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+    };
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(size) {
         @Override
         protected void onContentsChanged(int slots) {
             setChanged();
         }
     };
-    private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
-    public static int maxProgress = 78;
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    public static final int MAX_PROGRESS = 78;
     private int progress = 0;
     public static int size = 5;
 
@@ -89,7 +102,12 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction direction) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? lazyOptional.cast() : super.getCapability(capability, direction);
+        if (capability == CapabilityEnergy.ENERGY) {
+            return lazyEnergyHandler.cast();
+        } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return lazyItemHandler.cast();
+        }
+        return super.getCapability(capability, direction);
     }
 
     @Override
@@ -100,7 +118,8 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        lazyOptional.invalidate();
+        lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override
@@ -112,7 +131,8 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyOptional = LazyOptional.of(() -> itemStackHandler);
+        lazyItemHandler = LazyOptional.of(() -> itemStackHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
     }
 
     @Override
@@ -137,11 +157,20 @@ public class AlloyFurnaceBlockEntity extends BlockEntity implements MenuProvider
             simpleContainer.setItem(i, alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(i));
         }
         Optional<AlloyFurnaceRecipe> alloyFurnaceRecipe = alloyFurnaceBlockEntity.level.getRecipeManager().getRecipeFor(AlloyFurnaceRecipe.Type.TYPE, simpleContainer, alloyFurnaceBlockEntity.level);
+        ItemStack fuel = alloyFurnaceBlockEntity.itemStackHandler.getStackInSlot(3);
+
+        if (fuel.getCount() > 0 && ForgeHooks.getBurnTime(fuel, AlloyFurnaceRecipe.Type.TYPE) > 0 && alloyFurnaceBlockEntity.energyStorage.getEnergyStored() == 0) {
+            alloyFurnaceBlockEntity.energyStorage.receiveEnergy(ForgeHooks.getBurnTime(fuel, AlloyFurnaceRecipe.Type.TYPE), false);
+            alloyFurnaceBlockEntity.itemStackHandler.setStackInSlot(3, new ItemStack(fuel.getItem(), fuel.getCount() - 1));
+        }
 
         if (canSmeltItem(simpleContainer, alloyFurnaceRecipe)) {
-            alloyFurnaceBlockEntity.progress++;
+            if (alloyFurnaceBlockEntity.energyStorage.getEnergyStored() >= ENERGY_REQUIRED) {
+                alloyFurnaceBlockEntity.progress++;
+                alloyFurnaceBlockEntity.energyStorage.extractEnergy(ENERGY_REQUIRED, false);
+            }
             setChanged(level, blockPos, blockState);
-            if (alloyFurnaceBlockEntity.progress >= maxProgress) {
+            if (alloyFurnaceBlockEntity.progress >= MAX_PROGRESS) {
                 smeltItem(alloyFurnaceBlockEntity, alloyFurnaceRecipe);
             }
         } else {
