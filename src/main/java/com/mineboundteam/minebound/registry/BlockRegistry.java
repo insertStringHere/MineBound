@@ -26,6 +26,7 @@ public class BlockRegistry {
     public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
     public static final RegistryObject<Block> MYRIAL_STEEL_BLOCK = BLOCKS.register("myrial_steel_block", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK)));
     public static final RegistryObject<Block> MYRIAL_LOCKER = BLOCKS.register("myrial_locker", () -> new MultiDirectionalBlock(Properties.copy(Blocks.NETHERITE_BLOCK)));
+    public static final RegistryObject<Block> MYRIAL_STEEL_PLATE = BLOCKS.register("myrial_steel_plate", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK))); 
 
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
