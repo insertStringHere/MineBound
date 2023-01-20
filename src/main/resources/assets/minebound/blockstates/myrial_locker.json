@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "minebound:block/myrial_locker",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "minebound:block/myrial_locker"
+    },
+    "facing=south": {
+      "model": "minebound:block/myrial_locker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "minebound:block/myrial_locker",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "minebound:block/myrial_locker",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "minebound:block/myrial_locker",
+      "x": 90
+    }
+  }
+}
