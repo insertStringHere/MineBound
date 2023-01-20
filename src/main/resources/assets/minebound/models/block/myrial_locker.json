@@ -1,12 +1,8 @@
 {
-  "parent": "minecraft:block/cube_directional",
+  "parent": "minecraft:block/orientable",
   "textures": {
-    "particle": "minebound:block/myrial_locker_side",
-    "down": "minebound:block/myrial_locker_side",
-    "up": "minebound:block/myrial_locker_side",
-    "north": "minebound:block/myrial_locker_front",
-    "east": "minebound:block/myrial_locker_side",
-    "south": "minebound:block/myrial_locker_side",
-    "west": "minebound:block/myrial_locker_side"
+    "top": "minebound:block/myrial_locker_side",
+    "front": "minebound:block/myrial_locker_front",
+    "side": "minebound:block/myrial_locker_side"
   }
 }
