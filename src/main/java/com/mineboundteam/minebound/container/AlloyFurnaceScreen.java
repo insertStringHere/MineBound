@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceContainer> {
-    public AlloyFurnaceScreen(AlloyFurnaceContainer alloyFurnaceContainer, Inventory inventory, Component component) {
+public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceMenu> {
+    public AlloyFurnaceScreen(AlloyFurnaceMenu alloyFurnaceContainer, Inventory inventory, Component component) {
         super(alloyFurnaceContainer, inventory, component);
     }
 

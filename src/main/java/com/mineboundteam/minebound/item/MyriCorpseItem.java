@@ -1,8 +1,6 @@
 package com.mineboundteam.minebound.item;
 
-import com.mineboundteam.minebound.block.AlloyFurnaceBlockEntity;
 import com.mineboundteam.minebound.entity.MyriCorpse;
-import com.mineboundteam.minebound.recipe.AlloyFurnaceRecipe;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,12 +17,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 /***
  * Taken from ArmorStand, creates an item for spawning the corpse (For debug/creative mode)
@@ -33,14 +29,6 @@ public class MyriCorpseItem extends Item{
 
     public MyriCorpseItem(Properties p_41383_) {
         super(p_41383_);
-    }
-
-    @Override
-    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        if (recipeType == AlloyFurnaceRecipe.Type.TYPE) {
-            return AlloyFurnaceBlockEntity.ENERGY_REQUIRED * AlloyFurnaceBlockEntity.MAX_PROGRESS * 2;
-        }
-        return 0;
     }
 
     @Override
