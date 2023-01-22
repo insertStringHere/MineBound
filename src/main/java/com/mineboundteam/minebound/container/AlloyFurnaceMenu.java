@@ -95,7 +95,7 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, alloyFurnaceBlockEntity.getBlockPos()), player, BlockRegistry.ALLOY_FURNACE.get());
     }
 
@@ -112,7 +112,7 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
     }
 
     @Override
-    public boolean recipeMatches(Recipe<? super AlloyFurnaceMenu> pRecipe) {
+    public boolean recipeMatches(Recipe<? super AlloyFurnaceContainer> pRecipe) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -149,12 +149,6 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
 
     @Override
     public boolean shouldMoveToInventory(int pSlotIndex) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean recipeMatches(Recipe<? super AlloyFurnaceContainer> pRecipe) {
         // TODO Auto-generated method stub
         return false;
     }
