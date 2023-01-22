@@ -49,6 +49,7 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }
     }
+
     private void addInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
