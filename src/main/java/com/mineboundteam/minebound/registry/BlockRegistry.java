@@ -9,6 +9,7 @@ import net.minecraft.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,12 +21,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
+
+import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
+
     public static final RegistryObject<Block> ALLOY_FURNACE = BLOCKS.register("alloy_furnace", () -> new AlloyFurnace(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.5F)));
     public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new MultiDirectionalBlock(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 8)));
     public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
@@ -46,4 +49,5 @@ public class BlockRegistry {
                 registry.register(blockItem);
         }
     }
+
 }
