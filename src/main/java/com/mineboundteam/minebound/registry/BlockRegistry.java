@@ -1,13 +1,18 @@
 package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.block.MultiDirectionalBlock;
 import com.mineboundteam.minebound.block.AlloyFurnace;
+import com.mineboundteam.minebound.block.MultiDirectionalBlock;
+import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
+
+import net.minecraft.Util;
+import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Material;
@@ -29,6 +34,10 @@ public class BlockRegistry {
     public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
     public static final RegistryObject<Block> MYRIAL_STEEL_BLOCK = BLOCKS.register("myrial_steel_block", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK)));
     public static final RegistryObject<Block> MYRIAL_LOCKER = BLOCKS.register("myrial_locker", () -> new MultiDirectionalBlock(Properties.copy(Blocks.NETHERITE_BLOCK)));
+
+
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MineBound.MOD_ID);
+    public static final RegistryObject<BlockEntityType<AlloyFurnaceBlockEntity>> ALLOY_FURNACE_ENTITY = BLOCK_ENTITIES.register("alloy_furnace", () -> BlockEntityType.Builder.of(AlloyFurnaceBlockEntity::new, BlockRegistry.ALLOY_FURNACE.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, "alloy_furnace")));
 
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){

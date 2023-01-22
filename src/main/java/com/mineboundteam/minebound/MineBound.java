@@ -2,14 +2,14 @@ package com.mineboundteam.minebound;
 
 
 import com.mineboundteam.minebound.registry.BlockRegistry;
+import com.mineboundteam.minebound.registry.ContainerRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
-import com.mineboundteam.minebound.registry.RendererRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.registry.RendererRegistry;
 import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mineboundteam.minebound.registry.Registry;
 
 import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
-import com.mineboundteam.minebound.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;

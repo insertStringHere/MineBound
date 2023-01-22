@@ -16,6 +16,8 @@
   "item.minebound.myrial_effigy_leggings": "Myrial Effigy Greaves",
   "item.minebound.myrial_effigy_boots": "Myrial Effigy Boots",
 
+  "itemGroup.minebound": "MineBound",
+
   "block.minebound.myrial_console": "Myrial Console",
   "block.minebound.myrial_glass": "Myrial Glass",
   "block.minebound.myrial_steel_block": "Myrial Steel Block",
@@ -26,7 +28,6 @@
   "key.minebound.primary_magic": "Left Hand Magic",
   "key.minebound.secondary_magic": "Right Hand Magic",
   "key.minebound.primary_magic_select": "Select Left Hand Magic",
-  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
-
-  "itemGroup.minebound": "MineBound"
+  "key.minebound.secondary_magic": "Right Hand Magic",
+  "key.minebound.secondary_magic_select": "Select Right Hand Magic"
 }

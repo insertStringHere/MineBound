@@ -1,6 +1,8 @@
 package com.mineboundteam.minebound.block;
 
-import com.mineboundteam.minebound.registry.BlockEntityRegistry;
+import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
+import com.mineboundteam.minebound.registry.BlockRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -40,33 +42,12 @@ public class AlloyFurnace extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, BlockEntityRegistry.ALLOY_FURNACE_BLOCK_ENTITY.get(), AlloyFurnaceBlockEntity::tick);
-    }
-
-    @Override
-    public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
-        return blockState.rotate(mirror.getRotation(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
+        return createTickerHelper(blockEntityType, BlockRegistry.ALLOY_FURNACE_ENTITY.get(), AlloyFurnaceBlockEntity::serverTick);
     }
 
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new AlloyFurnaceBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public void onRemove(@NotNull BlockState prevState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState newState, boolean isMoving) {
-        if (prevState.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof AlloyFurnaceBlockEntity) {
-                ((AlloyFurnaceBlockEntity) blockEntity).dropContents();
-            }
-        }
-        super.onRemove(prevState, level, blockPos, newState, isMoving);
-    }
-
-    @Override
-    public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
-        return blockState.setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
     @Override
