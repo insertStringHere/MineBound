@@ -1,5 +1,13 @@
 package com.mineboundteam.minebound;
 
+
+import com.mineboundteam.minebound.registry.BlockRegistry;
+import com.mineboundteam.minebound.registry.EntityRegistry;
+import com.mineboundteam.minebound.registry.RendererRegistry;
+import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.registry.KeyRegistry;
+import com.mineboundteam.minebound.registry.Registry;
+
 import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -27,15 +35,18 @@ public class MineBound {
 
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         Registry.RegisterMod(iEventBus);
+
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(EntityRegistry::registerAttributes);
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
-        EntityRendererRegistry.register();
+        RendererRegistry.register();
         KeyRegistry.register();
         MenuScreens.register(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
     }
