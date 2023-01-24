@@ -52,41 +52,43 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
-        if(event.side == LogicalSide.SERVER){
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                int manaBoost = 0;
-                int recBoost = 0;
+        if(event.side == LogicalSide.SERVER) {
+            if (event.player.level.getDayTime() % 10 == 0 && event.phase == TickEvent.Phase.START) {
+                event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+                    int manaBoost = 0;
+                    int recBoost = 0;
 
-                boolean armorSet = true;
-                ArmorTier tier = null;
+                    boolean armorSet = true;
+                    ArmorTier tier = null;
 
-                for (EquipmentSlot slot : EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
-                    var item = event.player.getItemBySlot(slot).getItem();
+                    for (EquipmentSlot slot : EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
+                        var item = event.player.getItemBySlot(slot).getItem();
 
-                    if (item instanceof MyrialArmorItem) {
-                        var config = ((MyrialArmorItem)item).getConfig();
-                        manaBoost += config.MANAPOOL.get();
-                        recBoost += config.RECOVERY.get();
+                        if (item instanceof MyrialArmorItem) {
+                            var config = ((MyrialArmorItem) item).getConfig();
+                            manaBoost += config.MANAPOOL.get();
+                            recBoost += config.RECOVERY.get();
 
-                        if(tier == null)
-                            tier = ((MyrialArmorItem)item).getTier();
-                        else if (tier != ((MyrialArmorItem)item).getTier())
-                            armorSet = false;
-                        continue;
+                            if (tier == null)
+                                tier = ((MyrialArmorItem) item).getTier();
+                            else if (tier != ((MyrialArmorItem) item).getTier())
+                                armorSet = false;
+                            continue;
+                        }
+                        armorSet = false;
                     }
-                    armorSet = false;
-                }
 
-                if(armorSet) {
-                    var setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
-                    manaBoost += setConfig.MANAPOOL.get();
-                    recBoost += setConfig.RECOVERY.get();
-                }
+                    if (armorSet) {
+                        var setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
+                        manaBoost += setConfig.MANAPOOL.get();
+                        recBoost += setConfig.RECOVERY.get();
+                    }
 
-                mana.setManaCap(mana.getManaMax() + manaBoost);
-                mana.addMana(mana.getManaRecRate() + recBoost);
-                System.out.println("Mana: " + mana.getMana() + " (less than " + (mana.getManaMax() + manaBoost) + ", up by " + (mana.getManaRecRate() + recBoost) + ")");
-            });
+                    mana.setManaCap(mana.getManaMax() + manaBoost);
+                    mana.addMana(mana.getManaRecRate() + recBoost);
+                    System.out.println("Mana: " + mana.getMana() + " (less than " + (mana.getManaMax() + manaBoost) + ", up by " + (mana.getManaRecRate() + recBoost) + ") at " + event.player.level.getDayTime() + " on " + event.side);
+                });
+            }
         }
     }
 }
