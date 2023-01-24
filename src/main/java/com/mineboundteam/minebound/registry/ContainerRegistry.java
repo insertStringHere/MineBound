@@ -9,6 +9,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ContainerRegistry {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MineBound.MOD_ID);
-    public static final RegistryObject<MenuType<AlloyFurnaceMenu>> ALLOY_FURNACE_CONTAINER = CONTAINERS.register("alloy_furnace_container", () -> IForgeMenuType.create(AlloyFurnaceMenu::new));
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MineBound.MOD_ID);
+    public static final RegistryObject<MenuType<AlloyFurnaceMenu>> ALLOY_FURNACE_CONTAINER = MENUS.register("alloy_furnace_container", () -> IForgeMenuType.create(AlloyFurnaceMenu::new));
 }

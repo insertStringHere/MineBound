@@ -9,13 +9,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class AlloyFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
 
     public AlloyFurnaceBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockRegistry.ALLOY_FURNACE_ENTITY.get(), pPos, pBlockState, RecipeRegistry.ALLOY_FURNACE_RECIPE);
+        super(BlockRegistry.ALLOY_FURNACE_ENTITY.get(), pPos, pBlockState, RecipeRegistry.ALLOY_FURNACE_RECIPE.get());
     }
 
     @Override
@@ -26,6 +27,10 @@ public class AlloyFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     @Override
     protected AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory) {
         return new AlloyFurnaceMenu(pContainerId, pInventory, this, this.dataAccess);
+    }
+
+    public ContainerData getContainerData(){
+        return dataAccess; 
     }
 
 }

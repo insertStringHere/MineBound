@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.registry;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,6 +16,7 @@ public class RecipeRegistry {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
     public static final RegistryObject<RecipeSerializer<AlloyFurnaceRecipe>> ALLOY_FURNACE_SERIALIZER = RECIPE_SERIALIZERS.register("alloy_furnace", () -> new AlloyFurnaceSerializer<>(200));
 
-    public static final RecipeType<AlloyFurnaceRecipe> ALLOY_FURNACE_RECIPE = RecipeType.register("alloy_furnace");
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MOD_ID);
+    public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_RECIPE =  RECIPE_TYPE.<RecipeType<AlloyFurnaceRecipe>>register("alloy_furnace", () -> new RecipeType<>(){});
 
 }

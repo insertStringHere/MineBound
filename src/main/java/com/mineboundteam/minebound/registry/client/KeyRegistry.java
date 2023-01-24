@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.registry.client;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mojang.blaze3d.platform.InputConstants;

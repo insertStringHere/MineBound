@@ -9,7 +9,7 @@ import com.mineboundteam.minebound.registry.RecipeRegistry;
 
 public class AlloyFurnaceRecipe extends AbstractCookingRecipe {
     public AlloyFurnaceRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, float pExperience, int pCookingTime) {
-        super(RecipeRegistry.ALLOY_FURNACE_RECIPE, pId, pGroup, pIngredient, pResult, pExperience, pCookingTime);
+        super(RecipeRegistry.ALLOY_FURNACE_RECIPE.get(), pId, pGroup, pIngredient, pResult, pExperience, pCookingTime);
     }  
 
     @Override

@@ -5,10 +5,9 @@ import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
-import com.mineboundteam.minebound.registry.RendererRegistry;
-import com.mineboundteam.minebound.registry.KeyRegistry;
 import com.mineboundteam.minebound.registry.Registry;
-
+import com.mineboundteam.minebound.registry.client.KeyRegistry;
+import com.mineboundteam.minebound.registry.client.RendererRegistry;
 import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

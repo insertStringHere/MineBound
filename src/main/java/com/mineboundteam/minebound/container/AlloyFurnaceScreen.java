@@ -36,8 +36,8 @@ public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceMenu
         int topLeftX = (width - imageWidth) / 2;
         int topLeftY = (height - imageHeight) / 2;
         blit(poseStack, topLeftX, topLeftY, 0, 0, imageWidth, imageHeight);
-        if (menu.getProgressPercent() > 0) {
-            blit(poseStack, topLeftX + 100, topLeftY + 50, 177, 0, (int) (26 * menu.getProgressPercent()), 8);
+        if (menu.getBurnProgress() > 0) {
+            blit(poseStack, topLeftX + 100, topLeftY + 50, 177, 0, (int) (26 * menu.getBurnProgress()), 8);
         }
     }
 }

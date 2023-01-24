@@ -1,8 +1,9 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.registry.client;
 
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.registry.EntityRegistry;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;

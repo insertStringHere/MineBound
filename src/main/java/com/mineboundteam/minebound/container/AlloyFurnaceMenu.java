@@ -1,47 +1,44 @@
 package com.mineboundteam.minebound.container;
 
 import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
-import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.ContainerRegistry;
+import com.mineboundteam.minebound.registry.RecipeRegistry;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
-public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
-    public final AlloyFurnaceBlockEntity alloyFurnaceBlockEntity;
-    private final ContainerData containerData;
-    private final Level level;
+public class AlloyFurnaceMenu extends AbstractFurnaceMenu {
+    protected AlloyFurnaceMenu(int pContainerId, Inventory pPlayerInventory) {
+        super(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), RecipeRegistry.ALLOY_FURNACE_RECIPE.get(),
+                RecipeBookType.FURNACE, pContainerId, pPlayerInventory);
+    }
 
-    public AlloyFurnaceMenu(int id, Inventory inventory, AlloyFurnaceBlockEntity blockEntity, ContainerData containerData) {
-        super(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), id);
-        alloyFurnaceBlockEntity = blockEntity;
-        level = inventory.player.level;
-        this.containerData = containerData;
+    public AlloyFurnaceMenu(int containerId, Inventory playerInventory, Container container,
+            ContainerData containerData) {
+        this(containerId, playerInventory);
+        this.slots.clear();
 
-        addInventory(inventory);
-        addHotBar(inventory);
-        alloyFurnaceBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 21, 48));
-            this.addSlot(new SlotItemHandler(iItemHandler, 1, 45, 48));
-            this.addSlot(new SlotItemHandler(iItemHandler, 2, 69, 48));
-            this.addSlot(new SlotItemHandler(iItemHandler, 3, 104, 22));
-            this.addSlot(new SlotItemHandler(iItemHandler, 4, 139, 48));
-        });
+        this.addSlot(new Slot(container, 0, 21, 48));
+        this.addSlot(new FurnaceFuelSlot(this, container, 1, 45, 48));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, container, 2, 69, 48));
+        this.addSlot(new Slot(container, 3, 104, 22));
+        this.addSlot(new Slot(container, 4, 139, 48));
+
+        addInventory(playerInventory);
+        addHotBar(playerInventory);
         addDataSlots(containerData);
     }
-    
-    public AlloyFurnaceMenu(int id, Inventory inventory, FriendlyByteBuf friendlyByteBuf) {
-        this(id, inventory, (AlloyFurnaceBlockEntity)inventory.player.level.getBlockEntity(friendlyByteBuf.readBlockPos()) , new SimpleContainerData(AlloyFurnaceBlockEntity.containerDataCount));
+
+    public AlloyFurnaceMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(containerId, playerInventory, new SimpleContainer(5),
+                ((AlloyFurnaceBlockEntity) playerInventory.player.level.getBlockEntity(buf.readBlockPos()))
+                        .getContainerData());
     }
 
     private void addHotBar(Inventory playerInventory) {
@@ -58,97 +55,20 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<AlloyFurnaceContainer> {
         }
     }
 
-    public double getProgressPercent() {
-        return (double) containerData.get(0) / AlloyFurnaceBlockEntity.MAX_PROGRESS;
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack sort = super.quickMoveStack(player, index);
+
+        return sort;
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        // This code is from https://github.com/diesieben07/SevenCommons            - michael 11/25/2022
-        int vanillaSlotCount = 36;
-        int vanillaIndex = 0;
-        int teInventoryIndex = vanillaIndex + vanillaSlotCount;
-        Slot slot = slots.get(index);
-        if (slot == null || !slot.hasItem()) return ItemStack.EMPTY;
-        ItemStack sourceStack = slot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
-        if (index < vanillaIndex + vanillaSlotCount) {
-            if (!moveItemStackTo(sourceStack, teInventoryIndex, teInventoryIndex
-                    + AlloyFurnaceBlockEntity.size, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else if (index < teInventoryIndex + AlloyFurnaceBlockEntity.size) {
-            if (!moveItemStackTo(sourceStack, vanillaIndex, vanillaIndex + vanillaSlotCount, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
-            System.out.println("Invalid slotIndex:" + index);
-            return ItemStack.EMPTY;
-        }
-        if (sourceStack.getCount() == 0) {
-            slot.set(ItemStack.EMPTY);
-        } else {
-            slot.setChanged();
-        }
-        slot.onTake(player, sourceStack);
-        return copyOfSourceStack;
+    protected boolean canSmelt(ItemStack pStack) {
+        return super.canSmelt(pStack); 
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, alloyFurnaceBlockEntity.getBlockPos()), player, BlockRegistry.ALLOY_FURNACE.get());
-    }
-
-    @Override
-    public void fillCraftSlotsStackedContents(StackedContents pItemHelper) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void clearCraftingContent() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean recipeMatches(Recipe<? super AlloyFurnaceContainer> pRecipe) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public int getResultSlotIndex() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getGridWidth() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getGridHeight() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getSize() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public RecipeBookType getRecipeBookType() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean shouldMoveToInventory(int pSlotIndex) {
+    public boolean recipeMatches(Recipe<? super Container> pRecipe) {
         // TODO Auto-generated method stub
         return false;
     }
