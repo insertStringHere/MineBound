@@ -8,10 +8,12 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.mana.PlayerMana;
 import com.mineboundteam.minebound.mana.PlayerManaProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -21,7 +23,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ModEvents {
@@ -60,11 +64,13 @@ public class ModEvents {
 
                     boolean armorSet = true;
                     ArmorTier tier = null;
+                    List<ItemStack> mArmors = new ArrayList<>();
 
                     for (EquipmentSlot slot : EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
                         var item = event.player.getItemBySlot(slot).getItem();
 
                         if (item instanceof MyrialArmorItem) {
+                            mArmors.add(event.player.getItemBySlot(slot));
                             var config = ((MyrialArmorItem) item).getConfig();
                             manaBoost += config.MANAPOOL.get();
                             recBoost += config.RECOVERY.get();
