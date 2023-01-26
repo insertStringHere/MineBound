@@ -71,7 +71,7 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (pIndex == 4) {
@@ -79,10 +79,6 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (pIndex == 3 && this.canSmelt(itemstack1)){
-                if (!this.moveItemStackTo(itemstack1, 0, 3, false)) {
-                    return ItemStack.EMPTY;
-                }
             } else if (pIndex > 4) {
                 if (this.isFuel(itemstack1)) {
                     if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
@@ -92,11 +88,11 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {
                     if (!this.moveItemStackTo(itemstack1, 0, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 5 && pIndex < 32) {
+                } else if (pIndex < 32) {
                     if (!this.moveItemStackTo(itemstack1, 32, 41, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 32 && pIndex < 41 && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
+                } else if (pIndex < 41 && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(itemstack1, 5, 32, false)) {
