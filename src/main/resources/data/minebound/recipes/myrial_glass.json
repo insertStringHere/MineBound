@@ -10,5 +10,7 @@
   ],
   "output": {
     "item": "minebound:myrial_glass"
-  }
+  },
+  "experience": 1.0,
+  "cookingtime": 200
 }
