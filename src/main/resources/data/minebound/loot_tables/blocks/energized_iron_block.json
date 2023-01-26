@@ -1,0 +1,14 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minebound:energized_iron_block"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "type": "minecraft:block"
+}
