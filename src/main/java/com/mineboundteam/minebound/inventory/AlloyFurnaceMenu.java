@@ -43,11 +43,11 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {
     }
 
     protected void addSlots(Inventory pPlayerInventory){
-        this.addSlot(new Slot(container, 0, 21, 48));
-        this.addSlot(new Slot(container, 3, 45, 48));
-        this.addSlot(new Slot(container, 4, 69, 48));
-        this.addSlot(new FuckingFuelSlot(this, container, 1, 104, 22));
-        this.addSlot(new FurnaceResultSlot(pPlayerInventory.player, container, 2, 139, 48));
+        this.addSlot(new Slot(container, 0, 22, 34));
+        this.addSlot(new Slot(container, 3, 45, 21));
+        this.addSlot(new Slot(container, 4, 68, 34));
+        this.addSlot(new FuckingFuelSlot(this, container, 1, 45, 62));
+        this.addSlot(new FurnaceResultSlot(pPlayerInventory.player, container, 2, 139, 34));
 
         addInventory(pPlayerInventory);
         addHotBar(pPlayerInventory);

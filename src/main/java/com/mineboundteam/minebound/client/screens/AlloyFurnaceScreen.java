@@ -23,6 +23,7 @@ public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceMenu
     @Override
     protected void init() {
         super.init();
+        this.inventoryLabelX = this.imageWidth - this.font.width(this.playerInventoryTitle) - 7;
     }
 
     @Override
@@ -41,8 +42,12 @@ public class AlloyFurnaceScreen extends AbstractContainerScreen<AlloyFurnaceMenu
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        if (this.menu.isLit()) {
+            int k = this.menu.getLitProgress();
+            this.blit(poseStack, i + 44, j + 41 + 16 - k, 176, 22 - k, 19, k + 1);
+         }
 
         int l = this.menu.getBurnProgress();
-        this.blit(poseStack, i + 99, j + 51, 176, 0, l + 1, 16);
+        this.blit(poseStack, i + 99, j + 38, 176, 0, l + 1, 8);
     }
 }
