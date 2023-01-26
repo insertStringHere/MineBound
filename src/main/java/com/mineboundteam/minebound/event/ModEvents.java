@@ -23,9 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ModEvents {
@@ -56,45 +54,73 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
-        if(event.side == LogicalSide.SERVER) {
-            if (event.player.level.getDayTime() % 10 == 0 && event.phase == TickEvent.Phase.START) {
-                event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                    int manaBoost = 0;
-                    int recBoost = 0;
+        if(event.side == LogicalSide.SERVER && event.player.level.getDayTime() % 10 == 0 && event.phase == TickEvent.Phase.START) {
+            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+                int manaBoost = 0;
+                int recBoost = 0;
+                Random rndm = new Random();
 
-                    boolean armorSet = true;
-                    ArmorTier tier = null;
-                    List<ItemStack> mArmors = new ArrayList<>();
+                boolean armorSet = true;
+                ArmorTier tier = null;
+                List<ItemStack> mArmors = new ArrayList<>();
 
-                    for (EquipmentSlot slot : EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
-                        var item = event.player.getItemBySlot(slot).getItem();
+                // check each armor slot and get their bonuses to recovery and cap
+                for (EquipmentSlot slot : EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
+                    var item = event.player.getItemBySlot(slot).getItem();
 
-                        if (item instanceof MyrialArmorItem) {
-                            mArmors.add(event.player.getItemBySlot(slot));
-                            var config = ((MyrialArmorItem) item).getConfig();
-                            manaBoost += config.MANAPOOL.get();
-                            recBoost += config.RECOVERY.get();
+                    if (item instanceof MyrialArmorItem) {
+                        mArmors.add(event.player.getItemBySlot(slot));
+                        var config = ((MyrialArmorItem) item).getConfig();
+                        manaBoost += config.MANAPOOL.get();
+                        recBoost += config.RECOVERY.get();
 
-                            if (tier == null)
-                                tier = ((MyrialArmorItem) item).getTier();
-                            else if (tier != ((MyrialArmorItem) item).getTier())
-                                armorSet = false;
-                            continue;
+                        if (tier == null)
+                            tier = ((MyrialArmorItem) item).getTier();
+                        else if (tier != ((MyrialArmorItem) item).getTier())
+                            armorSet = false;
+                        continue;
+                    }
+                    armorSet = false;
+                }
+
+                if (armorSet) {
+                    var setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
+                    manaBoost += setConfig.MANAPOOL.get();
+                    recBoost += setConfig.RECOVERY.get();
+                }
+
+                // if mana is recovered, calculate charge drained from armor durability
+                if(mana.getManaMax() + manaBoost > mana.getMana() && rndm.nextInt(10) == 0){
+                    var toDamage = 0;
+                    for(ItemStack piece : mArmors){
+                        if(rndm.nextInt(3) == 0){
+                            var shuffle = new ArrayList<>(mArmors);
+                            Collections.shuffle(shuffle);
+                            toDamage += mana.getManaRecRate() + recBoost;
+                            while(toDamage > 0 && shuffle.size() > 0){
+                                var curPiece = shuffle.get(0);
+                                var dmg = curPiece.getMaxDamage() - curPiece.getDamageValue();
+                                if(dmg < toDamage){
+                                    if(curPiece.getDamageValue() < curPiece.getMaxDamage()) {
+                                        toDamage -= dmg;
+                                        curPiece.setDamageValue(curPiece.getMaxDamage());
+                                    }
+                                } else {
+                                    curPiece.setDamageValue(curPiece.getDamageValue() + toDamage);
+                                    toDamage = 0;
+                                }
+                            }
                         }
-                        armorSet = false;
                     }
-
-                    if (armorSet) {
-                        var setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
-                        manaBoost += setConfig.MANAPOOL.get();
-                        recBoost += setConfig.RECOVERY.get();
+                    if(toDamage > 0){
+                        manaBoost = 0;
+                        recBoost = 0;
                     }
+                }
 
-                    mana.setManaCap(mana.getManaMax() + manaBoost);
-                    mana.addMana(mana.getManaRecRate() + recBoost);
-                    System.out.println("Mana: " + mana.getMana() + " (less than " + (mana.getManaMax() + manaBoost) + ", up by " + (mana.getManaRecRate() + recBoost) + ") at " + event.player.level.getDayTime() + " on " + event.side);
-                });
-            }
+                mana.setManaCap(mana.getManaMax() + manaBoost);
+                mana.addMana(mana.getManaRecRate() + recBoost);
+            });
         }
     }
 }
