@@ -1,8 +1,11 @@
 {
     "replace":false,
-    "values":[
+    "values": [
+        "minebound:energized_iron_block",
         "minebound:myrial_console",
         "minebound:myrial_glass",
-        "minebound:myrial_steel_block"
+        "minebound:myrial_steel_block",
+        "minebound:myrial_locker",
+        "minebound:myrial_steel_plate"
     ]
 }

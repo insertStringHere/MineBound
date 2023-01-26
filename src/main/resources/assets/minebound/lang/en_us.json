@@ -16,9 +16,12 @@
   "item.minebound.myrial_effigy_leggings": "Myrial Effigy Greaves",
   "item.minebound.myrial_effigy_boots": "Myrial Effigy Boots",
 
+  "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.myrial_console": "Myrial Console",
   "block.minebound.myrial_glass": "Myrial Glass",
   "block.minebound.myrial_steel_block": "Myrial Steel Block",
+  "block.minebound.myrial_locker": "Myrial Locker",
+  "block.minebound.myrial_steel_plate": "Myrial Steel Plates",
 
   "key.categories.minebound": "Minebound",
   "key.minebound.primary_magic": "Left Hand Magic",

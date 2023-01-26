@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IWI",
+    "ICI",
+    "IGI"
+  ],
+  "key": {
+    "I": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "W": {
+      "item": "minebound:gilded_diamond_wire"
+    },
+    "C": {
+      "item": "minebound:alien_circuitry"
+    },
+    "G": {
+      "item": "minebound:myrial_glass"
+    }
+  },
+  "result": {
+    "item": "minebound:myrial_console"
+  }
+}
