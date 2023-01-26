@@ -28,11 +28,8 @@ public class AlloyFurnace extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.HORIZONTAL_FACING);
-    }
-
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
-        return RenderShape.MODEL;
+        builder.add(BlockStateProperties.HORIZONTAL_FACING)
+            .add(BlockStateProperties.LIT);
     }
 
     @Override

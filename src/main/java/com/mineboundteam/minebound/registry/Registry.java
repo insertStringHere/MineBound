@@ -7,9 +7,10 @@ public class Registry {
         BlockRegistry.BLOCKS.register(iEventBus);
         BlockRegistry.BLOCK_ENTITIES.register(iEventBus);
         ConfigRegistry.register(iEventBus);
-        ContainerRegistry.MENUS.register(iEventBus);
+        MenuRegistry.MENUS.register(iEventBus);
         EntityRegistry.ENTITIES.register(iEventBus);
         ItemRegistry.ITEMS.register(iEventBus);
         RecipeRegistry.RECIPE_SERIALIZERS.register(iEventBus);
+        RecipeRegistry.RECIPE_TYPE.register(iEventBus);
     }
 }

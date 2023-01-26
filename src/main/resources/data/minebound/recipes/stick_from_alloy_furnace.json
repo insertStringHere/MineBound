@@ -4,7 +4,7 @@
 			"item": "minecraft:diamond"
 		},
 		{
-			"item": "#minecraft:coals"
+			"tag": "minecraft:coals"
 		}
 	],
 	"output": {

@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.container;
+package com.mineboundteam.minebound.inventory;
 import net.minecraftforge.energy.EnergyStorage;
 
 public abstract class MineboundEnergyStorage extends EnergyStorage {

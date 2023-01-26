@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mineboundteam.minebound.crafting.AlloyFurnaceRecipe;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -27,7 +28,11 @@ public class AlloyFurnaceSerializer<T> extends ForgeRegistryEntry<RecipeSerializ
         String group = GsonHelper.getAsString(jsonObject, "group", "");
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
         ItemStack itemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "output"));
-        Ingredient ingredients = Ingredient.fromJson(jsonArray);
+
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        for(int i = 0; i < jsonArray.size() && i < 3; i++){
+            ingredients.add(Ingredient.fromJson(jsonArray.get(i)));
+        }
 
         float f = GsonHelper.getAsFloat(jsonObject, "experience", 0.0F);
         int i = GsonHelper.getAsInt(jsonObject, "cookingtime", this.defaultCookingTime);
@@ -38,7 +43,12 @@ public class AlloyFurnaceSerializer<T> extends ForgeRegistryEntry<RecipeSerializ
     @Override
     public AlloyFurnaceRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
         String group = friendlyByteBuf.readUtf();
-        Ingredient ingredients = Ingredient.fromNetwork(friendlyByteBuf);
+        int i = friendlyByteBuf.readVarInt();
+        NonNullList<Ingredient> ingredients = NonNullList.withSize(i, Ingredient.EMPTY);
+        
+        for(int j = 0; j < i; j++){
+            ingredients.add(Ingredient.fromNetwork(friendlyByteBuf));
+        }
         ItemStack itemStack = friendlyByteBuf.readItem();
         float exp = friendlyByteBuf.readFloat();
         int cookingTime = friendlyByteBuf.readVarInt();
@@ -48,7 +58,7 @@ public class AlloyFurnaceSerializer<T> extends ForgeRegistryEntry<RecipeSerializ
     @Override
     public void toNetwork(FriendlyByteBuf pBuffer, AlloyFurnaceRecipe pRecipe) {
         pBuffer.writeUtf(pRecipe.getGroup());
-        pRecipe.getIngredient().toNetwork(pBuffer);
+        for(Ingredient ingredient : pRecipe.getIngredients()) { ingredient.toNetwork(pBuffer); }
         pBuffer.writeItem(pRecipe.getResult());
         pBuffer.writeFloat(pRecipe.getExperience());
         pBuffer.writeVarInt(pRecipe.getCookingTime());

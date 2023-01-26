@@ -17,6 +17,6 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<AlloyFurnaceRecipe>> ALLOY_FURNACE_SERIALIZER = RECIPE_SERIALIZERS.register("alloy_furnace", () -> new AlloyFurnaceSerializer<>(200));
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MOD_ID);
-    public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_RECIPE =  RECIPE_TYPE.<RecipeType<AlloyFurnaceRecipe>>register("alloy_furnace", () -> new RecipeType<>(){});
+    public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_RECIPE =  RECIPE_TYPE.<RecipeType<AlloyFurnaceRecipe>>register("alloy_furnace", () -> new RecipeType<AlloyFurnaceRecipe>(){});
 
 }

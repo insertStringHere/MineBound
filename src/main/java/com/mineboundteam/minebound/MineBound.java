@@ -1,17 +1,12 @@
 package com.mineboundteam.minebound;
 
 
-import com.mineboundteam.minebound.registry.BlockRegistry;
-import com.mineboundteam.minebound.registry.ContainerRegistry;
+import com.mineboundteam.minebound.registry.ClientRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.Registry;
-import com.mineboundteam.minebound.registry.client.KeyRegistry;
-import com.mineboundteam.minebound.registry.client.RendererRegistry;
-import com.mineboundteam.minebound.container.AlloyFurnaceScreen;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+
+
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,9 +39,6 @@ public class MineBound {
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
-        RendererRegistry.register();
-        KeyRegistry.register();
-        MenuScreens.register(ContainerRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
+        ClientRegistry.register();
     }
 }
