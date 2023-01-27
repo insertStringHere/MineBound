@@ -1,4 +1,5 @@
 {
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "minebound:energized_iron_block"
@@ -7,6 +8,5 @@
   "result": {
     "item": "minebound:energized_iron_ingot",
     "count": 9
-  },
-  "type": "minecraft:crafting_shapeless"
+  }
 }

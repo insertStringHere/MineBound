@@ -1,7 +1,6 @@
 {
-  "cookingtime": 200,
-  "experience": 0.7,
-  "ingredient": [
+  "type": "minebound:alloy_furnace",
+  "ingredients": [
     {
       "item": "minebound:iron_ingot"
     },
@@ -9,6 +8,9 @@
       "item": "minebound:redstone"
     }
   ],
-  "result": "minebound:energized_iron_ingot",
-  "type": "minebound:alloy_furnace"
+  "output": {
+    "item": "minebound:energized_iron_ingot"
+  },
+  "experience": 0.7,
+  "cookingtime": 200
 }
