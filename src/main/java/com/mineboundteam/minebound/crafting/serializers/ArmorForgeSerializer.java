@@ -26,7 +26,7 @@ public class ArmorForgeSerializer<T> extends ForgeRegistryEntry<RecipeSerializer
             ingredients.add(Ingredient.fromJson(jsonArray.get(i)));
         }
 
-        return new ArmorForgeRecipe(resourceLocation, group, ingredients, output);
+        return new ArmorForgeRecipe(resourceLocation, ingredients, output);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ArmorForgeSerializer<T> extends ForgeRegistryEntry<RecipeSerializer
             ingredients.add(Ingredient.fromNetwork(friendlyByteBuf));
         }
 
-        return new ArmorForgeRecipe(resourceLocation, group, ingredients, output);
+        return new ArmorForgeRecipe(resourceLocation, ingredients, output);
     }
 
     @Override
