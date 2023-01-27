@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
+import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -56,6 +57,7 @@ public class ClientRegistry {
 
     public static void registerScreens(){
         MenuScreens.register(MenuRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
+        MenuScreens.register(MenuRegistry.ARMOR_FORGE_CONTAINER.get(), ArmorForgeScreen::new);
     }
 
     private static String getName(String name) {
