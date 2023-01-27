@@ -5,7 +5,6 @@ import com.mineboundteam.minebound.block.AlloyFurnace;
 import com.mineboundteam.minebound.block.ArmorForge;
 import com.mineboundteam.minebound.block.MultiDirectionalBlock;
 import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
-import com.mineboundteam.minebound.block.entity.ArmorForgeBlockEntity;
 import net.minecraft.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.item.BlockItem;
@@ -36,7 +35,6 @@ public class BlockRegistry {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MineBound.MOD_ID);
     public static final RegistryObject<BlockEntityType<AlloyFurnaceBlockEntity>> ALLOY_FURNACE_ENTITY = BLOCK_ENTITIES.register("alloy_furnace", () -> BlockEntityType.Builder.of(AlloyFurnaceBlockEntity::new, BlockRegistry.ALLOY_FURNACE.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, "alloy_furnace")));
-    public static final RegistryObject<BlockEntityType<ArmorForgeBlockEntity>> ARMOR_FORGE_ENTITY = BLOCK_ENTITIES.register("armor_forge", () -> BlockEntityType.Builder.of(ArmorForgeBlockEntity::new, BlockRegistry.ARMOR_FORGE.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, "armor_forge")));
 
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){

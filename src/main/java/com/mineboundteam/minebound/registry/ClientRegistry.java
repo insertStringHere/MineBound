@@ -56,8 +56,8 @@ public class ClientRegistry {
     }
 
     public static void registerScreens(){
-        MenuScreens.register(MenuRegistry.ALLOY_FURNACE_CONTAINER.get(), AlloyFurnaceScreen::new);
-        MenuScreens.register(MenuRegistry.ARMOR_FORGE_CONTAINER.get(), ArmorForgeScreen::new);
+        MenuScreens.register(MenuRegistry.ALLOY_FURNACE_MENU.get(), AlloyFurnaceScreen::new);
+        MenuScreens.register(MenuRegistry.ARMOR_FORGE_MENU.get(), ArmorForgeScreen::new);
     }
 
     private static String getName(String name) {

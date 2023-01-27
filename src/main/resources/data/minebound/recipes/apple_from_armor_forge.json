@@ -1,4 +1,5 @@
 {
+  "type": "minebound:armor_forge",
   "ingredients": [
     {
       "item": "minecraft:stick"
@@ -9,6 +10,5 @@
   ],
   "output": {
     "item": "minecraft:apple"
-  },
-  "type": "minebound:armor_forge"
+  }
 }
