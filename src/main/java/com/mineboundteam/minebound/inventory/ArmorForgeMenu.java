@@ -48,7 +48,7 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.addSlot(new Slot(this.craftingContainer, 3, 70, 10));
         this.addSlot(new Slot(this.craftingContainer, 4, 90, 10));
         this.addSlot(new Slot(this.craftingContainer, 5, 10, 30));
-        this.addSlot(new ResultSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
+        this.addSlot(new ResultArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
     }
 
     public void clearCraftingContent() {
@@ -143,5 +143,11 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
 
     public boolean stillValid(@NotNull Player player) {
         return true;
+    }
+}
+
+class ResultArmorSlot extends ResultSlot {
+    public ResultArmorSlot(Player pPlayer, CraftingContainer pCraftSlots, Container pContainer, int pSlot, int pXPosition, int pYPosition) {
+        super(pPlayer, pCraftSlots, pContainer, pSlot, pXPosition, pYPosition);
     }
 }
