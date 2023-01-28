@@ -102,17 +102,13 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
 
         ItemStack itemStack = ItemStack.EMPTY;
         Optional<ArmorForgeRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeRegistry.ARMOR_FORGE_RECIPE.get(), craftingContainer, level);
-        System.out.println(optional);
         if (optional.isPresent()) {
             ArmorForgeRecipe armorForgeRecipe = optional.get();
             if (resultContainer.setRecipeUsed(level, serverplayer, armorForgeRecipe)) {
-                itemStack = armorForgeRecipe.assemble(craftingContainer);
+                itemStack = armorForgeRecipe.getResultItem();
             }
         }
-
         resultContainer.setItem(0, itemStack);
-        armorForgeMenu.setRemoteSlot(0, itemStack);
-        serverplayer.connection.send(new ClientboundContainerSetSlotPacket(armorForgeMenu.containerId, armorForgeMenu.incrementStateId(), 0, itemStack));
     }
 
     public boolean stillValid(@NotNull Player player) {
