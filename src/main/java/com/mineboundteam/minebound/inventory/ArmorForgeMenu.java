@@ -23,6 +23,7 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     private final CraftingContainer craftingContainer = new CraftingContainer(this, 3, 3);
     private final Player player;
     private final ResultContainer resultContainer = new ResultContainer();
+    public static final int SIZE = 7;
 
     public ArmorForgeMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf friendlyByteBuf) {
         this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
@@ -33,13 +34,6 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.containerLevelAccess = containerLevelAccess;
         this.player = inventory.player;
 
-        this.addSlot(new ResultSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
-        this.addSlot(new Slot(this.craftingContainer, 0, 10, 10));
-        this.addSlot(new Slot(this.craftingContainer, 1, 30, 10));
-        this.addSlot(new Slot(this.craftingContainer, 2, 50, 10));
-        this.addSlot(new Slot(this.craftingContainer, 3, 70, 10));
-        this.addSlot(new Slot(this.craftingContainer, 4, 90, 10));
-        this.addSlot(new Slot(this.craftingContainer, 5, 10, 30));
         for (int i = 0; i < 9; i++) {
             this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
         }
@@ -48,6 +42,13 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
                 this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
+        this.addSlot(new Slot(this.craftingContainer, 0, 10, 10));
+        this.addSlot(new Slot(this.craftingContainer, 1, 30, 10));
+        this.addSlot(new Slot(this.craftingContainer, 2, 50, 10));
+        this.addSlot(new Slot(this.craftingContainer, 3, 70, 10));
+        this.addSlot(new Slot(this.craftingContainer, 4, 90, 10));
+        this.addSlot(new Slot(this.craftingContainer, 5, 10, 30));
+        this.addSlot(new ResultSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
     }
 
     public void clearCraftingContent() {
@@ -76,7 +77,36 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     public int getSize() {
-        return 7;
+        return SIZE;
+    }
+
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        int vanillaSlotCount = 36;
+        int vanillaIndex = 0;
+        int teInventoryIndex = vanillaIndex + vanillaSlotCount;
+        Slot slot = slots.get(index);
+        if (!slot.hasItem()) return ItemStack.EMPTY;
+        ItemStack sourceStack = slot.getItem();
+        ItemStack copyOfSourceStack = sourceStack.copy();
+        if (index < vanillaIndex + vanillaSlotCount) {
+            if (!moveItemStackTo(sourceStack, teInventoryIndex, teInventoryIndex + SIZE, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (index < teInventoryIndex + SIZE) {
+            if (!moveItemStackTo(sourceStack, vanillaIndex, vanillaIndex + vanillaSlotCount, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else {
+            return ItemStack.EMPTY;
+        }
+        if (sourceStack.getCount() == 0) {
+            slot.set(ItemStack.EMPTY);
+        } else {
+            slot.setChanged();
+        }
+        slot.onTake(player, sourceStack);
+        return copyOfSourceStack;
     }
 
     public boolean recipeMatches(Recipe<? super CraftingContainer> recipe) {
