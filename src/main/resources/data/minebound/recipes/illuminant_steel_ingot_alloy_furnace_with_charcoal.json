@@ -1,0 +1,19 @@
+{
+  "type": "minebound:alloy_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minebound:energized_iron_ingot"
+    },
+    {
+      "item": "minecraft:charcoal"
+    }
+  ],
+  "output": {
+    "item": "minebound:illuminant_steel_ingot"
+  },
+  "experience": 3.0,
+  "cookingtime": 350
+}
