@@ -1,4 +1,6 @@
 {
+  "itemGroup.minebound": "MineBound",
+
   "item.minebound.alien_circuitry": "Alien Circuitry",
   "item.minebound.energized_focus": "Energized Focus",
   "item.minebound.energized_iron_ingot": "Energized Iron Ingot",
@@ -22,13 +24,14 @@
   "block.minebound.myrial_glass": "Myrial Glass",
   "block.minebound.myrial_steel_block": "Myrial Steel Block",
   "block.minebound.myrial_locker": "Myrial Locker",
+  "block.minebound.alloy_furnace": "Alloy Furnace",
   "block.minebound.myrial_steel_plate": "Myrial Steel Plates",
+
+  "container.alloy_furnace": "Alloy Furnace",
 
   "key.categories.minebound": "Minebound",
   "key.minebound.primary_magic": "Left Hand Magic",
   "key.minebound.secondary_magic": "Right Hand Magic",
   "key.minebound.primary_magic_select": "Select Left Hand Magic",
-  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
-
-  "itemGroup.minebound": "MineBound"
+  "key.minebound.secondary_magic_select": "Select Right Hand Magic"
 }
