@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "minebound:block/gilded_diamond_block"
+    }
+  }
+}
