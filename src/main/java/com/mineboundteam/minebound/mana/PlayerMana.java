@@ -6,7 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerMana {
     private int mana;
     private int manaRecRate;
-    private int manaCap;
+    private int availableManaCap;
+    private int totalManaCap;
     private final int manaMax = ManaConfig.maximumMana.get();
 
     public PlayerMana setMana(int amt){
@@ -19,8 +20,12 @@ public class PlayerMana {
         return this;
     }
 
-    public void setManaCap(int amt) {
-        manaCap = amt;
+    public void setAvailableManaCap(int amt) {
+        availableManaCap = amt;
+    }
+
+    public void setTotalManaCap(int amt) {
+        totalManaCap = amt;
     }
 
     public int getMana(){
@@ -31,8 +36,12 @@ public class PlayerMana {
         return manaRecRate;
     }
 
-    public int getManaCap() {
-        return manaCap;
+    public int getAvailableManaCap() {
+        return availableManaCap;
+    }
+
+    public int getTotalManaCap() {
+        return totalManaCap;
     }
 
     public int getManaMax(){
@@ -40,11 +49,13 @@ public class PlayerMana {
     }
 
     public void addMana(int amt){
-        this.mana = Math.min(mana + amt, this.manaCap);
+        this.mana = Math.min(mana + amt, this.availableManaCap);
     }
 
-    public void subtractMana(int amt){
+    public int subtractMana(int amt){
+        int underflow = Math.max(amt - this.mana, 0);
         this.mana = Math.max(mana - amt, 0);
+        return underflow;
     }
 
     public void copyFrom(PlayerMana source){
