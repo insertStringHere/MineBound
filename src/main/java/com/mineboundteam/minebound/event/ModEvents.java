@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.event;
 
+import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -18,6 +20,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.system.CallbackI;
 
 import java.util.*;
 
@@ -59,38 +62,44 @@ public class ModEvents {
                 int recBoost = 0;
                 Random rndm = new Random();
 
-                boolean armorSet = true;
+                boolean totalArmorSet = true;
+                boolean availableArmorSet = true;
                 ArmorTier tier = null;
                 List<ItemStack> mArmors = new ArrayList<>();
 
                 // check each armor slot and get their bonuses to recovery and cap
                 for (EquipmentSlot slot : armorSlots) {
-                    var stack = event.player.getItemBySlot(slot);
-                    var item = stack.getItem();
+                    ItemStack armorStack = event.player.getItemBySlot(slot);
+                    Item armorItem = armorStack.getItem();
 
-                    if (item instanceof MyrialArmorItem) {
-                        var config = ((MyrialArmorItem) item).getConfig();
+                    if (armorItem instanceof MyrialArmorItem) {
+                        ArmorConfig config = ((MyrialArmorItem) armorItem).getConfig();
                         totalMana += config.MANAPOOL.get();
-                        if (stack.getDamageValue() < stack.getMaxDamage()) {
+
+                        if (armorStack.getDamageValue() < armorStack.getMaxDamage()) {
                             mArmors.add(event.player.getItemBySlot(slot));
                             manaBoost += config.MANAPOOL.get();
                             recBoost += config.RECOVERY.get();
-
-                            if (tier == null)
-                                tier = ((MyrialArmorItem) item).getTier();
-                            else if (tier != ((MyrialArmorItem) item).getTier())
-                                armorSet = false;
+                        } else {
+                            availableArmorSet = false;
                         }
-                        continue;
+
+                        if (tier == null)
+                            tier = ((MyrialArmorItem) armorItem).getTier();
+                        if (tier == ((MyrialArmorItem) armorItem).getTier())
+                            continue;
                     }
-                    armorSet = false;
+                    availableArmorSet = false;
+                    totalArmorSet = false;
                 }
 
-                if (armorSet) {
-                    var setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
+                if (totalArmorSet) {
+                    ArmorConfig setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
                     totalMana += setConfig.MANAPOOL.get();
-                    manaBoost += setConfig.MANAPOOL.get();
-                    recBoost += setConfig.RECOVERY.get();
+                    if (availableArmorSet){
+                        manaBoost += setConfig.MANAPOOL.get();
+                        recBoost += setConfig.RECOVERY.get();
+                    }
                 }
 
                 // if mana is recovered, calculate charge drained from armor durability
@@ -98,15 +107,6 @@ public class ModEvents {
                     for(ItemStack stack : mArmors){
                         if(rndm.nextInt(3) == 0){
                             stack.setDamageValue(stack.getDamageValue() + 1);
-                            if(stack.getDamageValue() == stack.getMaxDamage()){
-                                var config = ((MyrialArmorItem)stack.getItem()).getConfig();
-                                manaBoost -= config.MANAPOOL.get();
-                                recBoost -= config.RECOVERY.get();
-                                if(armorSet){
-                                    armorSet = false;
-                                    manaBoost -= ArmorConfigRegistry.SET_BONUS_MAP.get(tier).MANAPOOL.get();
-                                }
-                            }
                         }
                     }
                 }
