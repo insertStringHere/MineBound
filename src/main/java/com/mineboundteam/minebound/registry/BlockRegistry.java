@@ -26,6 +26,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ALLOY_FURNACE = BLOCKS.register("alloy_furnace", () -> new AlloyFurnace(Properties.copy(Blocks.FURNACE)));
     public static final RegistryObject<Block> ENERGIZED_IRON_BLOCK = BLOCKS.register("energized_iron_block", () -> new Block(Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> ILLUMINANT_STEEL_BLOCK = BLOCKS.register("illuminant_steel_block", () -> new Block(Properties.copy(Blocks.IRON_BLOCK).strength(7, 9)));
     public static final RegistryObject<Block> GILDED_DIAMOND_BLOCK = BLOCKS.register("gilded_diamond_block", () -> new Block(Properties.copy(Blocks.DIAMOND_BLOCK).strength(5, 9)));
     public static final RegistryObject<Block> MYRIAL_CONSOLE = BLOCKS.register("myrial_console", () -> new MultiDirectionalBlock(Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel((i) -> 8)));
     public static final RegistryObject<Block> MYRIAL_GLASS = BLOCKS.register("myrial_glass", () -> new Block(Properties.copy(Blocks.GLASS).noOcclusion().requiresCorrectToolForDrops().strength(30f, 500f)));
