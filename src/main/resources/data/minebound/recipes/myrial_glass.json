@@ -1,0 +1,16 @@
+{
+  "type": "minebound:alloy_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minebound:myrial_steel_ingot"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_glass"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}
