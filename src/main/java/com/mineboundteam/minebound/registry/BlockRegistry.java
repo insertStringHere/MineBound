@@ -33,7 +33,7 @@ public class BlockRegistry {
     public static final RegistryObject<Block> MYRIAL_STEEL_BLOCK = BLOCKS.register("myrial_steel_block", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK)));
     public static final RegistryObject<Block> MYRIAL_LOCKER = BLOCKS.register("myrial_locker", () -> new MultiDirectionalBlock(Properties.copy(Blocks.NETHERITE_BLOCK)));
     public static final RegistryObject<Block> MYRIAL_STEEL_PLATE = BLOCKS.register("myrial_steel_plate", () -> new Block(Properties.copy(Blocks.NETHERITE_BLOCK))); 
-
+    public static final RegistryObject<Block> MYRIAL_DIAMOND_BLOCK = BLOCKS.register("myrial_diamond_block", () -> new Block(Properties.copy(Blocks.DIAMOND_BLOCK).strength(50f)));
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MineBound.MOD_ID);
     public static final RegistryObject<BlockEntityType<AlloyFurnaceBlockEntity>> ALLOY_FURNACE_ENTITY = BLOCK_ENTITIES.register("alloy_furnace", () -> BlockEntityType.Builder.of(AlloyFurnaceBlockEntity::new, BlockRegistry.ALLOY_FURNACE.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, "alloy_furnace")));

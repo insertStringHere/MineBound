@@ -9,6 +9,7 @@
         "minebound:myrial_steel_block",
         "minebound:myrial_locker",
         "minebound:myrial_steel_plate",
-        "minebound:alloy_furnace"
+        "minebound:alloy_furnace",
+        "minebound:myrial_diamond_block"
     ]
 }
