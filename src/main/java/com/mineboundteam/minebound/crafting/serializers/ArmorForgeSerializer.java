@@ -17,38 +17,38 @@ import org.jetbrains.annotations.NotNull;
 public class ArmorForgeSerializer<T> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ArmorForgeRecipe> {
     @Override
     public @NotNull ArmorForgeRecipe fromJson(@NotNull ResourceLocation resourceLocation, @NotNull JsonObject jsonObject) {
-        String group = GsonHelper.getAsString(jsonObject, "group", "");
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
         NonNullList<Ingredient> ingredients = NonNullList.create();
+        ItemStack armor = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "armor"));
         ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "output"));
 
-        for(int i = 0; i < jsonArray.size() && i < 3; i++){
+        for(int i = 0; i < jsonArray.size() && i < 5; i++){
             ingredients.add(Ingredient.fromJson(jsonArray.get(i)));
         }
 
-        return new ArmorForgeRecipe(resourceLocation, ingredients, output);
+        return new ArmorForgeRecipe(resourceLocation, ingredients, armor, output);
     }
 
     @Override
     public ArmorForgeRecipe fromNetwork(@NotNull ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
-        String group = friendlyByteBuf.readUtf();
         int size = friendlyByteBuf.readVarInt();
         NonNullList<Ingredient> ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
+        ItemStack armor = friendlyByteBuf.readItem();
         ItemStack output = friendlyByteBuf.readItem();
 
         for(int i = 0; i < size; i++){
             ingredients.add(Ingredient.fromNetwork(friendlyByteBuf));
         }
 
-        return new ArmorForgeRecipe(resourceLocation, ingredients, output);
+        return new ArmorForgeRecipe(resourceLocation, ingredients, armor, output);
     }
 
     @Override
-    public void toNetwork(FriendlyByteBuf friendlyByteBuf, ArmorForgeRecipe armorForgeRecipe) {
-        friendlyByteBuf.writeUtf(armorForgeRecipe.getGroup());
+    public void toNetwork(@NotNull FriendlyByteBuf friendlyByteBuf, ArmorForgeRecipe armorForgeRecipe) {
         for (Ingredient ingredient : armorForgeRecipe.getIngredients()) {
             ingredient.toNetwork(friendlyByteBuf);
         }
+        friendlyByteBuf.writeItem(armorForgeRecipe.getArmor());
         friendlyByteBuf.writeItem(armorForgeRecipe.getResultItem());
     }
 }

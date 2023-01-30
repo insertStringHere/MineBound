@@ -4,7 +4,6 @@ import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
 import com.mineboundteam.minebound.registry.MenuRegistry;
 import com.mineboundteam.minebound.registry.RecipeRegistry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -33,7 +32,10 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         super(MenuRegistry.ARMOR_FORGE_MENU.get(), containerID);
         this.containerLevelAccess = containerLevelAccess;
         this.player = inventory.player;
+        addSlots(inventory);
+    }
 
+    protected void addSlots(Inventory inventory) {
         for (int i = 0; i < 9; i++) {
             this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
         }
@@ -47,8 +49,8 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.addSlot(new Slot(this.craftingContainer, 2, 50, 10));
         this.addSlot(new Slot(this.craftingContainer, 3, 70, 10));
         this.addSlot(new Slot(this.craftingContainer, 4, 90, 10));
-        this.addSlot(new Slot(this.craftingContainer, 5, 10, 30));
-        this.addSlot(new ResultArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
+        this.addSlot(new InputArmorSlot(this.craftingContainer, 5, 10, 30));
+        this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
     }
 
     public void clearCraftingContent() {
@@ -146,8 +148,14 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     }
 }
 
-class ResultArmorSlot extends ResultSlot {
-    public ResultArmorSlot(Player pPlayer, CraftingContainer pCraftSlots, Container pContainer, int pSlot, int pXPosition, int pYPosition) {
-        super(pPlayer, pCraftSlots, pContainer, pSlot, pXPosition, pYPosition);
+class InputArmorSlot extends Slot {
+    public InputArmorSlot(Container container, int slotIndex, int x, int y) {
+        super(container, slotIndex, x, y);
+    }
+}
+
+class OutputArmorSlot extends ResultSlot {
+    public OutputArmorSlot(Player player, CraftingContainer craftingContainer, Container resultContainer, int slotIndex, int x, int y) {
+        super(player, craftingContainer, resultContainer, slotIndex, x, y);
     }
 }

@@ -13,11 +13,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class ArmorForgeRecipe implements Recipe<Container> {
+    private final ItemStack armor;
     private final NonNullList<Ingredient> ingredients;
     private final ResourceLocation resourceLocation;
     private final ItemStack output;
 
-    public ArmorForgeRecipe(ResourceLocation resourceLocation, NonNullList<Ingredient> ingredients, ItemStack output) {
+    public ArmorForgeRecipe(ResourceLocation resourceLocation, NonNullList<Ingredient> ingredients, ItemStack armor, ItemStack output) {
+        this.armor = armor;
         this.resourceLocation = resourceLocation;
         this.output = output;
         this.ingredients = ingredients;
@@ -31,6 +33,10 @@ public class ArmorForgeRecipe implements Recipe<Container> {
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
+    }
+
+    public ItemStack getArmor() {
+        return armor.copy();
     }
 
     @Override
