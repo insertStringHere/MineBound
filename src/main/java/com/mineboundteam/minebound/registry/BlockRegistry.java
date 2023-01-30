@@ -42,7 +42,7 @@ public class BlockRegistry {
         for(RegistryObject<Block> b : BLOCKS.getEntries()){
             BlockItem blockItem = new BlockItem(b.get(), new Item.Properties().tab(MineBound.MINEBOUND_TAB));
             blockItem.setRegistryName(b.getId());
-            if(!registry.containsKey(blockItem.getRegistryName()))
+            if (!registry.containsKey(blockItem.getRegistryName()))
                 registry.register(blockItem);
         }
     }
