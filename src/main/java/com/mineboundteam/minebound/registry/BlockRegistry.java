@@ -39,7 +39,7 @@ public class BlockRegistry {
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
         IForgeRegistry<Item> registry = event.getRegistry();
-        for(RegistryObject<Block> b : BLOCKS.getEntries()){
+        for (RegistryObject<Block> b : BLOCKS.getEntries()){
             BlockItem blockItem = new BlockItem(b.get(), new Item.Properties().tab(MineBound.MINEBOUND_TAB));
             blockItem.setRegistryName(b.getId());
             if (!registry.containsKey(blockItem.getRegistryName()))
