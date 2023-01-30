@@ -2,10 +2,10 @@
   "type": "minebound:alloy_furnace",
   "ingredients": [
     {
-      "item": "minebound:iron_ingot"
+      "item": "minecraft:iron_ingot"
     },
     {
-      "item": "minebound:redstone"
+      "item": "minecraft:redstone"
     }
   ],
   "output": {
