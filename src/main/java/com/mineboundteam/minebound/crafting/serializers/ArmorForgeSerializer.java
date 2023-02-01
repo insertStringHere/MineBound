@@ -19,7 +19,11 @@ public class ArmorForgeSerializer<T> extends ForgeRegistryEntry<RecipeSerializer
     public @NotNull ArmorForgeRecipe fromJson(@NotNull ResourceLocation resourceLocation, @NotNull JsonObject jsonObject) {
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
         NonNullList<Ingredient> ingredients = NonNullList.create();
-        ItemStack armor = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "armor"));
+        ItemStack armor = ItemStack.EMPTY; 
+        try{
+            armor = ShapedRecipe.itemStackFromJson((GsonHelper.getAsJsonObject(jsonObject, "armor")));
+        } catch(Exception e){/* don't care */}
+
         ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "output"));
 
         for(int i = 0; i < jsonArray.size() && i < 5; i++){

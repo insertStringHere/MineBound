@@ -20,7 +20,7 @@ public class RecipeRegistry {
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MOD_ID);
     public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_RECIPE =  RECIPE_TYPE.<RecipeType<AlloyFurnaceRecipe>>register("alloy_furnace", () -> new RecipeType<AlloyFurnaceRecipe>(){});
-    public static final RegistryObject<RecipeType<ArmorForgeRecipe>> ARMOR_FORGE_RECIPE =  RECIPE_TYPE.register("armor_forge", () -> new RecipeType<>() {
+    public static final RegistryObject<RecipeType<ArmorForgeRecipe>> ARMOR_FORGE_RECIPE =  RECIPE_TYPE.register("armor_forge", () -> new RecipeType<ArmorForgeRecipe>() {
 
     });
 }
