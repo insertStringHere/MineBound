@@ -1,12 +1,9 @@
 package com.mineboundteam.minebound;
 
-
 import com.mineboundteam.minebound.registry.ClientRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.Registry;
-
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,17 +21,16 @@ public class MineBound {
     public static final CreativeModeTab MINEBOUND_TAB = new CreativeModeTab(MOD_ID) {
         @OnlyIn(Dist.CLIENT)
         @Override
-        public @NotNull ItemStack makeIcon() { return new ItemStack(ItemRegistry.MYRI_MANASAC.get()); }
+        public @NotNull ItemStack makeIcon() {
+            return new ItemStack(ItemRegistry.MYRI_MANASAC.get());
+        }
     };
 
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
         Registry.RegisterMod(iEventBus);
-
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(EntityRegistry::registerAttributes);
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 
