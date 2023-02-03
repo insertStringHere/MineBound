@@ -1,11 +1,17 @@
 package com.mineboundteam.minebound.inventory;
 
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
+import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
+import com.mineboundteam.minebound.inventory.slots.OutputArmorSlot;
+import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
 import com.mineboundteam.minebound.registry.MenuRegistry;
 import com.mineboundteam.minebound.registry.RecipeRegistry;
+
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
@@ -13,6 +19,9 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CraftingTableBlock;
+import net.minecraftforge.common.crafting.CraftingHelper;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -37,20 +46,26 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
 
     protected void addSlots(Inventory inventory) {
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(inventory, i, 32 + i * 18, 182));
         }
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 32 + j * 18, 124 + i * 18));
             }
         }
-        this.addSlot(new Slot(this.craftingContainer, 0, 10, 10));
-        this.addSlot(new Slot(this.craftingContainer, 1, 30, 10));
-        this.addSlot(new Slot(this.craftingContainer, 2, 50, 10));
-        this.addSlot(new Slot(this.craftingContainer, 3, 70, 10));
-        this.addSlot(new Slot(this.craftingContainer, 4, 90, 10));
-        this.addSlot(new InputArmorSlot(this.craftingContainer, 5, 10, 30));
-        this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 124, 35));
+
+        this.addSlot(new PlayerArmorSlot(EquipmentSlot.FEET, player, inventory, 36, 8, 76));
+        this.addSlot(new PlayerArmorSlot(EquipmentSlot.LEGS, player, inventory, 37, 8, 58));
+        this.addSlot(new PlayerArmorSlot(EquipmentSlot.CHEST, player, inventory, 38, 8, 40));
+        this.addSlot(new PlayerArmorSlot(EquipmentSlot.HEAD, player, inventory, 39, 8, 22));
+
+        this.addSlot(new Slot(this.craftingContainer, 0, 75, 19));
+        this.addSlot(new Slot(this.craftingContainer, 1, 107, 42));
+        this.addSlot(new Slot(this.craftingContainer, 2, 93, 81));
+        this.addSlot(new Slot(this.craftingContainer, 3, 57, 81));
+        this.addSlot(new Slot(this.craftingContainer, 4, 43, 42));
+        this.addSlot(new InputArmorSlot(this.craftingContainer, 5, 75, 49));
+        this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 167, 51));
     }
 
     public void clearCraftingContent() {
@@ -84,24 +99,36 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        int vanillaSlotCount = 36;
-        int vanillaIndex = 0;
-        int teInventoryIndex = vanillaIndex + vanillaSlotCount;
         Slot slot = slots.get(index);
-        if (!slot.hasItem()) return ItemStack.EMPTY;
+        if (!slot.hasItem())
+            return ItemStack.EMPTY;
         ItemStack sourceStack = slot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
-        if (index < vanillaIndex + vanillaSlotCount) {
-            if (!moveItemStackTo(sourceStack, teInventoryIndex, teInventoryIndex + SIZE, false)) {
+        // if in inventory, first try to move to armor slots, then into crafting slots
+        if (index < 36) {
+            if(!moveItemStackTo(sourceStack, 36, 40, false) 
+            && !moveItemStackTo(sourceStack, 40, 47, false)
+            && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
-            }
-        } else if (index < teInventoryIndex + SIZE) {
-            if (!moveItemStackTo(sourceStack, vanillaIndex, vanillaIndex + vanillaSlotCount, false)) {
+        // If in armor slots, try to move to armor crafting slot, then if not, into inventory
+        } else if (index < 40) {
+            if(!moveItemStackTo(sourceStack, 45, 45, false)
+            && !moveItemStackTo(sourceStack, 0, 36, false)) 
                 return ItemStack.EMPTY;
-            }
-        } else {
+        // If result slot, first try to move to armor inventory, then if not, into inventory
+        } else if(index > 45) {
+            if(!moveItemStackTo(sourceStack, 36, 40, false)
+            && !moveItemStackTo(sourceStack, 45, 45, false)
+            && !moveItemStackTo(sourceStack, 0, 40, false))
+                return ItemStack.EMPTY;
+        // Try to equip the armor first
+        } else if (index == 45) {
+            if(!moveItemStackTo(sourceStack, 36, 40, false)
+            && !moveItemStackTo(sourceStack, 0, 36, false)) 
+                return ItemStack.EMPTY;
+        } else if(!moveItemStackTo(sourceStack, 0, 40, false))
             return ItemStack.EMPTY;
-        }
+
         if (sourceStack.getCount() == 0) {
             slot.set(ItemStack.EMPTY);
         } else {
@@ -126,14 +153,18 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         });
     }
 
-    protected static void slotChangedCraftingGrid(ArmorForgeMenu armorForgeMenu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer) {
-        if (level.isClientSide) return;
+    protected static void slotChangedCraftingGrid(ArmorForgeMenu armorForgeMenu, Level level, Player player,
+            CraftingContainer craftingContainer, ResultContainer resultContainer) {
+        if (level.isClientSide)
+            return;
 
         ServerPlayer serverplayer = (ServerPlayer) player;
-        if (level.getServer() == null) return;
+        if (level.getServer() == null)
+            return;
 
         ItemStack itemStack = ItemStack.EMPTY;
-        Optional<ArmorForgeRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeRegistry.ARMOR_FORGE_RECIPE.get(), craftingContainer, level);
+        Optional<ArmorForgeRecipe> optional = level.getServer().getRecipeManager()
+                .getRecipeFor(RecipeRegistry.ARMOR_FORGE_RECIPE.get(), craftingContainer, level);
         if (optional.isPresent()) {
             ArmorForgeRecipe armorForgeRecipe = optional.get();
             if (resultContainer.setRecipeUsed(level, serverplayer, armorForgeRecipe)) {
@@ -141,21 +172,19 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
             }
         }
         resultContainer.setItem(0, itemStack);
+        armorForgeMenu.setRemoteSlot(0, itemStack);
+        serverplayer.connection.send(new ClientboundContainerSetSlotPacket(armorForgeMenu.containerId,
+                armorForgeMenu.incrementStateId(), 0, itemStack));
     }
 
     public boolean stillValid(@NotNull Player player) {
         return true;
     }
-}
 
-class InputArmorSlot extends Slot {
-    public InputArmorSlot(Container container, int slotIndex, int x, int y) {
-        super(container, slotIndex, x, y);
-    }
-}
-
-class OutputArmorSlot extends ResultSlot {
-    public OutputArmorSlot(Player player, CraftingContainer craftingContainer, Container resultContainer, int slotIndex, int x, int y) {
-        super(player, craftingContainer, resultContainer, slotIndex, x, y);
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        this.containerLevelAccess.execute((a, b) -> {
+            this.clearContainer(pPlayer, craftingContainer);
+        });
     }
 }
