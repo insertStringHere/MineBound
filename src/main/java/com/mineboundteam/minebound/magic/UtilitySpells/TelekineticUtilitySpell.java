@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.magic.UtilitySpells.telekinetic;
+package com.mineboundteam.minebound.magic.UtilitySpells;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;

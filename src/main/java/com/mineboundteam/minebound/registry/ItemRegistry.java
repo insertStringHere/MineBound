@@ -7,7 +7,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.telekinetic.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
 

@@ -3,7 +3,7 @@ package com.mineboundteam.minebound.registry.config;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
 import com.mineboundteam.minebound.magic.SpellLevel;
-import com.mineboundteam.minebound.magic.UtilitySpells.telekinetic.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
