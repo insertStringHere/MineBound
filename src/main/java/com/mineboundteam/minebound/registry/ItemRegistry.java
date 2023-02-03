@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellLevel;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
@@ -43,4 +44,5 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_EFFIGY_BOOTS = ITEMS.register("myrial_effigy_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.EFFIGY, ArmorConfigRegistry.EFFIGY_BOOTS));
 
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), SpellLevel.Level1, MagicConfigRegistry.TEST_SPELL));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", ()-> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), SpellLevel.Level1, MagicConfigRegistry.SHIELD_OFFENSIVE_1));
 }
