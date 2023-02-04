@@ -12,11 +12,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class SpellItem extends Item {
-    protected SpellLevel level;
-
-    public SpellItem(Properties pProperties, SpellLevel level) {
+    public SpellItem(Properties pProperties) {
         super(pProperties);
-        this.level = level;
     }
 
     protected void reduceMana(int manaCost, Player p) {

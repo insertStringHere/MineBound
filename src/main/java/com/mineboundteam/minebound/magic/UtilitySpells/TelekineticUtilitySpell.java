@@ -19,11 +19,13 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     private final int manaCost;
+    private final SpellLevel level;
 
-    public TelekineticUtilitySpell(Properties properties, SpellLevel level, TelekineticUtilitySpellConfig config) {
-        super(properties, level);
+    public TelekineticUtilitySpell(Properties properties, TelekineticUtilitySpellConfig config) {
+        super(properties);
 
         manaCost = config.MANA_COST.get();
+        level = config.LEVEL;
     }
 
     @Override
@@ -48,19 +50,19 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public static class TelekineticUtilitySpellConfig implements IConfig {
 
         public IntValue MANA_COST;
+        public final SpellLevel LEVEL;
 
         private final int manaCost;
-        private final SpellLevel level;
 
         public TelekineticUtilitySpellConfig(int manaCost, SpellLevel level) {
             this.manaCost = manaCost;
-            this.level = level;
+            this.LEVEL = level;
         }
 
         @Override
         public void build(Builder builder) {
             builder.push("Telekinetic Utility");
-            MANA_COST = builder.comment("Tier " + level.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            MANA_COST = builder.comment("Tier " + LEVEL.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
 
