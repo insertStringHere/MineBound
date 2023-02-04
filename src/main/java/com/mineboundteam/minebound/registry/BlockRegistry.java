@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.block.AlloyFurnace;
+import com.mineboundteam.minebound.block.ArmorForge;
 import com.mineboundteam.minebound.block.MultiDirectionalBlock;
 import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
 import net.minecraft.Util;
@@ -23,8 +24,8 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MineBound.MOD_ID);
-
     public static final RegistryObject<Block> ALLOY_FURNACE = BLOCKS.register("alloy_furnace", () -> new AlloyFurnace(Properties.copy(Blocks.FURNACE)));
+    public static final RegistryObject<Block> ARMOR_FORGE = BLOCKS.register("armor_forge", () -> new ArmorForge(Properties.copy(Blocks.ANVIL)));
     public static final RegistryObject<Block> ENERGIZED_IRON_BLOCK = BLOCKS.register("energized_iron_block", () -> new Block(Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> ILLUMINANT_STEEL_BLOCK = BLOCKS.register("illuminant_steel_block", () -> new Block(Properties.copy(Blocks.IRON_BLOCK).strength(7, 9)));
     public static final RegistryObject<Block> GILDED_DIAMOND_BLOCK = BLOCKS.register("gilded_diamond_block", () -> new Block(Properties.copy(Blocks.DIAMOND_BLOCK).strength(5, 9)));
@@ -41,10 +42,10 @@ public class BlockRegistry {
     @SubscribeEvent
     public static void RegisterBlockItems(RegistryEvent.Register<Item> event){
         IForgeRegistry<Item> registry = event.getRegistry();
-        for(RegistryObject<Block> b : BLOCKS.getEntries()){
+        for (RegistryObject<Block> b : BLOCKS.getEntries()){
             BlockItem blockItem = new BlockItem(b.get(), new Item.Properties().tab(MineBound.MINEBOUND_TAB));
             blockItem.setRegistryName(b.getId());
-            if(!registry.containsKey(blockItem.getRegistryName()))
+            if (!registry.containsKey(blockItem.getRegistryName()))
                 registry.register(blockItem);
         }
     }
