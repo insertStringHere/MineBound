@@ -23,7 +23,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     private final ArmorConfig config;
     private final ArmorTier tier;
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public MyrialArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties, ArmorTier pTier, ArmorConfig pConfig) {
         super(pMaterial, pSlot, pProperties.durability(pConfig.ENERGY.get()));
@@ -47,7 +47,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<MyrialArmorItem>(this, getDescriptionId(), 20, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, getDescriptionId(), 20, this::predicate));
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event){

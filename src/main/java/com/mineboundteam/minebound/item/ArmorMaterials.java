@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Pretty much taken from minecraft's build-in armor materials
@@ -21,7 +22,7 @@ public enum ArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Ingredient repairIngredient;
     
-    private ArmorMaterials(int pDurabilityMultiplier, int[] pSlotProtections, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Ingredient pRepairIngredient) {
+    ArmorMaterials(int pDurabilityMultiplier, int[] pSlotProtections, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Ingredient pRepairIngredient) {
         this.durabilityMultiplier = pDurabilityMultiplier;
         this.slotProtections = pSlotProtections;
         this.enchantmentValue = pEnchantmentValue;
@@ -30,6 +31,7 @@ public enum ArmorMaterials implements ArmorMaterial {
         this.knockbackResistance = pKnockbackResistance;
         this.repairIngredient = pRepairIngredient;
     }
+
     @Override
     public int getDurabilityForSlot(EquipmentSlot pSlot) {
         return HEALTH_PER_SLOT[pSlot.getIndex()] * this.durabilityMultiplier;
@@ -37,30 +39,29 @@ public enum ArmorMaterials implements ArmorMaterial {
 
     public int getDefenseForSlot(EquipmentSlot pSlot) {
         return this.slotProtections[pSlot.getIndex()];
-     }
-  
-     public int getEnchantmentValue() {
+    }
+
+    public int getEnchantmentValue() {
         return this.enchantmentValue;
-     }
-  
-     public SoundEvent getEquipSound() {
+    }
+
+    public @NotNull SoundEvent getEquipSound() {
         return this.sound;
-     }
-  
-     public Ingredient getRepairIngredient() {
+    }
+
+    public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient;
-     }
-  
-     public String getName() {
+    }
+
+    public @NotNull String getName() {
         return this.name().toLowerCase();
-     }
-  
-     public float getToughness() {
+    }
+
+    public float getToughness() {
         return this.toughness;
-     }
-  
-     public float getKnockbackResistance() {
+    }
+
+    public float getKnockbackResistance() {
         return this.knockbackResistance;
-     }
-    
+    }
 }
