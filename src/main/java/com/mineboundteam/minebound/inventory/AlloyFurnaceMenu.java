@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {  
     public AlloyFurnaceMenu(int containerId, Inventory playerInventory, Container container, ContainerData data){
-        this(MenuRegistry.ALLOY_FURNACE_CONTAINER.get(), RecipeRegistry.ALLOY_FURNACE_RECIPE.get(), RecipeBookType.FURNACE, containerId, playerInventory, container, data);
+        this(MenuRegistry.ALLOY_FURNACE_MENU.get(), RecipeRegistry.ALLOY_FURNACE_RECIPE.get(), RecipeBookType.FURNACE, containerId, playerInventory, container, data);
     }
 
     public AlloyFurnaceMenu(MenuType<?> pMenuType, RecipeType<? extends AbstractCookingRecipe> pRecipeType, RecipeBookType pRecipeBookType, int pContainerId, Inventory pPlayerInventory, Container pContainer, ContainerData pData) {
