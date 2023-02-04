@@ -23,6 +23,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
+    private boolean active = false;
 
     public ShieldOffensiveSpell(Properties properties, SpellLevel level, ShieldOffensiveSpellConfig config) {
         super(properties, level);
@@ -32,16 +33,14 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        active = !active;
         return InteractionResultHolder.pass(player.getItemInHand(usedHand));
     }
 
     @SubscribeEvent
-    public void reduceDamage(LivingDamageEvent event) {
-        if (!event.getEntity().level.isClientSide()) {
+    public void triggerSpell(LivingDamageEvent event) {
+        if (!event.getEntity().level.isClientSide() && active) {
             if (event.getEntityLiving() instanceof Player player) {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> player.displayClientMessage(
-                        new TextComponent(String.format("Player currently has %d mana", mana.getMana())), false));
-                // TODO: may need to check if spell is slotted too
                 Entity sourceEntity = event.getSource().getEntity();
                 if (sourceEntity != null) {
                     float dmgAmount = event.getAmount();
