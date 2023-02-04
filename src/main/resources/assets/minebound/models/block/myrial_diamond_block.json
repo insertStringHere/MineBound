@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "minebound:block/myrial_diamond_block"
+    "top": "minebound:block/myrial_diamond_block_top",
+    "side": "minebound:block/myrial_diamond_block_sides",
+    "bottom": "minebound:block/myrial_diamond_block_bottom"
   }
 }
