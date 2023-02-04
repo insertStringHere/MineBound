@@ -4,8 +4,6 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,17 +37,15 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public void triggerSpell(LivingDamageEvent event) {
-        if (!event.getEntity().level.isClientSide() && active) {
-            if (event.getEntityLiving() instanceof Player player) {
-                Entity sourceEntity = event.getSource().getEntity();
-                if (sourceEntity != null) {
-                    float dmgAmount = event.getAmount();
-                    // Reduce by 50%
-                    event.setAmount(dmgAmount * 0.5f);
-                    // Reflect 40%
-                    sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.4f);
-                    super.reduceMana(manaCost, player);
-                }
+        if (!event.getEntity().level.isClientSide() && active && event.getEntityLiving() instanceof Player player) {
+            Entity sourceEntity = event.getSource().getEntity();
+            if (sourceEntity != null) {
+                float dmgAmount = event.getAmount();
+                // Reduce by 50%
+                event.setAmount(dmgAmount * 0.5f);
+                // Reflect 40%
+                sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.4f);
+                super.reduceMana(manaCost, player);
             }
         }
     }
