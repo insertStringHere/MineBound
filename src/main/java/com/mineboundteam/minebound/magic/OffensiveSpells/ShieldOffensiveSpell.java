@@ -21,12 +21,14 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
+    private final SpellLevel level;
     private boolean active = false;
 
     public ShieldOffensiveSpell(Properties properties, SpellLevel level, ShieldOffensiveSpellConfig config) {
-        super(properties, level);
+        super(properties);
 
         this.manaCost = config.MANA_COST.get();
+        this.level = config.LEVEL;
     }
 
     @Override
@@ -41,10 +43,29 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
                 float dmgAmount = event.getAmount();
-                // Reduce by 50%
-                event.setAmount(dmgAmount * 0.5f);
-                // Reflect 40%
-                sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.4f);
+                switch (level) {
+                    case Level1 -> {
+                        // Reduce by 50%
+                        event.setAmount(dmgAmount * 0.5f);
+                        // Reflect 40%
+                        sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.4f);
+                        break;
+                    }
+                    case Level2 -> {
+                        // Reduce by 70%
+                        event.setAmount(dmgAmount * 0.3f);
+                        // Reflect 60%
+                        sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.6f);
+                        break;
+                    }
+                    case Level3 -> {
+                        // Reduce all damage
+                        event.setCanceled(true);
+                        // Reflect 80%
+                        sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.8f);
+                        break;
+                    }
+                }
                 super.reduceMana(manaCost, player);
             }
         }
@@ -53,19 +74,20 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     public static class ShieldOffensiveSpellConfig implements IConfig {
 
         public ForgeConfigSpec.IntValue MANA_COST;
+        public final SpellLevel LEVEL;
 
         private final int manaCost;
-        private final SpellLevel level;
+
 
         public ShieldOffensiveSpellConfig(int manaCost, SpellLevel level) {
             this.manaCost = manaCost;
-            this.level = level;
+            this.LEVEL = level;
         }
 
         @Override
         public void build(ForgeConfigSpec.Builder builder) {
             builder.push("Shield Offensive");
-            MANA_COST = builder.comment("Tier " + level.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            MANA_COST = builder.comment("Tier " + LEVEL.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
 

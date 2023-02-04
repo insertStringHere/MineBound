@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 
 public abstract class ActiveSpellItem extends SpellItem {
     
-    public ActiveSpellItem(Properties properties, SpellLevel level){
-        super(properties, level);
+    public ActiveSpellItem(Properties properties){
+        super(properties);
     }
 
     @Override
