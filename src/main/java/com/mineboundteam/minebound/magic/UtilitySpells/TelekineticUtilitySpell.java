@@ -5,7 +5,6 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
@@ -39,11 +38,9 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.player.level.getDayTime() % 20 == 0 && event.phase == TickEvent.Phase.START && event.player.getAbilities().mayfly) {
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if (event.player.getAbilities().flying) {
-                    super.reduceMana(manaCost, event.player);
-                }
-            });
+            if (event.player.getAbilities().flying) {
+                super.reduceMana(manaCost, event.player);
+            }
         }
     }
 
