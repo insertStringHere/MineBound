@@ -24,7 +24,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     private final SpellLevel level;
     private boolean active = false;
 
-    public ShieldOffensiveSpell(Properties properties, SpellLevel level, ShieldOffensiveSpellConfig config) {
+    public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
         super(properties);
 
         this.manaCost = config.MANA_COST.get();
