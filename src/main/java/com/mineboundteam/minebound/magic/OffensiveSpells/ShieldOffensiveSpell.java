@@ -78,7 +78,6 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
         private final int manaCost;
 
-
         public ShieldOffensiveSpellConfig(int manaCost, SpellLevel level) {
             this.manaCost = manaCost;
             this.LEVEL = level;
