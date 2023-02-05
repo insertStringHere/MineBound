@@ -10,11 +10,15 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class MagicConfigRegistry implements IConfig {
 
     public static final TestSpell.TestSpellConfig TEST_SPELL = new TestSpell.TestSpellConfig(10);
+
+    /* Telekinetic */
     public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, SpellLevel.Level2);
 
     @Override
     public void build(Builder builder) {
         TEST_SPELL.build(builder);
+
+        /* Telekinetic */
         TELEKINETIC_UTILITY_2.build(builder);
     }
 
