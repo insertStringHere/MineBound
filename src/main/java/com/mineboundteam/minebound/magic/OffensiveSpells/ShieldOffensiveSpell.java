@@ -49,24 +49,21 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                         event.setAmount(dmgAmount * 0.5f);
                         // Reflect 40%
                         sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.4f);
-                        break;
                     }
                     case Level2 -> {
                         // Reduce by 70%
                         event.setAmount(dmgAmount * 0.3f);
                         // Reflect 60%
                         sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.6f);
-                        break;
                     }
                     case Level3 -> {
                         // Reduce all damage
                         event.setCanceled(true);
                         // Reflect 80%
                         sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * 0.8f);
-                        break;
                     }
                 }
-                super.reduceMana(manaCost, player);
+                reduceMana(manaCost, player);
             }
         }
     }

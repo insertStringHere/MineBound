@@ -18,8 +18,8 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class TestSpell extends ActiveSpellItem {
     private int manaCost;
 
-    public TestSpell(Properties properties, SpellLevel level, TestSpellConfig config) {
-        super(properties, level);
+    public TestSpell(Properties properties, TestSpellConfig config) {
+        super(properties);
 
         manaCost = config.MANA_COST.get();
     }
