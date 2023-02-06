@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum ArmorMaterials implements ArmorMaterial {
     MYRIAL_EFFIGY(0, new int[]{1, 4, 5, 2}, 0, SoundEvents.ARMOR_EQUIP_CHAIN, 0f, 0f, null),
-    MYRIAL_SUIT(15, new int[] { 2, 5, 6, 2 }, 9, SoundEvents.ARMOR_EQUIP_IRON, 0f, 0f, null);
+    MYRIAL_SUIT(0, new int[] { 2, 5, 6, 2 }, 0, SoundEvents.ARMOR_EQUIP_IRON, 0f, 0f, null);
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final int durabilityMultiplier;
     private final int[] slotProtections;
