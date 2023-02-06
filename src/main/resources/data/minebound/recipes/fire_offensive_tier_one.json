@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "CMC",
+    " E "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:coal"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    },
+    "E": {
+      "item": "minebound:energized_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_o1"
+  }
+}
