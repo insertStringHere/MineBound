@@ -47,7 +47,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, getDescriptionId(), 20, this::predicate));
+        data.addAnimationController(new AnimationController<MyrialArmorItem>(this, getDescriptionId(), 20, this::predicate));
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event){
