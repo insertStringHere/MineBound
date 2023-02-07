@@ -17,9 +17,9 @@ public class MyrialArmorModel extends AnimatedGeoModel<MyrialArmorItem> {
 
     static{
         textures.put(ArmorTier.EFFIGY, new ResourceLocation(MineBound.MOD_ID, "textures/models/armor/myrial_effigy.png"));
-        textures.put(ArmorTier.SUIT, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_suit.png"));
-        textures.put(ArmorTier.SYNERGY, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_synergy.png"));
-        textures.put(ArmorTier.SINGULARITY, new ResourceLocation(MineBound.MOD_ID, "item/models/myrial_singularity.png"));
+        textures.put(ArmorTier.SUIT, new ResourceLocation(MineBound.MOD_ID, "textures/models/armor/myrial_suit.png"));
+        textures.put(ArmorTier.SYNERGY, new ResourceLocation(MineBound.MOD_ID, "textures/models/armor/myrial_synergy.png"));
+        textures.put(ArmorTier.SINGULARITY, new ResourceLocation(MineBound.MOD_ID, "textures/models/armor/myrial_singularity.png"));
     }
 
     @Override
