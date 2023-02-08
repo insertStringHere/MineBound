@@ -1,7 +1,9 @@
 package com.mineboundteam.minebound.inventory;
 
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
+import com.mineboundteam.minebound.inventory.containers.ArmorSpellContainer;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
+import com.mineboundteam.minebound.inventory.slots.MyrialSpellSlot;
 import com.mineboundteam.minebound.inventory.slots.OutputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
 import com.mineboundteam.minebound.registry.MenuRegistry;
@@ -19,9 +21,6 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.CraftingTableBlock;
-import net.minecraftforge.common.crafting.CraftingHelper;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -31,6 +30,10 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     private final CraftingContainer craftingContainer = new CraftingContainer(this, 3, 3);
     private final Player player;
     private final ResultContainer resultContainer = new ResultContainer();
+
+    protected ArmorSpellContainer activeSpells; 
+    protected ArmorSpellContainer passiveSpells;
+
     public static final int SIZE = 7;
 
     public ArmorForgeMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf friendlyByteBuf) {
@@ -64,8 +67,23 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.addSlot(new Slot(this.craftingContainer, 2, 93, 81));
         this.addSlot(new Slot(this.craftingContainer, 3, 57, 81));
         this.addSlot(new Slot(this.craftingContainer, 4, 43, 42));
-        this.addSlot(new InputArmorSlot(this.craftingContainer, 5, 75, 49));
-        this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 167, 51));
+
+        InputArmorSlot armorSlot = (InputArmorSlot)this.addSlot(new InputArmorSlot(inventory.player, this.craftingContainer, 5, 75, 49));
+        this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 168, 52));
+
+        activeSpells = new ArmorSpellContainer.ActiveSpell(armorSlot);
+        passiveSpells = new ArmorSpellContainer.PassiveSpell(armorSlot);
+
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++){
+                this.addSlot(new MyrialSpellSlot.Active(activeSpells, i*3 + j, 208 + 21 * j, 26 + 21 * i));
+            }
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++){
+                this.addSlot(new MyrialSpellSlot.Passive(passiveSpells, i*3 + j + 9, 208 + 21 * j, 103 + 21 * i));
+            }
+
+
     }
 
     public void clearCraftingContent() {
@@ -175,6 +193,7 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         armorForgeMenu.setRemoteSlot(0, itemStack);
         serverplayer.connection.send(new ClientboundContainerSetSlotPacket(armorForgeMenu.containerId,
                 armorForgeMenu.incrementStateId(), 0, itemStack));
+
     }
 
     public boolean stillValid(@NotNull Player player) {

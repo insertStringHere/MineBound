@@ -1,9 +1,9 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;

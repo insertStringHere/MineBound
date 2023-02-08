@@ -3,7 +3,6 @@ package com.mineboundteam.minebound.item.armor;
 import java.util.function.Consumer;
 
 import com.mineboundteam.minebound.config.ArmorConfig;
-
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
@@ -28,7 +27,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     public MyrialArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties, ArmorTier pTier, ArmorConfig pConfig) {
         super(pMaterial, pSlot, pProperties.durability(pConfig.ENERGY.get()));
         this.config = pConfig;
-        this.tier = pTier;
+        this.tier = pTier;        
     }
 
     @Override
