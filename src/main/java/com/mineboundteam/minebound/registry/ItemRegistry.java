@@ -3,18 +3,18 @@ package com.mineboundteam.minebound.registry;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
+import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import com.mineboundteam.minebound.magic.SpellLevel;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
+import com.mineboundteam.minebound.magic.SpellLevel;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
-
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -22,7 +22,12 @@ import net.minecraftforge.registries.RegistryObject;
 public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MineBound.MOD_ID);
 
+    public static final RegistryObject<Item> ENERGIZED_IRON_AXE = ITEMS.register("energized_iron_axe", () -> new AxeItem(ToolTier.ENERGIZED_IRON, 6.0F, -3.1F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ENERGIZED_IRON_HOE = ITEMS.register("energized_iron_hoe", () -> new HoeItem(ToolTier.ENERGIZED_IRON, -2, -1.0F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_INGOT = ITEMS.register("energized_iron_ingot", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ENERGIZED_IRON_PICKAXE = ITEMS.register("energized_iron_pickaxe", () -> new PickaxeItem(ToolTier.ENERGIZED_IRON, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ENERGIZED_IRON_SHOVEL = ITEMS.register("energized_iron_shovel", () -> new ShovelItem(ToolTier.ENERGIZED_IRON, 1.5F, -3.0F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ENERGIZED_IRON_SWORD = ITEMS.register("energized_iron_sword", () -> new SwordItem(ToolTier.ENERGIZED_IRON, 3, -2.4F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_INGOT = ITEMS.register("gilded_diamond_ingot", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_INGOT = ITEMS.register("illuminant_steel_ingot", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_INGOT = ITEMS.register("myrial_diamond_ingot", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
