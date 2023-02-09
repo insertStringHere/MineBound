@@ -8,8 +8,8 @@ public abstract class PassiveSpellItem extends SpellItem {
     protected MyrialArmorItem equippedItem;
     protected Player equippedPlayer;
 
-    public PassiveSpellItem(Properties properties, SpellLevel level){
-        super(properties, level);
+    public PassiveSpellItem(Properties properties){
+        super(properties);
     }
 
     public void updateEquipment(MyrialArmorItem item, Player player){
