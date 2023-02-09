@@ -5,13 +5,21 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
@@ -42,6 +50,12 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
                 super.reduceMana(manaCost, event.player);
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(new TextComponent("Gives creative flight"));
+        pTooltipComponents.add(new TextComponent("Mana cost: "+manaCost+"/second of flight"));
     }
 
     public static class TelekineticUtilitySpellConfig implements IConfig {
