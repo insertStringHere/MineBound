@@ -22,7 +22,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     private final ArmorConfig config;
     private final ArmorTier tier;
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public MyrialArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties, ArmorTier pTier, ArmorConfig pConfig) {
         super(pMaterial, pSlot, pProperties.durability(pConfig.ENERGY.get()));

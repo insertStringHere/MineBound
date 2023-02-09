@@ -1,0 +1,19 @@
+{
+  "type": "minebound:alloy_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_diamond_ingot"
+  },
+  "experience": 5.0,
+  "cookingtime": 500
+}
