@@ -5,13 +5,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Pretty much taken from minecraft's build-in armor materials
  */
 public enum ArmorMaterials implements ArmorMaterial {
-    MYRIAL_SUIT(0, new int[]{1, 4, 5, 2}, 0, SoundEvents.ARMOR_EQUIP_CHAIN, 0f, 0f, null);
-    
+    MYRIAL_EFFIGY(0, new int[]{1, 4, 5, 2}, 0, SoundEvents.ARMOR_EQUIP_CHAIN, 0f, 0f, null),
+    MYRIAL_SUIT(0, new int[] { 2, 5, 6, 2 }, 0, SoundEvents.ARMOR_EQUIP_IRON, 0f, 0f, null);
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final int durabilityMultiplier;
     private final int[] slotProtections;
@@ -30,6 +31,7 @@ public enum ArmorMaterials implements ArmorMaterial {
         this.knockbackResistance = pKnockbackResistance;
         this.repairIngredient = pRepairIngredient;
     }
+
     @Override
     public int getDurabilityForSlot(EquipmentSlot pSlot) {
         return HEALTH_PER_SLOT[pSlot.getIndex()] * this.durabilityMultiplier;
@@ -37,30 +39,29 @@ public enum ArmorMaterials implements ArmorMaterial {
 
     public int getDefenseForSlot(EquipmentSlot pSlot) {
         return this.slotProtections[pSlot.getIndex()];
-     }
-  
-     public int getEnchantmentValue() {
+    }
+
+    public int getEnchantmentValue() {
         return this.enchantmentValue;
-     }
-  
-     public SoundEvent getEquipSound() {
+    }
+
+    public @NotNull SoundEvent getEquipSound() {
         return this.sound;
-     }
-  
-     public Ingredient getRepairIngredient() {
+    }
+
+    public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient;
-     }
-  
-     public String getName() {
+    }
+
+    public @NotNull String getName() {
         return this.name().toLowerCase();
-     }
-  
-     public float getToughness() {
+    }
+
+    public float getToughness() {
         return this.toughness;
-     }
-  
-     public float getKnockbackResistance() {
+    }
+
+    public float getKnockbackResistance() {
         return this.knockbackResistance;
-     }
-    
+    }
 }
