@@ -4,8 +4,11 @@ import java.util.function.Function;
 
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
@@ -13,14 +16,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.NonNullConsumer;
+import net.minecraftforge.network.PacketDistributor;
 
 public abstract class ArmorSpellContainer implements Container {
     public final InputArmorSlot item;
     protected final Capability<SpellContainer> spellCap;
+    protected ArmorForgeMenu menu;
 
-    protected ArmorSpellContainer(InputArmorSlot item, Capability<SpellContainer> cap) {
-        this.item = item;
+    protected ArmorSpellContainer(ArmorForgeMenu menu, Capability<SpellContainer> cap) {
+        this.item = (InputArmorSlot)menu.slots.get(ArmorForgeMenu.ARMOR_INPUT_INDEX);
         spellCap = cap;
+        this.menu = menu;
     }
 
     protected ItemStack getArmor(Function<MyrialArmorItem, ItemStack> consumer) {
@@ -106,8 +112,9 @@ public abstract class ArmorSpellContainer implements Container {
 
     @Override
     public void setItem(int pSlot, ItemStack pStack) {
+        if(!this.menu.player.level.isClientSide())
         capabilityWrapper(slots -> {
-            for (int i = 0; i < pSlot - slots.items.size(); i++)
+            for (int i = 0; i < pSlot - slots.items.size()+1; i++)
                 slots.items.add(ItemStack.EMPTY);
             slots.items.set(pSlot, pStack);
         });
@@ -116,17 +123,21 @@ public abstract class ArmorSpellContainer implements Container {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return !pPlayer.level.isClientSide();
+        return true;
     }
 
     @Override
     public void setChanged() {
+        if(item.hasItem() && !this.menu.player.level.isClientSide())
+            item.getItem().getCapability(spellCap).ifPresent(slots -> {
+                ArmorSpellSync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayer)this.menu.player)), new ArmorSpellSync.AllItemSync(this.menu.containerId, slots.items).setContainerType(spellCap));
+            });
     }
 
     public static class ActiveSpell extends ArmorSpellContainer {
 
-        public ActiveSpell(InputArmorSlot item) {
-            super(item, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS);
+        public ActiveSpell(ArmorForgeMenu menu) {
+            super(menu, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS);
         }
 
         @Override
@@ -140,8 +151,8 @@ public abstract class ArmorSpellContainer implements Container {
     }
     public static class PassiveSpell extends ArmorSpellContainer {
 
-        public PassiveSpell(InputArmorSlot item) {
-            super(item, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS);
+        public PassiveSpell(ArmorForgeMenu menu) {
+            super(menu, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS);
         }
 
         @Override

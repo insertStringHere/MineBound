@@ -25,7 +25,7 @@ public abstract class MyrialSpellSlot extends Slot {
     public boolean mayPlace(ItemStack item){
         return item.getItem() instanceof ActiveSpellItem;
     }    
-
+    
     protected abstract int getMaxSlots(ArmorConfig config); 
 
     public static class Active extends MyrialSpellSlot{

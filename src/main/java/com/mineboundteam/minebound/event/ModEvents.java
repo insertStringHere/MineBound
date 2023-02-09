@@ -39,9 +39,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onAttachCapabilitiesItems(AttachCapabilitiesEvent<ItemStack> event){
         if(event.getObject().getItem() instanceof MyrialArmorItem){
-            if(!event.getObject().getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).isPresent())
-                event.addCapability(new ResourceLocation(MineBound.MOD_ID, "active_spells"), new ArmorSpellsProvider.ArmorActiveSpellsProvider());
-            if(!event.getObject().getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).isPresent())
+            event.addCapability(new ResourceLocation(MineBound.MOD_ID, "active_spells"), new ArmorSpellsProvider.ArmorActiveSpellsProvider());
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "passive_spells"), new ArmorSpellsProvider.ArmorPassiveSpellsProvider());
         }
     }

@@ -41,18 +41,16 @@ public abstract class ArmorSpellsProvider implements ICapabilityProvider, INBTSe
     }
 
     public class SpellContainer {
-        public NonNullList<ItemStack> items;
+        public NonNullList<ItemStack> items = NonNullList.create();
 
         public void saveNBT(CompoundTag nbt) {
             for (int i = 0; i < items.size(); i++)
-                nbt.put(Integer.toString(i), items.get(i).getItem().getShareTag(items.get(i)));
+                nbt.put(Integer.toString(i), items.get(i).serializeNBT());
         }
 
         public void loadNBTData(CompoundTag nbt) {
             for (int i = 0; i < nbt.size(); i++) {
-                ItemStack stack = ItemStack.EMPTY;
-                stack.getItem().readShareTag(stack, nbt.getCompound(Integer.toString(i)));
-                items.add(stack);
+                items.add(ItemStack.of(nbt.getCompound(Integer.toString(i))));
             }
         }
     }

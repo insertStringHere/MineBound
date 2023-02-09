@@ -28,13 +28,15 @@ import java.util.Optional;
 public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     private final ContainerLevelAccess containerLevelAccess;
     private final CraftingContainer craftingContainer = new CraftingContainer(this, 3, 3);
-    private final Player player;
+    
     private final ResultContainer resultContainer = new ResultContainer();
 
     protected ArmorSpellContainer activeSpells; 
     protected ArmorSpellContainer passiveSpells;
 
+    public final Player player;
     public static final int SIZE = 7;
+    public static final int ARMOR_INPUT_INDEX = 45;
 
     public ArmorForgeMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf friendlyByteBuf) {
         this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
@@ -68,11 +70,11 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.addSlot(new Slot(this.craftingContainer, 3, 57, 81));
         this.addSlot(new Slot(this.craftingContainer, 4, 43, 42));
 
-        InputArmorSlot armorSlot = (InputArmorSlot)this.addSlot(new InputArmorSlot(inventory.player, this.craftingContainer, 5, 75, 49));
+        this.addSlot(new InputArmorSlot(inventory.player, this.craftingContainer, 5, 75, 49));
         this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 168, 52));
 
-        activeSpells = new ArmorSpellContainer.ActiveSpell(armorSlot);
-        passiveSpells = new ArmorSpellContainer.PassiveSpell(armorSlot);
+        activeSpells = new ArmorSpellContainer.ActiveSpell(this);
+        passiveSpells = new ArmorSpellContainer.PassiveSpell(this);
 
         for(int i = 0; i < 3; i++)
             for(int j = 0; j < 3; j++){
