@@ -46,5 +46,5 @@ public class ItemRegistry {
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TEST_SPELL));
 
     /* Telekinetic */
-    public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
+    public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
 }
