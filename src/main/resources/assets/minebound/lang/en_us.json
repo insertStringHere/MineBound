@@ -36,7 +36,7 @@
   "container.alloy_furnace": "Alloy Furnace",
   "container.armor_forge": "Armor Forge",
   "container.minebound.active_spells" : "Active Magic",
-  "container.minebound.passive_spells" : "Passive Magic",
+  "container.minebound.passive_spells" : "Utility Magic",
 
   "key.categories.minebound": "Minebound",
   "key.minebound.primary_magic": "Left Hand Magic",

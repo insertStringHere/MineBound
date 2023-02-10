@@ -42,9 +42,9 @@ public class ArmorForgeScreen extends AbstractContainerScreen<ArmorForgeMenu> {
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         super.renderLabels(pPoseStack, pMouseX, pMouseY);
         if(this.menu.activeSpells.isActive())
-            this.font.draw(pPoseStack, new TranslatableComponent("container." + MineBound.MOD_ID + ".active_spells"), 203f, 14f, 0xFBFBFB);
+            this.font.draw(pPoseStack, new TranslatableComponent("container." + MineBound.MOD_ID + ".active_spells"), 205f, 14f, 0xFBFBFB);
         if(this.menu.passiveSpells.isActive())
-            this.font.draw(pPoseStack, new TranslatableComponent("container." + MineBound.MOD_ID + ".passive_spells"), 203f, 90f, 0xFBFBFB);
+            this.font.draw(pPoseStack, new TranslatableComponent("container." + MineBound.MOD_ID + ".passive_spells"), 205f, 90f, 0xFBFBFB);
      }
 
     @Override
