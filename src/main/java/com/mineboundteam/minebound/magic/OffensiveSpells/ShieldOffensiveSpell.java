@@ -94,16 +94,16 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("While pressing the magic keybind:"));
-        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ")
-                                       .append(new TextComponent((int) (spellLevelDmgMult.get(level)[0] * 100) + "%").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.UNDERLINE)));
-        pTooltipComponents.add(new TextComponent("  - Reflects ")
+        pTooltipComponents.add(new TextComponent("While pressing the magic keybind:").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent((int) (spellLevelDmgMult.get(level)[0] * 100) + "%").withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE)));
+        pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent((int) (spellLevelDmgMult.get(level)[1] * 100) + "%").withStyle(ChatFormatting.RED).withStyle(ChatFormatting.UNDERLINE))
-                                       .append(" of the initial damage"));
-        pTooltipComponents.add(new TextComponent("Costs ")
+                                       .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
-                                       .append(" per reflect"));
+                                       .append(" per reflect").withStyle(ChatFormatting.GRAY));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {
