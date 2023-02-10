@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellLevel;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -15,22 +16,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
     private final SpellLevel level;
     private boolean active = false;
-    private HashMap<SpellLevel, float[]> spellLevelDmgMult = new HashMap<>();
+    private final HashMap<SpellLevel, double[]> spellLevelDmgMult = new HashMap<>();
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
         super(properties);
@@ -39,36 +39,71 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         this.level = config.LEVEL;
 
         // Reduce damage by 50% and reflect 40%
-        spellLevelDmgMult.put(SpellLevel.Level1, new float[]{0.5f, 0.4f});
+        spellLevelDmgMult.put(SpellLevel.Level1, new double[]{0.5, 0.4});
         // Reduce damage by 70% and reflect 60%
-        spellLevelDmgMult.put(SpellLevel.Level2, new float[]{0.7f, 0.6f});
+        spellLevelDmgMult.put(SpellLevel.Level2, new double[]{0.7, 0.6});
         // Reduce damage by 100% and reflect 80%
-        spellLevelDmgMult.put(SpellLevel.Level3, new float[]{1.0f, 0.8f});
+        spellLevelDmgMult.put(SpellLevel.Level3, new double[]{1.0, 0.8});
     }
 
+    // TODO: this code will execute in a different function once we work out how to execute spells from the keybindings
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        active = !active;
-        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+        if (!level.isClientSide()) {
+            active = !active;
+            player.displayClientMessage(new TextComponent("Active: " + active), false);
+            // `triggerSpell` will only be called when spell is active
+            // my theory is this is more performant than checking `active` in `triggerSpell`
+            if (active) {
+                MineBound.registerObject(this);
+            } else {
+                MineBound.unregisterObject(this);
+            }
+        }
+        return InteractionResultHolder.success(player.getItemInHand(usedHand));
     }
 
     @SubscribeEvent
-    public void triggerSpell(LivingDamageEvent event) {
-        if (!event.getEntity().level.isClientSide() && active && event.getEntityLiving() instanceof Player player) {
+    public void triggerSpell(LivingAttackEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
                 float dmgAmount = event.getAmount();
-                event.setAmount(dmgAmount * (1 - spellLevelDmgMult.get(level)[0]));
-                sourceEntity.hurt(DamageSource.thorns(player), dmgAmount * spellLevelDmgMult.get(level)[1]);
+                if ((1 - spellLevelDmgMult.get(level)[0]) == 0) {
+                    event.setCanceled(true);
+                }
+                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spellLevelDmgMult.get(level)[1]));
                 super.reduceMana(manaCost, player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void triggerSpell(LivingHurtEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player) {
+            Entity sourceEntity = event.getSource().getEntity();
+            if (sourceEntity != null) {
+                float dmgAmount = event.getAmount();
+                if ((1 - spellLevelDmgMult.get(level)[0]) != 0) {
+                    event.setAmount((float) (dmgAmount * (1 - spellLevelDmgMult.get(level)[0])));
+                }
+                // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
             }
         }
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("While pressing the magic keybind, reduces damage taken from mobs by " + (spellLevelDmgMult.get(level)[0] * 100) + "% and reflects " + (spellLevelDmgMult.get(level)[1] * 100) + "% of the initial damage"));
-        pTooltipComponents.add(new TextComponent("Costs " + manaCost + " Mana per reflect"));
+        pTooltipComponents.add(new TextComponent("While pressing the magic keybind:"));
+        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ")
+                                       .append(new TextComponent((int) (spellLevelDmgMult.get(level)[0] * 100) + "%").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.UNDERLINE)));
+        pTooltipComponents.add(new TextComponent("  - Reflects ")
+                                       .append(new TextComponent((int) (spellLevelDmgMult.get(level)[1] * 100) + "%").withStyle(ChatFormatting.RED).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(" of the initial damage"));
+        pTooltipComponents.add(new TextComponent("Costs ")
+                                       // TODO: Color subject to change once mana UI is implemented
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(" per reflect"));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

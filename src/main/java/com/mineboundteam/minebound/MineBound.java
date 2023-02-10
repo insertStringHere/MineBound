@@ -26,7 +26,7 @@ public class MineBound {
         }
     };
 
-    public MineBound(){
+    public MineBound() {
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);
         iEventBus.addListener(this::clientSetup);
@@ -36,5 +36,13 @@ public class MineBound {
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         ClientRegistry.register();
+    }
+
+    public static void registerObject(Object object) {
+        MinecraftForge.EVENT_BUS.register(object);
+    }
+
+    public static void unregisterObject(Object object) {
+        MinecraftForge.EVENT_BUS.unregister(object);
     }
 }

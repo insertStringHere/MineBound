@@ -46,10 +46,10 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_SUIT_LEGGINGS = ITEMS.register("myrial_suit_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_LEGGINGS));
     public static final RegistryObject<Item> MYRIAL_SUIT_BOOTS = ITEMS.register("myrial_suit_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_BOOTS));
 
-    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TEST_SPELL));
+    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TEST_SPELL));
 
     /* Shield */
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", ()-> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", ()-> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", ()-> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
 }
