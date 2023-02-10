@@ -65,7 +65,7 @@ public abstract class ArmorSpellsProvider implements ICapabilityProvider, INBTSe
     public static class ArmorPassiveSpellsProvider extends ArmorSpellsProvider {
         @Override
         public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-            return cap == ARMOR_ACTIVE_SPELLS ? optional.cast() : LazyOptional.empty();
+            return cap == ARMOR_PASSIVE_SPELLS ? optional.cast() : LazyOptional.empty();
         }
     }
 
