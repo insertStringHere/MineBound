@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,9 +13,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class SpellItem extends Item {
-    protected SpellLevel level;
+    public final ArmorTier level;
 
-    public SpellItem(Properties pProperties, SpellLevel level) {
+    public SpellItem(Properties pProperties, ArmorTier level) {
         super(pProperties);
         this.level = level;
     }

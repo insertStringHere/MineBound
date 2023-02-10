@@ -3,13 +3,15 @@ package com.mineboundteam.minebound.magic;
 import java.util.List;
 
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class PassiveSpellItem extends SpellItem {
-    public PassiveSpellItem(Properties properties, SpellLevel level) {
+    public PassiveSpellItem(Properties properties, ArmorTier level) {
         super(properties, level);
     }
 
