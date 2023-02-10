@@ -104,7 +104,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                                        // TODO: Color subject to change once mana UI is implemented
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
                                        .append(" per reflect").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Spell is active while keybind is held").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {
