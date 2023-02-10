@@ -114,7 +114,8 @@ public abstract class ArmorSpellContainer implements Container {
     public void setItem(int pSlot, ItemStack pStack) {
         if(!this.menu.player.level.isClientSide())
         capabilityWrapper(slots -> {
-            for (int i = 0; i < pSlot - slots.items.size()+1; i++)
+            int slotSize = slots.items.size();
+            for (int i = 0; i < pSlot - slotSize + 1; i++)
                 slots.items.add(ItemStack.EMPTY);
             slots.items.set(pSlot, pStack);
         });
@@ -134,6 +135,8 @@ public abstract class ArmorSpellContainer implements Container {
             });
     }
 
+    public abstract boolean isActive();
+
     public static class ActiveSpell extends ArmorSpellContainer {
 
         public ActiveSpell(ArmorForgeMenu menu) {
@@ -147,6 +150,11 @@ public abstract class ArmorSpellContainer implements Container {
                     pSlot >= ((MyrialArmorItem) item).getConfig().STORAGE_SLOTS.get())
                 return;
             super.setItem(pSlot, pStack);
+        }
+
+        @Override
+        public boolean isActive() {
+            return this.item.hasItem() && this.item.getArmor().getConfig().STORAGE_SLOTS.get() > 0; 
         }
     }
     public static class PassiveSpell extends ArmorSpellContainer {
@@ -162,6 +170,11 @@ public abstract class ArmorSpellContainer implements Container {
                     pSlot >= ((MyrialArmorItem) item).getConfig().UTILITY_SLOTS.get())
                 return;
             super.setItem(pSlot, pStack);
+        }
+
+        @Override
+        public boolean isActive() {
+            return this.item.hasItem() && this.item.getArmor().getConfig().UTILITY_SLOTS.get() > 0; 
         }
     }
 }

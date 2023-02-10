@@ -1,11 +1,13 @@
 package com.mineboundteam.minebound.inventory;
 
+import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
 import com.mineboundteam.minebound.inventory.containers.ArmorSpellContainer;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.MyrialSpellSlot;
 import com.mineboundteam.minebound.inventory.slots.OutputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
+import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.registry.MenuRegistry;
 import com.mineboundteam.minebound.registry.RecipeRegistry;
 
@@ -28,11 +30,44 @@ import java.util.Optional;
 public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     private final ContainerLevelAccess containerLevelAccess;
     private final CraftingContainer craftingContainer = new CraftingContainer(this, 3, 3);
-    
-    private final ResultContainer resultContainer = new ResultContainer();
 
-    protected ArmorSpellContainer activeSpells; 
-    protected ArmorSpellContainer passiveSpells;
+    private final ResultContainer resultContainer = new ResultContainer(){
+        @Override
+        public ItemStack removeItem(int index, int count){
+            if(slots.get(ARMOR_INPUT_INDEX).hasItem())
+                transferStoredItems(getItem(index), slots.get(ARMOR_INPUT_INDEX).getItem());
+            return super.removeItem(index, count);
+        }
+        // Fix it when you implement the recipe if it doesn't work
+        // I'm hecking tired
+        protected void transferStoredItems(ItemStack result, ItemStack source){
+            result.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(slots -> {
+                int max = ((MyrialArmorItem)result.getItem()).getConfig().STORAGE_SLOTS.get();
+                source.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(mySlots -> {
+                    for(int i = 0; i < mySlots.items.size(); i++){
+                        if(i < max)
+                            slots.items.add(mySlots.items.get(i));
+                        else if(!moveItemStackTo(mySlots.items.get(i), 0, 40, false))
+                            player.drop(mySlots.items.get(i), false, false);
+                    }
+                });
+            });
+            result.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
+                int max = ((MyrialArmorItem)result.getItem()).getConfig().UTILITY_SLOTS.get();
+                source.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(mySlots -> {
+                    for(int i = 0; i < mySlots.items.size(); i++){
+                        if(i < max)
+                            slots.items.add(mySlots.items.get(i));
+                        else if(!moveItemStackTo(mySlots.items.get(i), 0, 40, false))
+                            player.drop(mySlots.items.get(i), false, false);
+                    }
+                });
+            });
+        }
+    };
+
+    public ArmorSpellContainer activeSpells;
+    public ArmorSpellContainer passiveSpells;
 
     public final Player player;
     public static final int SIZE = 7;
@@ -76,15 +111,14 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         activeSpells = new ArmorSpellContainer.ActiveSpell(this);
         passiveSpells = new ArmorSpellContainer.PassiveSpell(this);
 
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 3; j++){
-                this.addSlot(new MyrialSpellSlot.Active(activeSpells, i*3 + j, 208 + 21 * j, 26 + 21 * i));
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++) {
+                this.addSlot(new MyrialSpellSlot.Active(activeSpells, i * 3 + j, 208 + 21 * j, 26 + 21 * i));
             }
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 3; j++){
-                this.addSlot(new MyrialSpellSlot.Passive(passiveSpells, i*3 + j + 9, 208 + 21 * j, 103 + 21 * i));
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++) {
+                this.addSlot(new MyrialSpellSlot.Passive(passiveSpells, i * 3 + j, 208 + 21 * j, 103 + 21 * i));
             }
-
 
     }
 
@@ -126,27 +160,27 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         ItemStack copyOfSourceStack = sourceStack.copy();
         // if in inventory, first try to move to armor slots, then into crafting slots
         if (index < 36) {
-            if(!moveItemStackTo(sourceStack, 36, 40, false) 
-            && !moveItemStackTo(sourceStack, 40, 47, false)
-            && !moveItemStackTo(sourceStack, 0, 36, false))
+            if (!moveItemStackTo(sourceStack, 36, 40, false)
+                    && !moveItemStackTo(sourceStack, 40, 47, false)
+                    && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
-        // If in armor slots, try to move to armor crafting slot, then if not, into inventory
+            // If in armor slots, try to move to armor crafting slot, then if not, into inventory
         } else if (index < 40) {
-            if(!moveItemStackTo(sourceStack, 45, 45, false)
-            && !moveItemStackTo(sourceStack, 0, 36, false)) 
+            if (!moveItemStackTo(sourceStack, 45, 45, false)
+                    && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
-        // If result slot, first try to move to armor inventory, then if not, into inventory
-        } else if(index > 45) {
-            if(!moveItemStackTo(sourceStack, 36, 40, false)
-            && !moveItemStackTo(sourceStack, 45, 45, false)
-            && !moveItemStackTo(sourceStack, 0, 40, false))
+            // If result slot, first try to move to armor inventory, then if not, into inventory
+        } else if (index > 45) {
+            if (!moveItemStackTo(sourceStack, 36, 40, false)
+                    && !moveItemStackTo(sourceStack, 45, 45, false)
+                    && !moveItemStackTo(sourceStack, 0, 40, false))
                 return ItemStack.EMPTY;
-        // Try to equip the armor first
+            // Try to equip the armor first
         } else if (index == 45) {
-            if(!moveItemStackTo(sourceStack, 36, 40, false)
-            && !moveItemStackTo(sourceStack, 0, 36, false)) 
+            if (!moveItemStackTo(sourceStack, 36, 40, false)
+                    && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
-        } else if(!moveItemStackTo(sourceStack, 0, 40, false))
+        } else if (!moveItemStackTo(sourceStack, 0, 40, false))
             return ItemStack.EMPTY;
 
         if (sourceStack.getCount() == 0) {
@@ -189,8 +223,10 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
             ArmorForgeRecipe armorForgeRecipe = optional.get();
             if (resultContainer.setRecipeUsed(level, serverplayer, armorForgeRecipe)) {
                 itemStack = armorForgeRecipe.getResultItem();
+
             }
         }
+
         resultContainer.setItem(0, itemStack);
         armorForgeMenu.setRemoteSlot(0, itemStack);
         serverplayer.connection.send(new ClientboundContainerSetSlotPacket(armorForgeMenu.containerId,
