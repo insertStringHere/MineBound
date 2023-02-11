@@ -1,5 +1,10 @@
 package com.mineboundteam.minebound.item.armor;
 
+import com.mineboundteam.minebound.MineBound;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+
 public enum ArmorTier {
     EFFIGY(0),
     SUIT(1),
@@ -11,9 +16,13 @@ public enum ArmorTier {
         this.id = id;
     }
 
+    public Component getLabel(){
+        return new TranslatableComponent("armor." + MineBound.MOD_ID + "." + getValue());
+    }
+
     @Override
     public String toString(){
-        return this.name().toLowerCase();
+        return getLabel().getContents();
     }
 
     public int getValue(){

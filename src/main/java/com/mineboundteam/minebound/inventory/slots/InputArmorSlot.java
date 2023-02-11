@@ -8,8 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class InputArmorSlot extends PlayerArmorSlot {
-    public InputArmorSlot(Container container, int slotIndex, int x, int y) {
-        super(EquipmentSlot.CHEST, null, container, slotIndex, x, y);
+    public InputArmorSlot(Player player, Container container, int slotIndex, int x, int y) {
+        super(EquipmentSlot.CHEST, player, container, slotIndex, x, y);
     }
 
     @Override
@@ -20,5 +20,11 @@ public class InputArmorSlot extends PlayerArmorSlot {
     @Override
     public boolean mayPickup(Player player) {
         return true;
+    }
+
+    public MyrialArmorItem getArmor(){
+        if(this.getItem().isEmpty())
+            return null;
+        return (MyrialArmorItem)this.getItem().getItem();
     }
 }

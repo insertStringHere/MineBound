@@ -1,9 +1,9 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.config.IConfig;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.magic.SpellLevel;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -18,8 +18,8 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class TestSpell extends ActiveSpellItem {
     private int manaCost;
 
-    public TestSpell(Properties properties, SpellLevel level, TestSpellConfig config) {
-        super(properties, level);
+    public TestSpell(Properties properties, TestSpellConfig config) {
+        super(properties, config.level);
 
         manaCost = config.MANA_COST.get();
     }
@@ -40,16 +40,19 @@ public class TestSpell extends ActiveSpellItem {
 
     public static class TestSpellConfig implements IConfig {
         public IntValue MANA_COST;
+        public final ArmorTier level;
 
         private int manaCost;
 
-        public TestSpellConfig(int manaCost) {
+        public TestSpellConfig(int manaCost, ArmorTier tier) {
             this.manaCost = manaCost;
+            this.level = tier;
         }
 
         @Override
         public void build(Builder builder) {
             builder.push("Test magic item");
+            builder.push("Level " + level.toString()); 
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
