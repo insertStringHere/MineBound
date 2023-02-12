@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound;
 
-import com.mineboundteam.minebound.inventory.containers.ArmorSpellSync;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.registry.ClientRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
@@ -42,6 +42,6 @@ public class MineBound {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event){
-        ArmorSpellSync.registerPackets(event);
+        CapabilitySync.registerPackets(event);
     }
 }
