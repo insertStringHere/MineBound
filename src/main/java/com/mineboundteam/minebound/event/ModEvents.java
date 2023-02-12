@@ -5,8 +5,11 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.mana.PlayerMana;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
+import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,8 +23,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.system.CallbackI;
-
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
@@ -32,6 +33,14 @@ public class ModEvents {
             if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent()){
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "properties"), new PlayerManaProvider());
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAttachCapabilitiesItems(AttachCapabilitiesEvent<ItemStack> event){
+        if(event.getObject().getItem() instanceof MyrialArmorItem){
+            event.addCapability(new ResourceLocation(MineBound.MOD_ID, "active_spells"), new ArmorSpellsProvider.ArmorActiveSpellsProvider());
+                event.addCapability(new ResourceLocation(MineBound.MOD_ID, "passive_spells"), new ArmorSpellsProvider.ArmorPassiveSpellsProvider());
         }
     }
 
@@ -49,6 +58,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event){
         event.register(PlayerMana.class);
+        event.register(SpellContainer.class);
     }
 
     protected static final EnumSet<EquipmentSlot> armorSlots = EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);

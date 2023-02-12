@@ -3,8 +3,9 @@ package com.mineboundteam.minebound.magic;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import com.mineboundteam.minebound.mana.PlayerManaProvider;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
@@ -12,8 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class SpellItem extends Item {
-    public SpellItem(Properties pProperties) {
+    public final ArmorTier level;
+
+    public SpellItem(Properties pProperties, ArmorTier level) {
         super(pProperties);
+        this.level = level;
     }
 
     protected void reduceMana(int manaCost, Player p) {
