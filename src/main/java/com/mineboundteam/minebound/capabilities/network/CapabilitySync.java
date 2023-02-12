@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.inventory.containers;
+package com.mineboundteam.minebound.capabilities.network;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -24,17 +24,15 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public class ArmorSpellSync {
+public class CapabilitySync {
     public static final SimpleChannel NET_CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MineBound.MOD_ID, "armor_capabilities"),
-            () -> "V1", a -> a.equals("V1"), a -> a.equals("V1"));
+            new ResourceLocation(MineBound.MOD_ID, "capability_sync"),
+            () -> "V1.1", a -> a.equals("V1.1"), a -> a.equals("V1.1"));
     public static long msgId = 0;
 
     public static void registerPackets(FMLCommonSetupEvent event) {
-        NET_CHANNEL.registerMessage(0, SingleItemSync.class, SingleItemSync::encode, SingleItemSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, ArmorSpellSync::handleSingleItem));
-        NET_CHANNEL.registerMessage(1, AllItemSync.class, AllItemSync::encode, AllItemSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, ArmorSpellSync::handleAllItems));
+        NET_CHANNEL.registerMessage(0, AllItemSync.class, AllItemSync::encode, AllItemSync::decode,
+                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleAllItems));
     }
 
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
@@ -43,17 +41,6 @@ public class ArmorSpellSync {
         // Make sure it's only executed on the physical client
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> func.accept(msg, ctx)));
         ctx.get().setPacketHandled(true);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void handleSingleItem(SingleItemSync msg, Supplier<NetworkEvent.Context> ctx){
-        AbstractContainerMenu menu = Minecraft.getInstance().player.containerMenu; 
-        if(menu.containerId == msg.getContainer() && menu instanceof ArmorForgeMenu)
-            ((ArmorForgeMenu)menu).slots.get(ArmorForgeMenu.ARMOR_INPUT_INDEX).getItem().getCapability(msg.getContainerType()).ifPresent(slots -> {
-            for (int i = 0; i < msg.getIndex() - slots.items.size()+1; i++)
-                slots.items.add(ItemStack.EMPTY);
-            slots.items.set(msg.getIndex(), msg.getItem());
-        });
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -66,61 +53,7 @@ public class ArmorSpellSync {
                 slots.items.add(i); 
         });
     }
-
-    public static class SingleItemSync {
-        private int containerIndex; 
-        private int itemIndex;
-        private ItemStack item;
-
-        private int containerType = 0;
-
-        public SingleItemSync(int inventoryIndex, int index, ItemStack item) {
-            this.containerIndex = inventoryIndex; 
-            this.itemIndex = index;
-            this.item = item;
-        }
-
-        public int getIndex() {
-            return itemIndex;
-        }
-
-        public ItemStack getItem() {
-            return item;
-        }
-
-        public int getContainer(){
-            return containerIndex;
-        }
-
-        public SingleItemSync setContainerType(Capability<SpellContainer> type){
-            if(type.equals(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS))
-                containerType = 1;
-            return this;
-        }
-
-        public Capability<SpellContainer> getContainerType(){
-            switch(containerType){
-                case 1:
-                    return ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS;
-            }
-
-            return ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS;
-        }
-
-        public static void encode(SingleItemSync msg, FriendlyByteBuf buf) {
-            buf.writeInt(msg.containerIndex);
-            buf.writeInt(msg.itemIndex);
-            buf.writeItem(msg.item);
-            buf.writeInt(msg.containerType);
-        }
-
-        public static SingleItemSync decode(FriendlyByteBuf buf) {
-            SingleItemSync itemSync = new SingleItemSync(buf.readInt(), buf.readInt(), buf.readItem());
-            itemSync.containerType = buf.readInt();
-            return itemSync;
-        }
-    }
-
+    
     public static class AllItemSync {
         private int containerIndex; 
         private List<ItemStack> items;

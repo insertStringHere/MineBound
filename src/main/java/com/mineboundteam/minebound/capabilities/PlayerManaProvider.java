@@ -20,7 +20,7 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
 
     private @NotNull PlayerMana createPlayerMana() {
         if(this.mana == null)
-            this.mana = new PlayerMana().setMana(0).setManaRecRate(ManaConfig.manaRecovery.get());
+            this.mana = new PlayerMana().setMana(0);
 
         return this.mana;
     }
@@ -45,18 +45,13 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
 
     public class PlayerMana {
         private int mana;
-        private int manaRecRate;
         private int availableManaCap;
         private int totalManaCap;
+        private final int manaRecRate = ManaConfig.manaRecovery.get();
         private final int manaMax = ManaConfig.maximumMana.get();
     
         public PlayerMana setMana(int amt){
             mana = amt;
-            return this;
-        }
-    
-        public PlayerMana setManaRecRate(int amt){
-            manaRecRate = amt;
             return this;
         }
     
