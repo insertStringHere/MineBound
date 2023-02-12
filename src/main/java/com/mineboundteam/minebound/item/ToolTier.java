@@ -6,6 +6,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 
 public class ToolTier {
-    public static final ForgeTier ENERGIZED_IRON = new ForgeTier(2, 250, 7, 2, 14, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(ItemRegistry.ENERGIZED_IRON_INGOT.get()));
-    public static final ForgeTier ILLUMINANT_STEEL = new ForgeTier(3, 1561, 8, 3, 10, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(ItemRegistry.ILLUMINANT_STEEL_INGOT.get()));
+    public static final ForgeTier ENERGIZED_IRON = new ForgeTier(2, 250, 7, 2, 8, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(ItemRegistry.ENERGIZED_IRON_INGOT.get()));
+    public static final ForgeTier ILLUMINANT_STEEL = new ForgeTier(2, 1561, 7.5F, 2.3F, 8, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(ItemRegistry.ILLUMINANT_STEEL_INGOT.get()));
 }
