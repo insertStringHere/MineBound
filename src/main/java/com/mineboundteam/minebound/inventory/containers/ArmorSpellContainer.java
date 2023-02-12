@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -131,7 +132,7 @@ public abstract class ArmorSpellContainer implements Container {
     public void setChanged() {
         if(item.hasItem() && !this.menu.player.level.isClientSide())
             item.getItem().getCapability(spellCap).ifPresent(slots -> {
-                ArmorSpellSync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayer)this.menu.player)), new ArmorSpellSync.AllItemSync(this.menu.containerId, slots.items).setContainerType(spellCap));
+                CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayer)this.menu.player)), new CapabilitySync.AllItemSync(this.menu.containerId, slots.items).setContainerType(spellCap));
             });
     }
 
