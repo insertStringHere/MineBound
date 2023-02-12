@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.mana.PlayerManaProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -21,7 +22,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.system.CallbackI;
 
-import java.util.*;import net.minecraft.world.entity.player.Player;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ModEvents {
