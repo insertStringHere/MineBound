@@ -19,11 +19,15 @@ public class MagicConfigRegistry implements IConfig {
     @Override
     public void build(Builder builder) {
         TEST_SPELL.build(builder);
+        builder.pop();
 
         /* Shield */
         SHIELD_OFFENSIVE_1.build(builder);
+        builder.pop();
         SHIELD_OFFENSIVE_2.build(builder);
+        builder.pop();
         SHIELD_OFFENSIVE_3.build(builder);
+        builder.pop();
     }
 
     @Override

@@ -120,7 +120,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         @Override
         public void build(ForgeConfigSpec.Builder builder) {
             builder.push("Shield Offensive");
-            builder.push("Level " + LEVEL.toString());
+            builder.push("Tier " + LEVEL.getValue());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
