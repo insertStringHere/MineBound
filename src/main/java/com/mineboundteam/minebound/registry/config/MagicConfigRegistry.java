@@ -17,9 +17,11 @@ public class MagicConfigRegistry implements IConfig {
     @Override
     public void build(Builder builder) {
         TEST_SPELL.build(builder);
+        builder.pop();
 
         /* Telekinetic */
         TELEKINETIC_UTILITY_2.build(builder);
+        builder.pop();
     }
 
     @Override

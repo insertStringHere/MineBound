@@ -84,7 +84,8 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
                                        .append(" per second of flight").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Additional copies reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (manaCostReductions.get(this.level) * 100) + "%").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE)));
+                                       .append(new TextComponent((int) (manaCostReductions.get(this.level) * 100) + "%").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(" each"));
     }
 
     public static class TelekineticUtilitySpellConfig implements IConfig {
@@ -102,7 +103,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         @Override
         public void build(Builder builder) {
             builder.push("Telekinetic Utility");
-            builder.push("Level " + LEVEL.toString());
+            builder.push("Tier " + LEVEL.getValue());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
