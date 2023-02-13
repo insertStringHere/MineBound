@@ -27,7 +27,6 @@ import java.util.List;
 public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     private final int manaCost;
-    private final ArmorTier level;
 
     static HashMap<ArmorTier, Double> manaCostReductions = new HashMap<>() {{
         put(ArmorTier.SUIT, 0.20);
@@ -39,7 +38,6 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         super(properties, config.LEVEL);
 
         manaCost = config.MANA_COST.get();
-        level = config.LEVEL;
     }
 
     @SubscribeEvent
