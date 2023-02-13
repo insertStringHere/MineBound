@@ -12,15 +12,20 @@ public class MagicConfigRegistry implements IConfig {
     public static final TestSpell.TestSpellConfig TEST_SPELL = new TestSpell.TestSpellConfig(10, ArmorTier.EFFIGY);
 
     /* Telekinetic */
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, ArmorTier.SUIT);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, ArmorTier.SUIT);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(7, 0.35, ArmorTier.SYNERGY);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(3, 0.50, ArmorTier.SINGULARITY);
 
     @Override
     public void build(Builder builder) {
+        builder.push("Test");
         TEST_SPELL.build(builder);
         builder.pop();
 
-        /* Telekinetic */
+        builder.push("Telekinetic");
         TELEKINETIC_UTILITY_2.build(builder);
+        TELEKINETIC_UTILITY_3.build(builder);
+        TELEKINETIC_UTILITY_4.build(builder);
         builder.pop();
     }
 

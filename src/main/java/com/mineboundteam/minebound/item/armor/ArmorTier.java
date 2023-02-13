@@ -6,10 +6,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public enum ArmorTier {
-    EFFIGY(1), // Tier 1
-    SUIT(2), // Tier 2
-    SYNERGY(3), // Tier 3
-    SINGULARITY(4); // Tier 4
+    EFFIGY(0), // Tier 1
+    SUIT(1), // Tier 2
+    SYNERGY(2), // Tier 3
+    SINGULARITY(3); // Tier 4
 
     private final int id;
     ArmorTier(int id){
