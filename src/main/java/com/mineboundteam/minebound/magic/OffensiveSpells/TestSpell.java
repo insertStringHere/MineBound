@@ -51,7 +51,7 @@ public class TestSpell extends ActiveSpellItem {
         @Override
         public void build(Builder builder) {
             builder.push("Test magic item");
-            builder.push("Tier " + (level.getValue() + 1));
+            builder.push(level.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop(2);
         }

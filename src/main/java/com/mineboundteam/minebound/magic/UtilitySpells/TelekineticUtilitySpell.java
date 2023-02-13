@@ -97,7 +97,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         @Override
         public void build(Builder builder) {
             builder.push("Utility");
-            builder.push("Tier " + (LEVEL.getValue() + 1));
+            builder.push(LEVEL.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             MANA_COST_REDUCTION = builder.comment("Mana cost reduction multiplier").defineInRange("mana_cost_reduction", manaCostReduction, 0.0, 1.0);
             builder.pop(2);
