@@ -2,9 +2,8 @@ package com.mineboundteam.minebound.magic.UtilitySpells;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
-import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
-import com.mineboundteam.minebound.magic.SpellLevel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -27,28 +27,49 @@ import java.util.List;
 public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     private final int manaCost;
-    private final SpellLevel level;
+    private final ArmorTier level;
+
+    static HashMap<ArmorTier, Double> manaCostReductions = new HashMap<>() {{
+        put(ArmorTier.SUIT, 0.20);
+        put(ArmorTier.SYNERGY, 0.35);
+        put(ArmorTier.SINGULARITY, 0.5);
+    }};
 
     public TelekineticUtilitySpell(Properties properties, TelekineticUtilitySpellConfig config) {
-        super(properties);
+        super(properties, config.LEVEL);
 
         manaCost = config.MANA_COST.get();
         level = config.LEVEL;
     }
 
-    @Override
-    public void updateEquipment(MyrialArmorItem item, Player player) {
-        super.updateEquipment(item, player);
-        //TODO: check if spell is equipped in a utility slot, then do this
-        player.getAbilities().mayfly = !player.getAbilities().mayfly;
-        player.onUpdateAbilities();
-    }
-
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isServer() && event.player.level.getDayTime() % 20 == 0 && event.phase == TickEvent.Phase.START && event.player.getAbilities().mayfly) {
-            if (event.player.getAbilities().flying) {
-                super.reduceMana(manaCost, event.player);
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative()) {
+            Player player = event.player;
+            List<TelekineticUtilitySpell> equippedTelekineticUtilitySpells = getEquippedSpellsOfType(TelekineticUtilitySpell.class, event.player);
+
+            // Set if player should still have flight on every tick
+            player.getAbilities().mayfly = equippedTelekineticUtilitySpells.size() > 0;
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().flying = false;
+            }
+            player.onUpdateAbilities();
+
+            // Calculate mana cost only once per second (every 20 ticks) if player is flying
+            if (player.level.getDayTime() % 20 == 0 && equippedTelekineticUtilitySpells.size() > 0 && player.getAbilities().flying) {
+                TelekineticUtilitySpell highestLevelSpell = equippedTelekineticUtilitySpells.get(0);
+                for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells.subList(1, equippedTelekineticUtilitySpells.size())) {
+                    if (equippedTelekineticUtilitySpell.level.getValue() > highestLevelSpell.level.getValue()) {
+                        highestLevelSpell = equippedTelekineticUtilitySpell;
+                    }
+                }
+                equippedTelekineticUtilitySpells.remove(highestLevelSpell);
+                int reducedManaCost = highestLevelSpell.manaCost;
+                for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells) {
+                    reducedManaCost *= 1 - manaCostReductions.get(equippedTelekineticUtilitySpell.level);
+                }
+                // Will cost as little as 1 mana per second
+                highestLevelSpell.reduceMana(Math.max(reducedManaCost, 1), player);
             }
         }
     }
@@ -57,21 +78,25 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TextComponent("While equipped in utility slot:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
-//        pTooltipComponents.add(new TextComponent("  - Gives elytra flight"));
+        if (this.level.getValue() >= ArmorTier.SINGULARITY.getValue()) {
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight"));
+        }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
                                        .append(" per second of flight").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("Additional copies reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent((int) (manaCostReductions.get(this.level) * 100) + "%").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE)));
     }
 
     public static class TelekineticUtilitySpellConfig implements IConfig {
 
         public IntValue MANA_COST;
-        public final SpellLevel LEVEL;
+        public final ArmorTier LEVEL;
 
         private final int manaCost;
 
-        public TelekineticUtilitySpellConfig(int manaCost, SpellLevel level) {
+        public TelekineticUtilitySpellConfig(int manaCost, ArmorTier level) {
             this.manaCost = manaCost;
             this.LEVEL = level;
         }
@@ -79,7 +104,8 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         @Override
         public void build(Builder builder) {
             builder.push("Telekinetic Utility");
-            MANA_COST = builder.comment("Tier " + LEVEL.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            builder.push("Level " + LEVEL.toString());
+            MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
 
