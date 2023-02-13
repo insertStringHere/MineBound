@@ -28,7 +28,6 @@ import java.util.List;
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
-    private final ArmorTier level;
     private boolean active = false;
     private static final HashMap<ArmorTier, double[]> spellLevelDmgMult = new HashMap<>() {{
         // Reduce damage by 50% and reflect 40%
@@ -43,7 +42,6 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         super(properties, config.LEVEL);
 
         this.manaCost = config.MANA_COST.get();
-        this.level = config.LEVEL;
     }
 
     // TODO: this code will execute in a different function once we work out how to execute spells from the keybindings
