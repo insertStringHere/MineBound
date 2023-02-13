@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound;
 
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.registry.ClientRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,11 +33,16 @@ public class MineBound {
         Registry.RegisterMod(iEventBus);
         iEventBus.addListener(this::clientSetup);
         iEventBus.addListener(EntityRegistry::registerAttributes);
+        iEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void clientSetup(final FMLClientSetupEvent fmlClientSetupEvent) {
         ClientRegistry.register();
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event){
+        CapabilitySync.registerPackets(event);
     }
 
     public static void registerObject(Object object) {

@@ -36,8 +36,11 @@
   "block.minebound.alloy_furnace": "Alloy Furnace",
   "block.minebound.myrial_steel_plate": "Myrial Steel Plates",
   "block.minebound.myrial_diamond_block": "Myrial Diamond Block",
+
   "container.alloy_furnace": "Alloy Furnace",
   "container.armor_forge": "Armor Forge",
+  "container.minebound.active_spells" : "Active Magic",
+  "container.minebound.passive_spells" : "Utility Magic",
 
   "key.categories.minebound": "Minebound",
   "key.minebound.primary_magic": "Left Hand Magic",
