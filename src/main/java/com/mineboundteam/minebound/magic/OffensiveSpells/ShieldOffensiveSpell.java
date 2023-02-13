@@ -2,8 +2,8 @@ package com.mineboundteam.minebound.magic.OffensiveSpells;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
+import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.magic.SpellLevel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -28,22 +28,22 @@ import java.util.List;
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
-    private final SpellLevel level;
+    private final ArmorTier level;
     private boolean active = false;
-    private final HashMap<SpellLevel, double[]> spellLevelDmgMult = new HashMap<>();
+    private static final HashMap<ArmorTier, double[]> spellLevelDmgMult = new HashMap<>() {{
+        // Reduce damage by 50% and reflect 40%
+        put(ArmorTier.EFFIGY, new double[]{0.5, 0.4});
+        // Reduce damage by 70% and reflect 60%
+        put(ArmorTier.SUIT, new double[]{0.7, 0.6});
+        // Reduce damage by 100% and reflect 80%
+        put(ArmorTier.SYNERGY, new double[]{1.0, 0.8});
+    }};
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
-        super(properties);
+        super(properties, config.LEVEL);
 
         this.manaCost = config.MANA_COST.get();
         this.level = config.LEVEL;
-
-        // Reduce damage by 50% and reflect 40%
-        spellLevelDmgMult.put(SpellLevel.Level1, new double[]{0.5, 0.4});
-        // Reduce damage by 70% and reflect 60%
-        spellLevelDmgMult.put(SpellLevel.Level2, new double[]{0.7, 0.6});
-        // Reduce damage by 100% and reflect 80%
-        spellLevelDmgMult.put(SpellLevel.Level3, new double[]{1.0, 0.8});
     }
 
     // TODO: this code will execute in a different function once we work out how to execute spells from the keybindings
@@ -110,11 +110,11 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     public static class ShieldOffensiveSpellConfig implements IConfig {
 
         public ForgeConfigSpec.IntValue MANA_COST;
-        public final SpellLevel LEVEL;
+        public final ArmorTier LEVEL;
 
         private final int manaCost;
 
-        public ShieldOffensiveSpellConfig(int manaCost, SpellLevel level) {
+        public ShieldOffensiveSpellConfig(int manaCost, ArmorTier level) {
             this.manaCost = manaCost;
             this.LEVEL = level;
         }
@@ -122,7 +122,8 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         @Override
         public void build(ForgeConfigSpec.Builder builder) {
             builder.push("Shield Offensive");
-            MANA_COST = builder.comment("Tier " + LEVEL.getValue() + " Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            builder.push("Level " + LEVEL.toString());
+            MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             builder.pop();
         }
 
