@@ -47,12 +47,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ENERGIZED_IRON_SWORD = ITEMS.register("energized_iron_sword", () -> new SwordItem(ToolTier.ENERGIZED_IRON, 3, -2.4F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_AXE = ITEMS.register("gilded_diamond_axe", () -> new AxeItem(ToolTier.GILDED_DIAMOND, 5.0F, -3.0F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_HOE = ITEMS.register("gilded_diamond_hoe", () -> new HoeItem(ToolTier.GILDED_DIAMOND, -3, 0.0F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-    public static final RegistryObject<Item> GILDED_DIAMOND_PICKAXE = ITEMS.register("gilded_diamond_pickaxe", () -> new PickaxeItem(ToolTier.GILDED_DIAMOND, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)) {
-        @Override
-        public float getDestroySpeed(@NotNull ItemStack itemStack, @NotNull BlockState blockState) {
-            return blockState.is(Blocks.STONE) ? Tiers.GOLD.getSpeed() : this.speed;
-        }
-    });
+    public static final RegistryObject<Item> GILDED_DIAMOND_PICKAXE = ITEMS.register("gilded_diamond_pickaxe", () -> new PickaxeItem(ToolTier.GILDED_DIAMOND, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_SHOVEL = ITEMS.register("gilded_diamond_shovel", () -> new ShovelItem(ToolTier.GILDED_DIAMOND, 1.5F, -3.0F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_SWORD = ITEMS.register("gilded_diamond_sword", () -> new SwordItem(ToolTier.GILDED_DIAMOND, 4, -2.4F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_AXE = ITEMS.register("illuminant_steel_axe", () -> new AxeItem(ToolTier.ILLUMINANT_STEEL, 5, -3, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
