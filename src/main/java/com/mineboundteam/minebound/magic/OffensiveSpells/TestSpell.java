@@ -4,7 +4,6 @@ import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -52,9 +51,9 @@ public class TestSpell extends ActiveSpellItem {
         @Override
         public void build(Builder builder) {
             builder.push("Test magic item");
-            builder.push("Level " + level.toString());
+            builder.push(level.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
-            builder.pop();
+            builder.pop(2);
         }
 
         @Override
