@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.item.MyriCorpseItem;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -46,4 +47,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_SUIT_BOOTS = ITEMS.register("myrial_suit_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_BOOTS));
 
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
+
+    /* Telekinetic */
+    public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
 }
