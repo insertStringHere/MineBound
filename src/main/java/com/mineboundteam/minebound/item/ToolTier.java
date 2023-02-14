@@ -2,7 +2,6 @@ package com.mineboundteam.minebound.item;
 
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.Tags;
