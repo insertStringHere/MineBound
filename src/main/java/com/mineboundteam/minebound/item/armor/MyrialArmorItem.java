@@ -2,11 +2,17 @@ package com.mineboundteam.minebound.item.armor;
 
 import java.util.function.Consumer;
 
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
+import com.mineboundteam.minebound.config.ManaConfig;
+
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -18,6 +24,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     private final ArmorConfig config;
     private final ArmorTier tier;
@@ -57,5 +64,13 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if(ManaConfig.keepArmor.get() && event.isWasDeath())
+            for(ItemStack item : event.getOriginal().getArmorSlots())
+                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem)
+                    event.getPlayer().setItemSlot(item.getEquipmentSlot(), item);
     }
 }
