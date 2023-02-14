@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
+import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mojang.blaze3d.platform.InputConstants;
 
