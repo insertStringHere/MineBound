@@ -64,6 +64,13 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
 
+    /*
+     * Spell Element
+     * [offensive spells]
+     * [defensive spells]
+     * [utility spells]
+     */
+
     /* Fire */
 
     /* Telekinetic */
