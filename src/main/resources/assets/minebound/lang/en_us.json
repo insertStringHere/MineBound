@@ -59,5 +59,10 @@
   "key.minebound.primary_magic": "Left Hand Magic",
   "key.minebound.secondary_magic": "Right Hand Magic",
   "key.minebound.primary_magic_select": "Select Left Hand Magic",
-  "key.minebound.secondary_magic_select": "Select Right Hand Magic"
+  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
+
+  "tooltip.minebound.level.0": "I",
+  "tooltip.minebound.level.1": "II",
+  "tooltip.minebound.level.2": "III",
+  "tooltip.minebound.level.3": "IV"
 }

@@ -65,6 +65,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in utility slot:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
         if (this.level.getValue() >= ArmorTier.SINGULARITY.getValue()) {
@@ -72,10 +73,10 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
                                        .append(" per second of flight").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Additional copies reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE))
                                        .append(" each"));
     }
 

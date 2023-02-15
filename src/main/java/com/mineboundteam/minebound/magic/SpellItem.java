@@ -1,16 +1,23 @@
 package com.mineboundteam.minebound.magic;
 
-import java.util.List;
-import java.util.stream.StreamSupport;
-
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
     public final ArmorTier level;
@@ -29,8 +36,8 @@ public abstract class SpellItem extends Item {
                 // Reduce player's armor charge directly
                 if (underflow > 0) {
                     List<ItemStack> armors = StreamSupport.stream(p.getArmorSlots().spliterator(), false)
-                            .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
-                            .toList();
+                                                     .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
+                                                     .toList();
 
                     if (armors.size() != 0) {
                         int amnt = underflow / armors.size();
@@ -50,9 +57,16 @@ public abstract class SpellItem extends Item {
 
                 // Reduce player health.
                 if (underflow > 0) {
-                    p.hurt(DamageSource.MAGIC, underflow/3);
+                    p.hurt(DamageSource.MAGIC, underflow / 3);
                 }
             });
     }
 
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()]))
+                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue()).withStyle(MyrialArmorItem.tierColors[level.getValue()]))
+                                       .append(" or higher armor"));
+    }
 }
