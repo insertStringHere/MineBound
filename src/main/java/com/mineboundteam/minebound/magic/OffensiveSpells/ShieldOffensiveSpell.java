@@ -12,11 +12,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
@@ -50,7 +48,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     // TODO: tie in with keybindings based on where spell is equipped
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.side.isServer() && event.phase == TickEvent.Phase.START) {
+        if (event.side.isServer() && event.phase == TickEvent.Phase.START) {
             active = ClientRegistry.PRIMARY_MAGIC.isDown();
         }
     }
@@ -106,14 +104,13 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     public static class ShieldOffensiveSpellConfig implements IConfig {
 
-        public IntValue MANA_COST;
-        public DoubleValue DMG_REDUCTION;
-        public DoubleValue DMG_REFLECTED;
         public final ArmorTier LEVEL;
-
         private final int manaCost;
         private final double damageReduction;
         private final double damageReflected;
+        public IntValue MANA_COST;
+        public DoubleValue DMG_REDUCTION;
+        public DoubleValue DMG_REFLECTED;
 
         public ShieldOffensiveSpellConfig(int manaCost, double damageReduction, double damageReflected, ArmorTier level) {
             this.manaCost = manaCost;
