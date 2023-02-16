@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.config.ManaConfig;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -71,6 +72,6 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         if(ManaConfig.keepArmor.get() && event.isWasDeath())
             for(ItemStack item : event.getOriginal().getArmorSlots())
                 if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem)
-                    event.getPlayer().setItemSlot(item.getEquipmentSlot(), item);
+                    event.getPlayer().setItemSlot(Player.getEquipmentSlotForItem(item), item);
     }
 }
