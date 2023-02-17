@@ -1,0 +1,24 @@
+{
+  "type": "minebound:armor_forge",
+  "armor": "minebound:myrial_synergy_leggings",
+  "ingredients": [
+    {
+      "item": "minebound:myrial_diamond_leggings"
+    },
+    {
+      "item": "minecraft:netherite"
+    },
+    {
+      "item": "minebound:myri_chuck"
+    },
+    {
+      "item": "minebound:alien_circuitry"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_singularity_leggings"
+  }
+}
