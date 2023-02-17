@@ -21,6 +21,12 @@ public class ArmorConfigRegistry implements IConfig{
     public static final ArmorConfig SUIT_LEGGINGS = new ArmorConfig("Myrial Suit Leggings", 50, 0, 400, 2, 0);
     public static final ArmorConfig SUIT_BOOTS = new ArmorConfig("Myrial Suit Boots", 20, 1, 400, 1, 0);
 
+    public static final ArmorConfig SYNERGY_SET = new ArmorConfig("Myrial Synergy Set Bonus", 100, 5, 0, 0, 0);
+    public static final ArmorConfig SYNERGY_HELMET = new ArmorConfig("Myrial Synergy Helmet", 60, 2, 1000, 2, 0);
+    public static final ArmorConfig SYNERGY_CHESTPLATE = new ArmorConfig("Myrial Synergy Chestplate", 100, 1, 1000, 1, 2);
+    public static final ArmorConfig SYNERGY_LEGGINGS = new ArmorConfig("Myrial Synergy Leggings", 80, 1, 1000, 2, 1);
+    public static final ArmorConfig SYNERGY_BOOTS = new ArmorConfig("Myrial Synergy Boots", 60, 1, 1000, 2, 0);
+
     public static HashMap<ArmorTier, ArmorConfig> SET_BONUS_MAP = new HashMap<>();
 
     @Override
