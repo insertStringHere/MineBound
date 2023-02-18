@@ -41,7 +41,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof Player player) {
+        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() instanceof EntityDamageSource) {
             ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, player);
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
@@ -50,16 +50,15 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     hitsRemaining = spellStack.getTag().getInt("minebound.shield_utility.hits_remaining");
                 }
                 if (hitsRemaining > 0) {
-                    if (!player.getLevel().isClientSide() && event.getSource() instanceof EntityDamageSource) {
-                        // canceling the event, and therefore damage, stops it from firing client side so no sound can be played client side
-                        event.setCanceled(true);
-                        spell.reduceMana(spell.manaCost, player);
+                    // canceling the event, and therefore damage, stops it from firing client side so no sound can be played client side
+                    // without sending some packets of some sort
+                    event.setCanceled(true);
+                    spell.reduceMana(spell.manaCost, player);
 
-                        CompoundTag tag = new CompoundTag();
-                        tag.putInt("minebound.shield_utility.hits_remaining", hitsRemaining - 1);
-                        tag.putInt("minebound.shield_utility.cooldown", spell.recovCooldown);
-                        spellStack.setTag(tag);
-                    }
+                    CompoundTag tag = new CompoundTag();
+                    tag.putInt("minebound.shield_utility.hits_remaining", hitsRemaining - 1);
+                    tag.putInt("minebound.shield_utility.cooldown", spell.recovCooldown);
+                    spellStack.setTag(tag);
                 }
             }
         }
