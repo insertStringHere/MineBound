@@ -66,28 +66,26 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in utility slot:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
         if (this.level.getValue() >= ArmorTier.SINGULARITY.getValue()) {
-            pTooltipComponents.add(new TextComponent("  - Gives elytra flight"));
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight").withStyle(ChatFormatting.GRAY));
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
-                                       .append(" per second of flight").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Additional copies reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
+                                       .append(" per second of flight"));
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE))
                                        .append(" each"));
     }
 
     public static class TelekineticUtilitySpellConfig implements IConfig {
 
-        public IntValue MANA_COST;
-        public DoubleValue MANA_COST_REDUCTION;
         public final ArmorTier LEVEL;
-
         private final int manaCost;
         private final double manaCostReduction;
+        public IntValue MANA_COST;
+        public DoubleValue MANA_COST_REDUCTION;
 
         public TelekineticUtilitySpellConfig(int manaCost, double manaCostReduction, ArmorTier level) {
             this.manaCost = manaCost;

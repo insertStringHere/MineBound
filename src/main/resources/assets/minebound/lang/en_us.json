@@ -39,6 +39,10 @@
 
   "item.minebound.magic_telekinetic_u2": "Telekinetic Utility II",
 
+  "item.minebound.magic_shield_u2": "Shield Utility II",
+  "item.minebound.magic_shield_u3": "Shield Utility III",
+  "item.minebound.magic_shield_u4": "Shield Utility IV",
+
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
   "block.minebound.gilded_diamond_block": "Gilded Diamond Block",
