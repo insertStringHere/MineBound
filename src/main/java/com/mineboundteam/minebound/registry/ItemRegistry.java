@@ -64,6 +64,11 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_SUIT_LEGGINGS = ITEMS.register("myrial_suit_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_LEGGINGS));
     public static final RegistryObject<Item> MYRIAL_SUIT_BOOTS = ITEMS.register("myrial_suit_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_BOOTS));
 
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_HELMET = ITEMS.register("myrial_synergy_helmet", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_HELMET));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_CHESTPLATE = ITEMS.register("myrial_synergy_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_CHESTPLATE));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_LEGGINGS = ITEMS.register("myrial_synergy_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_LEGGINGS));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_BOOTS = ITEMS.register("myrial_synergy_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_BOOTS));
+
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
 
     /* Telekinetic */
