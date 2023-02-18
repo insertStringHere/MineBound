@@ -105,7 +105,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Stores ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
                                        .append(", each fully negating the damage from an attack"));
-        pTooltipComponents.add(new TextComponent("  - Charges will be fully replenished after ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("  - Charges are fully replenished after ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                                        .append(" has been depleted for ")
                                        .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
