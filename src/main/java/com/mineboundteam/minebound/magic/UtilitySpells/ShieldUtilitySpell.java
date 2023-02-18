@@ -125,7 +125,6 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         private final int totalHits;
         private final int recovCooldownTicks;
 
-
         public ShieldUtilitySpellConfig(int manaCost, int totalHits, int recovCooldownTicks, ArmorTier level) {
             this.manaCost = manaCost;
             this.LEVEL = level;
