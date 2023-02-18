@@ -50,10 +50,8 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     hitsRemaining = spellStack.getTag().getInt("minebound.shield_utility.hits_remaining");
                 }
                 if (hitsRemaining > 0) {
-//                    player.playSound(SoundEvents.SHIELD_BLOCK, 1f, 1f);
                     if (!player.getLevel().isClientSide() && event.getSource() instanceof EntityDamageSource) {
-                        System.out.println(hitsRemaining);
-                        // TODO: canceling the event, and therefore damage, prevents it from firing client side so no sound can be played client side
+                        // canceling the event, and therefore damage, stops it from firing client side so no sound can be played client side
                         event.setCanceled(true);
                         spell.reduceMana(spell.manaCost, player);
 
