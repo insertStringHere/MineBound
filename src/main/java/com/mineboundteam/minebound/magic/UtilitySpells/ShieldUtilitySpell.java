@@ -42,7 +42,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() instanceof EntityDamageSource) {
-            ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, player);
+            ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, getEquippedSpellsOfType(ShieldUtilitySpell.class, player));
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 int hitsRemaining = spell.totalHits;
@@ -67,8 +67,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.phase == TickEvent.Phase.START) {
-            Player player = event.player;
-            ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, player);
+            ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, getEquippedSpellsOfType(ShieldUtilitySpell.class, event.player));
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 if (spellStack.hasTag()) {

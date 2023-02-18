@@ -15,29 +15,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class PassiveSpellItem extends SpellItem {
     public PassiveSpellItem(Properties properties, ArmorTier level) {
         super(properties, level);
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <T extends PassiveSpellItem> List<T> getEquippedSpellsOfType(Class<T> type, Player player) {
-        NonNullList<T> spells = NonNullList.create();
-        for (EquipmentSlot e : EquipmentSlot.values())
-            player.getItemBySlot(e).getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
-                for (ItemStack item : slots.items) {
-                    if (type.isInstance(item.getItem()))
-                        spells.add((T) item.getItem());
-                }
-            });
+    // These functions could potentially be running every tick, so they should be as performant as possible.
+    // Streams can help with readability, but they are massively slower than a for each loop (2 - 6 times slower in my testing).
 
-        return spells;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type, Player player) {
+    protected static <T extends PassiveSpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player) {
         NonNullList<ItemStack> spells = NonNullList.create();
         for (EquipmentSlot e : EquipmentSlot.values())
             player.getItemBySlot(e).getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
@@ -46,9 +33,45 @@ public abstract class PassiveSpellItem extends SpellItem {
                         spells.add(item);
                 }
             });
+        return spells;
+    }
 
-        Optional<ItemStack> highestLevelSpell = spells.stream().max(Comparator.comparingInt(spell -> ((T) spell.getItem()).level.getValue()));
-        return highestLevelSpell.orElse(null);
+    @SuppressWarnings("unchecked")
+    protected static <T extends PassiveSpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player) {
+        NonNullList<T> spells = NonNullList.create();
+        for (EquipmentSlot e : EquipmentSlot.values())
+            player.getItemBySlot(e).getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
+                for (ItemStack item : slots.items) {
+                    if (type.isInstance(item.getItem()))
+                        spells.add((T) item.getItem());
+                }
+            });
+        return spells;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type, List<ItemStack> spells) {
+        ItemStack highestSpell = null;
+        for (ItemStack spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (((T) spell.getItem()).level.getValue() > ((T) highestSpell.getItem()).level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
+    }
+
+    protected static <T extends PassiveSpellItem> T getHighestEquippedSpellItem(List<T> spells) {
+        T highestSpell = null;
+        for (T spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (spell.level.getValue() > highestSpell.level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
     }
 
     @Override
