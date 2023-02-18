@@ -119,13 +119,14 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
 
     public static class ShieldUtilitySpellConfig implements IConfig {
 
+        public ForgeConfigSpec.IntValue MANA_COST;
+        public ForgeConfigSpec.IntValue TOTAL_HITS;
+        public ForgeConfigSpec.IntValue RECOV_TICKS;
         public final ArmorTier LEVEL;
         private final int manaCost;
         private final int totalHits;
         private final int recovCooldownTicks;
-        public ForgeConfigSpec.IntValue MANA_COST;
-        public ForgeConfigSpec.IntValue TOTAL_HITS;
-        public ForgeConfigSpec.IntValue RECOV_TICKS;
+
 
         public ShieldUtilitySpellConfig(int manaCost, int totalHits, int recovCooldownTicks, ArmorTier level) {
             this.manaCost = manaCost;
@@ -140,7 +141,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
             builder.push(LEVEL.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             TOTAL_HITS = builder.comment("Hits before spell goes on cool down").defineInRange("total_hits", totalHits, 0, 10000);
-            RECOV_TICKS = builder.comment("Time in ticks before the shield fully recovers (20 ticks = 1 second)").defineInRange("recov_tick", recovCooldownTicks, 0, 10000);
+            RECOV_TICKS = builder.comment("Time in ticks before the shield fully recovers (20 ticks = 1 second)").defineInRange("recovery_ticks", recovCooldownTicks, 0, 10000);
             builder.pop(2);
         }
 
