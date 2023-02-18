@@ -50,8 +50,13 @@ public class ArmorConfigRegistry implements IConfig{
         SET_BONUS_MAP.put(ArmorTier.SUIT, SUIT_SET);
         
         builder.push("Myrial Synergy (Tier 3)");
+        SYNERGY_HELMET.build(builder);
+        SYNERGY_CHESTPLATE.build(builder);
+        SYNERGY_LEGGINGS.build(builder);
+        SYNERGY_BOOTS.build(builder);
         builder.pop();
-        
+        SET_BONUS_MAP.put(ArmorTier.SYNERGY, SYNERGY_SET);
+
         builder.push("Myrial Singularity (Tier 4)");
         builder.pop();
     }
