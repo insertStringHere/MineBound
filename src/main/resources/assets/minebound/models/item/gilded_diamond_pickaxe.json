@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "minebound:item/gilded_diamond_pickaxe"
+  }
+}
