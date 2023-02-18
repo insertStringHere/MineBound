@@ -54,6 +54,7 @@ public class ArmorConfigRegistry implements IConfig{
         SYNERGY_CHESTPLATE.build(builder);
         SYNERGY_LEGGINGS.build(builder);
         SYNERGY_BOOTS.build(builder);
+        SYNERGY_SET.build(builder);
         builder.pop();
         SET_BONUS_MAP.put(ArmorTier.SYNERGY, SYNERGY_SET);
 
