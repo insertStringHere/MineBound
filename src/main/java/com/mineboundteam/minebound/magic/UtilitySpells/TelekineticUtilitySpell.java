@@ -81,11 +81,11 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     public static class TelekineticUtilitySpellConfig implements IConfig {
 
+        public IntValue MANA_COST;
+        public DoubleValue MANA_COST_REDUCTION;
         public final ArmorTier LEVEL;
         private final int manaCost;
         private final double manaCostReduction;
-        public IntValue MANA_COST;
-        public DoubleValue MANA_COST_REDUCTION;
 
         public TelekineticUtilitySpellConfig(int manaCost, double manaCostReduction, ArmorTier level) {
             this.manaCost = manaCost;
