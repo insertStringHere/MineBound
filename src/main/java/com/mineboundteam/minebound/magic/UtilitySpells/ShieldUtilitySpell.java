@@ -114,7 +114,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                                        .append(new TextComponent("1 charge").withStyle(ChatFormatting.AQUA))
                                        .append(" and costs ")
                                        .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
-                                       .append(" per attack received"));
+                                       .append(" per attack"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {
