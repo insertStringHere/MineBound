@@ -7,6 +7,7 @@ public class Registry {
         ItemRegistry.ITEMS.register(iEventBus);
         BlockRegistry.BLOCKS.register(iEventBus);
         BlockRegistry.BLOCK_ENTITIES.register(iEventBus);
+        ParticleRegistry.PARTICLES.register(iEventBus);
 
         ConfigRegistry.register(iEventBus);
         

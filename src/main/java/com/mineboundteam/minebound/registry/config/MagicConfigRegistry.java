@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.registry.config;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
@@ -10,6 +11,9 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class MagicConfigRegistry implements IConfig {
 
     public static final TestSpell.TestSpellConfig TEST_SPELL = new TestSpell.TestSpellConfig(10, ArmorTier.EFFIGY);
+
+    /* Fire */
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, ArmorTier.EFFIGY);
 
     /* Telekinetic */
     public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, ArmorTier.SUIT);
@@ -20,6 +24,10 @@ public class MagicConfigRegistry implements IConfig {
     public void build(Builder builder) {
         builder.push("Test");
         TEST_SPELL.build(builder);
+        builder.pop();
+
+        builder.push("Fire");
+        FIRE_OFFENSIVE_1.build(builder);
         builder.pop();
 
         builder.push("Telekinetic");
