@@ -58,7 +58,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
                 player.getItemBySlot(EquipmentSlot.CHEST).setTag(elytraTag);
 
                 // Calculate mana cost only once per second (every 20 ticks) if player is flying
-                if (player.level.getGameTime() % 20 == 0  && (player.getAbilities().flying || player.isFallFlying())) {
+                if (player.level.getGameTime() % 20 == 0 && (player.getAbilities().flying || player.isFallFlying())) {
                     equippedSpells.remove(highestLevelSpell);
                     int reducedManaCost = highestLevelSpell.manaCost;
                     for (TelekineticUtilitySpell spell : equippedSpells) {
