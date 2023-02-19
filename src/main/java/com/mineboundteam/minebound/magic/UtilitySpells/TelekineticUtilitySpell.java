@@ -5,8 +5,10 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -40,24 +42,33 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative()) {
             Player player = event.player;
-            List<TelekineticUtilitySpell> equippedTelekineticUtilitySpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
+            List<TelekineticUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
+            TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedSpells);
 
             // Set if player should still have flight on every tick
-            player.getAbilities().mayfly = equippedTelekineticUtilitySpells.size() > 0;
+            player.getAbilities().mayfly = equippedSpells.size() > 0;
             if (!player.getAbilities().mayfly) {
                 player.getAbilities().flying = false;
             }
             player.onUpdateAbilities();
 
-            // Calculate mana cost only once per second (every 20 ticks) if player is flying
-            if (player.level.getGameTime() % 20 == 0 && equippedTelekineticUtilitySpells.size() > 0 && player.getAbilities().flying) {
-                TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedTelekineticUtilitySpells);
-                equippedTelekineticUtilitySpells.remove(highestLevelSpell);
-                int reducedManaCost = highestLevelSpell.manaCost;
-                for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells) {
-                    reducedManaCost *= 1 - equippedTelekineticUtilitySpell.manaCostReduction;
+            CompoundTag elytraTag = new CompoundTag();
+            if (equippedSpells.size() > 0) {
+                elytraTag.putBoolean("minebound.telekinetic_utility.elytra_flight", highestLevelSpell.level.getValue() >= ArmorTier.SYNERGY.getValue());
+                player.getItemBySlot(EquipmentSlot.CHEST).setTag(elytraTag);
+
+                // Calculate mana cost only once per second (every 20 ticks) if player is flying
+                if (player.level.getGameTime() % 20 == 0  && (player.getAbilities().flying || player.isFallFlying())) {
+                    equippedSpells.remove(highestLevelSpell);
+                    int reducedManaCost = highestLevelSpell.manaCost;
+                    for (TelekineticUtilitySpell spell : equippedSpells) {
+                        reducedManaCost *= 1 - spell.manaCostReduction;
+                    }
+                    highestLevelSpell.reduceMana(reducedManaCost, player);
                 }
-                highestLevelSpell.reduceMana(reducedManaCost, player);
+            } else {
+                elytraTag.putBoolean("minebound.telekinetic_utility.elytra_flight", false);
+                player.getItemBySlot(EquipmentSlot.CHEST).setTag(elytraTag);
             }
         }
     }
@@ -66,7 +77,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
-        if (this.level.getValue() >= ArmorTier.SINGULARITY.getValue()) {
+        if (this.level.getValue() >= ArmorTier.SYNERGY.getValue()) {
             pTooltipComponents.add(new TextComponent("  - Gives elytra flight").withStyle(ChatFormatting.GRAY));
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
