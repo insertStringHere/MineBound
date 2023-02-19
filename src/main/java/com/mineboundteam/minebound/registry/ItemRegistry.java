@@ -32,7 +32,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ALIEN_CIRCUITRY = ITEMS.register("alien_circuitry", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_FOCUS = ITEMS.register("energized_focus", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> GILDED_DIAMOND_WIRE = ITEMS.register("gilded_diamond_wire", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-
+    
     public static final RegistryObject<Item> MYRI_CHUNK = ITEMS.register("myri_chunk", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRI_MANASAC = ITEMS.register("myri_manasac", () -> new Item(new Item.Properties().tab(MineBound.MINEBOUND_TAB).food(new FoodProperties.Builder().meat().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.WITHER, 250, 4), 1f).build())));
     public static final RegistryObject<Item> MYRI_CORPSE = ITEMS.register("myri_corpse", () -> new MyriCorpseItem(new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
@@ -60,6 +60,11 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_SUIT_CHESTPLATE = ITEMS.register("myrial_suit_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_CHESTPLATE));
     public static final RegistryObject<Item> MYRIAL_SUIT_LEGGINGS = ITEMS.register("myrial_suit_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_LEGGINGS));
     public static final RegistryObject<Item> MYRIAL_SUIT_BOOTS = ITEMS.register("myrial_suit_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_BOOTS));
+
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_HELMET = ITEMS.register("myrial_synergy_helmet", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_HELMET));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_CHESTPLATE = ITEMS.register("myrial_synergy_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_CHESTPLATE));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_LEGGINGS = ITEMS.register("myrial_synergy_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_LEGGINGS));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_BOOTS = ITEMS.register("myrial_synergy_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_BOOTS));
 
     public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
 
