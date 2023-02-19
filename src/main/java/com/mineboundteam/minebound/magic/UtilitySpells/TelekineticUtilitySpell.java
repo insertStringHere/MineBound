@@ -78,7 +78,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
         if (this.level.getValue() >= ArmorTier.SYNERGY.getValue()) {
-            pTooltipComponents.add(new TextComponent("  - Gives elytra flight").withStyle(ChatFormatting.GRAY));
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight (must have a Myrial Chestpiece equipped)").withStyle(ChatFormatting.GRAY));
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
