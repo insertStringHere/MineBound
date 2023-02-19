@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -41,7 +40,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative()) {
             Player player = event.player;
-            List<TelekineticUtilitySpell> equippedTelekineticUtilitySpells = getEquippedSpellsOfType(TelekineticUtilitySpell.class, event.player);
+            List<TelekineticUtilitySpell> equippedTelekineticUtilitySpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
 
             // Set if player should still have flight on every tick
             player.getAbilities().mayfly = equippedTelekineticUtilitySpells.size() > 0;
@@ -52,7 +51,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
             // Calculate mana cost only once per second (every 20 ticks) if player is flying
             if (player.level.getGameTime() % 20 == 0 && equippedTelekineticUtilitySpells.size() > 0 && player.getAbilities().flying) {
-                TelekineticUtilitySpell highestLevelSpell = equippedTelekineticUtilitySpells.stream().max(Comparator.comparingInt(spell -> spell.level.getValue())).get();
+                TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedTelekineticUtilitySpells);
                 equippedTelekineticUtilitySpells.remove(highestLevelSpell);
                 int reducedManaCost = highestLevelSpell.manaCost;
                 for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells) {
@@ -65,17 +64,17 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("While equipped in utility slot:").withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
         if (this.level.getValue() >= ArmorTier.SINGULARITY.getValue()) {
-            pTooltipComponents.add(new TextComponent("  - Gives elytra flight"));
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight").withStyle(ChatFormatting.GRAY));
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
-                                       .append(" per second of flight").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Additional copies reduce Mana cost by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.UNDERLINE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(" per second of flight"));
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce Mana cost of highest tier by ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE))
                                        .append(" each"));
     }
 
@@ -84,7 +83,6 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         public IntValue MANA_COST;
         public DoubleValue MANA_COST_REDUCTION;
         public final ArmorTier LEVEL;
-
         private final int manaCost;
         private final double manaCostReduction;
 
