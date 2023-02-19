@@ -40,22 +40,22 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative()) {
             Player player = event.player;
-            List<TelekineticUtilitySpell> equippedTelekineticUtilitySpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
+            List<TelekineticUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
 
             // Set if player should still have flight on every tick
-            player.getAbilities().mayfly = equippedTelekineticUtilitySpells.size() > 0;
+            player.getAbilities().mayfly = equippedSpells.size() > 0;
             if (!player.getAbilities().mayfly) {
                 player.getAbilities().flying = false;
             }
             player.onUpdateAbilities();
 
             // Calculate mana cost only once per second (every 20 ticks) if player is flying
-            if (player.level.getGameTime() % 20 == 0 && equippedTelekineticUtilitySpells.size() > 0 && player.getAbilities().flying) {
-                TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedTelekineticUtilitySpells);
-                equippedTelekineticUtilitySpells.remove(highestLevelSpell);
+            if (player.level.getGameTime() % 20 == 0 && equippedSpells.size() > 0 && player.getAbilities().flying) {
+                TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedSpells);
+                equippedSpells.remove(highestLevelSpell);
                 int reducedManaCost = highestLevelSpell.manaCost;
-                for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells) {
-                    reducedManaCost *= 1 - equippedTelekineticUtilitySpell.manaCostReduction;
+                for (TelekineticUtilitySpell spell : equippedSpells) {
+                    reducedManaCost *= 1 - spell.manaCostReduction;
                 }
                 highestLevelSpell.reduceMana(reducedManaCost, player);
             }

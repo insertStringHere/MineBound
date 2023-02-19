@@ -1,19 +1,23 @@
 package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.Capability;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,9 +61,59 @@ public abstract class SpellItem extends Item {
 
                 // Reduce player health.
                 if (underflow > 0) {
-                    p.hurt(DamageSource.MAGIC, underflow / 3);
+                    p.hurt(DamageSource.MAGIC, underflow / 3f);
                 }
             });
+    }
+
+    protected static <T extends SpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player, Capability<ArmorSpellsProvider.SpellContainer> capability) {
+        NonNullList<ItemStack> spells = NonNullList.create();
+        for (EquipmentSlot e : EquipmentSlot.values())
+            player.getItemBySlot(e).getCapability(capability).ifPresent(slots -> {
+                for (ItemStack item : slots.items) {
+                    if (type.isInstance(item.getItem()))
+                        spells.add(item);
+                }
+            });
+        return spells;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <T extends SpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player, Capability<ArmorSpellsProvider.SpellContainer> capability) {
+        NonNullList<T> spells = NonNullList.create();
+        for (EquipmentSlot e : EquipmentSlot.values())
+            player.getItemBySlot(e).getCapability(capability).ifPresent(slots -> {
+                for (ItemStack item : slots.items) {
+                    if (type.isInstance(item.getItem()))
+                        spells.add((T) item.getItem());
+                }
+            });
+        return spells;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <T extends SpellItem> ItemStack getHighestEquippedSpellFromList(Class<T> type, List<ItemStack> spells) {
+        ItemStack highestSpell = null;
+        for (ItemStack spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (((T) spell.getItem()).level.getValue() > ((T) highestSpell.getItem()).level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
+    }
+
+    protected static <T extends SpellItem> T getHighestSpellItem(List<T> spells) {
+        T highestSpell = null;
+        for (T spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (spell.level.getValue() > highestSpell.level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
     }
 
     @Override

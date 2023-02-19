@@ -4,7 +4,6 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.registry.ClientRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -19,21 +18,21 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
     private final double damageReduction;
     private final double damageReflected;
-    private boolean active = false;
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
         super(properties, config.LEVEL);
@@ -41,46 +40,40 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         this.manaCost = config.MANA_COST.get();
         this.damageReduction = config.DMG_REDUCTION.get();
         this.damageReflected = config.DMG_REFLECTED.get();
+    }
 
-        MineBound.registerObject(this);
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
     }
 
     // TODO: tie in with keybindings based on where spell is equipped
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isServer() && event.phase == TickEvent.Phase.START) {
-            active = ClientRegistry.PRIMARY_MAGIC.isDown();
-        }
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        return null;
-    }
-
-    @SubscribeEvent
-    public void triggerSpell(LivingAttackEvent event) {
-        if (active && !event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+    public static void triggerSpell(LivingAttackEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
+                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
                 float dmgAmount = event.getAmount();
-                if ((1 - damageReduction) == 0) {
+                if ((1 - spell.damageReduction) == 0) {
                     event.setCanceled(true);
                 }
-                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * damageReflected));
-                super.reduceMana(manaCost, player);
+                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
+                spell.reduceMana(spell.manaCost, player);
             }
         }
     }
 
     @SubscribeEvent
-    public void triggerSpell(LivingHurtEvent event) {
-        if (active && !event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player) {
+    public static void triggerSpell(LivingHurtEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
+                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
                 float dmgAmount = event.getAmount();
-                if ((1 - damageReduction) != 0) {
-                    event.setAmount((float) (dmgAmount * (1 - damageReduction)));
+                if ((1 - spell.damageReduction) != 0) {
+                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
                 }
                 // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
             }
@@ -104,13 +97,13 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     public static class ShieldOffensiveSpellConfig implements IConfig {
 
+        public IntValue MANA_COST;
+        public DoubleValue DMG_REDUCTION;
+        public DoubleValue DMG_REFLECTED;
         public final ArmorTier LEVEL;
         private final int manaCost;
         private final double damageReduction;
         private final double damageReflected;
-        public IntValue MANA_COST;
-        public DoubleValue DMG_REDUCTION;
-        public DoubleValue DMG_REFLECTED;
 
         public ShieldOffensiveSpellConfig(int manaCost, double damageReduction, double damageReflected, ArmorTier level) {
             this.manaCost = manaCost;
