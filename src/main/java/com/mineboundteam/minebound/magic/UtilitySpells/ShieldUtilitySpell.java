@@ -8,6 +8,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -50,8 +52,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     hitsRemaining = spellStack.getTag().getInt("minebound.shield_utility.hits_remaining");
                 }
                 if (hitsRemaining > 0) {
-                    // canceling the event, and therefore damage, stops it from firing client side so no sound can be played client side
-                    // without sending some packets of some sort
+                    player.getLevel().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     event.setCanceled(true);
                     spell.reduceMana(spell.manaCost, player);
 
