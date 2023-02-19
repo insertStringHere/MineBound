@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -65,7 +66,9 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
                                        .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));
         pTooltipComponents.add(new TextComponent("Utility Magic slots: ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(config.UTILITY_SLOTS.get() + "").withStyle(ChatFormatting.DARK_PURPLE)));
-        pTooltipComponents.add(new TextComponent("Total Energy: ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Energy: ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent((config.ENERGY.get() - this.getDamage(pStack)) + "").withStyle(Style.EMPTY.withColor(pStack.getBarColor())))
+                                       .append(" / ")
                                        .append(new TextComponent(config.ENERGY.get() + "").withStyle(ChatFormatting.GREEN)));
     }
 
