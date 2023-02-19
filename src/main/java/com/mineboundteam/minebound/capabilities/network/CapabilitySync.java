@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
 
 import net.minecraft.client.Minecraft;
@@ -61,10 +62,9 @@ public class CapabilitySync {
                     });
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void handleSelectedSpells(SelectedSpellsSync msg, Supplier<NetworkEvent.Context> ctx) {
-        Minecraft.getInstance().player.getCapability(msg.isPrimary() ? PlayerSelectedSpellsProvider.PRIMARY_SPELL
-                : PlayerSelectedSpellsProvider.SECONDARY_SPELL).ifPresent(spell -> {
+       Minecraft.getInstance().player.getCapability((Capability<? extends SelectedSpell>)(msg.isPrimary() ? PlayerSelectedSpellsProvider.PRIMARY_SPELL
+                : PlayerSelectedSpellsProvider.SECONDARY_SPELL)).ifPresent(spell -> {
                     spell.equippedSlot = msg.getSlot();
                     spell.index = msg.getIndex();
                 });
@@ -76,7 +76,10 @@ public class CapabilitySync {
         private boolean isPrimary;
 
         public SelectedSpellsSync(boolean isPrimary, EquipmentSlot pSlot, int pIndex) {
-            this.slot = pSlot.getIndex();
+            if(pSlot == null)
+                this.slot = -1;
+            else
+                this.slot = pSlot.getIndex();
             this.index = pIndex;
             this.isPrimary = isPrimary;
         }
@@ -132,13 +135,13 @@ public class CapabilitySync {
             return containerIndex;
         }
 
-        public AllItemSync setContainerType(Capability<SpellContainer> type) {
+        public AllItemSync setContainerType(Capability<? extends SpellContainer> type) {
             if (type.equals(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS))
                 containerType = 1;
             return this;
         }
 
-        public Capability<SpellContainer> getContainerType() {
+        public Capability<? extends SpellContainer> getContainerType() {
             switch (containerType) {
                 case 1:
                     return ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS;

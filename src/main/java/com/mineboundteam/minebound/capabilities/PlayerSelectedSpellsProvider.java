@@ -1,5 +1,7 @@
 package com.mineboundteam.minebound.capabilities;
 
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SecondarySpellProvider.SecondarySelected;
 import com.mineboundteam.minebound.config.ManaConfig;
 
 import net.minecraft.core.Direction;
@@ -14,24 +16,17 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<SelectedSpell> PRIMARY_SPELL = CapabilityManager.get(new CapabilityToken<>() { });
-    public static Capability<SelectedSpell> SECONDARY_SPELL = CapabilityManager.get(new CapabilityToken<>() { });
+public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public static Capability<PrimarySelected> PRIMARY_SPELL = CapabilityManager.get(new CapabilityToken<>() { });
+    public static Capability<SecondarySelected> SECONDARY_SPELL = CapabilityManager.get(new CapabilityToken<>() { });
 
-    public static class PrimarySpellProvider extends PlayerSelectedSpellsProvider {}
-    public static class SecondarySpellProvider extends PlayerSelectedSpellsProvider {}
 
-    private SelectedSpell spell = null;
-    private final LazyOptional<SelectedSpell> optional = LazyOptional.of(this::createSpell);
+    protected SelectedSpell spell = null;
+    protected final LazyOptional<? extends SelectedSpell> optional = LazyOptional.of(this::createSpell);
 
-    private SelectedSpell createSpell() {
-        if(this.spell == null)
-            this.spell = new SelectedSpell(null, 0);
+    protected abstract SelectedSpell createSpell(); 
 
-        return this.spell;
-    }
-
-    public static void UpdatePlayerSync(Player oldPlayer, Player newPlayer, Capability<SelectedSpell> cap){
+    public static void UpdatePlayerSync(Player oldPlayer, Player newPlayer, Capability<? extends SelectedSpell> cap){
         if(ManaConfig.keepArmor.get())
             oldPlayer.getCapability(cap).ifPresent(oldStore ->
                 newPlayer.getCapability(cap).ifPresent(newStore -> {
@@ -42,10 +37,6 @@ public class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSe
             );
     }
 
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        return cap == PRIMARY_SPELL || cap == SECONDARY_SPELL ? optional.cast() : LazyOptional.empty();
-    }
 
     @Override
     public CompoundTag serializeNBT() {
@@ -59,9 +50,9 @@ public class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSe
         createSpell().loadNBTData(nbt);
     } 
 
-    public static class SelectedSpell{
+    public static abstract class SelectedSpell{
         public EquipmentSlot equippedSlot;
-        public int index;
+        public int index = -1;
 
         public SelectedSpell(EquipmentSlot mySlot, int index){
             this.equippedSlot = mySlot;
@@ -69,12 +60,17 @@ public class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSe
         }
 
         public void saveNBTData(CompoundTag nbt){
-            nbt.putInt("slot", equippedSlot.getIndex());
+            if(this.equippedSlot == null)
+                nbt.putInt("slot", -1);
+            else
+                nbt.putInt("slot", equippedSlot.getIndex());
             nbt.putInt("index", index);
         }
     
         public void loadNBTData(CompoundTag nbt){
-            equippedSlot = EquipmentSlot.byTypeAndIndex(Type.ARMOR, nbt.getInt("slot"));
+            index = nbt.getInt("slot");
+            if(index != -1)
+                equippedSlot = EquipmentSlot.byTypeAndIndex(Type.ARMOR, index);
             index = nbt.getInt("index");
         }
 
@@ -82,4 +78,31 @@ public class PlayerSelectedSpellsProvider implements ICapabilityProvider, INBTSe
             return equippedSlot == null;
         }
     }    
+    
+    public static class PrimarySpellProvider extends PlayerSelectedSpellsProvider {
+        public static class PrimarySelected extends SelectedSpell{ public PrimarySelected(EquipmentSlot mySlot, int index) { super(mySlot, index); }};
+        @Override
+        protected SelectedSpell createSpell() {
+            if(this.spell == null)
+                this.spell = new PrimarySelected(null, 0);
+            return this.spell;
+        }
+        @Override
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            return cap == PRIMARY_SPELL ? optional.cast() : LazyOptional.empty();
+        }
+    }
+    public static class SecondarySpellProvider extends PlayerSelectedSpellsProvider {
+        public static class SecondarySelected extends SelectedSpell{ public SecondarySelected(EquipmentSlot mySlot, int index) { super(mySlot, index); }};
+        @Override
+        protected SelectedSpell createSpell() {
+            if(this.spell == null)
+                this.spell = new SecondarySelected(null, 0);
+            return this.spell;
+        }
+        @Override
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            return cap == SECONDARY_SPELL ? optional.cast() : LazyOptional.empty();
+        }
+    }
 }

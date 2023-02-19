@@ -17,7 +17,7 @@ public class SelectedSpellSlot extends Slot {
 
     @Override
     public boolean mayPickup(Player pPlayer){
-        return myContainer.cap.equals(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS);
+        return myContainer.source.equals(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS);
     }
 
     @Override

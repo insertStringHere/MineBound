@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.Sel
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,29 +16,61 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.PacketDistributor;
 
 public class InventorySpellContainer implements Container {
-    public final Capability<SelectedSpell> cap;
-    public final Capability<SpellContainer> source; 
+    public final Capability<? extends SelectedSpell> cap;
+    public final Capability<? extends SpellContainer> source;
 
     protected final Inventory inventory;
-    protected final boolean hand; 
-    protected final NonNullList<ItemStack> spells = NonNullList.create();
+    protected final boolean isPrimary;
+    protected final NonNullList<Tuple<EquipmentSlot, ItemStack>> spells = NonNullList.create();
 
-    public InventorySpellContainer(Inventory pInventory, Capability<SelectedSpell> pCapability, Capability<SpellContainer> pSource, boolean isPrimary){
+    public int primarySelected;
+    public int secondarySelected;
+
+    public InventorySpellContainer(Inventory pInventory, Capability<? extends SelectedSpell> pCapability,
+            Capability<? extends SpellContainer> pSource, boolean isPrimary) {
         this.inventory = pInventory;
-        this.cap = pCapability; 
+        this.cap = pCapability;
         this.source = pSource;
-        this.hand = isPrimary; 
+        this.isPrimary = isPrimary;
 
         refreshSpells();
     }
 
-    protected void refreshSpells(){
+    protected void refreshSpells() {
         spells.clear();
-        for(ItemStack armor : inventory.armor)
-            armor.getCapability(source).ifPresent(slots -> {
-                for(ItemStack slot : slots.items) 
-                    spells.add(slot);
+
+        var primarySpell = inventory.player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL);
+        var secondarySpell = inventory.player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL);
+
+        if (!primarySpell.isPresent())
+            primarySelected = -1;
+        if (!secondarySpell.isPresent())
+            secondarySelected = -1;
+
+        primarySpell.ifPresent(pSelect -> {
+            secondarySpell.ifPresent(sSelect -> {
+                for (EquipmentSlot armorSlot : EquipmentSlot.values()) {
+                    ItemStack armor = inventory.player.getItemBySlot(armorSlot);
+                    armor.getCapability(source).ifPresent(slots -> {
+                        for (int i = 0; i < slots.items.size(); i++) {
+                            if (slots.items.get(i).isEmpty())
+                                continue;
+                            if (armorSlot.equals(pSelect.equippedSlot) && i == pSelect.index)
+                                this.primarySelected = spells.size();
+                            if (armorSlot.equals(sSelect.equippedSlot) && i == sSelect.index)
+                                this.secondarySelected = spells.size();
+
+                            spells.add(new Tuple<EquipmentSlot, ItemStack>(armorSlot, slots.items.get(i)));
+                        }
+                    });
+                }
+
+                if (pSelect.equippedSlot == null)
+                    primarySelected = -1;
+                if (sSelect.equippedSlot == null)
+                    secondarySelected = -1;
             });
+        });
     }
 
     @Override
@@ -57,38 +90,34 @@ public class InventorySpellContainer implements Container {
 
     @Override
     public ItemStack getItem(int pSlot) {
-        return spells.get(pSlot);
+        return spells.get(pSlot).getB();
     }
 
     @Override
     public ItemStack removeItem(int pSlot, int pAmount) {
-        if(!inventory.player.level.isClientSide()) {
-        var values = new Object() { 
-            EquipmentSlot slot = Player.getEquipmentSlotForItem(spells.get(pSlot));
-            int index = 0;
-            boolean newObj = false;
-        };
-        
-        inventory.player.getItemBySlot(values.slot).getCapability(source).ifPresent(slots -> {
-            values.index = slots.items.indexOf(spells.get(pSlot));
-        });
-        
-        inventory.player.getCapability(hand ? PlayerSelectedSpellsProvider.SECONDARY_SPELL :  PlayerSelectedSpellsProvider.PRIMARY_SPELL)
-            .ifPresent(selected -> {
-                values.newObj = !(selected.index == values.index && selected.equippedSlot.equals(values.slot)); 
-            });
+        if (!inventory.player.level.isClientSide()) {
 
-        if(values.newObj)
-            inventory.player.getCapability(cap).ifPresent(selected -> {
-                selected.equippedSlot = values.slot;
-                selected.index = values.index;
-                
-                CapabilitySync.NET_CHANNEL.send(
-                    PacketDistributor.PLAYER.with(() -> (ServerPlayer)inventory.player), 
-                    new CapabilitySync.SelectedSpellsSync(hand, selected.equippedSlot, selected.index));
-            });
+            if (isPrimary && pSlot == secondarySelected || !isPrimary && pSlot == primarySelected)
+                return ItemStack.EMPTY;
+
+            if (isPrimary && pSlot != primarySelected || !isPrimary && pSlot != secondarySelected)
+                inventory.player.getCapability(cap).ifPresent(selected -> {
+                    selected.equippedSlot = spells.get(pSlot).getA();
+
+                    inventory.player.getItemBySlot(selected.equippedSlot).getCapability(source).ifPresent(slots -> {
+                        selected.index = slots.items.indexOf(spells.get(pSlot).getB());
+                    });
+
+                    if (isPrimary)
+                        primarySelected = pSlot;
+                    else
+                        secondarySelected = pSlot;
+                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)inventory.player),
+                            new CapabilitySync.SelectedSpellsSync(isPrimary, selected.equippedSlot, selected.index));
+                });
+
+            inventory.player.closeContainer();
         }
-        inventory.player.closeContainer();
         return ItemStack.EMPTY;
     }
 
@@ -105,12 +134,12 @@ public class InventorySpellContainer implements Container {
 
     @Override
     public void setChanged() {
-        refreshSpells();
+        //refreshSpells();
     }
 
     @Override
     public boolean stillValid(Player pPlayer) {
         return true;
     }
-    
+
 }
