@@ -13,7 +13,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class PassiveSpellItem extends SpellItem {
@@ -50,7 +49,8 @@ public abstract class PassiveSpellItem extends SpellItem {
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type, List<ItemStack> spells) {
+    protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type, Player player) {
+        List<ItemStack> spells = getEquippedSpellsOfType(type, player);
         ItemStack highestSpell = null;
         for (ItemStack spell : spells) {
             if (highestSpell == null) {
@@ -62,7 +62,7 @@ public abstract class PassiveSpellItem extends SpellItem {
         return highestSpell;
     }
 
-    protected static <T extends PassiveSpellItem> T getHighestEquippedSpellItem(List<T> spells) {
+    protected static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {
         T highestSpell = null;
         for (T spell : spells) {
             if (highestSpell == null) {

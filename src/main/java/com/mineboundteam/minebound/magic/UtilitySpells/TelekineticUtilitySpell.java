@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -52,7 +51,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
             // Calculate mana cost only once per second (every 20 ticks) if player is flying
             if (player.level.getGameTime() % 20 == 0 && equippedTelekineticUtilitySpells.size() > 0 && player.getAbilities().flying) {
-                TelekineticUtilitySpell highestLevelSpell = getHighestEquippedSpellItem(equippedTelekineticUtilitySpells);
+                TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedTelekineticUtilitySpells);
                 equippedTelekineticUtilitySpells.remove(highestLevelSpell);
                 int reducedManaCost = highestLevelSpell.manaCost;
                 for (TelekineticUtilitySpell equippedTelekineticUtilitySpell : equippedTelekineticUtilitySpells) {
