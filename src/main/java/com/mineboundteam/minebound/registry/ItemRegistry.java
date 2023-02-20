@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
@@ -51,17 +52,32 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ILLUMINANT_STEEL_PICKAXE = ITEMS.register("illuminant_steel_pickaxe", () -> new PickaxeItem(ToolTier.ILLUMINANT_STEEL, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_SHOVEL = ITEMS.register("illuminant_steel_shovel", () -> new ShovelItem(ToolTier.ILLUMINANT_STEEL, 1.5F, -3, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_SWORD = ITEMS.register("illuminant_steel_sword", () -> new SwordItem(ToolTier.ILLUMINANT_STEEL, 3, -2.4F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_DIAMOND_AXE = ITEMS.register("myrial_diamond_axe", () -> new AxeItem(ToolTier.MYRIAL_DIAMOND, 4.5F, -2.5F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_DIAMOND_HOE = ITEMS.register("myrial_diamond_hoe", () -> new HoeItem(ToolTier.MYRIAL_DIAMOND, -3, 0, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_DIAMOND_PICKAXE = ITEMS.register("myrial_diamond_pickaxe", () -> new PickaxeItem(ToolTier.MYRIAL_DIAMOND, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_DIAMOND_SHOVEL = ITEMS.register("myrial_diamond_shovel", () -> new ShovelItem(ToolTier.MYRIAL_DIAMOND, 1.5F, -2.5F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_DIAMOND_SWORD = ITEMS.register("myrial_diamond_sword", () -> new SwordItem(ToolTier.MYRIAL_DIAMOND, 3, -1.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_EFFIGY_HELMET = ITEMS.register("myrial_effigy_helmet", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_EFFIGY, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.EFFIGY, ArmorConfigRegistry.EFFIGY_HELMET));
     public static final RegistryObject<Item> MYRIAL_EFFIGY_CHESTPLATE = ITEMS.register("myrial_effigy_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_EFFIGY, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.EFFIGY, ArmorConfigRegistry.EFFIGY_CHESTPLATE));
     public static final RegistryObject<Item> MYRIAL_EFFIGY_LEGGINGS = ITEMS.register("myrial_effigy_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_EFFIGY, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.EFFIGY, ArmorConfigRegistry.EFFIGY_LEGGINGS));
     public static final RegistryObject<Item> MYRIAL_EFFIGY_BOOTS = ITEMS.register("myrial_effigy_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_EFFIGY, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.EFFIGY, ArmorConfigRegistry.EFFIGY_BOOTS));
+    public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new SwordItem(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_SUIT_HELMET = ITEMS.register("myrial_suit_helmet", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_HELMET));
     public static final RegistryObject<Item> MYRIAL_SUIT_CHESTPLATE = ITEMS.register("myrial_suit_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_CHESTPLATE));
     public static final RegistryObject<Item> MYRIAL_SUIT_LEGGINGS = ITEMS.register("myrial_suit_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_LEGGINGS));
     public static final RegistryObject<Item> MYRIAL_SUIT_BOOTS = ITEMS.register("myrial_suit_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SUIT, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SUIT, ArmorConfigRegistry.SUIT_BOOTS));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_HELMET = ITEMS.register("myrial_synergy_helmet", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_HELMET));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_CHESTPLATE = ITEMS.register("myrial_synergy_chestplate", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_CHESTPLATE));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_LEGGINGS = ITEMS.register("myrial_synergy_leggings", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_LEGGINGS));
+    public static final RegistryObject<Item> MYRIAL_SYNERGY_BOOTS = ITEMS.register("myrial_synergy_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SYNERGY, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SYNERGY, ArmorConfigRegistry.SYNERGY_BOOTS));
 
-    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("magic/test_spell", ()-> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
+    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("magic/test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
 
     /* Telekinetic */
     public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
+
+    /* Shield */
+    public static final RegistryObject<Item> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_2));
+    public static final RegistryObject<Item> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_3));
+    public static final RegistryObject<Item> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_4));
 }

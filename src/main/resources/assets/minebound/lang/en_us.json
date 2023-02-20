@@ -28,16 +28,30 @@
   "item.minebound.illuminant_steel_pickaxe": "Illuminant Steel Pickaxe",
   "item.minebound.illuminant_steel_shovel": "Illuminant Steel Shovel",
   "item.minebound.illuminant_steel_sword": "Illuminant Steel Sword",
+  "item.minebound.myrial_diamond_axe": "Myrial Diamond Axe",
+  "item.minebound.myrial_diamond_hoe": "Myrial Diamond Hoe",
+  "item.minebound.myrial_diamond_pickaxe": "Myrial Diamond Pickaxe",
+  "item.minebound.myrial_diamond_shovel": "Myrial Diamond Shovel",
+  "item.minebound.myrial_diamond_sword": "Myrial Diamond Sword",
   "item.minebound.myrial_effigy_helmet": "Myrial Effigy Headdress",
   "item.minebound.myrial_effigy_chestplate": "Myrial Effigy Chestpiece",
   "item.minebound.myrial_effigy_leggings": "Myrial Effigy Greaves",
   "item.minebound.myrial_effigy_boots": "Myrial Effigy Boots",
+  "item.minebound.myrial_machete": "Myrial Machete",
   "item.minebound.myrial_suit_helmet": "Myrial Suit Headdress",
   "item.minebound.myrial_suit_chestplate": "Myrial Suit Chestpiece",
   "item.minebound.myrial_suit_leggings": "Myrial Suit Greaves",
   "item.minebound.myrial_suit_boots": "Myrial Suit Boots",
+  "item.minebound.myrial_synergy_helmet": "Myrial Synergy Headdress",
+  "item.minebound.myrial_synergy_chestplate": "Myrial Synergy Chestpiece",
+  "item.minebound.myrial_synergy_leggings": "Myrial Synergy Greaves",
+  "item.minebound.myrial_synergy_boots": "Myrial Synergy Boots",
 
   "item.minebound.magic_telekinetic_u2": "Telekinetic Utility II",
+
+  "item.minebound.magic_shield_u2": "Shield Utility II",
+  "item.minebound.magic_shield_u3": "Shield Utility III",
+  "item.minebound.magic_shield_u4": "Shield Utility IV",
 
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
@@ -47,6 +61,7 @@
   "block.minebound.myrial_steel_block": "Myrial Steel Block",
   "block.minebound.myrial_locker": "Myrial Locker",
   "block.minebound.alloy_furnace": "Alloy Furnace",
+  "block.minebound.armor_forge": "Armor Forge",
   "block.minebound.myrial_steel_plate": "Myrial Steel Plates",
   "block.minebound.myrial_diamond_block": "Myrial Diamond Block",
 
@@ -59,5 +74,10 @@
   "key.minebound.primary_magic": "Left Hand Magic",
   "key.minebound.secondary_magic": "Right Hand Magic",
   "key.minebound.primary_magic_select": "Select Left Hand Magic",
-  "key.minebound.secondary_magic_select": "Select Right Hand Magic"
+  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
+
+  "tooltip.minebound.level.0": "I",
+  "tooltip.minebound.level.1": "II",
+  "tooltip.minebound.level.2": "III",
+  "tooltip.minebound.level.3": "IV"
 }

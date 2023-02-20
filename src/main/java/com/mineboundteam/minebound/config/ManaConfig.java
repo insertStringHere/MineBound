@@ -20,7 +20,7 @@ public class ManaConfig implements IConfig{
      */
     @Override
     public void build(Builder builder) {
-        builder.push("Mana Managment");
+        builder.push("Mana Management");
         
         maximumMana = builder.comment("The maximum amount of mana a player has without any augmentation. [Default = 200]").defineInRange("Max_Mana", 200, 0, 10000);  
         manaRecovery = builder.comment("The recovery rate of mana per second by the player without augmentation. [Default = 1]").defineInRange("Mana_Recovery", 1, 0, 10000);
