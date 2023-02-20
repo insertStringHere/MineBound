@@ -21,10 +21,10 @@ import net.minecraftforge.network.PacketDistributor;
 
 public abstract class ArmorSpellContainer implements Container {
     public final InputArmorSlot item;
-    protected final Capability<SpellContainer> spellCap;
+    protected final Capability<? extends SpellContainer> spellCap;
     protected ArmorForgeMenu menu;
 
-    protected ArmorSpellContainer(ArmorForgeMenu menu, Capability<SpellContainer> cap) {
+    protected ArmorSpellContainer(ArmorForgeMenu menu, Capability<? extends SpellContainer> cap) {
         this.item = (InputArmorSlot)menu.slots.get(ArmorForgeMenu.ARMOR_INPUT_INDEX);
         spellCap = cap;
         this.menu = menu;
