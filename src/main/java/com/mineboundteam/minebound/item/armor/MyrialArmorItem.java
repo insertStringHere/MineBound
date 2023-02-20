@@ -85,6 +85,21 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         return tier;
     }
 
+    // Return true if elytra flight is possible with this armor piece, is only called on chest piece
+    @Override
+    public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+        if (stack.hasTag()) {
+            return stack.getTag().getBoolean("minebound.telekinetic_utility.elytra_flight");
+        }
+        return false;
+    }
+
+    // No extra processing needs to be done, so just return true
+    @Override
+    public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+        return true;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<MyrialArmorItem>(this, getDescriptionId(), 20, this::predicate));
