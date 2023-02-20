@@ -40,7 +40,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative()) {
+        if (event.side.isServer() && event.phase == TickEvent.Phase.START && !event.player.isCreative() && !event.player.isSpectator()) {
             Player player = event.player;
             List<TelekineticUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(TelekineticUtilitySpell.class, event.player);
             TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedSpells);
