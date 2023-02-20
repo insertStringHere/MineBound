@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.inventory.SelectSpellMenu;
+import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,10 +39,15 @@ public class MagicSync {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player =  ctx.get().getSender();
             if(!player.level.isClientSide()){
+
+                var activeSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS, true);
+                var passiveSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL,  ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS, true);
+                boolean canOpen = !(activeSpells.isEmpty() && passiveSpells.isEmpty());
+
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
                 switch(msg.msg){
                     case PRIMARY_MENU:
-                        if(chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 0)
+                        if(canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 0)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, true), TextComponent.EMPTY));
                         break;
                     case PRIMARY_PRESSED:
@@ -49,7 +55,7 @@ public class MagicSync {
                             useSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
                         break;
                     case SECONDARY_MENU:
-                        if(chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 1)
+                        if(canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 1)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, false), TextComponent.EMPTY));
                         break;
                     case SECONDARY_PRESSED:

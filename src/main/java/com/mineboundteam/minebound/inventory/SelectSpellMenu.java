@@ -55,7 +55,7 @@ public class SelectSpellMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return true;
+        return !(activeSpells.isEmpty() && passiveSpells.isEmpty());
     }
     
 }
