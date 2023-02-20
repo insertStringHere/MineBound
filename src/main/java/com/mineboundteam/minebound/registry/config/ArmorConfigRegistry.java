@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class ArmorConfigRegistry implements IConfig{
     public static final ArmorConfig EFFIGY_SET = new ArmorConfig("Myrial Effigy Set Bonus", 20, 1, 0, 0, 0);
     public static final ArmorConfig EFFIGY_HELMET = new ArmorConfig("Myrial Effigy Helmet", 20, 1, 200, 0, 0);
-    public static final ArmorConfig EFFIGY_CHESTPLATE = new ArmorConfig("Myrial Effigy Chestplate", 20, 0, 200, 0, 1);
+    public static final ArmorConfig EFFIGY_CHESTPLATE = new ArmorConfig("Myrial Effigy Chestplate", 20, 0, 200, 0, 0);
     public static final ArmorConfig EFFIGY_LEGGINGS = new ArmorConfig("Myrial Effigy Leggings", 20, 0, 200, 1, 0);
     public static final ArmorConfig EFFIGY_BOOTS = new ArmorConfig("Myrial Effigy Boots", 20, 0, 200, 1, 0);
 
