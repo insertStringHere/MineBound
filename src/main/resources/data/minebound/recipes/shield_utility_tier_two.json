@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "S": {
+      "item": "minecraft:scute"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_u1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "FMF",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_telekinetic_u1"
+  }
+}
