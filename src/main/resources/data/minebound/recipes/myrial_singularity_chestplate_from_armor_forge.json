@@ -1,0 +1,24 @@
+{
+  "type": "minebound:armor_forge",
+  "armor": "minebound:myrial_synergy_chestplate",
+  "ingredients": [
+    {
+      "item": "minebound:myrial_diamond_chestplate"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minebound:myri_chuck"
+    },
+    {
+      "item": "minebound:alien_circuitry"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_singularity_chestplate"
+  }
+}
