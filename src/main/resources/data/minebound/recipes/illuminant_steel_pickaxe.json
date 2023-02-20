@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    " # ",
-    " # "
+    "###",
+    " s ",
+    " s "
   ],
   "key": {
-    "X": {
+    "#": {
       "item": "minebound:illuminant_steel_ingot"
     },
-    "#": {
+    "s": {
       "item": "minecraft:stick"
     }
   },
