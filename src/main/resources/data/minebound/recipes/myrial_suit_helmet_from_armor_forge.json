@@ -1,0 +1,24 @@
+{
+  "type": "minebound:armor_forge",
+  "armor": "minebound:myrial_effigy_helmet",
+  "ingredients": [
+    {
+      "item": "minebound:illuminant_steel_helmet"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_suit_helmet"
+  }
+}
