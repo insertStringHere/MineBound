@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,10 +42,23 @@ public class ManaHUDOverlay extends GuiComponent {
         PlayerManaProvider.PlayerMana mana = minecraft.player.getCapability(PlayerManaProvider.PLAYER_MANA).orElse(null);
         if (mana == null) return;
 
+        int yOffset = minecraft.getWindow().getGuiScaledHeight() - 42;
+        int manaHeight = (int) (27*(mana.getMana() / ((double) mana.getTotalManaCap())) + 3);
+        String manaText = Integer.toString(mana.getMana());
+        int textBlue = (77 << 16) + (106 << 8) + (255);
+
+        RenderSystem.setShaderTexture(0,manaBar);
+        blit(matrixStack, 10, yOffset + (30 - manaHeight), 0, 0, 20, manaHeight, 20, 32);
+
         RenderSystem.setShaderTexture(0,manaFrame);
-        blit(matrixStack, 50, 50, 0, 0, 80, 128, 32, 32);
+        blit(matrixStack, 10, yOffset, 0, 0, 20, 32, 20, 32);
 
-
+        int xText = 20 - minecraft.font.width(manaText)/2;
+        minecraft.font.draw(matrixStack, manaText, xText + 1, yOffset-10, 0);
+        minecraft.font.draw(matrixStack, manaText, xText - 1, yOffset-10, 0);
+        minecraft.font.draw(matrixStack, manaText, xText, yOffset-9, 0);
+        minecraft.font.draw(matrixStack, manaText, xText, yOffset-11, 0);
+        minecraft.font.draw(matrixStack, manaText, xText, yOffset-10, textBlue);
 
     }
 }
