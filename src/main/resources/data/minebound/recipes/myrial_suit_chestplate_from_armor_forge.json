@@ -1,6 +1,8 @@
 {
   "type": "minebound:armor_forge",
-  "armor": "minebound:myrial_effigy_chestplate",
+  "armor": {
+    "item": "minebound:myrial_effigy_chestplate"
+  },
   "ingredients": [
     {
       "item": "minebound:illuminant_steel_chestplate"

@@ -1,6 +1,8 @@
 {
   "type": "minebound:armor_forge",
-  "armor": "minebound:myrial_effigy_helmet",
+  "armor": {
+    "item": "minebound:myrial_effigy_helmet"
+  },
   "ingredients": [
     {
       "item": "minebound:illuminant_steel_helmet"

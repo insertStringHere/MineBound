@@ -31,38 +31,43 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
     private final ContainerLevelAccess containerLevelAccess;
     private final CraftingContainer craftingContainer = new CraftingContainer(this, 3, 3);
 
-    private final ResultContainer resultContainer = new ResultContainer(){
+    private final ResultContainer resultContainer = new ResultContainer() {
         @Override
-        public ItemStack removeItem(int index, int count){
-            if(slots.get(ARMOR_INPUT_INDEX).hasItem())
+        public ItemStack removeItem(int index, int count) {
+            if (slots.get(ARMOR_INPUT_INDEX).hasItem())
                 transferStoredItems(getItem(index), slots.get(ARMOR_INPUT_INDEX).getItem());
             return super.removeItem(index, count);
         }
+
         // Fix it when you implement the recipe if it doesn't work
         // I'm hecking tired
-        protected void transferStoredItems(ItemStack result, ItemStack source){
-            result.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(slots -> {
-                int max = ((MyrialArmorItem)result.getItem()).getConfig().STORAGE_SLOTS.get();
-                source.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(mySlots -> {
-                    for(int i = 0; i < mySlots.items.size(); i++){
-                        if(i < max)
-                            slots.items.add(mySlots.items.get(i));
-                        else if(!moveItemStackTo(mySlots.items.get(i), 0, 40, false))
-                            player.drop(mySlots.items.get(i), false, false);
-                    }
+        protected void transferStoredItems(ItemStack result, ItemStack source) {
+            if (!player.level.isClientSide()) {
+                result.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(slots -> {
+                    int max = ((MyrialArmorItem) result.getItem()).getConfig().STORAGE_SLOTS.get();
+                    source.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(mySlots -> {
+                        for (int i = 0; i < mySlots.items.size(); i++) {
+                            if (i < max) {
+                                slots.items.add(mySlots.items.get(i));
+                            } else if (!moveItemStackTo(mySlots.items.get(i), 0, 40, false)) {
+                                player.drop(mySlots.items.get(i), false, false);
+                            }
+                        }
+                    });
                 });
-            });
-            result.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
-                int max = ((MyrialArmorItem)result.getItem()).getConfig().UTILITY_SLOTS.get();
-                source.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(mySlots -> {
-                    for(int i = 0; i < mySlots.items.size(); i++){
-                        if(i < max)
-                            slots.items.add(mySlots.items.get(i));
-                        else if(!moveItemStackTo(mySlots.items.get(i), 0, 40, false))
-                            player.drop(mySlots.items.get(i), false, false);
-                    }
+                result.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
+                    int max = ((MyrialArmorItem) result.getItem()).getConfig().UTILITY_SLOTS.get();
+                    source.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(mySlots -> {
+                        for (int i = 0; i < mySlots.items.size(); i++) {
+                            if (i < max) {
+                                slots.items.add(mySlots.items.get(i));
+                            } else if (!moveItemStackTo(mySlots.items.get(i), 0, 40, false)) {
+                                player.drop(mySlots.items.get(i), false, false);
+                            }
+                        }
+                    });
                 });
-            });
+            }
         }
     };
 
