@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
 
 import net.minecraft.client.Minecraft;
@@ -33,6 +34,8 @@ public class CapabilitySync {
     public static void registerPackets(FMLCommonSetupEvent event) {
         NET_CHANNEL.registerMessage(0, AllItemSync.class, AllItemSync::encode, AllItemSync::decode,
                 (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleAllItems));
+        NET_CHANNEL.registerMessage(2, ManaSync.class, ManaSync::encode, ManaSync::decode,
+                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleMana));
     }
 
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
@@ -52,6 +55,15 @@ public class CapabilitySync {
             for(ItemStack i : msg.items)
                 slots.items.add(i); 
         });
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void handleMana(ManaSync msg, Supplier<NetworkEvent.Context> ctx) {
+        PlayerManaProvider.PlayerMana mana = Minecraft.getInstance().player.getCapability(PlayerManaProvider.PLAYER_MANA).orElse(null);
+        if (mana == null) return;
+
+        mana.setMana(msg.getCurrentMana());
+        mana.setTotalManaCap(msg.getTotalManaCap());
     }
     
     public static class AllItemSync {
@@ -103,6 +115,33 @@ public class CapabilitySync {
                 itemSync.items.add(buf.readItem());
             }
             return itemSync;
+        }
+    }
+
+    public static class ManaSync {
+        private int currentMana;
+        private int totalManaCap;
+
+        public ManaSync(int currentMana, int totalManaCap){
+            this.currentMana = currentMana;
+            this.totalManaCap = totalManaCap;
+        }
+
+        public int getCurrentMana() {
+            return currentMana;
+        }
+
+        public int getTotalManaCap() {
+            return totalManaCap;
+        }
+
+        public static void encode(ManaSync msg, FriendlyByteBuf buf) {
+            buf.writeInt(msg.currentMana);
+            buf.writeInt(msg.totalManaCap);
+        }
+
+        public static ManaSync decode(FriendlyByteBuf buf) {
+            return new ManaSync(buf.readInt(), buf.readInt());
         }
     }
 }

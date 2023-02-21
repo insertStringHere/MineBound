@@ -8,11 +8,13 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -29,6 +31,7 @@ import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -164,6 +167,8 @@ public class MagicEvents {
             mana.setTotalManaCap(totalMana);
             mana.setAvailableManaCap(mana.getManaMax() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
+
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
     }
 }
