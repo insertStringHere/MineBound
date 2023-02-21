@@ -12,6 +12,7 @@ import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -56,14 +57,14 @@ public class MagicEvents {
         if (event.side == LogicalSide.SERVER){
             event.player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).ifPresent(spell -> {
                 if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
-                    spell.equippedSlot = null; 
+                    spell.equippedSlot = null;
                     spell.index = 0;
                     CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(true, spell.equippedSlot, spell.index));
                 }
             });
             event.player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).ifPresent(spell -> {
                 if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
-                    spell.equippedSlot = null; 
+                    spell.equippedSlot = null;
                     spell.index = 0;
                     CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(false, spell.equippedSlot, spell.index));
                 }
@@ -73,8 +74,8 @@ public class MagicEvents {
 
     @SubscribeEvent
     public static void onButtonPress(InputEvent event){
-        
-        if(ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick()) 
+
+        if(ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
@@ -205,6 +206,8 @@ public class MagicEvents {
             mana.setTotalManaCap(totalMana);
             mana.setAvailableManaCap(mana.getManaMax() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
+
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
     }
 }
