@@ -1,8 +1,9 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.inventory.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.inventory.AlloyFurnaceMenu;
 import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
+import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -14,4 +15,5 @@ public class MenuRegistry {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MineBound.MOD_ID);
     public static final RegistryObject<MenuType<AlloyFurnaceMenu>> ALLOY_FURNACE_MENU = MENUS.register("alloy_furnace", () -> IForgeMenuType.create(AlloyFurnaceMenu::new));
     public static final RegistryObject<MenuType<ArmorForgeMenu>> ARMOR_FORGE_MENU = MENUS.register("armor_forge", () -> IForgeMenuType.create(ArmorForgeMenu::new));
+    public static final RegistryObject<MenuType<SelectSpellMenu>> SELECT_SPELL_MENU = MENUS.register("select_spells", () -> IForgeMenuType.create(SelectSpellMenu::new));
 }

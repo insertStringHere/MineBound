@@ -7,13 +7,18 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
+import com.mineboundteam.minebound.registry.ItemRegistry;
+
 /**
  * Pretty much taken from minecraft's build-in armor materials
  */
 public enum ArmorMaterials implements ArmorMaterial {
     MYRIAL_EFFIGY(0, new int[]{1, 4, 5, 2}, 0, SoundEvents.ARMOR_EQUIP_CHAIN, 0f, 0f, null),
     MYRIAL_SUIT(0, new int[] { 2, 5, 6, 2 }, 0, SoundEvents.ARMOR_EQUIP_IRON, 0f, 0f, null),
-    MYRIAL_SYNERGY(0, new int[] { 3, 6, 8, 3 }, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, 0f, 0f, null);
+    MYRIAL_SYNERGY(0, new int[] { 3, 6, 8, 3 }, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, 0f, 0f, null), 
+    ENERGIZED_IRON(15, new int[]{2, 5, 6, 2}, 8, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F,  Ingredient.of(ItemRegistry.ENERGIZED_IRON_INGOT.get())), 
+    ILLUMINANT_STEEL(30, new int[]{3, 5, 7, 2}, 8, SoundEvents.ARMOR_EQUIP_IRON, 1.0F, 0.0F, Ingredient.of(ItemRegistry.ILLUMINANT_STEEL_INGOT.get()));
+
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final int durabilityMultiplier;
     private final int[] slotProtections;

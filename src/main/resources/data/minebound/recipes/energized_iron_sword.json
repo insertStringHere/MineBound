@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "#",
+      "#",
+      "s"
+    ],
+    "key": {
+      "#": {
+        "item": "minebound:energized_iron_ingot"
+      },
+      "s": {
+        "item": "minecraft:stick"
+      }
+    },
+    "result": {
+      "item": "minebound:energized_iron_sword"
+    }
+  }
