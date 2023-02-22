@@ -51,33 +51,33 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     // TODO: tie in with keybindings based on where spell is equipped
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
-                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
-                float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) == 0) {
-                    event.setCanceled(true);
-                }
-                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
-                spell.reduceMana(spell.manaCost, player);
-            }
-        }
+//        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+//            Entity sourceEntity = event.getSource().getEntity();
+//            if (sourceEntity != null) {
+//                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
+//                float dmgAmount = event.getAmount();
+//                if ((1 - spell.damageReduction) == 0) {
+//                    event.setCanceled(true);
+//                }
+//                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
+//                spell.reduceMana(spell.manaCost, player);
+//            }
+//        }
     }
 
     @SubscribeEvent
     public static void triggerSpell(LivingHurtEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
-                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
-                float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) != 0) {
-                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
-                }
-                // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
-            }
-        }
+//        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+//            Entity sourceEntity = event.getSource().getEntity();
+//            if (sourceEntity != null) {
+//                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
+//                float dmgAmount = event.getAmount();
+//                if ((1 - spell.damageReduction) != 0) {
+//                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
+//                }
+//                // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
+//            }
+//        }
     }
 
     @Override

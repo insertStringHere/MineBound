@@ -66,56 +66,6 @@ public abstract class SpellItem extends Item {
             });
     }
 
-    protected static <T extends SpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player, Capability<ArmorSpellsProvider.SpellContainer> capability) {
-        NonNullList<ItemStack> spells = NonNullList.create();
-        for (EquipmentSlot e : EquipmentSlot.values())
-            player.getItemBySlot(e).getCapability(capability).ifPresent(slots -> {
-                for (ItemStack item : slots.items) {
-                    if (type.isInstance(item.getItem()))
-                        spells.add(item);
-                }
-            });
-        return spells;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <T extends SpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player, Capability<ArmorSpellsProvider.SpellContainer> capability) {
-        NonNullList<T> spells = NonNullList.create();
-        for (EquipmentSlot e : EquipmentSlot.values())
-            player.getItemBySlot(e).getCapability(capability).ifPresent(slots -> {
-                for (ItemStack item : slots.items) {
-                    if (type.isInstance(item.getItem()))
-                        spells.add((T) item.getItem());
-                }
-            });
-        return spells;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <T extends SpellItem> ItemStack getHighestEquippedSpellFromList(Class<T> type, List<ItemStack> spells) {
-        ItemStack highestSpell = null;
-        for (ItemStack spell : spells) {
-            if (highestSpell == null) {
-                highestSpell = spell;
-            } else if (((T) spell.getItem()).level.getValue() > ((T) highestSpell.getItem()).level.getValue()) {
-                highestSpell = spell;
-            }
-        }
-        return highestSpell;
-    }
-
-    protected static <T extends SpellItem> T getHighestSpellItem(List<T> spells) {
-        T highestSpell = null;
-        for (T spell : spells) {
-            if (highestSpell == null) {
-                highestSpell = spell;
-            } else if (spell.level.getValue() > highestSpell.level.getValue()) {
-                highestSpell = spell;
-            }
-        }
-        return highestSpell;
-    }
-
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ChatFormatting.GRAY)

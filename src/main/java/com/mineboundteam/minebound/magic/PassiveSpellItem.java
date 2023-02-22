@@ -24,15 +24,54 @@ public abstract class PassiveSpellItem extends SpellItem {
     // Streams can help with readability, but they are massively slower than a for each loop (2 - 6 times slower in my testing).
 
     protected static <T extends PassiveSpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player) {
-        return getEquippedSpellsOfType(type, player, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS);
+        NonNullList<ItemStack> spells = NonNullList.create();
+        for (EquipmentSlot e : EquipmentSlot.values())
+            player.getItemBySlot(e).getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
+                for (ItemStack item : slots.items) {
+                    if (type.isInstance(item.getItem()))
+                        spells.add(item);
+                }
+            });
+        return spells;
     }
 
+    @SuppressWarnings("unchecked")
     protected static <T extends PassiveSpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player) {
-        return getEquippedSpellItemsOfType(type, player, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS);
+        NonNullList<T> spells = NonNullList.create();
+        for (EquipmentSlot e : EquipmentSlot.values())
+            player.getItemBySlot(e).getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
+                for (ItemStack item : slots.items) {
+                    if (type.isInstance(item.getItem()))
+                        spells.add((T) item.getItem());
+                }
+            });
+        return spells;
     }
 
+    @SuppressWarnings("unchecked")
     protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type, Player player) {
-        return getHighestEquippedSpellFromList(type, getEquippedSpellsOfType(type, player));
+        List<ItemStack> spells = getEquippedSpellsOfType(type, player);
+        ItemStack highestSpell = null;
+        for (ItemStack spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (((T) spell.getItem()).level.getValue() > ((T) highestSpell.getItem()).level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
+    }
+
+    protected static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {
+        T highestSpell = null;
+        for (T spell : spells) {
+            if (highestSpell == null) {
+                highestSpell = spell;
+            } else if (spell.level.getValue() > highestSpell.level.getValue()) {
+                highestSpell = spell;
+            }
+        }
+        return highestSpell;
     }
 
     @Override
