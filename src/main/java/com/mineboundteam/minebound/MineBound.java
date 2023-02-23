@@ -29,7 +29,7 @@ public class MineBound {
         }
     };
 
-    public MineBound() {
+    public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);
         iEventBus.addListener(this::clientSetup);
@@ -42,16 +42,8 @@ public class MineBound {
         ClientRegistry.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event){
+    private void commonSetup(final FMLCommonSetupEvent event) {
         CapabilitySync.registerPackets(event);
         MagicSync.registerPackets(event);
-    }
-
-    public static void registerObject(Object object) {
-        MinecraftForge.EVENT_BUS.register(object);
-    }
-
-    public static void unregisterObject(Object object) {
-        MinecraftForge.EVENT_BUS.unregister(object);
     }
 }
