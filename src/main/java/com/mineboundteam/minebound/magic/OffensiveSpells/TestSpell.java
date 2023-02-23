@@ -31,7 +31,7 @@ public class TestSpell extends ActiveSpellItem {
                         new TextComponent(String.format("Player currently has %d mana", mana.getMana())), false);
             });
 
-            super.reduceMana(manaCost, player);
+            reduceMana(manaCost, player);
         }
         return InteractionResultHolder.success(player.getItemInHand(usedHand));
 
