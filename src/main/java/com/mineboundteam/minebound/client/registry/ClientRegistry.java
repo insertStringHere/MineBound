@@ -1,11 +1,15 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.client.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
+import com.mineboundteam.minebound.client.screens.SelectSpellScreen;
+import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.registry.BlockRegistry;
+import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
@@ -58,6 +62,7 @@ public class ClientRegistry {
     public static void registerScreens(){
         MenuScreens.register(MenuRegistry.ALLOY_FURNACE_MENU.get(), AlloyFurnaceScreen::new);
         MenuScreens.register(MenuRegistry.ARMOR_FORGE_MENU.get(), ArmorForgeScreen::new);
+        MenuScreens.register(MenuRegistry.SELECT_SPELL_MENU.get(), SelectSpellScreen::new);
     }
 
     private static String getName(String name) {

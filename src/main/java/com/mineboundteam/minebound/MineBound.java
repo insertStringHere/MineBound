@@ -1,7 +1,8 @@
 package com.mineboundteam.minebound;
 
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
-import com.mineboundteam.minebound.registry.ClientRegistry;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
+import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import com.mineboundteam.minebound.registry.Registry;
@@ -43,6 +44,7 @@ public class MineBound {
 
     private void commonSetup(final FMLCommonSetupEvent event){
         CapabilitySync.registerPackets(event);
+        MagicSync.registerPackets(event);
     }
 
     public static void registerObject(Object object) {

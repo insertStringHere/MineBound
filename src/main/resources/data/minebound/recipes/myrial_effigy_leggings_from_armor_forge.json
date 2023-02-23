@@ -1,0 +1,23 @@
+{
+  "type": "minebound:armor_forge",
+  "ingredients": [
+    {
+      "item": "minebound:energized_iron_leggings"
+    },
+    {
+      "item": "minecraft:piston"
+    },
+    {
+      "item": "minebound:myri_chunk"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_effigy_leggings"
+  }
+}

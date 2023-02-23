@@ -7,12 +7,21 @@ import java.util.UUID;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
+import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.network.MagicSync;
+import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
+import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -23,12 +32,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -42,6 +53,37 @@ public class MagicEvents {
             handlePlayerArmor(event.player);
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(handlePlayerMana(event.player));
         }
+
+        if (event.side == LogicalSide.SERVER){
+            event.player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).ifPresent(spell -> {
+                if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
+                    spell.equippedSlot = null;
+                    spell.index = 0;
+                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(true, spell.equippedSlot, spell.index));
+                }
+            });
+            event.player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).ifPresent(spell -> {
+                if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
+                    spell.equippedSlot = null;
+                    spell.index = 0;
+                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(false, spell.equippedSlot, spell.index));
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onButtonPress(InputEvent event){
+
+        if(ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
+        else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
+
+        if(ClientRegistry.PRIMARY_MAGIC.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
+        if(ClientRegistry.SECONDARY_MAGIC.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
     }
 
     protected static UUID healthReductionID = new UUID(237427279, 347509);
@@ -164,6 +206,8 @@ public class MagicEvents {
             mana.setTotalManaCap(totalMana);
             mana.setAvailableManaCap(mana.getManaMax() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
+
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
     }
 }

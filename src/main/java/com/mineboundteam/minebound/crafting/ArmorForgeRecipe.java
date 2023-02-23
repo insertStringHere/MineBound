@@ -63,7 +63,19 @@ public class ArmorForgeRecipe implements Recipe<Container> {
             if (!container.getItem(i).isEmpty())
                 itemStacks.add(container.getItem(i));
 
-        return net.minecraftforge.common.util.RecipeMatcher.findMatches(itemStacks, ingredients) != null;
+        return net.minecraftforge.common.util.RecipeMatcher.findMatches(itemStacks, ingredients) != null 
+            && container.getItem(5).sameItem(this.armor);
+    }
+    public boolean matches(Container container, Container ArmorContainer, Level level) {
+        if (level.isClientSide) return false;
+        NonNullList<ItemStack> itemStacks = NonNullList.create();
+
+        for (int i = 0; i < 5; i++)
+            if (!container.getItem(i).isEmpty())
+                itemStacks.add(container.getItem(i));
+
+        return net.minecraftforge.common.util.RecipeMatcher.findMatches(itemStacks, ingredients) != null 
+            && ArmorContainer.getItem(0).sameItem(this.armor);
     }
 
     @Override

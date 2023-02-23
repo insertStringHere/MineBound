@@ -1,0 +1,26 @@
+{
+  "type": "minebound:armor_forge",
+  "armor":{
+    "item": "minebound:myrial_effigy_boots"
+  },
+  "ingredients": [
+    {
+      "item": "minebound:illuminant_steel_boots"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_suit_boots"
+  }
+}
