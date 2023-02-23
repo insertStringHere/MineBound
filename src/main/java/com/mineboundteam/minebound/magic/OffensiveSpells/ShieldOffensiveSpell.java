@@ -1,16 +1,19 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,40 +47,48 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+    public InteractionResultHolder<ItemStack> use(ItemStack stack, Level level, Player player) {
+        CompoundTag isActive = new CompoundTag();
+        isActive.putBoolean("minebound.shield_offensive.active",true);
+        stack.setTag(isActive);
+        return InteractionResultHolder.pass(stack);
     }
 
-    // TODO: tie in with keybindings based on where spell is equipped
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, Player player) {
+        CompoundTag isActive = new CompoundTag();
+        isActive.putBoolean("minebound.shield_offensive.active",false);
+        stack.setTag(isActive);
+    }
+
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-//        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-//            Entity sourceEntity = event.getSource().getEntity();
-//            if (sourceEntity != null) {
-//                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
+        // TODO: figure out how to get ItemStack of spell
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+            Entity sourceEntity = event.getSource().getEntity();
+            if (sourceEntity != null) {
 //                float dmgAmount = event.getAmount();
 //                if ((1 - spell.damageReduction) == 0) {
 //                    event.setCanceled(true);
 //                }
 //                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
 //                spell.reduceMana(spell.manaCost, player);
-//            }
-//        }
+            }
+        }
     }
 
     @SubscribeEvent
     public static void triggerSpell(LivingHurtEvent event) {
-//        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-//            Entity sourceEntity = event.getSource().getEntity();
-//            if (sourceEntity != null) {
-//                ShieldOffensiveSpell spell = getHighestSpellItem(getEquippedSpellItemsOfType(ShieldOffensiveSpell.class, player));
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+            Entity sourceEntity = event.getSource().getEntity();
+            if (sourceEntity != null) {
 //                float dmgAmount = event.getAmount();
 //                if ((1 - spell.damageReduction) != 0) {
 //                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
 //                }
-//                // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
-//            }
-//        }
+                // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
+            }
+        }
     }
 
     @Override

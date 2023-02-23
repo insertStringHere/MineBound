@@ -1,7 +1,5 @@
 package com.mineboundteam.minebound.magic.network;
 
-import java.util.function.Supplier;
-
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
@@ -9,21 +7,23 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.Sel
 import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-
+import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+
+import java.util.function.Supplier;
 
 public class MagicSync {
     public static final SimpleChannel NET_CHANNEL = NetworkRegistry.newSimpleChannel(
@@ -37,33 +37,41 @@ public class MagicSync {
 
     public static void handleButtons(ButtonMsg msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayer player =  ctx.get().getSender();
-            if(!player.level.isClientSide()){
+            ServerPlayer player = ctx.get().getSender();
+            if (!player.level.isClientSide()) {
 
                 var activeSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS, true);
-                var passiveSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL,  ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS, true);
+                var passiveSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS, true);
                 boolean canOpen = !(activeSpells.isEmpty() && passiveSpells.isEmpty());
 
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-                switch(msg.msg){
-                    case PRIMARY_MENU:
-                        if(canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 0)
+                switch (msg.msg) {
+                    case PRIMARY_MENU -> {
+                        if (canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, true), TextComponent.EMPTY));
-                        break;
-                    case PRIMARY_PRESSED:
-                        if(chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 0)
+                    }
+                    case PRIMARY_PRESSED -> {
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
                             useSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
-                        break;
-                    case SECONDARY_MENU:
-                        if(canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 1)
+                    }
+                    case PRIMARY_RELEASED -> {
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                            releaseUsingSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
+                    }
+                    case SECONDARY_MENU -> {
+                        if (canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, false), TextComponent.EMPTY));
-                        break;
-                    case SECONDARY_PRESSED:
-                        if(chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem)chest.getItem()).getTier().handSlots > 1)
+                    }
+                    case SECONDARY_PRESSED -> {
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
                             useSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
-                        break;
-                    default:
-                        break;
+                    }
+                    case SECONDARY_RELEASED -> {
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
+                            releaseUsingSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
+                    }
+                    default -> {
+                    }
                 }
             }
         });
@@ -74,8 +82,26 @@ public class MagicSync {
         player.getCapability(cap).ifPresent(selected -> {
             if (selected.equippedSlot != null) {
                 player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
-                        .ifPresent(slots -> slots.items.get(selected.index).getItem().use(player.level, player,
-                                InteractionHand.MAIN_HAND));
+                        .ifPresent(slots -> {
+                            Item activeSpell = slots.items.get(selected.index).getItem();
+                            if (activeSpell instanceof ActiveSpellItem) {
+                                ((ActiveSpellItem) activeSpell).use(slots.items.get(selected.index), player.level, player);
+                            }
+                        });
+            }
+        });
+    }
+
+    protected static void releaseUsingSpell(Player player, Capability<? extends SelectedSpell> cap) {
+        player.getCapability(cap).ifPresent(selected -> {
+            if (selected.equippedSlot != null) {
+                player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
+                        .ifPresent(slots -> {
+                            Item activeSpell = slots.items.get(selected.index).getItem();
+                            if (activeSpell instanceof ActiveSpellItem) {
+                                ((ActiveSpellItem) activeSpell).releaseUsing(slots.items.get(selected.index), player.level, player);
+                            }
+                        });
             }
         });
     }
@@ -85,9 +111,11 @@ public class MagicSync {
 
         public static enum MsgType {
             PRIMARY_PRESSED(0),
-            SECONDARY_PRESSED(1),
-            PRIMARY_MENU(2),
-            SECONDARY_MENU(3);
+            PRIMARY_RELEASED(1),
+            SECONDARY_PRESSED(2),
+            SECONDARY_RELEASED(3),
+            PRIMARY_MENU(4),
+            SECONDARY_MENU(5);
 
             protected int msgVal;
 

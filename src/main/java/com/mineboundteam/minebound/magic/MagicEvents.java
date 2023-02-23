@@ -1,18 +1,13 @@
 package com.mineboundteam.minebound.magic;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.UUID;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
-import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -20,14 +15,13 @@ import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
@@ -40,6 +34,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -48,42 +48,68 @@ public class MagicEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
-        if (event.side == LogicalSide.SERVER  && event.player.level.getGameTime() % 10 == 0 
-                && event.phase == TickEvent.Phase.START) {
+        if (event.side == LogicalSide.SERVER && event.player.level.getGameTime() % 10 == 0
+                    && event.phase == TickEvent.Phase.START) {
             handlePlayerArmor(event.player);
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(handlePlayerMana(event.player));
         }
 
-        if (event.side == LogicalSide.SERVER){
+        if (event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).ifPresent(spell -> {
-                if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
+                if (spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)) {
                     spell.equippedSlot = null;
                     spell.index = 0;
-                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(true, spell.equippedSlot, spell.index));
+                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.player), new SelectedSpellsSync(true, spell.equippedSlot, spell.index));
                 }
             });
             event.player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).ifPresent(spell -> {
-                if(spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)){
+                if (spell.equippedSlot != null && !event.player.hasItemInSlot(spell.equippedSlot)) {
                     spell.equippedSlot = null;
                     spell.index = 0;
-                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.player), new SelectedSpellsSync(false, spell.equippedSlot, spell.index));
+                    CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.player), new SelectedSpellsSync(false, spell.equippedSlot, spell.index));
                 }
             });
         }
     }
 
     @SubscribeEvent
-    public static void onButtonPress(InputEvent event){
-
-        if(ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
+    public static void onButtonPress(InputEvent event) {
+        if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
+    }
 
-        if(ClientRegistry.PRIMARY_MAGIC.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
-        if(ClientRegistry.SECONDARY_MAGIC.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+    // If the magic keybinds are bound to mouse buttons
+    @SubscribeEvent
+    public static void onButtonPress(InputEvent.MouseInputEvent event) {
+        if (event.getAction() == GLFW.GLFW_PRESS) {
+            if (ClientRegistry.PRIMARY_MAGIC.consumeClick())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
+            if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+            if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
+            if (event.getButton() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
+        }
+    }
+
+    // If the magic keybinds are bound to keyboard keys
+    @SubscribeEvent
+    public static void onButtonPress(InputEvent.KeyInputEvent event) {
+        if (event.getAction() == GLFW.GLFW_PRESS) {
+            if (ClientRegistry.PRIMARY_MAGIC.consumeClick())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
+            if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+            if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
+            if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
+        }
     }
 
     protected static UUID healthReductionID = new UUID(237427279, 347509);
@@ -111,8 +137,8 @@ public class MagicEvents {
                         if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
                             float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
                             armorItem.setDamage(item, (int) (armorDamage - f / 6));
-                            pFoodData.addExhaustion(f/16.0f);
-                        } else if(pFoodData.getFoodLevel() >= 16){
+                            pFoodData.addExhaustion(f / 16.0f);
+                        } else if (pFoodData.getFoodLevel() >= 16) {
                             armorItem.setDamage(item, armorDamage - 1);
                             pFoodData.addExhaustion(0.125f);
                         }
@@ -129,16 +155,16 @@ public class MagicEvents {
 
 
         if (healthAttribute.getModifier(healthReductionID) != null
-                && (int) healthAttribute.getModifier(healthReductionID).getAmount() != healthReduction) {
+                    && (int) healthAttribute.getModifier(healthReductionID).getAmount() != healthReduction) {
             healthAttribute.removeModifier(healthReductionID);
             healthAttribute.addTransientModifier(
                     new AttributeModifier(healthReductionID, "HealthReduce", healthReduction, Operation.ADDITION));
-        } else if (healthAttribute.getModifier(healthReductionID) == null){
+        } else if (healthAttribute.getModifier(healthReductionID) == null) {
             healthAttribute.addTransientModifier(new AttributeModifier(healthReductionID, "HealthReduce", healthReduction, Operation.ADDITION));
         }
 
-        if(player.getHealth() > player.getMaxHealth()){
-            player.hurt(DamageSource.STARVE, player.getHealth()-player.getMaxHealth());
+        if (player.getHealth() > player.getMaxHealth()) {
+            player.hurt(DamageSource.STARVE, player.getHealth() - player.getMaxHealth());
         }
     }
 
@@ -207,7 +233,7 @@ public class MagicEvents {
             mana.setAvailableManaCap(mana.getManaMax() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
 
-            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
     }
 }
