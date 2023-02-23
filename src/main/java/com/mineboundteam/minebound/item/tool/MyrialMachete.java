@@ -29,12 +29,6 @@ public class MyrialMachete extends SwordItem {
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
-
-    @Override
-    public boolean canFitInsideContainerItems() {
-        return false;
-    }
-
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (!pLevel.isClientSide() && pEntity instanceof Player player && !pIsSelected) {
