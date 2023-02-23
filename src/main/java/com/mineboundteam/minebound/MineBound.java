@@ -42,7 +42,7 @@ public class MineBound {
         ClientRegistry.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(final FMLCommonSetupEvent event){
         CapabilitySync.registerPackets(event);
         MagicSync.registerPackets(event);
     }
