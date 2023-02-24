@@ -31,8 +31,10 @@ public class MyrialMachete extends SwordItem {
 
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        if (!pLevel.isClientSide() && pEntity instanceof Player player && !pIsSelected) {
-            player.getInventory().removeItem(pStack);
+        if (!pLevel.isClientSide() && pEntity instanceof Player player) {
+            if(!pIsSelected || player.containerMenu != player.inventoryMenu) {
+                player.getInventory().removeItem(pStack);
+            }
         }
     }
 
@@ -41,6 +43,4 @@ public class MyrialMachete extends SwordItem {
         player.getInventory().removeItem(item);
         return false;
     }
-
-    // TODO: machete can be placed in storage containers like chests, need to prevent that somehow
 }
