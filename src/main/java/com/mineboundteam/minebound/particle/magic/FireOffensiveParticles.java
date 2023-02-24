@@ -22,7 +22,6 @@ public class FireOffensiveParticles extends TextureSheetParticle {
         this.xd = pXSpeed + (Math.random() * 2.0D - 1.0D) * (double) 0.4F;
         this.yd = pYSpeed + (Math.random() * 2.0D - 1.0D) * (double) 0.4F;
         this.zd = pZSpeed + (Math.random() * 2.0D - 1.0D) * (double) 0.4F;
-        double d0 = (Math.random() + Math.random() + 1.0D) * (double) 0.15F;
         double d1 = Math.sqrt(this.xd * this.xd + this.yd * this.yd + this.zd * this.zd);
         this.xd = this.xd / d1 * (double) 0.4F;
         this.yd = this.yd / d1 * (double) 0.4F;

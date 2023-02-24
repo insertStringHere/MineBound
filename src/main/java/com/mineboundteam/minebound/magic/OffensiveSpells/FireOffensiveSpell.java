@@ -53,13 +53,13 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             double z = (Math.cos(yRot * Math.PI / 180f));
             for (int i = 0; i < 360; i++) {
                 if (i % 10 == 0) {
-                    player.getLevel().addParticle(particles.get(ArmorTier.SUIT).get(),
+                    player.getLevel().addParticle(particles.get(ArmorTier.EFFIGY).get(),
                             player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
-                            player.getY() + 1.4d + y + (Math.cos(i) * (Math.random() * 0.075d)),
+                            player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
                             player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
-                            x * 1000d - (Math.random() * (z * Math.sin(i) * 75d)),
-                            y * 1000d + (Math.random() * (Math.cos(i) * 75d)),
-                            z * 1000d + (Math.random() * (x * Math.sin(i) * 75d))
+                            x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
+                            y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
+                            z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
                     );
 
                 }
