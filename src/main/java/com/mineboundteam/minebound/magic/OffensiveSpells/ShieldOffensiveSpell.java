@@ -27,7 +27,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ShieldOffensiveSpell extends ActiveSpellItem {
@@ -68,23 +67,22 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
-                AtomicBoolean spellTriggered = new AtomicBoolean(false);
-                spellTriggered.set(triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event));
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event));
+                boolean spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.MAIN_HAND), event));
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.MAIN_HAND), event);
                 }
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event));
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
-        AtomicBoolean spellTriggered = new AtomicBoolean(false);
+        boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
@@ -94,10 +92,10 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                 }
                 sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
                 spell.reduceMana(spell.manaCost, player);
-                spellTriggered.set(true);
+                spellTriggered = true;
             }
         }
-        return spellTriggered.get();
+        return spellTriggered;
     }
 
     @SubscribeEvent
@@ -105,23 +103,22 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
-                AtomicBoolean spellTriggered = new AtomicBoolean(false);
-                spellTriggered.set(triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event));
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event));
+                boolean spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingHurtEvent(player.getItemInHand(InteractionHand.MAIN_HAND), event));
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.MAIN_HAND), event);
                 }
-                if (!spellTriggered.get()) {
-                    spellTriggered.set(triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event));
+                if (!spellTriggered) {
+                    spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
-        AtomicBoolean spellTriggered = new AtomicBoolean(false);
+        boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
@@ -129,11 +126,11 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                 if ((1 - spell.damageReduction) != 0) {
                     event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
                 }
-                spellTriggered.set(true);
+                spellTriggered = true;
                 // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
             }
         }
-        return spellTriggered.get();
+        return spellTriggered;
     }
 
     @Override
