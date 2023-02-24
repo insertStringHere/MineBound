@@ -75,7 +75,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.MAIN_HAND), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event);
                 }
             }
         }
@@ -111,7 +111,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.MAIN_HAND), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event);
                 }
             }
         }
