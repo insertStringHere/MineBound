@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -80,12 +79,12 @@ public class MagicSync {
 
     protected static void useSpell(Player player, Capability<? extends SelectedSpell> cap) {
         player.getCapability(cap).ifPresent(selected -> {
-            if (selected.equippedSlot != null) {
+            if (!selected.isEmpty()) {
                 player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
                         .ifPresent(slots -> {
-                            Item activeSpell = slots.items.get(selected.index).getItem();
-                            if (activeSpell instanceof ActiveSpellItem) {
-                                ((ActiveSpellItem) activeSpell).use(slots.items.get(selected.index), player.level, player);
+                            ItemStack activeSpell = slots.items.get(selected.index);
+                            if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
+                                spell.use(activeSpell, player.level, player);
                             }
                         });
             }
@@ -94,12 +93,12 @@ public class MagicSync {
 
     protected static void releaseUsingSpell(Player player, Capability<? extends SelectedSpell> cap) {
         player.getCapability(cap).ifPresent(selected -> {
-            if (selected.equippedSlot != null) {
+            if (!selected.isEmpty()) {
                 player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
                         .ifPresent(slots -> {
-                            Item activeSpell = slots.items.get(selected.index).getItem();
-                            if (activeSpell instanceof ActiveSpellItem) {
-                                ((ActiveSpellItem) activeSpell).releaseUsing(slots.items.get(selected.index), player.level, player);
+                            ItemStack activeSpell = slots.items.get(selected.index);
+                            if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
+                                spell.releaseUsing(activeSpell, player.level, player);
                             }
                         });
             }

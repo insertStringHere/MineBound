@@ -23,7 +23,7 @@ public class TestSpell extends ActiveSpellItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 player.displayClientMessage(
@@ -32,8 +32,6 @@ public class TestSpell extends ActiveSpellItem {
 
             super.reduceMana(manaCost, player);
         }
-        return InteractionResultHolder.success(stack);
-
     }
 
     @Override
