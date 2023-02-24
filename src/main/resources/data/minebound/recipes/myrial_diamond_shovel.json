@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "s",
+    "s"
+  ],
+  "key": {
+    "#": {
+      "item": "minebound:myrial_diamond_ingot"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "minebound:myrial_diamond_shovel"
+  }
+}

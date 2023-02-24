@@ -4,12 +4,18 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import com.mineboundteam.minebound.config.ManaConfig;
+
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +71,9 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
                                        .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));
         pTooltipComponents.add(new TextComponent("Utility Magic slots: ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(config.UTILITY_SLOTS.get() + "").withStyle(ChatFormatting.DARK_PURPLE)));
-        pTooltipComponents.add(new TextComponent("Total Energy: ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Energy: ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent((config.ENERGY.get() - this.getDamage(pStack)) + "").withStyle(Style.EMPTY.withColor(pStack.getBarColor())))
+                                       .append(" / ")
                                        .append(new TextComponent(config.ENERGY.get() + "").withStyle(ChatFormatting.GREEN)));
     }
 
@@ -75,6 +83,21 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     public ArmorTier getTier() {
         return tier;
+    }
+
+    // Return true if elytra flight is possible with this armor piece, is only called on chest piece
+    @Override
+    public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+        if (stack.hasTag()) {
+            return stack.getTag().getBoolean("minebound.telekinetic_utility.elytra_flight");
+        }
+        return false;
+    }
+
+    // No extra processing needs to be done, so just return true
+    @Override
+    public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+        return true;
     }
 
     @Override
@@ -90,5 +113,13 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if(ManaConfig.keepArmor.get() && event.isWasDeath())
+            for(ItemStack item : event.getOriginal().getArmorSlots())
+                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem)
+                    event.getPlayer().setItemSlot(Player.getEquipmentSlotForItem(item), item);
     }
 }

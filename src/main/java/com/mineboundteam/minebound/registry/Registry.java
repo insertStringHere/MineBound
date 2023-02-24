@@ -1,5 +1,7 @@
 package com.mineboundteam.minebound.registry;
 
+import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class Registry {

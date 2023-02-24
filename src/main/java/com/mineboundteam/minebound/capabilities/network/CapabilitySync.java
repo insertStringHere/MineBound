@@ -6,13 +6,18 @@ import java.util.function.Supplier;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.inventory.ArmorForgeMenu;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +29,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+@SuppressWarnings("resource")
 public class CapabilitySync {
     public static final SimpleChannel NET_CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MineBound.MOD_ID, "capability_sync"),
@@ -33,6 +39,10 @@ public class CapabilitySync {
     public static void registerPackets(FMLCommonSetupEvent event) {
         NET_CHANNEL.registerMessage(0, AllItemSync.class, AllItemSync::encode, AllItemSync::decode,
                 (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleAllItems));
+        NET_CHANNEL.registerMessage(1, SelectedSpellsSync.class, SelectedSpellsSync::encode, SelectedSpellsSync::decode,
+                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleSelectedSpells));
+        NET_CHANNEL.registerMessage(2, ManaSync.class, ManaSync::encode, ManaSync::decode,
+                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleMana));
     }
 
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
@@ -44,18 +54,83 @@ public class CapabilitySync {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void handleAllItems(AllItemSync msg, Supplier<NetworkEvent.Context> ctx){
-        AbstractContainerMenu menu = Minecraft.getInstance().player.containerMenu; 
-        if(menu.containerId == msg.getContainer() && menu instanceof ArmorForgeMenu)
-            ((ArmorForgeMenu)menu).slots.get(ArmorForgeMenu.ARMOR_INPUT_INDEX).getItem().getCapability(msg.getContainerType()).ifPresent(slots -> {
-            slots.items.clear();
-            for(ItemStack i : msg.items)
-                slots.items.add(i); 
-        });
+    public static void handleAllItems(AllItemSync msg, Supplier<NetworkEvent.Context> ctx) {
+        AbstractContainerMenu menu = Minecraft.getInstance().player.containerMenu;
+        if (menu.containerId == msg.getContainer() && menu instanceof ArmorForgeMenu)
+            ((ArmorForgeMenu) menu).slots.get(ArmorForgeMenu.ARMOR_INPUT_INDEX).getItem()
+                    .getCapability(msg.getContainerType()).ifPresent(slots -> {
+                        slots.items.clear();
+                        for (ItemStack i : msg.items)
+                            slots.items.add(i);
+                    });
     }
-    
+
+    @OnlyIn(Dist.CLIENT)
+    public static void handleMana(ManaSync msg, Supplier<NetworkEvent.Context> ctx) {
+        PlayerManaProvider.PlayerMana mana = Minecraft.getInstance().player.getCapability(PlayerManaProvider.PLAYER_MANA).orElse(null);
+        if (mana == null) return;
+
+        mana.setMana(msg.getCurrentMana());
+        mana.setTotalManaCap(msg.getTotalManaCap());
+    }
+
+
+    public static void handleSelectedSpells(SelectedSpellsSync msg, Supplier<NetworkEvent.Context> ctx) {
+       Minecraft.getInstance().player.getCapability((Capability<? extends SelectedSpell>)(msg.isPrimary() ? PlayerSelectedSpellsProvider.PRIMARY_SPELL
+                : PlayerSelectedSpellsProvider.SECONDARY_SPELL)).ifPresent(spell -> {
+                    spell.equippedSlot = msg.getSlot();
+                    spell.index = msg.getIndex();
+                });
+    }
+
+    public static class SelectedSpellsSync {
+        private int slot;
+        private int index;
+        private boolean isPrimary;
+
+        public SelectedSpellsSync(boolean isPrimary, EquipmentSlot pSlot, int pIndex) {
+            if(pSlot == null)
+                this.slot = -1;
+            else
+                this.slot = pSlot.getIndex();
+            this.index = pIndex;
+            this.isPrimary = isPrimary;
+        }
+
+        private SelectedSpellsSync() {
+        }
+
+        public EquipmentSlot getSlot() {
+            if (slot == -1)
+                return null;
+            return EquipmentSlot.byTypeAndIndex(Type.ARMOR, slot);
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public boolean isPrimary() {
+            return isPrimary;
+        }
+
+        public static void encode(SelectedSpellsSync msg, FriendlyByteBuf buf) {
+            buf.writeBoolean(msg.isPrimary);
+            buf.writeInt(msg.index);
+            buf.writeInt(msg.slot);
+        }
+
+        public static SelectedSpellsSync decode(FriendlyByteBuf buf) {
+            SelectedSpellsSync msg = new SelectedSpellsSync();
+            msg.isPrimary = buf.readBoolean();
+            msg.index = buf.readInt();
+            msg.slot = buf.readInt();
+            return msg;
+        }
+    }
+
     public static class AllItemSync {
-        private int containerIndex; 
+        private int containerIndex;
         private List<ItemStack> items;
 
         private int containerType = 0;
@@ -68,17 +143,19 @@ public class CapabilitySync {
         public List<ItemStack> getItems() {
             return items;
         }
-        public int getContainer(){
+
+        public int getContainer() {
             return containerIndex;
         }
-        public AllItemSync setContainerType(Capability<SpellContainer> type){
-            if(type.equals(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS))
+
+        public AllItemSync setContainerType(Capability<? extends SpellContainer> type) {
+            if (type.equals(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS))
                 containerType = 1;
             return this;
         }
 
-        public Capability<SpellContainer> getContainerType(){
-            switch(containerType){
+        public Capability<? extends SpellContainer> getContainerType() {
+            switch (containerType) {
                 case 1:
                     return ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS;
             }
@@ -103,6 +180,33 @@ public class CapabilitySync {
                 itemSync.items.add(buf.readItem());
             }
             return itemSync;
+        }
+    }
+
+    public static class ManaSync {
+        private int currentMana;
+        private int totalManaCap;
+
+        public ManaSync(int currentMana, int totalManaCap){
+            this.currentMana = currentMana;
+            this.totalManaCap = totalManaCap;
+        }
+
+        public int getCurrentMana() {
+            return currentMana;
+        }
+
+        public int getTotalManaCap() {
+            return totalManaCap;
+        }
+
+        public static void encode(ManaSync msg, FriendlyByteBuf buf) {
+            buf.writeInt(msg.currentMana);
+            buf.writeInt(msg.totalManaCap);
+        }
+
+        public static ManaSync decode(FriendlyByteBuf buf) {
+            return new ManaSync(buf.readInt(), buf.readInt());
         }
     }
 }
