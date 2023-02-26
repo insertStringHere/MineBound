@@ -1,15 +1,17 @@
 {
   "type": "minebound:armor_forge",
-  "armor": "minebound:myrial_synergy_helmet",
+  "armor": {
+    "item": "minebound:myrial_synergy_helmet"
+  },
   "ingredients": [
     {
       "item": "minebound:myrial_diamond_helmet"
     },
     {
-      "item": "minecraft:netherite"
+      "item": "minecraft:netherite_ingot"
     },
     {
-      "item": "minebound:myri_chuck"
+      "item": "minebound:myri_chunk"
     },
     {
       "item": "minebound:alien_circuitry"
