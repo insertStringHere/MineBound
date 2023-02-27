@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
@@ -103,6 +104,9 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1).stacksTo(1).tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
 
     /* Shield */
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
+    public static final RegistryObject<Item> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
     public static final RegistryObject<Item> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_2));
     public static final RegistryObject<Item> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_3));
     public static final RegistryObject<Item> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_4));
