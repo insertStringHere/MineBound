@@ -91,7 +91,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     event.setCanceled(true);
                 }
                 sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
-                spell.reduceMana(spell.manaCost, player);
+                reduceMana(spell.manaCost, player);
                 spellTriggered = true;
             }
         }

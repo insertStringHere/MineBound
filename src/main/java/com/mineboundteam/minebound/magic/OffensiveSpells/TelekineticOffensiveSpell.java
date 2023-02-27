@@ -9,8 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,14 +33,17 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public void use(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
             reduceMana(manaCostOnCast, player);
-            if (player.getItemInHand(usedHand).isEmpty()) {
+            if (player.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
                 player.setItemSlot(EquipmentSlot.MAINHAND, ItemRegistry.MYRIAL_MACHETE.get().getDefaultInstance());
             }
         }
-        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, Player player) {
     }
 
     @Override
@@ -69,7 +70,6 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         public final ArmorTier LEVEL;
         public ForgeConfigSpec.IntValue MANA_COST_ON_CAST;
         public ForgeConfigSpec.IntValue MANA_COST_PER_HIT;
-
         private final int manaCostOnCast;
         private final int manaCostPerHit;
 
