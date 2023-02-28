@@ -1,15 +1,15 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.registry.ClientRegistry;
 import com.mineboundteam.minebound.registry.ParticleRegistry;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -41,40 +41,72 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         this.manaCost = config.MANA_COST.get();
     }
 
-    // TODO: tie in with keybindings based on where spell is equipped
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isClient() && event.phase == TickEvent.Phase.START && ClientRegistry.PRIMARY_MAGIC.isDown()) {
-            Player player = event.player;
-            float yRot = player.getYRot();
-            float xRot = player.getXRot();
-            double x = (0 - Math.sin(yRot * Math.PI / 180f));
-            double y = (0 - Math.sin(xRot * Math.PI / 180f));
-            double z = (Math.cos(yRot * Math.PI / 180f));
-            for (int i = 0; i < 360; i++) {
-                if (i % 10 == 0) {
-                    player.getLevel().addParticle(particles.get(ArmorTier.EFFIGY).get(),
-                            player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
-                            player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
-                            player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
-                            x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
-                            y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
-                            z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
-                    );
-
-                }
-            }
-
-//            if (player.level.getGameTime() % 20 == 0)
-//                super.reduceMana(manaCost, player);
+    @Override
+    public void use(ItemStack stack, Level level, Player player) {
+        if (!level.isClientSide()) {
+            CompoundTag isActive = new CompoundTag();
+            isActive.putBoolean("minebound.fire_offensive.active", true);
+            stack.setTag(isActive);
         }
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+    public void releaseUsing(ItemStack stack, Level level, Player player) {
+        if (!level.isClientSide()) {
+            CompoundTag isActive = new CompoundTag();
+            isActive.putBoolean("minebound.fire_offensive.active", false);
+            stack.setTag(isActive);
+        }
     }
 
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.side.isClient() && event.phase == TickEvent.Phase.START) {
+            Player player = event.player;
+            boolean spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
+            if (!spellTriggered) {
+                spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
+            }
+            if (!spellTriggered) {
+                spellTriggered = triggerSpell(player, player.getItemBySlot(EquipmentSlot.MAINHAND));
+            }
+            if (!spellTriggered) {
+                triggerSpell(player, player.getItemBySlot(EquipmentSlot.OFFHAND));
+            }
+        }
+    }
+
+    protected static boolean triggerSpell(Player player, ItemStack selectedSpell) {
+        if (selectedSpell.getItem() instanceof FireOffensiveSpell spell && selectedSpell.hasTag()) {
+            boolean isActive = selectedSpell.getTag().getBoolean("minebound.fire_offensive.active");
+            if (isActive) {
+                float yRot = player.getYRot();
+                float xRot = player.getXRot();
+                double x = (0 - Math.sin(yRot * Math.PI / 180f));
+                double y = (0 - Math.sin(xRot * Math.PI / 180f));
+                double z = (Math.cos(yRot * Math.PI / 180f));
+                for (int i = 0; i < 360; i++) {
+                    if (i % 10 == 0) {
+                        player.getLevel().addParticle(particles.get(spell.level).get(),
+                                player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
+                                player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
+                                player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
+                                x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
+                                y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
+                                z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
+                        );
+
+                    }
+                }
+
+                if (player.level.getGameTime() % 20 == 0) {
+                    reduceMana(spell.manaCost, player);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {

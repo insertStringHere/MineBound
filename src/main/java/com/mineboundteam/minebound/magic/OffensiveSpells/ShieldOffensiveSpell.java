@@ -9,9 +9,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -72,17 +72,16 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.MAIN_HAND), event);
+                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemBySlot(EquipmentSlot.MAINHAND), event);
                 }
                 if (!spellTriggered) {
-                    triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingAttackEvent(player, sourceEntity, player.getItemBySlot(EquipmentSlot.OFFHAND), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
-        boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
@@ -92,10 +91,10 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                 }
                 sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
                 reduceMana(spell.manaCost, player);
-                spellTriggered = true;
+                return true;
             }
         }
-        return spellTriggered;
+        return false;
     }
 
     @SubscribeEvent
@@ -108,17 +107,16 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.MAIN_HAND), event);
+                    spellTriggered = triggerLivingHurtEvent(player.getItemBySlot(EquipmentSlot.MAINHAND), event);
                 }
                 if (!spellTriggered) {
-                    triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingHurtEvent(player.getItemBySlot(EquipmentSlot.OFFHAND), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
-        boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
@@ -126,11 +124,11 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                 if ((1 - spell.damageReduction) != 0) {
                     event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
                 }
-                spellTriggered = true;
+                return true;
                 // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
             }
         }
-        return spellTriggered;
+        return false;
     }
 
     @Override
