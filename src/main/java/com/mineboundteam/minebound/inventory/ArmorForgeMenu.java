@@ -189,7 +189,7 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
                     && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
             // If result slot, first try to move to armor inventory, then if not, into inventory
-        } else if (index > 45) {
+        } else if (index > ARMOR_INPUT_INDEX) {
             if (!moveItemStackTo(sourceStack, 36, 40, false)
                     && !moveItemStackTo(sourceStack, ARMOR_INPUT_INDEX, ARMOR_INPUT_INDEX+1, false)
                     && !moveItemStackTo(sourceStack, 0, 40, false))
