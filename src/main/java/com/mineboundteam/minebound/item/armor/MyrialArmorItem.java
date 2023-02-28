@@ -39,8 +39,8 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     public static final ChatFormatting[] tierColors = new ChatFormatting[]{
             ChatFormatting.YELLOW,
             ChatFormatting.GOLD,
-            ChatFormatting.DARK_RED,
-            ChatFormatting.DARK_AQUA
+            ChatFormatting.DARK_AQUA,
+            ChatFormatting.WHITE
     };
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
