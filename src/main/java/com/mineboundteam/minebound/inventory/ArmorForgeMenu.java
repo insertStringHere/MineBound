@@ -159,7 +159,6 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        System.out.println(index);
         Slot slot = slots.get(index);
         if (!slot.hasItem())
             return ItemStack.EMPTY;
@@ -167,37 +166,36 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         ItemStack copyOfSourceStack = sourceStack.copy();
         // if in inventory, first try to move to armor slots, then into crafting slots
         if (index < 36) {
-            if (sourceStack.getItem() instanceof SpellItem && slots.get(45).hasItem()) {
+            if (sourceStack.getItem() instanceof SpellItem && slots.get(ARMOR_INPUT_INDEX).hasItem()) {
                 //If Spell Item and there is an Armor Item, Attempt to Move to Spell Slots
-                ItemStack armorSlotItem = slots.get(45).getItem();
-                if (armorSlotItem.getItem() instanceof MyrialArmorItem) {
-                    MyrialArmorItem armorItem = (MyrialArmorItem) armorSlotItem.getItem();
+                ItemStack armorSlotItem = slots.get(ARMOR_INPUT_INDEX).getItem();
+                if (armorSlotItem.getItem() instanceof MyrialArmorItem armorItem) {
                     Integer utilitySlots = armorItem.getConfig().UTILITY_SLOTS.get();
                     Integer activeSlots = armorItem.getConfig().STORAGE_SLOTS.get();
                     if (!moveItemStackTo(sourceStack, 47, 47 + activeSlots, false) //Attempt to Move to Active Spell Slots
-                            && !moveItemStackTo(sourceStack, 56, 56 + utilitySlots, false) //Attempt to Utility Slots
+                            && !moveItemStackTo(sourceStack, 56, 56 + utilitySlots, false) //Attempt to Move Utility Slots
                             && !moveItemStackTo(sourceStack, 0, 36, false)) //Attempt to Move to Player Inventory
                         return ItemStack.EMPTY;
                 }
             }
-            if (!moveItemStackTo(sourceStack, 45, 46, false) //Attempt to Move Armor Input Slot
+            if (!moveItemStackTo(sourceStack, ARMOR_INPUT_INDEX, ARMOR_INPUT_INDEX+1, false) //Attempt to Move Armor Input Slot
                     && !moveItemStackTo(sourceStack, 36, 40, false) //Attempt to Move to Armor Slots
                     && !moveItemStackTo(sourceStack, 40, 47, false) //Attempt to Move to Armor Crafting Slots
                     && !moveItemStackTo(sourceStack, 0, 36, false)) //Attempt to Move to Player Inventory
                 return ItemStack.EMPTY;
             // If in armor slots, try to move to armor crafting slot, then if not, into inventory
         } else if (index < 40) {
-            if (!moveItemStackTo(sourceStack, 45, 46, false)
+            if (!moveItemStackTo(sourceStack, ARMOR_INPUT_INDEX, ARMOR_INPUT_INDEX+1, false)
                     && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
             // If result slot, first try to move to armor inventory, then if not, into inventory
         } else if (index > 45) {
             if (!moveItemStackTo(sourceStack, 36, 40, false)
-                    && !moveItemStackTo(sourceStack, 45, 46, false)
+                    && !moveItemStackTo(sourceStack, ARMOR_INPUT_INDEX, ARMOR_INPUT_INDEX+1, false)
                     && !moveItemStackTo(sourceStack, 0, 40, false))
                 return ItemStack.EMPTY;
             // Try to equip the armor first
-        } else if (index == 45) {
+        } else if (index == ARMOR_INPUT_INDEX) {
             if (!moveItemStackTo(sourceStack, 36, 40, false)
                     && !moveItemStackTo(sourceStack, 0, 36, false))
                 return ItemStack.EMPTY;
