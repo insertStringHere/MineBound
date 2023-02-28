@@ -99,6 +99,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
 
     public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new SwordItem(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_SWORD = ITEMS.register("myrial_sword", () -> new SwordItem(Tiers.DIAMOND, 7, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB)));
 
     /* Shield */
     public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
