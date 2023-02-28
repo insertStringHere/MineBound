@@ -6,8 +6,9 @@ import com.mineboundteam.minebound.item.MyriCorpseItem;
 import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
@@ -77,12 +78,12 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_SINGULARITY_BOOTS = ITEMS.register("myrial_singularity_boots", () -> new MyrialArmorItem(ArmorMaterials.MYRIAL_SINGULARITY, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB), ArmorTier.SINGULARITY, ArmorConfigRegistry.SINGULARITY_BOOTS));
 
     public static final RegistryObject<Item> ENERGIZED_IRON_HELMET = ITEMS.register("energized_iron_helmet", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-    public static final RegistryObject<Item> ENERGIZED_IRON_CHESTPLATE= ITEMS.register("energized_iron_chestplate", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ENERGIZED_IRON_CHESTPLATE = ITEMS.register("energized_iron_chestplate", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_LEGGINGS = ITEMS.register("energized_iron_leggings", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_BOOTS = ITEMS.register("energized_iron_boots", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
 
     public static final RegistryObject<Item> ILLUMINANT_STEEL_HELMET = ITEMS.register("illuminant_steel_helmet", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-    public static final RegistryObject<Item> ILLUMINANT_STEEL_CHESTPLATE= ITEMS.register("illuminant_steel_chestplate", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> ILLUMINANT_STEEL_CHESTPLATE = ITEMS.register("illuminant_steel_chestplate", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_LEGGINGS = ITEMS.register("illuminant_steel_leggings", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_BOOTS = ITEMS.register("illuminant_steel_boots", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
 
@@ -96,8 +97,6 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_DIAMOND_LEGGINGS = ITEMS.register("myrial_diamond_leggings", () -> new ArmorItem(ArmorMaterials.MYRIAL_DIAMOND, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_BOOTS = ITEMS.register("myrial_diamond_boots", () -> new ArmorItem(ArmorMaterials.MYRIAL_DIAMOND, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
 
-    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("magic/test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
-
     /*
      * Spell Element
      * [offensive spells]
@@ -108,11 +107,12 @@ public class ItemRegistry {
     /* Fire */
 
     /* Telekinetic */
+    public static final RegistryObject<Item> TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
     public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
     public static final RegistryObject<Item> TELEKINETIC_UTILITY_3 = ITEMS.register("magic_telekinetic_u3", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_3));
     public static final RegistryObject<Item> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
 
-    public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new SwordItem(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB)));
+    public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
 
     /* Shield */
     public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));

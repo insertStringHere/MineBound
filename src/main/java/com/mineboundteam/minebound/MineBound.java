@@ -29,6 +29,8 @@ public class MineBound {
         }
     };
 
+    public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
+
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);

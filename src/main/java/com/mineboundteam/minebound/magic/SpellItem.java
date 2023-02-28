@@ -27,7 +27,7 @@ public abstract class SpellItem extends Item {
         this.level = level;
     }
 
-    protected void reduceMana(int manaCost, Player p) {
+    public static void reduceMana(int manaCost, Player p) {
         if (!p.level.isClientSide())
             p.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 // Charge player mana
