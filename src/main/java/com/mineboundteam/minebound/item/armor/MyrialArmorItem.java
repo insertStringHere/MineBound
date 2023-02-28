@@ -39,8 +39,8 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     public static final ChatFormatting[] tierColors = new ChatFormatting[]{
             ChatFormatting.YELLOW,
             ChatFormatting.GOLD,
-            ChatFormatting.DARK_RED,
-            ChatFormatting.DARK_AQUA
+            ChatFormatting.DARK_AQUA,
+            ChatFormatting.WHITE
     };
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -62,10 +62,10 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         pTooltipComponents.add(new TextComponent("Tier ").withStyle(tierColors[tier.getValue()])
                                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + tier.getValue()).withStyle(tierColors[tier.getValue()])));
         pTooltipComponents.add(new TextComponent("Manapool: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(ChatFormatting.BLUE)));
+                                       .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR))));
         if (config.RECOVERY.get() > 0) {
             pTooltipComponents.add(new TextComponent("Mana Recovery: ").withStyle(ChatFormatting.GRAY)
-                                           .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(ChatFormatting.BLUE)));
+                                           .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR))));
         }
         pTooltipComponents.add(new TextComponent("Active Magic slots: ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));

@@ -6,10 +6,10 @@
   ],
   "key": {
     "#": {
-      "item": "minebound:illuminant_steel_ingot"
+      "item": "minebound:gilded_diamond_ingot"
     }
   },
   "result": {
-    "item": "minebound:illuminant_steel_helmet"
+    "item": "minebound:gilded_diamond_helmet"
   }
 }

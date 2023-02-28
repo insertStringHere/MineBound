@@ -27,6 +27,12 @@ public class ArmorConfigRegistry implements IConfig{
     public static final ArmorConfig SYNERGY_LEGGINGS = new ArmorConfig("Myrial Synergy Leggings", 80, 1, 1000, 2, 1);
     public static final ArmorConfig SYNERGY_BOOTS = new ArmorConfig("Myrial Synergy Boots", 60, 1, 1000, 2, 0);
 
+    public static final ArmorConfig SINGULARITY_SET = new ArmorConfig("Myrial Singularity Set Bonus", 250, 7, 0, 0, 0);
+    public static final ArmorConfig SINGULARITY_HELMET = new ArmorConfig("Myrial Singularity Helmet", 120, 3, 1500, 2, 1);
+    public static final ArmorConfig SINGULARITY_CHESTPLATE = new ArmorConfig("Myrial Singularity Chestplate", 200, 2, 1500, 2, 2);
+    public static final ArmorConfig SINGULARITY_LEGGINGS = new ArmorConfig("Myrial Singularity Leggings", 150, 1, 1500, 3, 2);
+    public static final ArmorConfig SINGULARITY_BOOTS = new ArmorConfig("Myrial Singularity Boots", 80, 2, 1500, 3, 1);
+
     public static HashMap<ArmorTier, ArmorConfig> SET_BONUS_MAP = new HashMap<>();
 
     @Override
@@ -59,7 +65,13 @@ public class ArmorConfigRegistry implements IConfig{
         SET_BONUS_MAP.put(ArmorTier.SYNERGY, SYNERGY_SET);
 
         builder.push("Myrial Singularity (Tier 4)");
+        SINGULARITY_HELMET.build(builder);
+        SINGULARITY_CHESTPLATE.build(builder);
+        SINGULARITY_LEGGINGS.build(builder);
+        SINGULARITY_BOOTS.build(builder);
+        SINGULARITY_SET.build(builder);
         builder.pop();
+        SET_BONUS_MAP.put(ArmorTier.SINGULARITY, SINGULARITY_SET);
     }
 
     @Override
