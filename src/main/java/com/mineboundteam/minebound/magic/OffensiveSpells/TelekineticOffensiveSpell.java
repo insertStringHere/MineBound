@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.magic.OffensiveSpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
@@ -34,7 +35,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide()) {
+        if (!level.isClientSide() && !(player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof MyrialMachete)) {
             reduceMana(manaCostOnCast, player);
             if (player.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
                 player.setItemSlot(EquipmentSlot.MAINHAND, ItemRegistry.MYRIAL_MACHETE.get().getDefaultInstance());
