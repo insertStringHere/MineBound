@@ -3,15 +3,13 @@ package com.mineboundteam.minebound.registry.config;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class MagicConfigRegistry implements IConfig {
-
-    public static final TestSpell.TestSpellConfig TEST_SPELL = new TestSpell.TestSpellConfig(10, ArmorTier.EFFIGY);
 
     /*
      * Spell Element
@@ -23,6 +21,7 @@ public class MagicConfigRegistry implements IConfig {
     /* Fire */
 
     /* Telekinetic */
+    public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
     public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, ArmorTier.SUIT);
     public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(7, 0.35, ArmorTier.SYNERGY);
     public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(3, 0.50, ArmorTier.SINGULARITY);
@@ -47,10 +46,6 @@ public class MagicConfigRegistry implements IConfig {
 
     @Override
     public void build(Builder builder) {
-        builder.push("Test");
-        TEST_SPELL.build(builder);
-        builder.pop();
-
         /*
          * Spell Element
          * [offensive spells]
@@ -63,6 +58,7 @@ public class MagicConfigRegistry implements IConfig {
         builder.pop();
 
         builder.push("Telekinetic");
+        TELEKINETIC_OFFENSIVE_1.build(builder);
         TELEKINETIC_UTILITY_2.build(builder);
         TELEKINETIC_UTILITY_3.build(builder);
         TELEKINETIC_UTILITY_4.build(builder);

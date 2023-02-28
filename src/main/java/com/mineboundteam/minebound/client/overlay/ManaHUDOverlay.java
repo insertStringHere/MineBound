@@ -45,7 +45,6 @@ public class ManaHUDOverlay extends GuiComponent {
         int yOffset = minecraft.getWindow().getGuiScaledHeight() - 42;
         int manaHeight = (int) (27*(mana.getMana() / ((double) mana.getTotalManaCap())) + 3);
         String manaText = Integer.toString(mana.getMana());
-        int textBlue = (77 << 16) + (106 << 8) + (255);
 
         RenderSystem.setShaderTexture(0,manaBar);
         blit(matrixStack, 10, yOffset + (30 - manaHeight), 0, 0, 20, manaHeight, 20, 32);
@@ -58,7 +57,7 @@ public class ManaHUDOverlay extends GuiComponent {
         minecraft.font.draw(matrixStack, manaText, xText - 1, yOffset-10, 0);
         minecraft.font.draw(matrixStack, manaText, xText, yOffset-9, 0);
         minecraft.font.draw(matrixStack, manaText, xText, yOffset-11, 0);
-        minecraft.font.draw(matrixStack, manaText, xText, yOffset-10, textBlue);
+        minecraft.font.draw(matrixStack, manaText, xText, yOffset-10, MineBound.MANA_COLOR);
 
     }
 }

@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -54,7 +55,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 if (hitsRemaining > 0) {
                     player.getLevel().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     event.setCanceled(true);
-                    spell.reduceMana(spell.manaCost, player);
+                    reduceMana(spell.manaCost, player);
 
                     CompoundTag tag = new CompoundTag();
                     tag.putInt("minebound.shield_utility.hits_remaining", hitsRemaining - 1);
@@ -112,7 +113,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Depletes ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("1 charge").withStyle(ChatFormatting.AQUA))
                                        .append(" and costs ")
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
                                        .append(" per attack"));
     }
 

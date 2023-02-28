@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -64,7 +65,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
                     for (TelekineticUtilitySpell spell : equippedSpells) {
                         reducedManaCost *= 1 - spell.manaCostReduction;
                     }
-                    highestLevelSpell.reduceMana(reducedManaCost, player);
+                    reduceMana(reducedManaCost, player);
                 }
             } else {
                 elytraTag.putBoolean("minebound.telekinetic_utility.elytra_flight", false);
@@ -82,10 +83,10 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         }
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        // TODO: Color subject to change once mana UI is implemented
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
                                        .append(" per second of flight"));
         pTooltipComponents.add(new TextComponent("Additional copies instead reduce Mana cost of highest equipped tier by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
                                        .append(" each"));
     }
 
