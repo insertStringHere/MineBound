@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.particle.magic;
 
+import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -8,13 +9,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FireOffensiveParticles extends TextureSheetParticle {
     protected FireOffensiveParticles(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet spriteSet, double pXSpeed, double pYSpeed, double pZSpeed, int lifetime) {
-        super(pLevel, pX, pY, pZ);
+        super(pLevel, pX, pY, pZ
+//                , pXSpeed, pYSpeed, pZSpeed
+        );
 
         this.setSpriteFromAge(spriteSet);
         this.friction = 1F;
         this.quadSize *= 0.25F;
         this.lifetime = lifetime;
-        this.gravity = 0f;
+        this.gravity = 1f;
         this.rCol = 1f;
         this.gCol = 1f;
         this.bCol = 1f;
@@ -39,6 +42,7 @@ public class FireOffensiveParticles extends TextureSheetParticle {
             this.move(this.xd, this.yd, this.zd);
             // TODO: check for collision damage using the particle bounding box
         }
+//        super.tick();
     }
 
     @Override
@@ -49,17 +53,20 @@ public class FireOffensiveParticles extends TextureSheetParticle {
     @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
-        private final int lifetime;
+        //        private final int lifetime;
+        FireOffensiveSpell.FireOffensiveSpellConfig config;
 
-        public Provider(SpriteSet spriteSet, int lifetime) {
+        public Provider(SpriteSet spriteSet, FireOffensiveSpell.FireOffensiveSpellConfig config) {
             this.sprites = spriteSet;
-            this.lifetime = lifetime;
+            // Convert block distance to lifetime in ticks
+//            this.lifetime = ;
+            this.config = config;
         }
 
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level,
                                        double x, double y, double z,
                                        double dx, double dy, double dz) {
-            return new FireOffensiveParticles(level, x, y, z, this.sprites, dx, dy, dz, lifetime);
+            return new FireOffensiveParticles(level, x, y, z, this.sprites, dx, dy, dz, (int) (config.FIRE_DISTANCE.get() * 2.5));
         }
     }
 }

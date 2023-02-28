@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.registry.ParticleRegistry;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -61,22 +62,22 @@ public class FireOffensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isClient() && event.phase == TickEvent.Phase.START) {
+        if (!event.side.isClient() && event.phase == TickEvent.Phase.START) {
             Player player = event.player;
-            boolean spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
+            boolean spellTriggered = triggerSpell(player, (ServerLevel) player.getLevel(), getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
             if (!spellTriggered) {
-                spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
+                spellTriggered = triggerSpell(player, (ServerLevel) player.getLevel(), getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
             }
             if (!spellTriggered) {
-                spellTriggered = triggerSpell(player, player.getItemBySlot(EquipmentSlot.MAINHAND));
+                spellTriggered = triggerSpell(player, (ServerLevel) player.getLevel(), player.getItemBySlot(EquipmentSlot.MAINHAND));
             }
             if (!spellTriggered) {
-                triggerSpell(player, player.getItemBySlot(EquipmentSlot.OFFHAND));
+                triggerSpell(player, (ServerLevel) player.getLevel(), player.getItemBySlot(EquipmentSlot.OFFHAND));
             }
         }
     }
 
-    protected static boolean triggerSpell(Player player, ItemStack selectedSpell) {
+    protected static boolean triggerSpell(Player player, ServerLevel level, ItemStack selectedSpell) {
         if (selectedSpell.getItem() instanceof FireOffensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getTag().getBoolean("minebound.fire_offensive.active");
             if (isActive) {
@@ -86,22 +87,33 @@ public class FireOffensiveSpell extends ActiveSpellItem {
                 double y = (0 - Math.sin(xRot * Math.PI / 180f));
                 double z = (Math.cos(yRot * Math.PI / 180f));
                 for (int i = 0; i < 360; i++) {
-                    if (i % 10 == 0) {
-                        player.getLevel().addParticle(particles.get(spell.level).get(),
-                                player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
-                                player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
-                                player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
-                                x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
-                                y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
-                                z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
-                        );
+//                    if (i % 10 == 0) {
+//                    level.addParticle(particles.get(spell.level).get(),
+//                            player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
+//                            player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
+//                            player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
+//                            x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
+//                            y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
+//                            z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
+//                    );
 
-                    }
+                    level.sendParticles(particles.get(spell.level).get(),
+                            player.getX() + x,
+                            player.getY() + y + (player.isCrouching() ? 0.9d : 1.25d) + y,
+                            player.getZ() + z,
+                            1,
+                            x / 10,
+                            y / 10,
+                            z / 10,
+                            10d
+                    );
+
+//                    }
                 }
 
-                if (player.level.getGameTime() % 20 == 0) {
-                    reduceMana(spell.manaCost, player);
-                }
+//                if (player.level.getGameTime() % 20 == 0) {
+//                    reduceMana(spell.manaCost, player);
+//                }
                 return true;
             }
         }
@@ -116,11 +128,17 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     public static class FireOffensiveSpellConfig implements IConfig {
 
         public ForgeConfigSpec.IntValue MANA_COST;
+        public ForgeConfigSpec.IntValue FIREBALL_MANA_COST;
+        public ForgeConfigSpec.IntValue FIRE_DISTANCE;
         public ArmorTier LEVEL;
         private final int manaCost;
+        private final int fireBallManaCost;
+        private final int fireDistance;
 
-        public FireOffensiveSpellConfig(int manaCost, ArmorTier level) {
+        public FireOffensiveSpellConfig(int manaCost, int fireballManaCost, int fireDistanceInBlocks, ArmorTier level) {
             this.manaCost = manaCost;
+            this.fireBallManaCost = fireballManaCost;
+            this.fireDistance = fireDistanceInBlocks;
             this.LEVEL = level;
         }
 
@@ -129,6 +147,10 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             builder.push("Offensive");
             builder.push(LEVEL.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            if (LEVEL == ArmorTier.SYNERGY) {
+                FIREBALL_MANA_COST = builder.comment("Fireball mana cost").defineInRange("fireball_mana_cost", fireBallManaCost, 0, 10000);
+            }
+            FIRE_DISTANCE = builder.comment("Fire distance in blocks").defineInRange("fire_distance", fireDistance, 0, 10000);
             builder.pop(2);
         }
 

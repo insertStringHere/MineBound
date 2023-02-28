@@ -2,9 +2,9 @@ package com.mineboundteam.minebound.registry.config;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
@@ -22,7 +22,9 @@ public class MagicConfigRegistry implements IConfig {
     /* Fire */
 
     /* Fire */
-    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, ArmorTier.EFFIGY);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 0, 8, ArmorTier.EFFIGY);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 0, 16, ArmorTier.SUIT);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_3 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 0, 16, ArmorTier.SYNERGY);
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
