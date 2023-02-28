@@ -9,7 +9,6 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TestSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
@@ -83,8 +82,6 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ILLUMINANT_STEEL_CHESTPLATE = ITEMS.register("illuminant_steel_chestplate", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_LEGGINGS = ITEMS.register("illuminant_steel_leggings", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ILLUMINANT_STEEL_BOOTS = ITEMS.register("illuminant_steel_boots", () -> new ArmorItem(ArmorMaterials.ILLUMINANT_STEEL, EquipmentSlot.FEET, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-
-    public static final RegistryObject<Item> TEST_SPELL = ITEMS.register("magic/test_spell", () -> new TestSpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.TEST_SPELL));
 
     /*
      * Spell Element
