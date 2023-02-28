@@ -168,19 +168,20 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         // if in inventory, first try to move to armor slots, then into crafting slots
         if (index < 36) {
             if (sourceStack.getItem() instanceof SpellItem && slots.get(45).hasItem()) {
-                //If Spell Item and thee, Attempt to Move to Spell Slots
+                //If Spell Item and there is an Armor Item, Attempt to Move to Spell Slots
                 ItemStack armorSlotItem = slots.get(45).getItem();
                 if (armorSlotItem.getItem() instanceof MyrialArmorItem) {
                     MyrialArmorItem armorItem = (MyrialArmorItem) armorSlotItem.getItem();
                     Integer utilitySlots = armorItem.getConfig().UTILITY_SLOTS.get();
                     Integer activeSlots = armorItem.getConfig().STORAGE_SLOTS.get();
                     if (!moveItemStackTo(sourceStack, 47, 47 + activeSlots, false) //Attempt to Move to Active Spell Slots
-                            && !moveItemStackTo(sourceStack, 56, 56 + utilitySlots, false)) //Attempt to Utility Slots
+                            && !moveItemStackTo(sourceStack, 56, 56 + utilitySlots, false) //Attempt to Utility Slots
+                            && !moveItemStackTo(sourceStack, 0, 36, false)) //Attempt to Move to Player Inventory
                         return ItemStack.EMPTY;
                 }
             }
-            if (!moveItemStackTo(sourceStack, 36, 40, false) //Attempt to Move to Armor Slots
-                    && !moveItemStackTo(sourceStack, 45, 46, false) //Attempt to Move Armor Input Slot
+            if (!moveItemStackTo(sourceStack, 45, 46, false) //Attempt to Move Armor Input Slot
+                    && !moveItemStackTo(sourceStack, 36, 40, false) //Attempt to Move to Armor Slots
                     && !moveItemStackTo(sourceStack, 40, 47, false) //Attempt to Move to Armor Crafting Slots
                     && !moveItemStackTo(sourceStack, 0, 36, false)) //Attempt to Move to Player Inventory
                 return ItemStack.EMPTY;
