@@ -7,12 +7,12 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,10 +58,9 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     event.setCanceled(true);
                     reduceMana(spell.manaCost, player);
 
-                    CompoundTag tag = new CompoundTag();
+                    CompoundTag tag = spellStack.getOrCreateTag();
                     tag.putInt("minebound.shield_utility.hits_remaining", hitsRemaining - 1);
                     tag.putInt("minebound.shield_utility.cooldown", spell.recovCooldown);
-                    spellStack.setTag(tag);
                 }
             }
         }
@@ -74,15 +74,13 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 if (spellStack.hasTag()) {
                     int cooldown = spellStack.getTag().getInt("minebound.shield_utility.cooldown");
-                    CompoundTag tag = new CompoundTag();
+                    CompoundTag tag = spellStack.getOrCreateTag();
                     if (cooldown > 0) {
                         tag.putInt("minebound.shield_utility.hits_remaining", spellStack.getTag().getInt("minebound.shield_utility.hits_remaining"));
                         tag.putInt("minebound.shield_utility.cooldown", cooldown - 1);
-                        spellStack.setTag(tag);
                     } else if (cooldown == 0) {
                         tag.putInt("minebound.shield_utility.hits_remaining", spell.totalHits);
                         tag.putInt("minebound.shield_utility.cooldown", -1);
-                        spellStack.setTag(tag);
                     }
                 }
             }
@@ -93,16 +91,18 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         // Add NBT data to item when it first enters the players inventory
         if (!pStack.hasTag() && !pLevel.isClientSide()) {
-            CompoundTag tag = new CompoundTag();
+            CompoundTag tag = pStack.getOrCreateTag();
             tag.putInt("minebound.shield_utility.hits_remaining", totalHits);
             tag.putInt("minebound.shield_utility.cooldown", -1);
-            pStack.setTag(tag);
         }
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
+                                       .append(":"));
         pTooltipComponents.add(new TextComponent("  - Stores ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
                                        .append(", each fully negating the damage from an attack"));
@@ -113,7 +113,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Depletes ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("1 charge").withStyle(ChatFormatting.AQUA))
                                        .append(" and costs ")
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                        .append(" per attack"));
     }
 

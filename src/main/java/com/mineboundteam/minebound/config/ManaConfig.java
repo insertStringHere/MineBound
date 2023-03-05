@@ -10,7 +10,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
  */
 public class ManaConfig implements IConfig{
 
-    public static IntValue maximumMana;
+    public static IntValue baseMaxMana;
     public static IntValue manaRecovery;
 
     public static BooleanValue keepArmor;
@@ -22,10 +22,10 @@ public class ManaConfig implements IConfig{
     public void build(Builder builder) {
         builder.push("Mana Management");
         
-        maximumMana = builder.comment("The maximum amount of mana a player has without any augmentation. [Default = 200]").defineInRange("Max_Mana", 200, 0, 10000);  
+        baseMaxMana = builder.comment("The maximum amount of mana a player has without any augmentation. [Default = 200]").defineInRange("Max_Mana", 200, 0, 10000);
         manaRecovery = builder.comment("The recovery rate of mana per second by the player without augmentation. [Default = 1]").defineInRange("Mana_Recovery", 1, 0, 10000);
 
-        keepArmor = builder.comment("Whether or not MyrialArmor should remain on the player after dying.").define("keep_armor", true);
+        keepArmor = builder.comment("Whether or not Myrial Armor should remain on the player after dying.").define("keep_armor", true);
 
         builder.pop();
     }

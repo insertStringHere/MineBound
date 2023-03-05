@@ -47,18 +47,14 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     @Override
     public void use(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
-            CompoundTag isActive = new CompoundTag();
-            isActive.putBoolean("minebound.shield_offensive.active", true);
-            stack.setTag(isActive);
+            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
         }
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
-            CompoundTag isActive = new CompoundTag();
-            isActive.putBoolean("minebound.shield_offensive.active", false);
-            stack.setTag(isActive);
+            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
         }
     }
 
@@ -142,7 +138,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                                        .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
                                        .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                        .append(" per reflect").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
     }
