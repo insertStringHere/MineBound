@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CSC",
+    "CMC",
+    "CSC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "S": {
+      "item": "minebound:gilded_diamond_ingot"
+    },
+    "M": {
+      "item": "minebound:magic_shield_o2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_o3"
+  }
+}

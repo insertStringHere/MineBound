@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OGO",
+    "OMO",
+    "OGO"
+  ],
+  "key": {
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "M": {
+      "item": "minebound:magic_shield_o1"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_o2"
+  }
+}
