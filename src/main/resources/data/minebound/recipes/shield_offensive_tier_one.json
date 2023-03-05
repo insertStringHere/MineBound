@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SMS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:shield"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_o1"
+  }
+}
