@@ -114,12 +114,4 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     public AnimationFactory getFactory() {
         return this.factory;
     }
-
-    @SubscribeEvent
-    public static void onPlayerCloned(PlayerEvent.Clone event) {
-        if(ManaConfig.keepArmor.get() && event.isWasDeath())
-            for(ItemStack item : event.getOriginal().getArmorSlots())
-                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem)
-                    event.getPlayer().setItemSlot(Player.getEquipmentSlotForItem(item), item);
-    }
 }
