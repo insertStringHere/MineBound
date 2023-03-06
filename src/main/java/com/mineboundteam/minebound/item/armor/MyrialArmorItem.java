@@ -96,10 +96,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     // Return true if elytra flight is possible with this armor piece, is only called on chest piece
     @Override
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-        if (stack.hasTag()) {
-            return stack.getTag().getBoolean("minebound.telekinetic_utility.elytra_flight");
-        }
-        return false;
+        return stack.getOrCreateTag().getBoolean("minebound.telekinetic_utility.elytra_flight");
     }
 
     // No extra processing needs to be done, so just return true

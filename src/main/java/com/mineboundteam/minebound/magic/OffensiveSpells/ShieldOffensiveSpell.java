@@ -6,7 +6,6 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -80,7 +79,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
         boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) == 0) {
@@ -116,7 +115,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
         boolean spellTriggered = false;
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) != 0) {

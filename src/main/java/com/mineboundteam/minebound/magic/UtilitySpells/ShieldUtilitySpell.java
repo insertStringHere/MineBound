@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,7 +22,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -73,14 +71,14 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 if (spellStack.hasTag()) {
-                    int cooldown = spellStack.getTag().getInt("minebound.shield_utility.cooldown");
-                    CompoundTag tag = spellStack.getOrCreateTag();
+                    CompoundTag spellTag = spellStack.getOrCreateTag();
+                    int cooldown = spellTag.getInt("minebound.shield_utility.cooldown");
                     if (cooldown > 0) {
-                        tag.putInt("minebound.shield_utility.hits_remaining", spellStack.getTag().getInt("minebound.shield_utility.hits_remaining"));
-                        tag.putInt("minebound.shield_utility.cooldown", cooldown - 1);
+                        spellTag.putInt("minebound.shield_utility.hits_remaining", spellTag.getInt("minebound.shield_utility.hits_remaining"));
+                        spellTag.putInt("minebound.shield_utility.cooldown", cooldown - 1);
                     } else if (cooldown == 0) {
-                        tag.putInt("minebound.shield_utility.hits_remaining", spell.totalHits);
-                        tag.putInt("minebound.shield_utility.cooldown", -1);
+                        spellTag.putInt("minebound.shield_utility.hits_remaining", spell.totalHits);
+                        spellTag.putInt("minebound.shield_utility.cooldown", -1);
                     }
                 }
             }
