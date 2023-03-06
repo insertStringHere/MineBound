@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.item.armor;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.config.ManaConfig;
+import com.mineboundteam.minebound.magic.SpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -67,10 +68,10 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         pTooltipComponents.add(new TextComponent("Tier ").withStyle(tierColors[tier.getValue()])
                                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + tier.getValue()).withStyle(tierColors[tier.getValue()])));
         pTooltipComponents.add(new TextComponent("Manapool: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR))));
+                                       .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(SpellItem.manaColorStyle)));
         if (config.RECOVERY.get() > 0) {
             pTooltipComponents.add(new TextComponent("Mana Recovery: ").withStyle(ChatFormatting.GRAY)
-                                           .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR))));
+                                           .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(SpellItem.manaColorStyle)));
         }
         pTooltipComponents.add(new TextComponent("Active Magic slots: ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));

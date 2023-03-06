@@ -52,9 +52,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             if (equippedSpells.size() > 0) {
                 ElectricUtilitySpell spell = getHighestSpellItem(equippedSpells);
 
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> {
-                    playerMana.setManaCapModifier("electric_utility", -spell.totalManaReduction);
-                });
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", -spell.totalManaReduction));
 
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, spell.speedEffectLevel - 1, false, false));
 
@@ -70,9 +68,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 }
             } else {
                 // Remove total mana reduction
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> {
-                    playerMana.setManaCapModifier("electric_utility", 0);
-                });
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", 0));
 
                 // Remove any thorns enchantments previously applied
                 for (EquipmentSlot e : EquipmentSlot.values()) {
@@ -128,7 +124,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             builder.push(LEVEL.toString());
             MANA_REDUCTION = builder.comment("How much total mana will be reduced by").defineInRange("mana_reduction", manaReduction, 0, 10000);
             SPEED_LEVEL = builder.comment("Speed potion effect level").defineInRange("speed_level", speedLevel, 0, 10000);
-            THORNS = builder.comment("Gives the thorns enchantment").define("thorns", thorns);
+            THORNS = builder.comment("Gives the thorns enchantment to equipped Myrial Armor").define("thorns", thorns);
             builder.pop(2);
         }
 

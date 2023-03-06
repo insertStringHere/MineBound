@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
-    public final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
+    public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
     public final ArmorTier level;
 
     public SpellItem(Properties pProperties, ArmorTier level) {

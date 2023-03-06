@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<>() { });
@@ -52,7 +51,7 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
         private int totalManaCap;
         private final HashMap<String, Integer> manaCapModifiers = new HashMap<>();
         private final int manaRecRate = ManaConfig.manaRecovery.get();
-        private final int baseManaMax = ManaConfig.baseMaxMana.get();
+        private final int baseManaCap = ManaConfig.baseManaCap.get();
 
         public PlayerMana setMana(int amt){
             mana = amt;
@@ -87,12 +86,12 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
             return totalManaCap;
         }
 
-        public HashMap<String, Integer> getManaCapModifiers() {
-            return manaCapModifiers;
+        public int getBaseManaCap(){
+            return baseManaCap;
         }
 
-        public int getBaseManaMax(){
-            return baseManaMax;
+        public HashMap<String, Integer> getManaCapModifiers() {
+            return manaCapModifiers;
         }
 
         public void addMana(int amt){
