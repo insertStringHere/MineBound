@@ -1,6 +1,8 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.item.registry;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
+import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
 import com.mineboundteam.minebound.item.ToolTier;
@@ -11,8 +13,7 @@ import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
-import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
-import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
+
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;

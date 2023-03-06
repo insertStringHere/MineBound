@@ -4,13 +4,13 @@ import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
 import com.mineboundteam.minebound.inventory.containers.ArmorSpellContainer;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.MyrialSpellSlot;
 import com.mineboundteam.minebound.inventory.slots.OutputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.SpellItem;
-import com.mineboundteam.minebound.registry.RecipeRegistry;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;

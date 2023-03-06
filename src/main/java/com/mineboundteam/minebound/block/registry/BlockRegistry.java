@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.block.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.block.AlloyFurnace;

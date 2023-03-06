@@ -1,15 +1,15 @@
 package com.mineboundteam.minebound.client.registry;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
 import com.mineboundteam.minebound.client.screens.SelectSpellScreen;
+import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import com.mineboundteam.minebound.registry.BlockRegistry;
-import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;

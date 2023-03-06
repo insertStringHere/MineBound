@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry.config;
+package com.mineboundteam.minebound.config.registry;
 
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.config.IConfig;

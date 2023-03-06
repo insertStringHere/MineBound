@@ -1,9 +1,6 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.config.registry;
 
 import com.mineboundteam.minebound.config.ManaConfig;
-import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
-import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
-import com.mineboundteam.minebound.registry.config.ServerConfigRegistry;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 

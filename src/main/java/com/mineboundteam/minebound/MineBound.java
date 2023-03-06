@@ -2,10 +2,9 @@ package com.mineboundteam.minebound;
 
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
+import com.mineboundteam.minebound.entity.registry.EntityRegistry;
+import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.magic.network.MagicSync;
-import com.mineboundteam.minebound.registry.EntityRegistry;
-import com.mineboundteam.minebound.registry.ItemRegistry;
-import com.mineboundteam.minebound.registry.Registry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
