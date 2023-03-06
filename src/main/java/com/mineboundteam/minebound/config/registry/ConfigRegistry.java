@@ -9,8 +9,9 @@ public class ConfigRegistry {
         // Register server configs
         ServerConfigRegistry.get()
             .addConfig(new ManaConfig())
-            .addConfig(new ArmorConfigRegistry())
-            .addConfig(new MagicConfigRegistry())
             .register(eventBus);
+        
+        MagicConfigRegistry.get().register(eventBus);
+        ArmorConfigRegistry.get().register(eventBus);
     }
 }

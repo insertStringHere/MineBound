@@ -7,7 +7,6 @@ import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.magic.network.MagicSync;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;

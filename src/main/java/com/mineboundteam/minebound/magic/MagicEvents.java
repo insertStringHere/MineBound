@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.ArmorConfig;
+import com.mineboundteam.minebound.config.ManaConfig;
 import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -31,6 +32,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -236,5 +238,16 @@ public class MagicEvents {
 
             CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event){
+        if(event.isWasDeath() && ManaConfig.keepArmor.get()){
+            for(ItemStack item : event.getOriginal().getArmorSlots()){
+                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem){
+                    event.getPlayer().setItemSlot(Player.getEquipmentSlotForItem(item), item);
+                }
+            }
+        }
     }
 }

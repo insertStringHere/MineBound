@@ -6,9 +6,23 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
+import java.io.File;
 import java.util.HashMap;
 
-public class ArmorConfigRegistry implements IConfig{
+public class ArmorConfigRegistry extends ServerConfigRegistry implements IConfig{
+    private static ServerConfigRegistry registry;
+    public ArmorConfigRegistry(){
+        this.configName = "MineBound" + File.separator + "Armor.toml";
+        this.addConfig(this);
+    }
+    public static ServerConfigRegistry get(){
+        if(registry == null){
+            registry = new ArmorConfigRegistry();
+        }
+        return registry;
+    }
+
+
     public static final ArmorConfig EFFIGY_SET = new ArmorConfig("Myrial Effigy Set Bonus", 20, 1, 0, 0, 0);
     public static final ArmorConfig EFFIGY_HELMET = new ArmorConfig("Myrial Effigy Helmet", 20, 1, 200, 0, 0);
     public static final ArmorConfig EFFIGY_CHESTPLATE = new ArmorConfig("Myrial Effigy Chestplate", 20, 0, 200, 0, 0);
