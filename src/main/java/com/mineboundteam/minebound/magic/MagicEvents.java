@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
@@ -15,6 +16,7 @@ import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
 import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -48,6 +50,7 @@ public class MagicEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
+
         if (event.side == LogicalSide.SERVER && event.player.level.getGameTime() % 10 == 0
                     && event.phase == TickEvent.Phase.START) {
             handlePlayerArmor(event.player);
@@ -111,7 +114,11 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
         }
     }
-
+    @SubscribeEvent
+    public static void onInputEvent(InputEvent event){
+        if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
+    }
     protected static UUID healthReductionID = new UUID(237427279, 347509);
 
     protected static void handlePlayerArmor(Player player) {

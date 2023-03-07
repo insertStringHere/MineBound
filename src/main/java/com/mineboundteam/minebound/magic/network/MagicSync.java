@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -69,6 +70,11 @@ public class MagicSync {
                         if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
                             releaseUsingSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
                     }
+                    case FIRE_UTILITY_TOGGLE -> {
+                        player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggle -> {
+                            toggle.fire = !toggle.fire;
+                        });
+                    }
                     default -> {
                     }
                 }
@@ -114,8 +120,8 @@ public class MagicSync {
             SECONDARY_PRESSED(2),
             SECONDARY_RELEASED(3),
             PRIMARY_MENU(4),
-            SECONDARY_MENU(5);
-
+            SECONDARY_MENU(5),
+            FIRE_UTILITY_TOGGLE(6);
             protected int msgVal;
 
             private MsgType(int val) {

@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.ArmorFireUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.SpellContainer;
@@ -44,17 +43,9 @@ public class CapabilitySync {
                 (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleSelectedSpells));
         NET_CHANNEL.registerMessage(2, ManaSync.class, ManaSync::encode, ManaSync::decode,
                 (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleMana));
-        NET_CHANNEL.registerMessage(3, FireUtilitySpellToggleSync.class, FireUtilitySpellToggleSync::encode, FireUtilitySpellToggleSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleFireUtilitySpellToggle));
-
     }
 
-    private static void handleFireUtilitySpellToggle(CapabilitySync.FireUtilitySpellToggleSync msg, Supplier<NetworkEvent.Context> contextSupplier) {
-        ArmorFireUtilityToggleProvider.ArmorFireUtilityToggle toggle = Minecraft.getInstance().player.getCapability(ArmorFireUtilityToggleProvider.ARMOR_FIRE_UTILITY_TOGGLE).orElse(null);
-        if (toggle == null) return;
 
-        toggle.setArmorFireUtilityIsActive(msg.isArmorFireUtilityActive());
-    }
 
 
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
@@ -218,25 +209,6 @@ public class CapabilitySync {
 
         public static ManaSync decode(FriendlyByteBuf buf) {
             return new ManaSync(buf.readInt(), buf.readInt());
-        }
-    }
-    public static class FireUtilitySpellToggleSync {
-        private boolean isActive;
-
-        public FireUtilitySpellToggleSync(boolean isActive) {
-            this.isActive = isActive;
-        }
-
-        public boolean isArmorFireUtilityActive() {
-            return isActive;
-        }
-
-        public static void encode(FireUtilitySpellToggleSync msg, FriendlyByteBuf buf) {
-            buf.writeBoolean(msg.isActive);
-        }
-
-        public static FireUtilitySpellToggleSync decode(FriendlyByteBuf buf) {
-            return new FireUtilitySpellToggleSync(buf.readBoolean());
         }
     }
 }

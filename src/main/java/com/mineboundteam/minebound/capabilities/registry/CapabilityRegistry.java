@@ -31,7 +31,7 @@ public class CapabilityRegistry {
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "properties"), new PlayerManaProvider());
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "primary_spell"), new PrimarySpellProvider());
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "secondary_spell"), new SecondarySpellProvider());
-//                event.addCapability(new ResourceLocation(MineBound.MOD_ID, "fire_barrier"), new PlayerFireUtilityToggleProvider());
+                event.addCapability(new ResourceLocation(MineBound.MOD_ID, "utility_toggle"), new PlayerUtilityToggleProvider());
             }
         }
     }
@@ -44,7 +44,6 @@ public class CapabilityRegistry {
             event.addCapability(new ResourceLocation(MineBound.MOD_ID, "passive_spells"),
                     new ArmorSpellsProvider.ArmorPassiveSpellsProvider());
             event.addCapability(new ResourceLocation(MineBound.MOD_ID, "recovering"), new ArmorRecoveryProvider());
-            event.addCapability(new ResourceLocation(MineBound.MOD_ID, "fire_barrier_toggle"), new ArmorFireUtilityToggleProvider());
         }
     }
 
@@ -52,13 +51,14 @@ public class CapabilityRegistry {
     public static void onPlayerCloned(PlayerEvent.Clone event){
         if(event.isWasDeath()){
             event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
-                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
+                event.getPlayer().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
                     newStore.copyFrom(oldStore)
                 )
             );
+
+            PlayerUtilityToggleProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer());
             PlayerSelectedSpellsProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer(), PlayerSelectedSpellsProvider.PRIMARY_SPELL);
             PlayerSelectedSpellsProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer(), PlayerSelectedSpellsProvider.SECONDARY_SPELL);
-//            PlayerFireUtilityToggleProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer(), PlayerFireUtilityToggleProvider.FIRE_UTILITY_TOGGLE);
         }
     }
 
@@ -70,6 +70,6 @@ public class CapabilityRegistry {
         event.register(ArmorRecovery.class);
         event.register(PrimarySelected.class);
         event.register(SecondarySelected.class);
-        event.register(ArmorFireUtilityToggleProvider.ArmorFireUtilityToggle.class);
+        event.register(PlayerUtilityToggleProvider.UtilityToggle.class);
     }
 }
