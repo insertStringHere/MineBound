@@ -87,7 +87,9 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                        .append(" per second of flight"));
-        pTooltipComponents.add(new TextComponent("Additional copies instead reduce Mana cost of highest equipped tier by ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("Mana").withStyle(manaColorStyle))
+                                       .append(" cost of highest equipped tier by ")
                                        .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(manaColorStyle))
                                        .append(" each"));
     }

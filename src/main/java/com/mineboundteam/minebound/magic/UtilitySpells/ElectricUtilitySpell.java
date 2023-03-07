@@ -52,9 +52,19 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             if (equippedSpells.size() > 0) {
                 ElectricUtilitySpell spell = getHighestSpellItem(equippedSpells);
 
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", -spell.totalManaReduction));
+                int manaReduction = 0;
+                // Mob effect levels start at 0, so this starts at -1 to compensate for the off by 1
+                int speedLevel = -1;
+                for (ElectricUtilitySpell s : equippedSpells) {
+                    manaReduction += s.totalManaReduction;
+                    speedLevel += s.speedEffectLevel;
+                }
 
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, spell.speedEffectLevel - 1, false, false));
+                // Java doesn't like non "final" variables being used in lambdas
+                int finalManaReduction = manaReduction;
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", -finalManaReduction));
+
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, speedLevel, false, false));
 
                 if (spell.thorns) {
                     for (EquipmentSlot e : EquipmentSlot.values()) {
@@ -96,6 +106,9 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                                            .append(new TextComponent("Thorns ")
                                                            .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (level.getValue() - 1))).withStyle(ChatFormatting.AQUA)));
         }
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("Speed").withStyle(ChatFormatting.WHITE))
+                                       .append(" effect"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                                        .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(manaColorStyle)));

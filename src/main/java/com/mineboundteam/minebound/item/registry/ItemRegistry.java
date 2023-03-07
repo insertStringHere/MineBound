@@ -125,9 +125,9 @@ public class ItemRegistry {
     /* Ender */
 
     /* Electric */
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_2));
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_3 = ITEMS.register("magic_electric_u3", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_3));
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.MINEBOUND_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_4));
+    public static final RegistryObject<Item> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_2));
+    public static final RegistryObject<Item> ELECTRIC_UTILITY_3 = ITEMS.register("magic_electric_u3", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_3));
+    public static final RegistryObject<Item> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
 
     /* Light */
