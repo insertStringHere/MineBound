@@ -2,10 +2,8 @@ package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -72,13 +70,5 @@ public abstract class PassiveSpellItem extends SpellItem {
             }
         }
         return highestSpell;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                       .append(":"));
     }
 }

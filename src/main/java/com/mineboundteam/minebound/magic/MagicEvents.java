@@ -177,7 +177,7 @@ public class MagicEvents {
     protected static NonNullConsumer<PlayerMana> handlePlayerMana(Player player) {
         return mana -> {
             int manaBoost = 0;
-            int totalMana = mana.getManaMax();
+            int totalMana = mana.getBaseManaCap();
             int recBoost = 0;
 
             boolean totalArmorSet = true;
@@ -226,8 +226,13 @@ public class MagicEvents {
                 }
             }
 
+            for (Integer modifier : mana.getManaCapModifiers().values()) {
+                totalMana += modifier;
+                manaBoost += modifier;
+            }
+
             // if mana is recovered, calculate charge drained from armor durability
-            if (mana.getManaMax() + manaBoost > mana.getMana()) {
+            if (mana.getBaseManaCap() + manaBoost > mana.getMana()) {
                 for (ItemStack stack : mArmors) {
                     if (player.getRandom().nextInt(3) == 0) {
                         stack.setDamageValue(stack.getDamageValue() + 1);
@@ -236,7 +241,7 @@ public class MagicEvents {
             }
 
             mana.setTotalManaCap(totalMana);
-            mana.setAvailableManaCap(mana.getManaMax() + manaBoost);
+            mana.setAvailableManaCap(mana.getBaseManaCap() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
 
             CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
