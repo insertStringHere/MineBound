@@ -9,12 +9,15 @@ import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.ArmorConfig;
+import com.mineboundteam.minebound.config.ManaConfig;
+import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
-import com.mineboundteam.minebound.registry.config.ArmorConfigRegistry;
+
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,6 +33,8 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -38,6 +43,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -235,5 +241,39 @@ public class MagicEvents {
 
             CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
         };
+    }
+
+    private static HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onPlayerKilled(LivingDeathEvent event){
+        if(event.getEntity() instanceof ServerPlayer player && ManaConfig.keepArmor.get()){
+            CompoundTag armorTag = new CompoundTag();
+            for(ItemStack item : player.getArmorSlots()){
+                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem){
+                    CompoundTag armorItem = new CompoundTag();
+                    item.save(armorItem);
+                    armorTag.put(Player.getEquipmentSlotForItem(item).getName(), armorItem);
+                    item.shrink(1);
+                }
+            }
+
+            synchronized (cacheData) {
+                cacheData.put(player, armorTag);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if(ManaConfig.keepArmor.get() && event.isWasDeath() && event.getOriginal() instanceof ServerPlayer original){
+            CompoundTag armorTag;
+            synchronized (cacheData) {
+               armorTag = cacheData.remove(original);
+            }
+
+            for(String key : armorTag.getAllKeys())
+                event.getPlayer().setItemSlot(EquipmentSlot.byName(key), ItemStack.of(armorTag.getCompound(key)));
+        }
     }
 }

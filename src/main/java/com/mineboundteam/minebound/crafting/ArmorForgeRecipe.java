@@ -1,6 +1,5 @@
 package com.mineboundteam.minebound.crafting;
 
-import com.mineboundteam.minebound.registry.RecipeRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -11,6 +10,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 public class ArmorForgeRecipe implements Recipe<Container> {
     private final ItemStack armor;

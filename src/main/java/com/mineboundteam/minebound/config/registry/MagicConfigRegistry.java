@@ -1,4 +1,6 @@
-package com.mineboundteam.minebound.registry.config;
+package com.mineboundteam.minebound.config.registry;
+
+import java.io.File;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
@@ -9,7 +11,18 @@ import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-public class MagicConfigRegistry implements IConfig {
+public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig{
+    private static ServerConfigRegistry registry;
+    public MagicConfigRegistry(){
+        this.configName = "MineBound" + File.separator + "Spells.toml";
+        this.addConfig(this);
+    }
+    public static ServerConfigRegistry get(){
+        if(registry == null){
+            registry = new MagicConfigRegistry();
+        }
+        return registry;
+    }
 
     /*
      * Spell Element
@@ -44,7 +57,6 @@ public class MagicConfigRegistry implements IConfig {
 
     /* Necrotic */
 
-    @Override
     public void build(Builder builder) {
         /*
          * Spell Element
@@ -89,7 +101,6 @@ public class MagicConfigRegistry implements IConfig {
         builder.pop();
     }
 
-    @Override
     public void refresh(ModConfigEvent event) {
     }
 }
