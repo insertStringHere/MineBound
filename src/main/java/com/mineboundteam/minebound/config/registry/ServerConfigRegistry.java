@@ -1,5 +1,6 @@
-package com.mineboundteam.minebound.registry.config;
+package com.mineboundteam.minebound.config.registry;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.mineboundteam.minebound.config.IConfig;
@@ -18,13 +19,15 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
  */
 public class ServerConfigRegistry {
     private static ServerConfigRegistry registry;
+    protected String configName;
 
     private ArrayList<IConfig> configList;
     private ForgeConfigSpec.Builder builder; 
 
-    private ServerConfigRegistry(){  
+    protected ServerConfigRegistry(){  
         builder = new ForgeConfigSpec.Builder();
         configList = new ArrayList<>();
+        configName = "MineBound" + File.separator + "MineboundConfig.toml";
     }
 
     /**
@@ -62,7 +65,7 @@ public class ServerConfigRegistry {
         for(IConfig c : configList)
             c.build(builder);
 
-        ModLoadingContext.get().registerConfig(Type.SERVER, builder.build());
+        ModLoadingContext.get().registerConfig(Type.SERVER, builder.build(), configName);
     }
 
     /**

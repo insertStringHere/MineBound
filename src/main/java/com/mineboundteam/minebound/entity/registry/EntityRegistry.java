@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.entity.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.entity.MyriCorpse;

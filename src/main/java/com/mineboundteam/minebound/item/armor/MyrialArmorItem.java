@@ -12,7 +12,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -126,14 +125,6 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
         if (pSlotId >= 4) {
             EnchantmentHelper.setEnchantments(Collections.emptyMap(), pStack);
         }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerCloned(PlayerEvent.Clone event) {
-        if (ManaConfig.keepArmor.get() && event.isWasDeath())
-            for (ItemStack item : event.getOriginal().getArmorSlots())
-                if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem)
-                    event.getPlayer().setItemSlot(Player.getEquipmentSlotForItem(item), item);
     }
 
     @SubscribeEvent

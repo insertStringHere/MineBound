@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.inventory.slots;
 
-import com.mineboundteam.minebound.registry.RecipeRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;

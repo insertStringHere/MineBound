@@ -1,7 +1,7 @@
 package com.mineboundteam.minebound.block;
 
 import com.mineboundteam.minebound.block.entity.AlloyFurnaceBlockEntity;
-import com.mineboundteam.minebound.registry.BlockRegistry;
+import com.mineboundteam.minebound.block.registry.BlockRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

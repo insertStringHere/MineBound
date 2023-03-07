@@ -3,9 +3,10 @@ package com.mineboundteam.minebound.magic.OffensiveSpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.registry.ItemRegistry;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
