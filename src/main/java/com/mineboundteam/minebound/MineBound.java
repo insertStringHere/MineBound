@@ -5,6 +5,9 @@ import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.magic.network.MagicSync;
+
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,6 +28,20 @@ public class MineBound {
         @Override
         public @NotNull ItemStack makeIcon() {
             return new ItemStack(ItemRegistry.MYRI_MANASAC.get());
+        }
+
+        @Override
+        public void fillItemList(NonNullList<ItemStack> list){
+            super.fillItemList(list);
+            list.sort((curr, next) -> {
+                if(curr.getItem() instanceof BlockItem && next.getItem() instanceof BlockItem)
+                    return 0;
+                if(curr.getItem() instanceof BlockItem)
+                    return -1;
+                if(next.getItem() instanceof BlockItem)
+                    return 1;
+                return 0;
+            });
         }
     };
     public static final CreativeModeTab SPELLS_TAB = new CreativeModeTab(MOD_ID + "_spells") {
