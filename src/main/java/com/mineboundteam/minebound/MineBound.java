@@ -27,7 +27,7 @@ public class MineBound {
             return new ItemStack(ItemRegistry.MYRI_MANASAC.get());
         }
     };
-    public static final CreativeModeTab SPELLS_TAB = new CreativeModeTab(MOD_ID) {
+    public static final CreativeModeTab SPELLS_TAB = new CreativeModeTab(MOD_ID + "_spells") {
         @OnlyIn(Dist.CLIENT)
         @Override
         public @NotNull ItemStack makeIcon() {
