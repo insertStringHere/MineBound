@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.inventory.registry;
 
 import com.mineboundteam.minebound.crafting.AlloyFurnaceRecipe;
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;

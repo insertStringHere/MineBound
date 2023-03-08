@@ -1,15 +1,29 @@
-package com.mineboundteam.minebound.registry.config;
+package com.mineboundteam.minebound.config.registry;
+
+import java.io.File;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-public class MagicConfigRegistry implements IConfig {
+public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig{
+    private static ServerConfigRegistry registry;
+    public MagicConfigRegistry(){
+        this.configName = "MineBound" + File.separator + "Spells.toml";
+        this.addConfig(this);
+    }
+    public static ServerConfigRegistry get(){
+        if(registry == null){
+            registry = new MagicConfigRegistry();
+        }
+        return registry;
+    }
 
     /*
      * Spell Element
@@ -22,9 +36,9 @@ public class MagicConfigRegistry implements IConfig {
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, ArmorTier.SUIT);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(7, 0.35, ArmorTier.SYNERGY);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(3, 0.50, ArmorTier.SINGULARITY);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, false, ArmorTier.SUIT);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(7, 0.35, true, ArmorTier.SYNERGY);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(3, 0.50, true, ArmorTier.SINGULARITY);
 
     /* Shield */
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_1 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(30, 0.5, 0.4, ArmorTier.EFFIGY);
@@ -39,12 +53,14 @@ public class MagicConfigRegistry implements IConfig {
     /* Ender */
 
     /* Electric */
+    public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
+    public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_3 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 2, true, ArmorTier.SYNERGY);
+    public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_4 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 3, true, ArmorTier.SINGULARITY);
 
     /* Light */
 
     /* Necrotic */
 
-    @Override
     public void build(Builder builder) {
         /*
          * Spell Element
@@ -80,6 +96,9 @@ public class MagicConfigRegistry implements IConfig {
         builder.pop();
 
         builder.push("Electric");
+        ELECTRIC_UTILITY_2.build(builder);
+        ELECTRIC_UTILITY_3.build(builder);
+        ELECTRIC_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Light");
@@ -89,7 +108,6 @@ public class MagicConfigRegistry implements IConfig {
         builder.pop();
     }
 
-    @Override
     public void refresh(ModConfigEvent event) {
     }
 }

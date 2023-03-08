@@ -7,7 +7,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.item.registry.ItemRegistry;
 
 /**
  * Pretty much taken from minecraft's build-in armor materials

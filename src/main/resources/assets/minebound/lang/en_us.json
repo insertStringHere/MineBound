@@ -1,5 +1,6 @@
 {
   "itemGroup.minebound": "MineBound",
+  "itemGroup.minebound_spells": "Minebound Spell Modules",
 
   "item.minebound.alien_circuitry": "Alien Circuitry",
   "item.minebound.energized_focus": "Energized Focus",
@@ -81,6 +82,10 @@
   "item.minebound.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic_shield_u4": "Shield Utility IV",
+
+  "item.minebound.magic_electric_u2": "Electric Utility II",
+  "item.minebound.magic_electric_u3": "Electric Utility III",
+  "item.minebound.magic_electric_u4": "Electric Utility IV",
 
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",

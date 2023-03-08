@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import com.mineboundteam.minebound.registry.RecipeRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 public class AlloyFurnaceRecipe extends AbstractCookingRecipe {
     protected NonNullList<Ingredient> ingredients; 

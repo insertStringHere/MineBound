@@ -12,6 +12,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+
 public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<>() { });
 
@@ -47,60 +49,69 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
         private int mana;
         private int availableManaCap;
         private int totalManaCap;
+        private final HashMap<String, Integer> manaCapModifiers = new HashMap<>();
         private final int manaRecRate = ManaConfig.manaRecovery.get();
-        private final int manaMax = ManaConfig.maximumMana.get();
-    
+        private final int baseManaCap = ManaConfig.baseManaCap.get();
+
         public PlayerMana setMana(int amt){
             mana = amt;
             return this;
         }
-    
+
         public void setAvailableManaCap(int amt) {
             availableManaCap = amt;
         }
-    
+
         public void setTotalManaCap(int amt) {
             totalManaCap = amt;
         }
-    
+
+        public void setManaCapModifier(String key, Integer value) {
+            this.manaCapModifiers.put(key, value);
+        }
+
         public int getMana(){
             return mana;
         }
-    
+
         public int getManaRecRate(){
             return manaRecRate;
         }
-    
+
         public int getAvailableManaCap() {
             return availableManaCap;
         }
-    
+
         public int getTotalManaCap() {
             return totalManaCap;
         }
-    
-        public int getManaMax(){
-            return manaMax;
+
+        public int getBaseManaCap(){
+            return baseManaCap;
         }
-    
+
+        public HashMap<String, Integer> getManaCapModifiers() {
+            return manaCapModifiers;
+        }
+
         public void addMana(int amt){
             this.mana = Math.min(mana + amt, this.availableManaCap);
         }
-    
+
         public int subtractMana(int amt){
             int underflow = Math.max(amt - this.mana, 0);
             this.mana = Math.max(mana - amt, 0);
             return underflow;
         }
-    
+
         public void copyFrom(PlayerMana source){
             this.mana = source.getMana();
         }
-    
+
         public void saveNBTData(CompoundTag nbt){
             nbt.putInt("mana", this.mana);
         }
-    
+
         public void loadNBTData(CompoundTag nbt){
             mana = nbt.getInt("mana");
         }

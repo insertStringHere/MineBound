@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SMS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:iron_sword"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_telekinetic_o1"
+  }
+}

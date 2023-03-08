@@ -1,6 +1,11 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound;
 
+import com.mineboundteam.minebound.block.registry.BlockRegistry;
+import com.mineboundteam.minebound.config.registry.ConfigRegistry;
+import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
+import com.mineboundteam.minebound.item.registry.ItemRegistry;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 
