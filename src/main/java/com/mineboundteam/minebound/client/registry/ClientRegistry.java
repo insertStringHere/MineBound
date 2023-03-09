@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.client.registry;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
+import com.mineboundteam.minebound.client.renderer.entity.MyrialSwordEntityRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
 import com.mineboundteam.minebound.client.screens.SelectSpellScreen;
@@ -11,7 +12,6 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.registry.BlockRegistry;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
-
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -55,6 +55,7 @@ public class ClientRegistry {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
 
         EntityRenderers.register(EntityRegistry.MYRI_CORPSE.get(), MyriCorpseRenderer::new);
+        EntityRenderers.register(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), MyrialSwordEntityRenderer::new);
 
         GeoArmorRenderer.registerArmorRenderer(MyrialArmorItem.class, () -> new MyrialArmorRenderer());
     }
