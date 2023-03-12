@@ -84,6 +84,8 @@ public class MagicEvents {
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
+        else if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
 
     // If the magic keybinds are bound to mouse buttons
@@ -116,11 +118,6 @@ public class MagicEvents {
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
         }
-    }
-    @SubscribeEvent
-    public static void onInputEvent(InputEvent event){
-        if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
     protected static UUID healthReductionID = new UUID(237427279, 347509);
 

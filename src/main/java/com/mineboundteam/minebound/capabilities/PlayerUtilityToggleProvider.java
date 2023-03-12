@@ -22,7 +22,6 @@ public class PlayerUtilityToggleProvider implements ICapabilityProvider, INBTSer
     private @NotNull PlayerUtilityToggleProvider.UtilityToggle createUtilityToggle() {
         if(this.utilityToggle == null) {
             this.utilityToggle = new UtilityToggle();
-            this.utilityToggle.fire = false;
         }
         return this.utilityToggle;
     }
