@@ -84,7 +84,8 @@ public class MagicEvents {
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
-        else if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+
+        if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
 
