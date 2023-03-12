@@ -1,11 +1,8 @@
 package com.mineboundteam.minebound.capabilities.registry;
 
+import com.mineboundteam.minebound.capabilities.*;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
-import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider.ArmorRecovery;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.ArmorActiveSpellsProvider.ActiveSpellContainer;
 import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider.ArmorPassiveSpellsProvider.PassiveSpellContainer;
@@ -34,6 +31,7 @@ public class CapabilityRegistry {
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "properties"), new PlayerManaProvider());
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "primary_spell"), new PrimarySpellProvider());
                 event.addCapability(new ResourceLocation(MineBound.MOD_ID, "secondary_spell"), new SecondarySpellProvider());
+                event.addCapability(new ResourceLocation(MineBound.MOD_ID, "utility_toggle"), new PlayerUtilityToggleProvider());
             }
         }
     }
@@ -53,10 +51,12 @@ public class CapabilityRegistry {
     public static void onPlayerCloned(PlayerEvent.Clone event){
         if(event.isWasDeath()){
             event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
-                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
+                event.getPlayer().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
                     newStore.copyFrom(oldStore)
                 )
             );
+
+            PlayerUtilityToggleProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer());
             PlayerSelectedSpellsProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer(), PlayerSelectedSpellsProvider.PRIMARY_SPELL);
             PlayerSelectedSpellsProvider.UpdatePlayerSync(event.getOriginal(), event.getPlayer(), PlayerSelectedSpellsProvider.SECONDARY_SPELL);
         }
@@ -70,5 +70,6 @@ public class CapabilityRegistry {
         event.register(ArmorRecovery.class);
         event.register(PrimarySelected.class);
         event.register(SecondarySelected.class);
+        event.register(PlayerUtilityToggleProvider.UtilityToggle.class);
     }
 }

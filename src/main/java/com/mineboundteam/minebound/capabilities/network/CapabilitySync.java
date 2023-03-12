@@ -45,6 +45,9 @@ public class CapabilitySync {
                 (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleMana));
     }
 
+
+
+
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
             BiConsumer<T, Supplier<NetworkEvent.Context>> func) {
         ctx.get().enqueueWork(() ->
@@ -73,7 +76,6 @@ public class CapabilitySync {
         mana.setMana(msg.getCurrentMana());
         mana.setTotalManaCap(msg.getTotalManaCap());
     }
-
 
     public static void handleSelectedSpells(SelectedSpellsSync msg, Supplier<NetworkEvent.Context> ctx) {
        Minecraft.getInstance().player.getCapability((Capability<? extends SelectedSpell>)(msg.isPrimary() ? PlayerSelectedSpellsProvider.PRIMARY_SPELL
