@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "minebound:item/__"
+      "layer0": "minebound:item/magic_shield_o2"
     }
   }
