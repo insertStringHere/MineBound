@@ -93,7 +93,7 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE && Minecraft.getInstance().getConnection() != null) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getButton() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
@@ -109,7 +109,7 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE && Minecraft.getInstance().getConnection() != null) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
