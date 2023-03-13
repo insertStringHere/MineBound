@@ -1,7 +1,7 @@
 package com.mineboundteam.minebound.magic.network;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
@@ -40,8 +40,8 @@ public class MagicSync {
             ServerPlayer player = ctx.get().getSender();
             if (!player.level.isClientSide()) {
 
-                var activeSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS, true);
-                var passiveSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS, true);
+                var activeSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorNBTHelper.ACTIVE_SPELL, true);
+                var passiveSpells = new InventorySpellContainer(player.getInventory(), PlayerSelectedSpellsProvider.PRIMARY_SPELL, ArmorNBTHelper.PASSIVE_SPELL, true);
                 boolean canOpen = !(activeSpells.isEmpty() && passiveSpells.isEmpty());
 
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
@@ -86,13 +86,10 @@ public class MagicSync {
     protected static void useSpell(Player player, Capability<? extends SelectedSpell> cap) {
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
-                player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
-                        .ifPresent(slots -> {
-                            ItemStack activeSpell = slots.items.get(selected.index);
-                            if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                                spell.use(activeSpell, player.level, player);
-                            }
-                        });
+                ItemStack activeSpell = ItemStack.of(ArmorNBTHelper.getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL).getCompound(selected.index));
+                if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
+                    spell.use(activeSpell, player.level, player);
+                }
             }
         });
     }
@@ -100,13 +97,10 @@ public class MagicSync {
     protected static void releaseUsingSpell(Player player, Capability<? extends SelectedSpell> cap) {
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
-                player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
-                        .ifPresent(slots -> {
-                            ItemStack activeSpell = slots.items.get(selected.index);
-                            if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                                spell.releaseUsing(activeSpell, player.level, player);
-                            }
-                        });
+                ItemStack activeSpell = ItemStack.of(ArmorNBTHelper.getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL).getCompound(selected.index));
+                if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
+                    spell.releaseUsing(activeSpell, player.level, player);
+                }
             }
         });
     }

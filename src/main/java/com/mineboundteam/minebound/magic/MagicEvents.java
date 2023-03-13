@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
@@ -125,34 +124,34 @@ public class MagicEvents {
         };
 
         for (ItemStack item : player.getArmorSlots()) {
-            if (!item.isEmpty())
-                item.getCapability(ArmorRecoveryProvider.ARMOR_RECOVERY).ifPresent(recovery -> {
-                    MyrialArmorItem armorItem = (MyrialArmorItem) item.getItem();
-                    if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
-                        recovery.recovering = true;
-                    if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)
-                        recovery.recovering = false;
+            if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem){
+                boolean recovering = item.getOrCreateTag().getBoolean("recovery");
+                if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
+                    recovering = true;
+                if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)
+                    recovering = false;
 
-                    if (tier.max == null || tier.max.getValue() < armorItem.getTier().getValue())
-                        tier.max = armorItem.getTier();
+                if (tier.max == null || tier.max.getValue() < armorItem.getTier().getValue())
+                    tier.max = armorItem.getTier();
 
-                    int armorDamage = armorItem.getDamage(item);
-                    if (armorDamage > 0) {
-                        FoodData pFoodData = player.getFoodData();
-                        if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
-                            float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
-                            armorItem.setDamage(item, (int) (armorDamage - f / 6));
-                            pFoodData.addExhaustion(f / 16.0f);
-                        } else if (pFoodData.getFoodLevel() >= 16) {
-                            armorItem.setDamage(item, armorDamage - 1);
-                            pFoodData.addExhaustion(0.125f);
-                        }
-
-                        if (armorItem.getDamage(item) < 0)
-                            armorItem.setDamage(item, 0);
+                int armorDamage = armorItem.getDamage(item);
+                if (armorDamage > 0) {
+                    FoodData pFoodData = player.getFoodData();
+                    if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
+                        float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
+                        armorItem.setDamage(item, (int) (armorDamage - f / 6));
+                        pFoodData.addExhaustion(f / 16.0f);
+                    } else if (pFoodData.getFoodLevel() >= 16) {
+                        armorItem.setDamage(item, armorDamage - 1);
+                        pFoodData.addExhaustion(0.125f);
                     }
 
-                });
+                    if (armorItem.getDamage(item) < 0)
+                        armorItem.setDamage(item, 0);
+                }
+                
+                item.getOrCreateTag().putBoolean("recovering", recovering);
+            }
         }
 
         int healthReduction = tier.max == null ? 0 : (tier.max.getValue() + 1) * -2;
@@ -193,13 +192,7 @@ public class MagicEvents {
                     ArmorConfig config = ((MyrialArmorItem) armorItem).getConfig();
                     totalMana += config.MANAPOOL.get();
 
-                    var flag = new Object() {
-                        boolean canUse = false;
-                    };
-                    armorStack.getCapability(ArmorRecoveryProvider.ARMOR_RECOVERY)
-                            .ifPresent(recovery -> flag.canUse = !recovery.recovering);
-
-                    if (flag.canUse) {
+                    if (!armorStack.getOrCreateTag().getBoolean("recovery")) {
                         mArmors.add(player.getItemBySlot(slot));
                         manaBoost += config.MANAPOOL.get();
                         recBoost += config.RECOVERY.get();
