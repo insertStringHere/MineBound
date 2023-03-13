@@ -28,6 +28,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
@@ -43,14 +44,14 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         }
 
         protected void transferStoredItems(ItemStack result, ItemStack source) {
-            var activeSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.ACTIVE_SPELL).stream().map(t -> {
+            List<ItemStack> activeSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.ACTIVE_SPELL).stream().map(t -> {
                 if(t instanceof CompoundTag tag)
                     return ItemStack.of(tag);
                 return ItemStack.EMPTY;
             }).filter(i -> !i.isEmpty()).toList();
             ListTag activeDst = new ListTag(); 
 
-            var passiveSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.PASSIVE_SPELL).stream().map(t -> {
+            List<ItemStack> passiveSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.PASSIVE_SPELL).stream().map(t -> {
                 if(t instanceof CompoundTag tag)
                     return ItemStack.of(tag);
                 return ItemStack.EMPTY;

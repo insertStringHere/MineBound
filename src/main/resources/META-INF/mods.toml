@@ -31,6 +31,6 @@ Many of these mods utilize spell books or require active usage of one spell at a
 [[dependencies.minebound]]
     modId="geckolib3"
     mandatory=true
-    versionRange="[1.18.2,1.19)"
+    versionRange="[3.0.57,)"
     ordering="NONE"
     side="BOTH"

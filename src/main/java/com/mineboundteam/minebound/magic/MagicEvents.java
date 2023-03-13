@@ -195,7 +195,7 @@ public class MagicEvents {
                     ArmorConfig config = ((MyrialArmorItem) armorItem).getConfig();
                     totalMana += config.MANAPOOL.get();
 
-                    if (!armorStack.getTag().getBoolean("recovery")) {
+                    if (!armorStack.getOrCreateTag().getBoolean("recovery")) {
                         mArmors.add(player.getItemBySlot(slot));
                         manaBoost += config.MANAPOOL.get();
                         recBoost += config.RECOVERY.get();
