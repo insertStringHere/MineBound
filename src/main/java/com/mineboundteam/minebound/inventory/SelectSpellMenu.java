@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.inventory;
 
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
@@ -27,8 +27,8 @@ public class SelectSpellMenu extends AbstractContainerMenu {
         this.isPrimary = isPrimary;
         this.cap = isPrimary ? PlayerSelectedSpellsProvider.PRIMARY_SPELL : PlayerSelectedSpellsProvider.SECONDARY_SPELL;
 
-        activeSpells = new InventorySpellContainer(playerInventory, this.cap, ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS, isPrimary);
-        passiveSpells = new InventorySpellContainer(playerInventory, this.cap, ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS, isPrimary);
+        activeSpells = new InventorySpellContainer(playerInventory, this.cap, ArmorNBTHelper.ACTIVE_SPELL , isPrimary);
+        passiveSpells = new InventorySpellContainer(playerInventory, this.cap, ArmorNBTHelper.PASSIVE_SPELL, isPrimary);
 
         addSlots();
     }

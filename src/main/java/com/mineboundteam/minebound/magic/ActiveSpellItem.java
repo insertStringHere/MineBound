@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.magic;
 
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import net.minecraft.world.InteractionHand;
@@ -41,12 +41,14 @@ public abstract class ActiveSpellItem extends SpellItem {
 
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 
-    protected static ItemStack getSelectedSpell(Player player, Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
+    protected static ItemStack getSelectedSpell(Player player,
+            Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
         AtomicReference<ItemStack> selectedSpell = new AtomicReference<>(new ItemStack(Items.AIR));
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
-                player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
-                        .ifPresent(slots -> selectedSpell.set(slots.items.get(selected.index)));
+                selectedSpell.set(ItemStack.of(ArmorNBTHelper
+                        .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
+                        .getCompound(selected.index)));
             }
         });
         return selectedSpell.get();
