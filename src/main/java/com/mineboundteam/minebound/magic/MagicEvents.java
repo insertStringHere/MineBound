@@ -127,9 +127,8 @@ public class MagicEvents {
         };
 
         for (ItemStack item : player.getArmorSlots()) {
-            if (!item.isEmpty()){
+            if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem){
                 boolean recovering = item.getTag().getBoolean("recovery");
-                MyrialArmorItem armorItem = (MyrialArmorItem) item.getItem();
                 if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
                     recovering = true;
                 if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)

@@ -12,6 +12,8 @@ import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.SpellItem;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,7 +43,42 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         }
 
         protected void transferStoredItems(ItemStack result, ItemStack source) {
-            // TODO: fix
+            var activeSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.ACTIVE_SPELL).stream().map(t -> {
+                if(t instanceof CompoundTag tag)
+                    return ItemStack.of(tag);
+                return ItemStack.EMPTY;
+            }).filter(i -> !i.isEmpty()).toList();
+            ListTag activeDst = new ListTag(); 
+
+            var passiveSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.PASSIVE_SPELL).stream().map(t -> {
+                if(t instanceof CompoundTag tag)
+                    return ItemStack.of(tag);
+                return ItemStack.EMPTY;
+            }).filter(i -> !i.isEmpty()).toList();
+            ListTag passiveDst = new ListTag();
+
+            int max = activeSpells.armorCount;
+            for (ItemStack spell : activeSrc) {
+                if (max <= 0 && !moveItemStackTo(spell, 0, 40, false)) {
+                    player.drop(spell, false, false);
+                } else {
+                    activeDst.add(spell.serializeNBT());
+                    max--;
+                }
+            }
+
+            max = passiveSpells.armorCount;
+            for (ItemStack spell : passiveSrc) {
+                if (max <= 0 && !moveItemStackTo(spell, 0, 40, false)) {
+                    player.drop(spell, false, false);
+                } else {
+                    passiveDst.add(spell.serializeNBT());
+                    max--;
+                }
+            }
+
+            ArmorNBTHelper.saveSpellTag(result, ArmorNBTHelper.ACTIVE_SPELL, activeDst);
+            ArmorNBTHelper.saveSpellTag(result, ArmorNBTHelper.PASSIVE_SPELL, passiveDst);
         }
     };
 
