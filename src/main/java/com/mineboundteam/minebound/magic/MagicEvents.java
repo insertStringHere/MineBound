@@ -16,7 +16,7 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,11 +41,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -85,7 +81,7 @@ public class MagicEvents {
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
 
-        if(ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+        if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
 
@@ -97,7 +93,7 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getButton() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
@@ -113,13 +109,14 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
         }
     }
+
     protected static UUID healthReductionID = new UUID(237427279, 347509);
 
     protected static void handlePlayerArmor(Player player) {
@@ -250,14 +247,14 @@ public class MagicEvents {
         };
     }
 
-    private static HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();
+    private static final HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();
 
     @SubscribeEvent
-    public static void onPlayerKilled(LivingDeathEvent event){
-        if(event.getEntity() instanceof ServerPlayer player && ManaConfig.keepArmor.get()){
+    public static void onPlayerKilled(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && ManaConfig.keepArmor.get()) {
             CompoundTag armorTag = new CompoundTag();
-            for(ItemStack item : player.getArmorSlots()){
-                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem){
+            for (ItemStack item : player.getArmorSlots()) {
+                if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem) {
                     CompoundTag armorItem = new CompoundTag();
                     item.save(armorItem);
                     armorTag.put(Player.getEquipmentSlotForItem(item).getName(), armorItem);
@@ -273,13 +270,13 @@ public class MagicEvents {
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
-        if(ManaConfig.keepArmor.get() && event.isWasDeath() && event.getOriginal() instanceof ServerPlayer original){
+        if (ManaConfig.keepArmor.get() && event.isWasDeath() && event.getOriginal() instanceof ServerPlayer original) {
             CompoundTag armorTag;
             synchronized (cacheData) {
-               armorTag = cacheData.remove(original);
+                armorTag = cacheData.remove(original);
             }
 
-            for(String key : armorTag.getAllKeys())
+            for (String key : armorTag.getAllKeys())
                 event.getPlayer().setItemSlot(EquipmentSlot.byName(key), ItemStack.of(armorTag.getCompound(key)));
         }
     }
