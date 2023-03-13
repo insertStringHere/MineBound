@@ -43,24 +43,25 @@ public class AlloyFurnaceSerializer<T> extends ForgeRegistryEntry<RecipeSerializ
     @Override
     public AlloyFurnaceRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
         String group = friendlyByteBuf.readUtf();
-        int i = friendlyByteBuf.readVarInt();
+        int i = friendlyByteBuf.readInt();
         NonNullList<Ingredient> ingredients = NonNullList.withSize(i, Ingredient.EMPTY);
         
         for(int j = 0; j < i; j++){
-            ingredients.add(Ingredient.fromNetwork(friendlyByteBuf));
+            ingredients.set(j, Ingredient.fromNetwork(friendlyByteBuf));
         }
         ItemStack itemStack = friendlyByteBuf.readItem();
         float exp = friendlyByteBuf.readFloat();
-        int cookingTime = friendlyByteBuf.readVarInt();
+        int cookingTime = friendlyByteBuf.readInt();
         return new AlloyFurnaceRecipe(resourceLocation, group, ingredients, itemStack, exp, cookingTime);
     }
 
     @Override
     public void toNetwork(FriendlyByteBuf pBuffer, AlloyFurnaceRecipe pRecipe) {
         pBuffer.writeUtf(pRecipe.getGroup());
+        pBuffer.writeInt(pRecipe.getIngredients().size());
         for(Ingredient ingredient : pRecipe.getIngredients()) { ingredient.toNetwork(pBuffer); }
-        pBuffer.writeItem(pRecipe.getResult());
+        pBuffer.writeItemStack(pRecipe.getResult(), false);
         pBuffer.writeFloat(pRecipe.getExperience());
-        pBuffer.writeVarInt(pRecipe.getCookingTime());
+        pBuffer.writeInt(pRecipe.getCookingTime());
     }
 }
