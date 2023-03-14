@@ -54,12 +54,11 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 if (hitsRemaining > 0) {
                     player.getLevel().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     event.setCanceled(true);
-                    spell.reduceMana(spell.manaCost, player);
+                    reduceMana(spell.manaCost, player);
 
-                    CompoundTag tag = new CompoundTag();
+                    CompoundTag tag = spellStack.getOrCreateTag();
                     tag.putInt("minebound.shield_utility.hits_remaining", hitsRemaining - 1);
                     tag.putInt("minebound.shield_utility.cooldown", spell.recovCooldown);
-                    spellStack.setTag(tag);
                 }
             }
         }
@@ -72,16 +71,14 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 if (spellStack.hasTag()) {
-                    int cooldown = spellStack.getTag().getInt("minebound.shield_utility.cooldown");
-                    CompoundTag tag = new CompoundTag();
+                    CompoundTag spellTag = spellStack.getOrCreateTag();
+                    int cooldown = spellTag.getInt("minebound.shield_utility.cooldown");
                     if (cooldown > 0) {
-                        tag.putInt("minebound.shield_utility.hits_remaining", spellStack.getTag().getInt("minebound.shield_utility.hits_remaining"));
-                        tag.putInt("minebound.shield_utility.cooldown", cooldown - 1);
-                        spellStack.setTag(tag);
+                        spellTag.putInt("minebound.shield_utility.hits_remaining", spellTag.getInt("minebound.shield_utility.hits_remaining"));
+                        spellTag.putInt("minebound.shield_utility.cooldown", cooldown - 1);
                     } else if (cooldown == 0) {
-                        tag.putInt("minebound.shield_utility.hits_remaining", spell.totalHits);
-                        tag.putInt("minebound.shield_utility.cooldown", -1);
-                        spellStack.setTag(tag);
+                        spellTag.putInt("minebound.shield_utility.hits_remaining", spell.totalHits);
+                        spellTag.putInt("minebound.shield_utility.cooldown", -1);
                     }
                 }
             }
@@ -92,16 +89,18 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         // Add NBT data to item when it first enters the players inventory
         if (!pStack.hasTag() && !pLevel.isClientSide()) {
-            CompoundTag tag = new CompoundTag();
+            CompoundTag tag = pStack.getOrCreateTag();
             tag.putInt("minebound.shield_utility.hits_remaining", totalHits);
             tag.putInt("minebound.shield_utility.cooldown", -1);
-            pStack.setTag(tag);
         }
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
+                                       .append(":"));
         pTooltipComponents.add(new TextComponent("  - Stores ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
                                        .append(", each fully negating the damage from an attack"));
@@ -112,7 +111,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Depletes ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("1 charge").withStyle(ChatFormatting.AQUA))
                                        .append(" and costs ")
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                        .append(" per attack"));
     }
 

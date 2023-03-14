@@ -1,8 +1,8 @@
 package com.mineboundteam.minebound.block.entity;
 
+import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.inventory.AlloyFurnaceMenu;
-import com.mineboundteam.minebound.registry.BlockRegistry;
-import com.mineboundteam.minebound.registry.RecipeRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

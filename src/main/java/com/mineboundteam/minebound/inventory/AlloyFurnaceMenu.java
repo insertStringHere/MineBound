@@ -1,7 +1,7 @@
 package com.mineboundteam.minebound.inventory;
 
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
-import com.mineboundteam.minebound.registry.RecipeRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;

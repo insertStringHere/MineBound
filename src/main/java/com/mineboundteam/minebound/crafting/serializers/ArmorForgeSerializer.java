@@ -35,24 +35,24 @@ public class ArmorForgeSerializer<T> extends ForgeRegistryEntry<RecipeSerializer
 
     @Override
     public ArmorForgeRecipe fromNetwork(@NotNull ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
-        int size = friendlyByteBuf.readVarInt();
+        int size = friendlyByteBuf.readInt();
         NonNullList<Ingredient> ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
-        ItemStack armor = friendlyByteBuf.readItem();
-        ItemStack output = friendlyByteBuf.readItem();
 
         for(int i = 0; i < size; i++){
-            ingredients.add(Ingredient.fromNetwork(friendlyByteBuf));
+            ingredients.set(i, Ingredient.fromNetwork(friendlyByteBuf));
         }
-
+        ItemStack armor = friendlyByteBuf.readItem();
+        ItemStack output = friendlyByteBuf.readItem();
         return new ArmorForgeRecipe(resourceLocation, ingredients, armor, output);
     }
 
     @Override
     public void toNetwork(@NotNull FriendlyByteBuf friendlyByteBuf, ArmorForgeRecipe armorForgeRecipe) {
+        friendlyByteBuf.writeInt(armorForgeRecipe.getIngredients().size());
         for (Ingredient ingredient : armorForgeRecipe.getIngredients()) {
             ingredient.toNetwork(friendlyByteBuf);
         }
-        friendlyByteBuf.writeItem(armorForgeRecipe.getArmor());
-        friendlyByteBuf.writeItem(armorForgeRecipe.getResultItem());
+        friendlyByteBuf.writeItemStack(armorForgeRecipe.getArmor(), false);
+        friendlyByteBuf.writeItemStack(armorForgeRecipe.getResultItem(), false);
     }
 }

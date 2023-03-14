@@ -1,15 +1,15 @@
 package com.mineboundteam.minebound.client.registry;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
 import com.mineboundteam.minebound.client.screens.SelectSpellScreen;
+import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import com.mineboundteam.minebound.registry.BlockRegistry;
-import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
@@ -43,12 +43,14 @@ public class ClientRegistry {
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_X, MINEBOUND_CATEGORY);
     public static final KeyMapping SECONDARY_MAGIC_SELECT = new KeyMapping(getName("secondary_magic_select"),
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_C, MINEBOUND_CATEGORY);
-
+    public static final KeyMapping FIRE_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("fire_utility_spell_toggle"),
+            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
     public static void registerKeys() {
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(PRIMARY_MAGIC);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(PRIMARY_MAGIC_SELECT);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC_SELECT);
+        net.minecraftforge.client.ClientRegistry.registerKeyBinding(FIRE_UTILITY_SPELL_TOGGLE);
     }
 
     public static void registerRenderers(){
