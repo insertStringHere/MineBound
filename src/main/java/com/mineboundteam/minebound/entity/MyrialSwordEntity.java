@@ -4,6 +4,8 @@ import com.mineboundteam.minebound.item.MyrialSword;
 import com.mineboundteam.minebound.registry.EntityRegistry;
 import com.mineboundteam.minebound.registry.ItemRegistry;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +52,7 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
             discard();
             myrialSword.state = 0;
         } else {
-            entity.hurt(DamageSource.MAGIC, 99);
+            entity.hurt(DamageSource.MAGIC, 7);
         }
     }
 
