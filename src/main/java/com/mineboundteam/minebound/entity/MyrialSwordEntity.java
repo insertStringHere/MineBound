@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class MyrialSwordEntity extends ThrowableItemProjectile {
@@ -42,23 +43,26 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
 
     @Override
     public void onHitEntity(EntityHitResult entityHitResult) {
-        Entity owner = this.getOwner();
-        Entity projectile = level.getEntity(this.getId());
-        Entity target = entityHitResult.getEntity();
-        if (owner == null || projectile == null || myrialSword == null) return;
+        Entity entity = entityHitResult.getEntity();
+        if (getOwner() == null || myrialSword == null) return;
 
-        if (target.is(owner)) {
-            projectile.kill();
+        if (entity.is(getOwner())) {
+            discard();
             myrialSword.state = 0;
         } else {
-            target.hurt(DamageSource.MAGIC, 99);
+            entity.hurt(DamageSource.MAGIC, 99);
         }
     }
 
     @Override
     public void tick() {
-        if (myrialSword != null && getOwner() != null && myrialSword.state == 2)
-            setDeltaMovement(getDeltaMovement().scale(.95).add(getOwner().position().subtract(position()).normalize().scale(.2)));
+        setYRot(getYRot() + 100);
         super.tick();
+        if (myrialSword == null || getOwner() == null) return;
+
+        if (getOwner().position().distanceTo(position()) > 15)
+            setDeltaMovement(Vec3.ZERO);
+        if (myrialSword.state == 2)
+            setDeltaMovement(getDeltaMovement().scale(.95).add(getOwner().position().subtract(position()).normalize().scale(.5)));
     }
 }
