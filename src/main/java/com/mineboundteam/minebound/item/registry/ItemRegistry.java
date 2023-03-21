@@ -53,7 +53,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_DIAMOND_PICKAXE = ITEMS.register("myrial_diamond_pickaxe", () -> new PickaxeItem(ToolTier.MYRIAL_DIAMOND, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_HOE = ITEMS.register("myrial_diamond_hoe", () -> new HoeItem(ToolTier.MYRIAL_DIAMOND, -3, 0, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_AXE = ITEMS.register("myrial_diamond_axe", () -> new AxeItem(ToolTier.MYRIAL_DIAMOND, 4.5F, -2.5F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-   
+
     public static final RegistryObject<Item> ENERGIZED_IRON_HELMET = ITEMS.register("energized_iron_helmet", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_CHESTPLATE = ITEMS.register("energized_iron_chestplate", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_LEGGINGS = ITEMS.register("energized_iron_leggings", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
@@ -100,6 +100,8 @@ public class ItemRegistry {
      * [offensive spells]
      * [defensive spells]
      * [utility spells]
+     *
+     * Execute gradle task 'runData' after registering new spell item
      */
 
     /* Fire */

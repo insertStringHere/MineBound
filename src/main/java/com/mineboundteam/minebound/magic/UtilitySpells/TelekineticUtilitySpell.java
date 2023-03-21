@@ -3,7 +3,9 @@ package com.mineboundteam.minebound.magic.UtilitySpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -34,7 +36,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     private final boolean elytraFlight;
 
     public TelekineticUtilitySpell(Properties properties, TelekineticUtilitySpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.TELEKINETIC, SpellType.UTILITY);
 
         manaCost = config.MANA_COST.get();
         manaCostReduction = config.MANA_COST_REDUCTION.get();

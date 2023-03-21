@@ -5,7 +5,9 @@ import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -37,7 +39,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
     private final boolean thorns;
 
     public ElectricUtilitySpell(Properties properties, ElectricUtilitySpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.ELECTRIC, SpellType.UTILITY);
 
         this.totalManaReduction = config.MANA_REDUCTION.get();
         this.speedEffectLevel = config.SPEED_LEVEL.get();

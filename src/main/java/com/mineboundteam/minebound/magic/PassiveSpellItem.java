@@ -8,11 +8,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
 import java.util.List;
 
 public abstract class PassiveSpellItem extends SpellItem {
-    public PassiveSpellItem(Properties properties, ArmorTier level) {
-        super(properties, level);
+    public PassiveSpellItem(Properties properties, ArmorTier level, MagicType magicType, SpellType spellType) {
+        super(properties, level, magicType, spellType);
     }
 
     // These functions could potentially be running every tick, so they should be as performant as possible.
@@ -47,7 +48,7 @@ public abstract class PassiveSpellItem extends SpellItem {
 
     @SuppressWarnings("unchecked")
     protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type,
-            Player player) {
+                                                                                          Player player) {
         List<ItemStack> spells = getEquippedSpellsOfType(type, player);
         ItemStack highestSpell = null;
         for (ItemStack spell : spells) {
