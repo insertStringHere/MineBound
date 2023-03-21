@@ -18,7 +18,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,7 +43,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public static void triggerSpell(LivingHurtEvent event) {
+    public static void triggerSpell(LivingDamageEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, player);
             if (spellStack != null) {
@@ -55,9 +55,16 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         
                 if (hitsRemaining > 0) {
                     player.getLevel().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
-                    event.setCanceled(true);
                     reduceMana(spell.manaCost, player);
-
+                    
+                    hitsRemaining-=event.getAmount();
+                    if(hitsRemaining < 0){
+                        event.setAmount(-hitsRemaining);
+                        hitsRemaining = 0;
+                    } else {
+                        event.setCanceled(true);
+                    }
+                    
                     tag.putFloat("hits_remaining", hitsRemaining - event.getAmount());
                     tag.putInt("cooldown", spell.recovCooldown);
                     spellStack.getTag().put("minebound.shield_utility", tag);
@@ -79,12 +86,9 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 if (cooldown > 0) {
                     spellTag.putInt("cooldown", cooldown - 1);
                 } else if (hitsRemaining < shieldMax) {
-                    spellTag.putFloat("hits_remaining", hitsRemaining+0.5f);
+                    spellTag.putFloat("hits_remaining", Math.min(hitsRemaining + 0.5f, shieldMax));
                     spellTag.putInt("cooldown", -1);
                 }
-                
-                if(hitsRemaining > shieldMax)
-                    spellTag.putFloat("hits_remaining", shieldMax);
 
                 spellStack.getOrCreateTag().put("minebound.shield_utility", spellTag);
             }
@@ -102,11 +106,10 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         // Add NBT data to item when it first enters the players inventory
         if (!pStack.hasTag() && !pLevel.isClientSide()) {
-            CompoundTag tag = pStack.getOrCreateTag();
             CompoundTag spellTag = new CompoundTag();
             spellTag.putFloat("hits_remaining", totalHits);
             spellTag.putInt("cooldown", -1);
-            tag.put("minebound.shield_utility", spellTag);
+            pStack.getOrCreateTag().put("minebound.shield_utility", spellTag);
         }
     }
 
@@ -117,15 +120,17 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                                        .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
                                        .append(":"));
         pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(totalHits + " damage charges").withStyle(ChatFormatting.AQUA))
-                                       .append(", each absorbing the damage from an attack"));
-        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenished after ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
+                                       .append(" to a player's total, each absorbing half a heart of damage."));
+        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                                        .append(" has been depleted for ")
-                                       .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("Costs ")
+                                       .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN))
+                                       .append(new TextComponent(" at a rate of ").withStyle(ChatFormatting.DARK_GREEN))
+                                       .append(new TextComponent("10 charges per second")).withStyle(ChatFormatting.DARK_GREEN));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" per attack"));
+                                       .append(" every time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {
