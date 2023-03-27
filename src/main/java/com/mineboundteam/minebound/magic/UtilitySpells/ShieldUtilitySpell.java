@@ -65,9 +65,9 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                         event.setCanceled(true);
                     }
                     
-                    tag.putFloat("hits_remaining", hitsRemaining - event.getAmount());
+                    tag.putFloat("hits_remaining", hitsRemaining);
                     tag.putInt("cooldown", spell.recovCooldown);
-                    spellStack.getTag().put("minebound.shield_utility", tag);
+                    spellStack.getOrCreateTag().put("minebound.shield_utility", tag);
                 }
             }
         }
@@ -117,20 +117,19 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                       .append(":"));
+                                        .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
+                                        .append(":"));
         pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
-                                       .append(" to a player's total, each absorbing half a heart of damage."));
+                                        .append(new TextComponent(totalHits + " charges").withStyle(ChatFormatting.AQUA))
+                                        .append(" to a player's total, each absorbing half a heart of damage."));
         pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
-                                       .append(" has been depleted for ")
-                                       .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN))
-                                       .append(new TextComponent(" at a rate of ").withStyle(ChatFormatting.DARK_GREEN))
-                                       .append(new TextComponent("10 charges per second")).withStyle(ChatFormatting.DARK_GREEN));
+                                        .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
+                                        .append(" has been depleted for ")
+                                        .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN))
+                                        .append(new TextComponent(" at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" every time damage is absorbed"));
+                                        .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+                                        .append(" every time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {

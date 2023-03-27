@@ -80,7 +80,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     public static void triggerSpell(LivingHurtEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide()
                 && (event.getSource() == DamageSource.FALL || event.getSource() == DamageSource.FLY_INTO_WALL)) {
-            TelekineticUtilitySpell spell = (TelekineticUtilitySpell) getHighestEquippedSpellOfType(TelekineticUtilitySpell.class, player).getItem();
+            TelekineticUtilitySpell spell = getHighestSpellItem(TelekineticUtilitySpell.class, player);
             if (spell != null) {
                 event.setCanceled(true);
                 reduceMana(spell.manaCost, player);

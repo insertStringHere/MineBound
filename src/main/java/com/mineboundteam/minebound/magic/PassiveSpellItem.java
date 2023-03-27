@@ -64,6 +64,10 @@ public abstract class PassiveSpellItem extends SpellItem {
         return highestSpell;
     }
 
+    protected static <T extends PassiveSpellItem> T getHighestSpellItem(Class<T> type, Player player) {
+        return getHighestSpellItem(getEquippedSpellItemsOfType(type, player));
+    }
+
     protected static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {
         T highestSpell = null;
         for (T spell : spells) {
