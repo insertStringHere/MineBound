@@ -125,8 +125,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
                                         .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                                         .append(" has been depleted for ")
-                                        .append(new TextComponent((recovCooldown / 20) + " seconds").withStyle(ChatFormatting.DARK_GREEN))
-                                        .append(new TextComponent(" at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
+                                        .append(new TextComponent((recovCooldown / 20) + " seconds at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                         .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                         .append(" every time damage is absorbed"));
