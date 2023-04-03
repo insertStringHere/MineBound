@@ -12,9 +12,12 @@ import com.mineboundteam.minebound.config.ManaConfig;
 import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
 import com.mineboundteam.minebound.magic.network.MagicSync;
+import com.mineboundteam.minebound.magic.network.MagicSync.ButtonHeldMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
@@ -46,6 +51,9 @@ import java.util.*;
 public class MagicEvents {
     protected static final EnumSet<EquipmentSlot> armorSlots = EnumSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST,
             EquipmentSlot.LEGS, EquipmentSlot.FEET);
+
+    @OnlyIn(Dist.CLIENT)
+    protected static int useCountPrimary, useCountSecondary;
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
@@ -71,6 +79,17 @@ public class MagicEvents {
                 }
             });
         }
+
+        if(event.side == LogicalSide.CLIENT){
+            if(ClientRegistry.PRIMARY_MAGIC.isDown()) {
+                UseSpellHelper.useSpellTick(event.player, PlayerSelectedSpellsProvider.PRIMARY_SPELL, useCountPrimary++);
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonHeldMsg(ButtonHeldMsg.MsgType.PRIMARY, useCountPrimary));
+            }
+            if (ClientRegistry.SECONDARY_MAGIC.isDown()) {
+                UseSpellHelper.useSpellTick(event.player, PlayerSelectedSpellsProvider.SECONDARY_SPELL, useCountSecondary++);
+                MagicSync.NET_CHANNEL.sendToServer(new ButtonHeldMsg(ButtonHeldMsg.MsgType.SECONDARY, useCountSecondary));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -80,6 +99,11 @@ public class MagicEvents {
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
 
+        if(ClientRegistry.PRIMARY_MAGIC.consumeClick())
+            useCountPrimary = 0;
+        if(ClientRegistry.SECONDARY_MAGIC.consumeClick())
+            useCountSecondary = 0;
+
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
@@ -88,10 +112,12 @@ public class MagicEvents {
     @SubscribeEvent
     public static void onButtonPress(InputEvent.MouseInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
-            if (ClientRegistry.PRIMARY_MAGIC.consumeClick())
+            if (ClientRegistry.PRIMARY_MAGIC.consumeClick()){
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
-            if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
+            }
+            if (ClientRegistry.SECONDARY_MAGIC.consumeClick()){
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+            }
         } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));

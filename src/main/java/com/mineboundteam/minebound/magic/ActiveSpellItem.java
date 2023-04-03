@@ -39,6 +39,12 @@ public abstract class ActiveSpellItem extends SpellItem {
 
     public abstract void use(ItemStack stack, Level level, Player player);
 
+    @Override
+    public void onUsingTick(ItemStack stack, LivingEntity player, int count){
+        if(player instanceof Player p)
+            use(stack, p.level, p);
+    }
+
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 
     protected static ItemStack getSelectedSpell(Player player,
