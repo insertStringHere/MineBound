@@ -1,0 +1,20 @@
+{
+    "name": "minebound:crashed_ship",
+    "fallback": "minebound:crashed_ship",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:single_pool_element",
+                "location": "minebound:crashed_ship",
+                "projection": "rigid",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "minebound:energized_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:energized_iron_boots"
+  }
+}

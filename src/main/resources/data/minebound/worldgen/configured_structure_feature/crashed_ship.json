@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:village",
+    "biomes": "#minecraft:is_mountain",
+    "adapt_noise": true,
+    "spawn_overrides": {},
+    "config": {
+        "start_pool": "minebound:crashed_ship",
+        "size": 1
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "replace":false,
+    "values":[
+        "minebound:myrial_console",
+        "minebound:myrial_glass",
+        "minebound:myrial_steel_block",
+        "minebound:myrial_locker",
+        "minebound:myrial_steel_plate",
+        "minebound:myrial_diamond_block"
+    ]
+}

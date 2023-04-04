@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "minebound:block/myrial_locker_side",
+    "front": "minebound:block/myrial_locker_front",
+    "side": "minebound:block/myrial_locker_side"
+  }
+}

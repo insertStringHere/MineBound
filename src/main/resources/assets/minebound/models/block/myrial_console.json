@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/orientable",
+    "textures": {
+        "top": "minebound:block/myrial_console_sides",
+        "front": "minebound:block/myrial_console_front",
+        "side": "minebound:block/myrial_console_sides"
+    }
+}

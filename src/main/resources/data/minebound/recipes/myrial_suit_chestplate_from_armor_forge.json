@@ -1,0 +1,26 @@
+{
+  "type": "minebound:armor_forge",
+  "armor": {
+    "item": "minebound:myrial_effigy_chestplate"
+  },
+  "ingredients": [
+    {
+      "item": "minebound:illuminant_steel_chestplate"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:respawn_anchor"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minebound:myri_manasac"
+    }
+  ],
+  "output": {
+    "item": "minebound:myrial_suit_chestplate"
+  }
+}
