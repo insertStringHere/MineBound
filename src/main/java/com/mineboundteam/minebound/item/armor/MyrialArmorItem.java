@@ -2,7 +2,6 @@ package com.mineboundteam.minebound.item.armor;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
-import com.mineboundteam.minebound.config.ManaConfig;
 import com.mineboundteam.minebound.magic.SpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
@@ -103,6 +101,16 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
         return true;
     }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
+        return false; 
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return false;
+     }
 
     @Override
     public void registerControllers(AnimationData data) {
