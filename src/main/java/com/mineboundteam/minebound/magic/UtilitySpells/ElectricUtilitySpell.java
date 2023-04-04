@@ -13,6 +13,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -20,6 +23,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ElectricUtilitySpell extends PassiveSpellItem {
@@ -44,6 +49,8 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         this.thorns = config.THORNS.get();
     }
 
+    protected static UUID autoStepID = new UUID(1837183113, 22255113);
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side.isServer() && event.phase == TickEvent.Phase.START) {
@@ -51,6 +58,13 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             List<ElectricUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(ElectricUtilitySpell.class, player);
             if (equippedSpells.size() > 0) {
                 ElectricUtilitySpell spell = getHighestSpellItem(equippedSpells);
+
+                if(spell.level.getValue() > ArmorTier.SUIT.getValue()){
+                    AttributeInstance autoStep = player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
+
+                    if (autoStep.getModifier(autoStepID) == null) 
+                        autoStep.addTransientModifier(new AttributeModifier(autoStepID, "AutoStep", 1, Operation.ADDITION));
+                }
 
                 int manaReduction = 0;
                 // Mob effect levels start at 0, so this starts at -1 to compensate for the off by 1
@@ -63,7 +77,6 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 // Java doesn't like non "final" variables being used in lambdas
                 int finalManaReduction = manaReduction;
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", -finalManaReduction));
-
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, speedLevel, false, false));
 
                 if (spell.thorns) {
@@ -88,6 +101,11 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                         }
                     }
                 }
+
+                AttributeInstance autoStep = player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
+
+                if (autoStep.getModifier(autoStepID) != null) 
+                    autoStep.removeModifier(autoStepID);
             }
         }
     }
