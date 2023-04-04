@@ -121,8 +121,12 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                                                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (speedEffectLevel - 1))).withStyle(ChatFormatting.WHITE)));
         if (thorns) {
             pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(ChatFormatting.GRAY)
-                                           .append(new TextComponent("Thorns ")
+                                        .append(new TextComponent("Thorns ")
                                                            .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (level.getValue() - 1))).withStyle(ChatFormatting.AQUA)));
+        }
+        if(level.getValue() > ArmorTier.SUIT.getValue()){
+            pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(ChatFormatting.GRAY)
+                                        .append(new TextComponent("one block.").withStyle(ChatFormatting.AQUA)));
         }
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("Speed").withStyle(ChatFormatting.WHITE))

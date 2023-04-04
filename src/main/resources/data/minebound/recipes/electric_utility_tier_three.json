@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minebound:energized_iron_boots"
+    },
+    "M": {
+      "item": "minebound:magic_electric_u2"
+    },
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_electric_u3"
+  }
+}
