@@ -13,10 +13,10 @@ import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
+import com.mineboundteam.minebound.magic.network.MagicAnimationSync;
+import com.mineboundteam.minebound.magic.network.MagicButtonSync;
 import com.mineboundteam.minebound.magic.network.MagicSync;
-import com.mineboundteam.minebound.magic.network.MagicSync.ButtonHeldMsg;
-import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
-import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
+import com.mineboundteam.minebound.magic.network.MagicButtonSync.ButtonMsg.MsgType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
@@ -89,11 +89,11 @@ public class MagicEvents {
         if(event.side == LogicalSide.CLIENT){
             if(ClientRegistry.PRIMARY_MAGIC.isDown()) {
                 UseSpellHelper.useSpellTick(event.player, PlayerSelectedSpellsProvider.PRIMARY_SPELL, useCountPrimary++);
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonHeldMsg(ButtonHeldMsg.MsgType.PRIMARY, useCountPrimary));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonHeldMsg(MagicButtonSync.ButtonHeldMsg.MsgType.PRIMARY, useCountPrimary));
             }
             if (ClientRegistry.SECONDARY_MAGIC.isDown()) {
                 UseSpellHelper.useSpellTick(event.player, PlayerSelectedSpellsProvider.SECONDARY_SPELL, useCountSecondary++);
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonHeldMsg(ButtonHeldMsg.MsgType.SECONDARY, useCountSecondary));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonHeldMsg(MagicButtonSync.ButtonHeldMsg.MsgType.SECONDARY, useCountSecondary));
             }
         }
     }
@@ -101,9 +101,9 @@ public class MagicEvents {
     @SubscribeEvent
     public static void onButtonPress(InputEvent event) {
         if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
+            MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
+            MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_MENU));
 
         if(ClientRegistry.PRIMARY_MAGIC.consumeClick())
             useCountPrimary = 0;
@@ -111,7 +111,7 @@ public class MagicEvents {
             useCountSecondary = 0;
 
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
-            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
+            MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
 
     // If the magic keybinds are bound to mouse buttons
@@ -119,16 +119,16 @@ public class MagicEvents {
     public static void onButtonPress(InputEvent.MouseInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
             if (ClientRegistry.PRIMARY_MAGIC.consumeClick()){
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_PRESSED));
             }
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick()){
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_PRESSED));
             }
         } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getButton() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_RELEASED));
         }
     }
 
@@ -137,14 +137,14 @@ public class MagicEvents {
     public static void onButtonPress(InputEvent.KeyInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
             if (ClientRegistry.PRIMARY_MAGIC.consumeClick())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_PRESSED));
         } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
-                MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_RELEASED));
+                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_RELEASED));
         }
     }
 
@@ -333,16 +333,16 @@ public class MagicEvents {
 
         if(!model.rightArmPose.isTwoHanded() && playerStates.containsKey(event.getPlayer().getId())){
             int arms = playerStates.get(event.getPlayer().getId());
-            if((arms & MagicSync.ArmUsersMsg.PRIMARY) != 0)
+            if((arms & MagicAnimationSync.ArmUsersMsg.PRIMARY) != 0)
                 model.rightArmPose = ArmPose.SPYGLASS;
-            if((arms & MagicSync.ArmUsersMsg.SECONDARY) != 0)
+            if((arms & MagicAnimationSync.ArmUsersMsg.SECONDARY) != 0)
                 model.leftArmPose = ArmPose.SPYGLASS;
         }
     }
 
     @SubscribeEvent
     public static void onGameTick(ServerTickEvent event){
-        MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicSync.ArmUsersMsg(playerStates));
+        MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicAnimationSync.ArmUsersMsg(playerStates));
     }
     
     @SubscribeEvent
