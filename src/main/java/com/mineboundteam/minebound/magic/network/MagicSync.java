@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.MagicEvents;
 import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,6 +22,8 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 public class MagicSync {
@@ -32,6 +35,7 @@ public class MagicSync {
         NET_CHANNEL.registerMessage(0, ButtonMsg.class, ButtonMsg::encode, ButtonMsg::decode,
                 MagicSync::handleButtons);
         NET_CHANNEL.registerMessage(1, ButtonHeldMsg.class, ButtonHeldMsg::encode, ButtonHeldMsg::decode, MagicSync::handleButtonHeld);
+        NET_CHANNEL.registerMessage(2, ArmUsersMsg.class, ArmUsersMsg::encode, ArmUsersMsg::decode, MagicSync::handleArmUsers);
     }
 
     public static void handleButtons(ButtonMsg msg, Supplier<NetworkEvent.Context> ctx) {
@@ -50,24 +54,48 @@ public class MagicSync {
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, true), TextComponent.EMPTY));
                     }
                     case PRIMARY_PRESSED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0) {
                             UseSpellHelper.useSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
+                            
+                            int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
+                            handStates |= ArmUsersMsg.PRIMARY;
+                            MagicEvents.playerStates.put(player.getId(), handStates);
+                        }
                     }
                     case PRIMARY_RELEASED -> {
                         if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
                             UseSpellHelper.releaseUsingSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
+                        
+                        int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
+                        handStates &= ~ArmUsersMsg.PRIMARY;
+                        if(handStates != 0)
+                            MagicEvents.playerStates.put(player.getId(), handStates);
+                        else
+                            MagicEvents.playerStates.remove(player.getId());
                     }
                     case SECONDARY_MENU -> {
                         if (canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, false), TextComponent.EMPTY));
                     }
                     case SECONDARY_PRESSED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1) {
                             UseSpellHelper.useSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
+
+                            int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
+                            handStates |= ArmUsersMsg.SECONDARY;
+                            MagicEvents.playerStates.put(player.getId(), handStates);
+                        }
                     }
                     case SECONDARY_RELEASED -> {
                         if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
                             UseSpellHelper.releaseUsingSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
+                        
+                        int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
+                        handStates &= ~ArmUsersMsg.SECONDARY;
+                        if(handStates != 0)
+                            MagicEvents.playerStates.put(player.getId(), handStates);
+                        else
+                            MagicEvents.playerStates.remove(player.getId());
                     }
                     case FIRE_UTILITY_TOGGLE -> {
                         player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggle -> {
@@ -89,7 +117,7 @@ public class MagicSync {
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
                 switch (msg.hand) {
                     case PRIMARY -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0) 
                             UseSpellHelper.useSpellTick(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL, msg.holdTicks);
                     }
                     case SECONDARY -> {
@@ -101,6 +129,11 @@ public class MagicSync {
                 }
             }
         });
+        ctx.get().setPacketHandled(true);
+    }
+
+    public static void handleArmUsers(ArmUsersMsg msg, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> MagicEvents.playerStates = msg.players);
         ctx.get().setPacketHandled(true);
     }
 
@@ -187,5 +220,35 @@ public class MagicSync {
             return new ButtonHeldMsg(MsgType.getFromVal(buf.readInt()), buf.readInt());
         }
 
+    }
+
+
+    public static class ArmUsersMsg {
+        public ConcurrentHashMap<Integer, Integer> players; 
+
+        public static final int PRIMARY = 1;
+        public static final int SECONDARY = 2;
+
+        public ArmUsersMsg(ConcurrentHashMap<Integer, Integer> pHashMap){
+            this.players = pHashMap;
+        }
+
+        public static void encode(ArmUsersMsg msg, FriendlyByteBuf buf) {
+            buf.writeInt(msg.players.keySet().size());
+            for(Integer key : msg.players.keySet()){
+                buf.writeInt(key);
+                buf.writeInt(msg.players.get(key));
+            }
+        }
+
+        public static ArmUsersMsg decode(FriendlyByteBuf buf) {
+            int size = buf.readInt();
+            HashMap<Integer, Integer> players = new HashMap<>(size);
+            for(int i = 0; i < size; i++){
+                players.put(buf.readInt(), buf.readInt());
+            }
+
+            return new ArmUsersMsg(new ConcurrentHashMap<Integer, Integer>(players));
+        }
     }
 }

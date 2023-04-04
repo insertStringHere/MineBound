@@ -73,10 +73,12 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                             if(data.getB() >= 1f && !level.isClientSide()){
                                 level.destroyBlock(blockpos, true);
                                 breakProgress.remove(player);
+                                reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
                     } else if (!level.isClientSide()){
                         level.destroyBlock(blockpos, true);
+                        reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }
             }

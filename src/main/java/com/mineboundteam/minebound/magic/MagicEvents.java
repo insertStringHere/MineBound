@@ -17,8 +17,10 @@ import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonHeldMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,9 +36,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderArmEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,6 +51,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -297,6 +303,64 @@ public class MagicEvents {
 
             for (String key : armorTag.getAllKeys())
                 event.getPlayer().setItemSlot(EquipmentSlot.byName(key), ItemStack.of(armorTag.getCompound(key)));
+        }
+    }
+
+    public static ConcurrentHashMap<Integer, Integer> playerStates = new ConcurrentHashMap<>(20);
+    @SubscribeEvent
+    public static void playerArmRenderer(RenderPlayerEvent event){
+        Player player = event.getPlayer();
+        PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
+        
+        for(EquipmentSlot slot : armorSlots){
+            if(player.getItemBySlot(slot).getItem() instanceof MyrialArmorItem)
+                switch(slot){
+                    case CHEST -> {
+                        model.jacket.visible = false;
+                        model.leftSleeve.visible = false;
+                        model.rightSleeve.visible = false;
+                    }
+                    case HEAD -> {
+                        model.hat.visible = false;
+                    }
+                    case LEGS -> {
+                        model.leftPants.visible = false;
+                        model.rightPants.visible = false; 
+                    }
+                    default ->{}
+                }
+        }
+
+        if(!model.rightArmPose.isTwoHanded() && playerStates.containsKey(event.getPlayer().getId())){
+            int arms = playerStates.get(event.getPlayer().getId());
+            if((arms & MagicSync.ArmUsersMsg.PRIMARY) != 0)
+                model.rightArmPose = ArmPose.SPYGLASS;
+            if((arms & MagicSync.ArmUsersMsg.SECONDARY) != 0)
+                model.leftArmPose = ArmPose.SPYGLASS;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGameTick(ServerTickEvent event){
+        MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicSync.ArmUsersMsg(playerStates));
+    }
+    
+    @SubscribeEvent
+    public static void firstPersonArmRender(RenderArmEvent event){
+        // TODO: figure out how to force left hand to render
+        switch(event.getArm()){
+            case RIGHT -> {
+                if(ClientRegistry.PRIMARY_MAGIC.isDown()){
+                    event.getPoseStack().translate(0, .3F, 0f);
+                    event.getPoseStack().pushPose();
+                }
+            }
+            case LEFT  -> {
+                if(ClientRegistry.SECONDARY_MAGIC.isDown()){
+                    event.getPoseStack().translate(0, .3F, 0f);
+                    event.getPoseStack().pushPose();
+                }
+            }
         }
     }
 }
