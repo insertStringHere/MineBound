@@ -3,7 +3,6 @@ package com.mineboundteam.minebound.magic.DefensiveSpells;
 import java.util.HashMap;
 import java.util.List;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
@@ -32,10 +31,8 @@ import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
     protected final EarthDefensiveSpellConfig config; 
