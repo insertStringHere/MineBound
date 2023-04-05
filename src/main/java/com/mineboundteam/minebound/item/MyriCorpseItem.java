@@ -47,7 +47,7 @@ public class MyriCorpseItem extends Item{
            AABB aabb = EntityRegistry.MYRI_CORPSE.get().getDimensions().makeBoundingBox(vec3.x(), vec3.y(), vec3.z());
            if (level.noCollision((Entity)null, aabb) && level.getEntities((Entity)null, aabb).isEmpty()) {
               if (level instanceof ServerLevel serverlevel) {
-                 MyriCorpse block = EntityRegistry.MYRI_CORPSE.get().create(serverlevel, itemstack.getTag(), (Component)null, context.getPlayer(), blockpos, MobSpawnType.NATURAL, true, true);
+                 MyriCorpse block = EntityRegistry.MYRI_CORPSE.get().create(serverlevel, itemstack.getOrCreateTag(), (Component)null, context.getPlayer(), blockpos, MobSpawnType.NATURAL, true, true);
                  if (block == null) {
                     return InteractionResult.FAIL;
                  }

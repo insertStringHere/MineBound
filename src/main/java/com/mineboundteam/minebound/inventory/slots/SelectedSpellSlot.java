@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.inventory.slots;
 
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.inventory.containers.InventorySpellContainer;
 
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +17,7 @@ public class SelectedSpellSlot extends Slot {
 
     @Override
     public boolean mayPickup(Player pPlayer){
-        return myContainer.source.equals(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS);
+        return myContainer.source.equals(ArmorNBTHelper.ACTIVE_SPELL);
     }
 
     @Override

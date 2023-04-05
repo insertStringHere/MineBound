@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.ArmorRecoveryProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
@@ -16,7 +15,7 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg;
 import com.mineboundteam.minebound.magic.network.MagicSync.ButtonMsg.MsgType;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,11 +40,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MagicEvents {
@@ -84,6 +79,9 @@ public class MagicEvents {
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_MENU));
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_MENU));
+
+        if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
     }
 
     // If the magic keybinds are bound to mouse buttons
@@ -94,7 +92,7 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getButton() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
@@ -110,7 +108,7 @@ public class MagicEvents {
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_PRESSED));
             if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.SECONDARY_PRESSED));
-        } else if (event.getAction() == GLFW.GLFW_RELEASE) {
+        } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
@@ -126,34 +124,34 @@ public class MagicEvents {
         };
 
         for (ItemStack item : player.getArmorSlots()) {
-            if (!item.isEmpty())
-                item.getCapability(ArmorRecoveryProvider.ARMOR_RECOVERY).ifPresent(recovery -> {
-                    MyrialArmorItem armorItem = (MyrialArmorItem) item.getItem();
-                    if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
-                        recovery.recovering = true;
-                    if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)
-                        recovery.recovering = false;
+            if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem){
+                boolean recovering = item.getOrCreateTag().getBoolean("recovery");
+                if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
+                    recovering = true;
+                if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)
+                    recovering = false;
 
-                    if (tier.max == null || tier.max.getValue() < armorItem.getTier().getValue())
-                        tier.max = armorItem.getTier();
+                if (tier.max == null || tier.max.getValue() < armorItem.getTier().getValue())
+                    tier.max = armorItem.getTier();
 
-                    int armorDamage = armorItem.getDamage(item);
-                    if (armorDamage > 0) {
-                        FoodData pFoodData = player.getFoodData();
-                        if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
-                            float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
-                            armorItem.setDamage(item, (int) (armorDamage - f / 6));
-                            pFoodData.addExhaustion(f / 16.0f);
-                        } else if (pFoodData.getFoodLevel() >= 16) {
-                            armorItem.setDamage(item, armorDamage - 1);
-                            pFoodData.addExhaustion(0.125f);
-                        }
-
-                        if (armorItem.getDamage(item) < 0)
-                            armorItem.setDamage(item, 0);
+                int armorDamage = armorItem.getDamage(item);
+                if (armorDamage > 0) {
+                    FoodData pFoodData = player.getFoodData();
+                    if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
+                        float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
+                        armorItem.setDamage(item, (int) (armorDamage - f / 6));
+                        pFoodData.addExhaustion(f / 16.0f);
+                    } else if (pFoodData.getFoodLevel() >= 16) {
+                        armorItem.setDamage(item, armorDamage - 1);
+                        pFoodData.addExhaustion(0.125f);
                     }
 
-                });
+                    if (armorItem.getDamage(item) < 0)
+                        armorItem.setDamage(item, 0);
+                }
+                
+                item.getOrCreateTag().putBoolean("recovering", recovering);
+            }
         }
 
         int healthReduction = tier.max == null ? 0 : (tier.max.getValue() + 1) * -2;
@@ -194,13 +192,7 @@ public class MagicEvents {
                     ArmorConfig config = ((MyrialArmorItem) armorItem).getConfig();
                     totalMana += config.MANAPOOL.get();
 
-                    var flag = new Object() {
-                        boolean canUse = false;
-                    };
-                    armorStack.getCapability(ArmorRecoveryProvider.ARMOR_RECOVERY)
-                            .ifPresent(recovery -> flag.canUse = !recovery.recovering);
-
-                    if (flag.canUse) {
+                    if (!armorStack.getOrCreateTag().getBoolean("recovery")) {
                         mArmors.add(player.getItemBySlot(slot));
                         manaBoost += config.MANAPOOL.get();
                         recBoost += config.RECOVERY.get();
@@ -248,14 +240,14 @@ public class MagicEvents {
         };
     }
 
-    private static HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();
+    private static final HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();
 
     @SubscribeEvent
-    public static void onPlayerKilled(LivingDeathEvent event){
-        if(event.getEntity() instanceof ServerPlayer player && ManaConfig.keepArmor.get()){
+    public static void onPlayerKilled(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && ManaConfig.keepArmor.get()) {
             CompoundTag armorTag = new CompoundTag();
-            for(ItemStack item : player.getArmorSlots()){
-                if(!item.isEmpty() && item.getItem() instanceof MyrialArmorItem){
+            for (ItemStack item : player.getArmorSlots()) {
+                if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem) {
                     CompoundTag armorItem = new CompoundTag();
                     item.save(armorItem);
                     armorTag.put(Player.getEquipmentSlotForItem(item).getName(), armorItem);
@@ -271,13 +263,13 @@ public class MagicEvents {
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
-        if(ManaConfig.keepArmor.get() && event.isWasDeath() && event.getOriginal() instanceof ServerPlayer original){
+        if (ManaConfig.keepArmor.get() && event.isWasDeath() && event.getOriginal() instanceof ServerPlayer original) {
             CompoundTag armorTag;
             synchronized (cacheData) {
-               armorTag = cacheData.remove(original);
+                armorTag = cacheData.remove(original);
             }
 
-            for(String key : armorTag.getAllKeys())
+            for (String key : armorTag.getAllKeys())
                 event.getPlayer().setItemSlot(EquipmentSlot.byName(key), ItemStack.of(armorTag.getCompound(key)));
         }
     }
