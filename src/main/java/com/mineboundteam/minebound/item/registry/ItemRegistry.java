@@ -9,7 +9,7 @@ import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
-import com.mineboundteam.minebound.magic.OffensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;

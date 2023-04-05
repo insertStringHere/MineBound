@@ -1,8 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-      "layer2": "minebound:magic/earth/item",
-      "layer1": "minebound:magic/spell_defensive",
-      "layer0": "minebound:magic/spell_item2"
-    }
-}

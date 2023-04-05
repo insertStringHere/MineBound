@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.magic;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
@@ -350,13 +351,15 @@ public class MagicEvents {
         // TODO: figure out how to force left hand to render
         switch(event.getArm()){
             case RIGHT -> {
-                if(ClientRegistry.PRIMARY_MAGIC.isDown()){
+                Optional<PrimarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve();
+                if(ClientRegistry.PRIMARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()){
                     event.getPoseStack().translate(0, .3F, 0f);
                     event.getPoseStack().pushPose();
                 }
             }
             case LEFT  -> {
-                if(ClientRegistry.SECONDARY_MAGIC.isDown()){
+                Optional<PrimarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve();
+                if(ClientRegistry.SECONDARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()){
                     event.getPoseStack().translate(0, .3F, 0f);
                     event.getPoseStack().pushPose();
                 }

@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.magic.OffensiveSpells;
+package com.mineboundteam.minebound.magic.DefensiveSpells;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +87,9 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
+        if(breakProgress.containsKey(player)) {
+            level.destroyBlockProgress(player.getId(), breakProgress.get(player).getA(), -1);
+        }
         breakProgress.remove(player);
     }
 
