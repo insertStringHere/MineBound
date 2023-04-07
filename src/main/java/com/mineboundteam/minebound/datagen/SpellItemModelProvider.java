@@ -20,49 +20,62 @@ public class SpellItemModelProvider extends ItemModelProvider {
          * [offensive spells]
          * [defensive spells]
          * [utility spells]
+         * If you modify this code, execute the gradle runData task
          */
 
         /* Fire */
 
         /* Telekinetic */
-        generateItemModel(ItemRegistry.TELEKINETIC_OFFENSIVE_1.get());
-        generateItemModel(ItemRegistry.TELEKINETIC_UTILITY_2.get());
-        generateItemModel(ItemRegistry.TELEKINETIC_UTILITY_3.get());
-        generateItemModel(ItemRegistry.TELEKINETIC_UTILITY_4.get());
+        generateModels(ItemRegistry.TELEKINETIC_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.TELEKINETIC_UTILITY_2.get());
+        generateModels(ItemRegistry.TELEKINETIC_UTILITY_3.get());
+        generateModels(ItemRegistry.TELEKINETIC_UTILITY_4.get());
 
         /* Shield */
-        generateItemModel(ItemRegistry.SHIELD_OFFENSIVE_1.get());
-        generateItemModel(ItemRegistry.SHIELD_OFFENSIVE_2.get());
-        generateItemModel(ItemRegistry.SHIELD_OFFENSIVE_3.get());
-        generateItemModel(ItemRegistry.SHIELD_UTILITY_2.get());
-        generateItemModel(ItemRegistry.SHIELD_UTILITY_3.get());
-        generateItemModel(ItemRegistry.SHIELD_UTILITY_4.get());
+        generateModels(ItemRegistry.SHIELD_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.SHIELD_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.SHIELD_OFFENSIVE_3.get());
+        generateModels(ItemRegistry.SHIELD_UTILITY_2.get());
+        generateModels(ItemRegistry.SHIELD_UTILITY_3.get());
+        generateModels(ItemRegistry.SHIELD_UTILITY_4.get());
 
         /* Earth */
 
         /* Ender */
 
         /* Electric */
-        generateItemModel(ItemRegistry.ELECTRIC_UTILITY_2.get());
-        generateItemModel(ItemRegistry.ELECTRIC_UTILITY_3.get());
-        generateItemModel(ItemRegistry.ELECTRIC_UTILITY_4.get());
+        generateModels(ItemRegistry.ELECTRIC_UTILITY_2.get());
+        generateModels(ItemRegistry.ELECTRIC_UTILITY_3.get());
+        generateModels(ItemRegistry.ELECTRIC_UTILITY_4.get());
 
         /* Light */
 
         /* Necrotic */
     }
 
-    private void generateItemModel(SpellItem item) {
-        withExistingParent(item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
-                .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/spell_item" + (item.level.getValue() + 1)))
-                .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/item"))
-                .texture("layer2", new ResourceLocation(MineBound.MOD_ID, "magic/spell_" + item.spellType.getName()));
+    private void generateModels(SpellItem item) {
+        generateSpellModel(item);
+        generateItemModel(item);
     }
 
-    // In preparation for Griffin's changes
+    private void generateItemModel(SpellItem item) {
+        try {
+            withExistingParent(item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
+                    .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/spell_item" + (item.level.getValue() + 1)))
+                    .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/item"))
+                    .texture("layer2", new ResourceLocation(MineBound.MOD_ID, "magic/spell_" + item.spellType.getName()));
+        } catch (IllegalArgumentException e) {
+            // This error will be thrown if a texture needed to generate the model json does not exist yet
+        }
+    }
+
     private void generateSpellModel(SpellItem item) {
-        withExistingParent(item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
-                .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/" + item.spellType.getName()))
-                .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/level" + (item.level.getValue() + 1)));
+        try {
+            withExistingParent("magic/" + item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
+                    .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/" + item.spellType.getName()))
+                    .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/level" + (item.level.getValue() + 1)));
+        } catch (IllegalArgumentException e) {
+            // This error will be thrown if a texture needed to generate the model json does not exist yet
+        }
     }
 }
