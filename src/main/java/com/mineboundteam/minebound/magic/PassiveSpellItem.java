@@ -2,6 +2,8 @@ package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -22,13 +24,14 @@ public abstract class PassiveSpellItem extends SpellItem {
     protected static <T extends PassiveSpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player) {
         NonNullList<ItemStack> spells = NonNullList.create();
         for (EquipmentSlot e : EquipmentSlot.values())
-            for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
-                if (tag instanceof CompoundTag cTag) {
-                    ItemStack item = ItemStack.of(cTag);
-                    if (type.isInstance(item.getItem()))
-                        spells.add(item);
+            if(e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem)
+                for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
+                    if (tag instanceof CompoundTag cTag) {
+                        ItemStack item = ItemStack.of(cTag);
+                        if (type.isInstance(item.getItem()))
+                            spells.add(item);
+                    }
                 }
-            }
         return spells;
     }
 
@@ -36,13 +39,14 @@ public abstract class PassiveSpellItem extends SpellItem {
     protected static <T extends PassiveSpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player) {
         NonNullList<T> spells = NonNullList.create();
         for (EquipmentSlot e : EquipmentSlot.values())
-            for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
-                if (tag instanceof CompoundTag cTag) {
-                    ItemStack item = ItemStack.of(cTag);
-                    if (type.isInstance(item.getItem()))
-                        spells.add((T) item.getItem());
+            if(e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem)
+                for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
+                    if (tag instanceof CompoundTag cTag) {
+                        ItemStack item = ItemStack.of(cTag);
+                        if (type.isInstance(item.getItem()))
+                            spells.add((T) item.getItem());
+                    }
                 }
-            }
         return spells;
     }
 
@@ -59,6 +63,10 @@ public abstract class PassiveSpellItem extends SpellItem {
             }
         }
         return highestSpell;
+    }
+
+    protected static <T extends PassiveSpellItem> T getHighestSpellItem(Class<T> type, Player player) {
+        return getHighestSpellItem(getEquippedSpellItemsOfType(type, player));
     }
 
     protected static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {

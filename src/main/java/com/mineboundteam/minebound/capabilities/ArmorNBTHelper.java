@@ -8,9 +8,9 @@ public class ArmorNBTHelper {
     public static final String PASSIVE_SPELL = "passiveSpells";
 
     public static ListTag getSpellTag(ItemStack armorItem, String tagKey) {
-        return armorItem.getOrCreateTagElement("spell").getList(tagKey, 10);
+        return armorItem.getOrCreateTagElement("minebound.spell").getList(tagKey, 10);
     }
     public static void saveSpellTag(ItemStack armorItem, String tagKey, ListTag tag){
-        armorItem.getOrCreateTagElement("spell").put(tagKey, tag);
+        armorItem.getOrCreateTagElement("minebound.spell").put(tagKey, tag);
     }
 }
