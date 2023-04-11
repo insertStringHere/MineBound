@@ -28,3 +28,9 @@ Many of these mods utilize spell books or require active usage of one spell at a
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.minebound]]
+    modId="geckolib3"
+    mandatory=true
+    versionRange="[3.0.57,)"
+    ordering="NONE"
+    side="BOTH"
