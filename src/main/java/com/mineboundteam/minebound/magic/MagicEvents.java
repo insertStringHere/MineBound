@@ -82,6 +82,9 @@ public class MagicEvents {
 
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
+        if (ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE.consumeClick())
+            MagicSync.NET_CHANNEL.sendToServer(new ButtonMsg(MsgType.EARTH_UTILITY_TOGGLE));
+
     }
 
     // If the magic keybinds are bound to mouse buttons

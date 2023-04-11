@@ -75,6 +75,11 @@ public class MagicSync {
                             toggle.fire = !toggle.fire;
                         });
                     }
+                    case EARTH_UTILITY_TOGGLE -> {
+                        player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggle -> {
+                            toggle.earth = !toggle.earth;
+                        });
+                    }
                     default -> {
                     }
                 }
@@ -115,7 +120,9 @@ public class MagicSync {
             SECONDARY_RELEASED(3),
             PRIMARY_MENU(4),
             SECONDARY_MENU(5),
-            FIRE_UTILITY_TOGGLE(6);
+            FIRE_UTILITY_TOGGLE(6),
+            EARTH_UTILITY_TOGGLE(7);
+
             protected int msgVal;
 
             private MsgType(int val) {
