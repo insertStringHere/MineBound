@@ -53,17 +53,21 @@ public class PlayerUtilityToggleProvider implements ICapabilityProvider, INBTSer
     }
     public static class UtilityToggle {
         public boolean fire = false;
+        public boolean earth = false;
 
         public void copyFrom(UtilityToggle source){
             this.fire = source.fire;
+            this.earth = source.earth;
         }
 
         public void saveNBTData(CompoundTag nbt){
             nbt.putBoolean("fireUtilityToggle", this.fire);
+            nbt.putBoolean("earthUtilityToggle", this.earth);
         }
 
         public void loadNBTData(CompoundTag nbt){
             fire = nbt.getBoolean("fireUtilityToggle");
+            earth = nbt.getBoolean("earthUtilityToggle");
         }
 
     }

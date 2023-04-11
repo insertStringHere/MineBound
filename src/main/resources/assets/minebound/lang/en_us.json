@@ -132,6 +132,7 @@
   "key.minebound.primary_magic_select": "Select Left Hand Magic",
   "key.minebound.secondary_magic_select": "Select Right Hand Magic",
   "key.minebound.fire_utility_spell_toggle": "Toggle Fire Utility Magic",
+  "key.minebound.earth_utility_spell_toggle": "Toggle Earth Utility Magic",
 
   "tooltip.minebound.level.0": "I",
   "tooltip.minebound.level.1": "II",
