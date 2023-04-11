@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "M": {
+      "item": "minebound:magic_earth_d1"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_d2"
+  }
+}
