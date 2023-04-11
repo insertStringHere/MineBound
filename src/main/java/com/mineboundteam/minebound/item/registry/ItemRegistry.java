@@ -12,6 +12,7 @@ import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.SpellItem;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
@@ -54,7 +55,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> MYRIAL_DIAMOND_PICKAXE = ITEMS.register("myrial_diamond_pickaxe", () -> new PickaxeItem(ToolTier.MYRIAL_DIAMOND, 1, -2.8F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_HOE = ITEMS.register("myrial_diamond_hoe", () -> new HoeItem(ToolTier.MYRIAL_DIAMOND, -3, 0, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> MYRIAL_DIAMOND_AXE = ITEMS.register("myrial_diamond_axe", () -> new AxeItem(ToolTier.MYRIAL_DIAMOND, 4.5F, -2.5F, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
-   
+
     public static final RegistryObject<Item> ENERGIZED_IRON_HELMET = ITEMS.register("energized_iron_helmet", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.HEAD, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_CHESTPLATE = ITEMS.register("energized_iron_chestplate", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.CHEST, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
     public static final RegistryObject<Item> ENERGIZED_IRON_LEGGINGS = ITEMS.register("energized_iron_leggings", () -> new ArmorItem(ArmorMaterials.ENERGIZED_IRON, EquipmentSlot.LEGS, new Item.Properties().tab(MineBound.MINEBOUND_TAB)));
@@ -106,20 +107,20 @@ public class ItemRegistry {
     /* Fire */
 
     /* Telekinetic */
-    public static final RegistryObject<Item> TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
-    public static final RegistryObject<Item> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
-    public static final RegistryObject<Item> TELEKINETIC_UTILITY_3 = ITEMS.register("magic_telekinetic_u3", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_3));
-    public static final RegistryObject<Item> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
+    public static final RegistryObject<SpellItem> TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_2 = ITEMS.register("magic_telekinetic_u2", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_2));
+    public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_3 = ITEMS.register("magic_telekinetic_u3", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_3));
+    public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
 
     public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
 
     /* Shield */
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
-    public static final RegistryObject<Item> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
-    public static final RegistryObject<Item> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_2));
-    public static final RegistryObject<Item> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_3));
-    public static final RegistryObject<Item> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_4));
+    public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
+    public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_2));
+    public static final RegistryObject<SpellItem> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_3));
+    public static final RegistryObject<SpellItem> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
 
@@ -131,9 +132,9 @@ public class ItemRegistry {
     /* Ender */
 
     /* Electric */
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_2));
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_3 = ITEMS.register("magic_electric_u3", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_3));
-    public static final RegistryObject<Item> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_4));
+    public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_2));
+    public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_3 = ITEMS.register("magic_electric_u3", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_3));
+    public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
 
     /* Light */
