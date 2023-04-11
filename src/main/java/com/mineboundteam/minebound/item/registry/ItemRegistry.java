@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
+import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
@@ -121,6 +122,11 @@ public class ItemRegistry {
     public static final RegistryObject<Item> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
+
+    public static final RegistryObject<Item> EARTH_DEFENSIVE_1 = ITEMS.register("magic_earth_d1", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_1));
+    public static final RegistryObject<Item> EARTH_DEFENSIVE_2 = ITEMS.register("magic_earth_d2", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_2));
+    public static final RegistryObject<Item> EARTH_DEFENSIVE_3 = ITEMS.register("magic_earth_d3", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_3));
+    public static final RegistryObject<Item> EARTH_DEFENSIVE_4 = ITEMS.register("magic_earth_d4", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_4));
 
     /* Ender */
 

@@ -87,14 +87,19 @@
   "item.minebound.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic_shield_u4": "Shield Utility IV",
-
+  
   "item.minebound.magic.magic_shield_o1": "Shield Offensive I",
   "item.minebound.magic.magic_shield_o2": "Shield Offensive II",
   "item.minebound.magic.magic_shield_o3": "Shield Offensive III",
   "item.minebound.magic.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic.magic_shield_u4": "Shield Utility IV",
-
+  
+  "item.minebound.magic_earth_d1": "Earth Defensive I",
+  "item.minebound.magic_earth_d2": "Earth Defensive II",
+  "item.minebound.magic_earth_d3": "Earth Defensive II",
+  "item.minebound.magic_earth_d4": "Earth Defensive IV",
+  
   "item.minebound.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic_electric_u4": "Electric Utility IV",

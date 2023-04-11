@@ -1,6 +1,5 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
@@ -9,7 +8,6 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
