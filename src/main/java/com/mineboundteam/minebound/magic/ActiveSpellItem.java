@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ActiveSpellItem extends SpellItem {
 
-    public ActiveSpellItem(Properties properties, ArmorTier level) {
-        super(properties, level);
+    public ActiveSpellItem(Properties properties, ArmorTier level, MagicType magicType, SpellType spellType) {
+        super(properties, level, magicType, spellType);
     }
 
     @Override
@@ -39,16 +39,22 @@ public abstract class ActiveSpellItem extends SpellItem {
 
     public abstract void use(ItemStack stack, Level level, Player player);
 
+    @Override
+    public void onUsingTick(ItemStack stack, LivingEntity player, int count){
+        if(player instanceof Player p)
+            use(stack, p.level, p);
+    }
+
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 
     protected static ItemStack getSelectedSpell(Player player,
-            Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
+                                                Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
         AtomicReference<ItemStack> selectedSpell = new AtomicReference<>(new ItemStack(Items.AIR));
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
                 selectedSpell.set(ItemStack.of(ArmorNBTHelper
-                        .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
-                        .getCompound(selected.index)));
+                                                       .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
+                                                       .getCompound(selected.index)));
             }
         });
         return selectedSpell.get();

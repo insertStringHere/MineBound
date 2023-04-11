@@ -45,12 +45,15 @@ public class ClientRegistry {
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_C, MINEBOUND_CATEGORY);
     public static final KeyMapping FIRE_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("fire_utility_spell_toggle"),
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
+    public static final KeyMapping EARTH_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("earth_utility_spell_toggle"),
+            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
     public static void registerKeys() {
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(PRIMARY_MAGIC);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(PRIMARY_MAGIC_SELECT);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC_SELECT);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(FIRE_UTILITY_SPELL_TOGGLE);
+        net.minecraftforge.client.ClientRegistry.registerKeyBinding(EARTH_UTILITY_SPELL_TOGGLE);
     }
 
     public static void registerRenderers(){

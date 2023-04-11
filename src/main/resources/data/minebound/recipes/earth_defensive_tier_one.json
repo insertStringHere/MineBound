@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SMS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stone_pickaxe"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_d1"
+  }
+}
