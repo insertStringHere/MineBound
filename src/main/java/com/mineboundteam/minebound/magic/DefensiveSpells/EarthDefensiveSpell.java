@@ -7,6 +7,8 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 
+import com.mineboundteam.minebound.magic.MagicType;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -38,7 +40,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     protected final EarthDefensiveSpellConfig config; 
 
     public EarthDefensiveSpell(Properties properties, EarthDefensiveSpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.EARTH, SpellType.DEFENSIVE);
         this.config = config;        
     }
 

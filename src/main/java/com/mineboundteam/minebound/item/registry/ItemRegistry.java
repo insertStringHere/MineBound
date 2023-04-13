@@ -126,10 +126,10 @@ public class ItemRegistry {
 
     /* Earth */
 
-    public static final RegistryObject<Item> EARTH_DEFENSIVE_1 = ITEMS.register("magic_earth_d1", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_1));
-    public static final RegistryObject<Item> EARTH_DEFENSIVE_2 = ITEMS.register("magic_earth_d2", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_2));
-    public static final RegistryObject<Item> EARTH_DEFENSIVE_3 = ITEMS.register("magic_earth_d3", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_3));
-    public static final RegistryObject<Item> EARTH_DEFENSIVE_4 = ITEMS.register("magic_earth_d4", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_4));
+    public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_1 = ITEMS.register("magic_earth_d1", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_2 = ITEMS.register("magic_earth_d2", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_2));
+    public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_3 = ITEMS.register("magic_earth_d3", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_3));
+    public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_4 = ITEMS.register("magic_earth_d4", () -> new EarthDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.EARTH_DEFENSIVE_4));
 
     /* Ender */
 
