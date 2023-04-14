@@ -90,6 +90,16 @@ public class MagicButtonSync {
                             toggle.earth = !toggle.earth;
                         });
                     }
+                    case LIGHT_UTILITY_TOGGLE -> {
+                        player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggle -> {
+                            toggle.light = !toggle.light;
+                        });
+                    }
+                    case ENDER_UTILITY_TOGGLE -> {
+                        player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggle -> {
+                            toggle.ender = !toggle.ender;
+                        });
+                    }
                     default -> {
                     }
                 }
@@ -131,7 +141,9 @@ public class MagicButtonSync {
             PRIMARY_MENU(4),
             SECONDARY_MENU(5),
             FIRE_UTILITY_TOGGLE(6),
-            EARTH_UTILITY_TOGGLE(7);
+            EARTH_UTILITY_TOGGLE(7),
+            LIGHT_UTILITY_TOGGLE(8),
+            ENDER_UTILITY_TOGGLE(9);
             protected int msgVal;
     
             private MsgType(int val) {
