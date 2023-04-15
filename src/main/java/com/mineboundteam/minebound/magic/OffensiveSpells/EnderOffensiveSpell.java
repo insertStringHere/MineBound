@@ -70,7 +70,7 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
                                        .append(" in the direction they are looking"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" per teleport "));
+                                       .append(" per teleport"));
     }
 
     public static class EnderOffensiveSpellConfig implements IConfig {
