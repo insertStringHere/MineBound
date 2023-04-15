@@ -5,6 +5,7 @@ import java.io.File;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
@@ -59,6 +60,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_4 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.NETHERITE, 10.0f, ArmorTier.SINGULARITY);
 
     /* Ender */
+    public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100,15,ArmorTier.SYNERGY);
 
     /* Electric */
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
@@ -108,6 +110,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Ender");
+        ENDER_OFFENSIVE_3.build(builder);
         builder.pop();
 
         builder.push("Electric");

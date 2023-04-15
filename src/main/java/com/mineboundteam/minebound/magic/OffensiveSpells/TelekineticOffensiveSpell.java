@@ -5,7 +5,6 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
@@ -42,6 +41,10 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
                 player.setItemSlot(EquipmentSlot.MAINHAND, ItemRegistry.MYRIAL_MACHETE.get().getDefaultInstance());
             }
         }
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
     }
 
     @Override
