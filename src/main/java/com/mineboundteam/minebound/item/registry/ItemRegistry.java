@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
@@ -138,6 +139,7 @@ public class ItemRegistry {
 
 
     /* Light */
+    public static final RegistryObject<SpellItem> LIGHT_DEFENSIVE_1 = ITEMS.register("magic_light_d1",() -> new LightDefensiveSpell(new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
 
     /* Necrotic */
 
@@ -157,4 +159,6 @@ public class ItemRegistry {
     public static final RegistryObject<Item> GUI_ELECTRIC_UTILITY_2 = ITEMS.register("magic/magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties().stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_2));
     public static final RegistryObject<Item> GUI_ELECTRIC_UTILITY_3 = ITEMS.register("magic/magic_electric_u3", () -> new ElectricUtilitySpell(new Item.Properties().stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_3));
     public static final RegistryObject<Item> GUI_ELECTRIC_UTILITY_4 = ITEMS.register("magic/magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties().stacksTo(1), MagicConfigRegistry.ELECTRIC_UTILITY_4));
+
+    public static final RegistryObject<Item> GUI_LIGHT_DEFENSIVE_1 = ITEMS.register("magic/magic_light_d1",() -> new LightDefensiveSpell(new Item.Properties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
 }

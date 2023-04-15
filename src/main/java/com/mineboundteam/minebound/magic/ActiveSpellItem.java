@@ -33,17 +33,22 @@ public abstract class ActiveSpellItem extends SpellItem {
     }
 
     @Override
+    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+        if (entity instanceof Player player) {
+            onUsingTick(stack, player.level, player);
+        }
+    }
+
+    @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        releaseUsing(pStack, pLevel, (Player) pLivingEntity);
+        if (pLivingEntity instanceof Player player) {
+            releaseUsing(pStack, pLevel, player);
+        }
     }
 
     public abstract void use(ItemStack stack, Level level, Player player);
 
-    @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count){
-        if(player instanceof Player p)
-            use(stack, p.level, p);
-    }
+    public abstract void onUsingTick(ItemStack stack, Level level, Player player);
 
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 

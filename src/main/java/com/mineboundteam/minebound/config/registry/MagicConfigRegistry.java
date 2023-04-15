@@ -5,6 +5,7 @@ import java.io.File;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
@@ -66,6 +67,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_4 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 3, true, ArmorTier.SINGULARITY);
 
     /* Light */
+    public static final LightDefensiveSpell.LightDefensiveSpellConfig LIGHT_DEFENSIVE_1 = new LightDefensiveSpell.LightDefensiveSpellConfig(25, ArmorTier.EFFIGY);
 
     /* Necrotic */
 
@@ -117,6 +119,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Light");
+        LIGHT_DEFENSIVE_1.build(builder);
         builder.pop();
 
         builder.push("Necrotic");
