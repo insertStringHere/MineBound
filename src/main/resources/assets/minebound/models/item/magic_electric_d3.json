@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-      "layer0": "minebound:item/magic_electric_d3"
-    }
-  }

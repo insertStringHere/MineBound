@@ -1,10 +1,12 @@
 package com.mineboundteam.minebound.inventory.containers;
 
 import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class InventorySpellContainer implements Container {
     public final Capability<? extends SelectedSpell> cap;
@@ -92,7 +95,7 @@ public class InventorySpellContainer implements Container {
 
     @Override
     public ItemStack getItem(int pSlot) {
-        return spells.get(pSlot).getB();
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(MineBound.MOD_ID,  "magic/" + ForgeRegistries.ITEMS.getKey(spells.get(pSlot).getB().getItem()).getPath())).getDefaultInstance();
     }
 
     @Override
