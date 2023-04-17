@@ -37,17 +37,21 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
-    protected final EarthDefensiveSpellConfig config; 
+    protected final EarthDefensiveSpellConfig config;
 
     public EarthDefensiveSpell(Properties properties, EarthDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.EARTH, SpellType.DEFENSIVE);
-        this.config = config;        
+        this.config = config;
     }
 
     protected final HashMap<Player, Tuple<BlockPos, Float>> breakProgress = new HashMap<Player, Tuple<BlockPos, Float>>(20);
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {      
+    public void use(ItemStack stack, Level level, Player player) {
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
         var hitResult = player.pick((float) player.getAttackRange() + 1.5f, 1F, false);
 
         if (hitResult != null && hitResult.getType() == Type.BLOCK) {
@@ -98,11 +102,11 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
             return 0.0F;
         }
 
-        float f = config.SPEED_MODIFIER.get().floatValue(); 
+        float f = config.SPEED_MODIFIER.get().floatValue();
         if (MobEffectUtil.hasDigSpeed(player)) {
             f *= 1.0F + (float)(MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
             }
-    
+
             if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
             float f1;
             switch(player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
@@ -119,7 +123,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                 default:
                 f1 = 8.1E-4F;
             }
-    
+
             f *= f1;
         }
 
@@ -145,10 +149,10 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
         public final ArmorTier LEVEL;
         public IntValue MANA_COST_ON_CAST;
-        public EnumValue<Tiers> MINING_LEVEL; 
+        public EnumValue<Tiers> MINING_LEVEL;
         public DoubleValue SPEED_MODIFIER;
         private final int manaCostOnCast;
-        private final Tiers miningLevel; 
+        private final Tiers miningLevel;
         private final float speedModifier;
 
         public EarthDefensiveSpellConfig(int manaCostOnCast, Tiers miningLevel, float miningSpeed, ArmorTier level) {
