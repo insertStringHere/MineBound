@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
@@ -139,6 +140,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(spellItemProperties(), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
     /* Light */
+    public static final RegistryObject<SpellItem> LIGHT_DEFENSIVE_1 = ITEMS.register("magic_light_d1",() -> new LightDefensiveSpell(spellItemProperties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
 
     /* Necrotic */
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_2 = ITEMS.register("magic_necrotic_o2", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
@@ -148,7 +150,6 @@ public class ItemRegistry {
 
 
     /* Dummy Spells */
-
     /* Fire */
 
     /* Telekinetic */
@@ -180,6 +181,8 @@ public class ItemRegistry {
     public static final RegistryObject<Item> GUI_ELECTRIC_UTILITY_4 = ITEMS.register("magic/magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties(), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
     /* Light */
+    public static final RegistryObject<Item> GUI_LIGHT_DEFENSIVE_1 = ITEMS.register("magic/magic_light_d1",() -> new LightDefensiveSpell(new Item.Properties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
+
 
     /* Necrotic */
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_2 = ITEMS.register("magic/magic_necrotic_o2", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
@@ -187,6 +190,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_4 = ITEMS.register("magic/magic_necrotic_o4", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_4));
 
     
+
 
     private static Item.Properties spellItemProperties() {
         return new Item.Properties().tab(MineBound.SPELLS_TAB).stacksTo(1);

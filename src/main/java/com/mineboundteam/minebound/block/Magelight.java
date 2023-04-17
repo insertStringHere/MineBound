@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.block;
 
+import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -10,13 +11,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class Magelight extends Block {
-    public Magelight(Properties pProperties) {
+
+    private final boolean shouldDestroy;
+    private final int duration;
+
+    public Magelight(Properties pProperties, LightDefensiveSpell.LightDefensiveSpellConfig config) {
         super(pProperties);
+
+        this.shouldDestroy = config.DESTROY_MAGELIGHT.get();
+        this.duration = config.MAGELIGHT_DURATION.get() * 20;
     }
 
     @Override
     public void onPlace(BlockState newBlockState, Level level, @NotNull BlockPos blockPos, @NotNull BlockState oldBlockState, boolean isMoving) {
-        level.scheduleTick(blockPos, newBlockState.getBlock(), 60);
+        if (shouldDestroy) {
+            level.scheduleTick(blockPos, newBlockState.getBlock(), duration);
+        }
     }
 
     @Override

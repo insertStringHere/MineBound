@@ -54,6 +54,7 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.ELECTRIC_UTILITY_4.get());
 
         /* Light */
+        generateModels(ItemRegistry.LIGHT_DEFENSIVE_1.get());
 
         /* Necrotic */
         generateModels(ItemRegistry.NECROTIC_OFFENSIVE_2.get());
