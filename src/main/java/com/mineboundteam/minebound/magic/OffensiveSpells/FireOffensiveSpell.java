@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.particle.registry.ParticleRegistry;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -59,10 +60,12 @@ public class FireOffensiveSpell extends ActiveSpellItem {
                         z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
                 );
 
-//                    level.sendParticles(particles.get(spell.level).get(),
-//                            player.getX() + x,
-//                            player.getY() + y + (player.isCrouching() ? 0.9d : 1.25d) + y,
-//                            player.getZ() + z,
+                // TODO: look at ClientboundLevelParticlesPacket in order to make custom packet
+
+//                    ServerLevel.sendParticles(particles.get(this.level).get(),
+//                            player.getX() + x - (z * Math.sin(i) * (rand.nextDouble(0.075))),
+//                            player.getEyeY() - .25d + y + (Math.cos(i) * (rand.nextDouble(0.075))),
+//                            player.getZ() + z + (x * Math.sin(i) * (rand.nextDouble(0.075))),
 //                            1,
 //                            x / 10,
 //                            y / 10,
