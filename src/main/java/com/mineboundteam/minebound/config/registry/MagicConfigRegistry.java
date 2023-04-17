@@ -1,7 +1,5 @@
 package com.mineboundteam.minebound.config.registry;
 
-import java.io.File;
-
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
@@ -11,19 +9,22 @@ import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpe
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
-
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig{
+import java.io.File;
+
+public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig {
     private static ServerConfigRegistry registry;
-    public MagicConfigRegistry(){
+
+    public MagicConfigRegistry() {
         this.configName = "MineBound" + File.separator + "Spells.toml";
         this.addConfig(this);
     }
-    public static ServerConfigRegistry get(){
-        if(registry == null){
+
+    public static ServerConfigRegistry get() {
+        if (registry == null) {
             registry = new MagicConfigRegistry();
         }
         return registry;
@@ -53,7 +54,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_4 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(10, 40, 100, ArmorTier.SINGULARITY);
 
     /* Earth */
-    
+
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_1 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.STONE, 4.0F, ArmorTier.EFFIGY);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_2 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.IRON, 6.0F, ArmorTier.SUIT);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_3 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.DIAMOND, 9.0F, ArmorTier.SYNERGY);
@@ -67,7 +68,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_4 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 3, true, ArmorTier.SINGULARITY);
 
     /* Light */
-    public static final LightDefensiveSpell.LightDefensiveSpellConfig LIGHT_DEFENSIVE_1 = new LightDefensiveSpell.LightDefensiveSpellConfig(25, ArmorTier.EFFIGY);
+    public static final LightDefensiveSpell.LightDefensiveSpellConfig LIGHT_DEFENSIVE_1 = new LightDefensiveSpell.LightDefensiveSpellConfig(25, true, 600, ArmorTier.EFFIGY);
 
     /* Necrotic */
 

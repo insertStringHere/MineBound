@@ -63,21 +63,27 @@ public class LightDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
-                                       .append(" where the player is looking"));
+                .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
+                .append(" where the player is looking"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" to place"));
+                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+                .append(" to place"));
     }
 
     public static class LightDefensiveSpellConfig implements IConfig {
 
         public ForgeConfigSpec.IntValue MANA_COST;
+        public ForgeConfigSpec.BooleanValue DESTROY_MAGELIGHT;
+        public ForgeConfigSpec.IntValue MAGELIGHT_DURATION;
         public final ArmorTier LEVEL;
         private final int manaCost;
+        private final boolean timedDeletion;
+        private final int magelightDuration;
 
-        public LightDefensiveSpellConfig(int manaCost, ArmorTier level) {
+        public LightDefensiveSpellConfig(int manaCost, boolean timedDeletion, int magelightDuration, ArmorTier level) {
             this.manaCost = manaCost;
+            this.timedDeletion = timedDeletion;
+            this.magelightDuration = magelightDuration;
             this.LEVEL = level;
         }
 
@@ -86,6 +92,8 @@ public class LightDefensiveSpell extends ActiveSpellItem {
             builder.push("Defensive");
             builder.push(LEVEL.toString());
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
+            DESTROY_MAGELIGHT = builder.comment("Should the placed magelight be deleted after magelight_duration").define("destroy_magelight", timedDeletion);
+            MAGELIGHT_DURATION = builder.comment("If destroy_magelight is true, after how long in seconds the magelight will be destroyed").defineInRange("magelight_duration", magelightDuration, 0, 10000);
             builder.pop(2);
         }
 
