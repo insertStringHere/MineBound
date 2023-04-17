@@ -19,10 +19,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class FireOffensiveSpell extends ActiveSpellItem {
 
     private final int manaCost;
+    private final Random rand = new Random();
     private static final HashMap<ArmorTier, RegistryObject<SimpleParticleType>> particles = new HashMap<>() {{
         put(ArmorTier.EFFIGY, ParticleRegistry.FIRE_OFFENSIVE_1);
         put(ArmorTier.SUIT, ParticleRegistry.FIRE_OFFENSIVE_2);
@@ -49,9 +51,9 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         for (int i = 0; i < 360; i++) {
             if (i % 10 == 0) {
                 level.addParticle(particles.get(this.level).get(),
-                        player.getX() + x - (z * Math.sin(i) * (Math.random() * 0.075d)),
-                        player.getY() + (player.isCrouching() ? 0.9d : 1.25d) + y + (Math.cos(i) * (Math.random() * 0.075d)),
-                        player.getZ() + z + (x * Math.sin(i) * (Math.random() * 0.075d)),
+                        player.getX() + x - (z * Math.sin(i) * (rand.nextDouble(0.075))),
+                        player.getEyeY() - .25d + y + (Math.cos(i) * (rand.nextDouble(0.075))),
+                        player.getZ() + z + (x * Math.sin(i) * (rand.nextDouble(0.075))),
                         x * 1000d - (Math.random() * (z * Math.sin(i) * 100d)),
                         y * 1000d + (Math.random() * (Math.cos(i) * 100d)),
                         z * 1000d + (Math.random() * (x * Math.sin(i) * 100d))
