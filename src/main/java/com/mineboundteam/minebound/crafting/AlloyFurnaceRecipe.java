@@ -29,8 +29,7 @@ public class AlloyFurnaceRecipe extends AbstractCookingRecipe {
         
         NonNullList<ItemStack> items = NonNullList.create();
         for(int i : slotIds)
-            if(!pInv.getItem(i).isEmpty())
-                items.add(pInv.getItem(i));
+            items.add(pInv.getItem(i));
         
         return net.minecraftforge.common.util.RecipeMatcher.findMatches(items, ingredients) != null;
     }
