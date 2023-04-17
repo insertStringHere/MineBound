@@ -1,4 +1,4 @@
-package com.mineboundteam.minebound.registry;
+package com.mineboundteam.minebound.particle.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import net.minecraft.core.particles.ParticleType;

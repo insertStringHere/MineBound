@@ -1,12 +1,8 @@
 package com.mineboundteam.minebound.magic.DefensiveSpells;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
@@ -27,13 +23,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
@@ -44,42 +43,40 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
         this.config = config;
     }
 
-    protected final HashMap<Player, Tuple<BlockPos, Float>> breakProgress = new HashMap<Player, Tuple<BlockPos, Float>>(20);
+    protected final HashMap<Player, Tuple<BlockPos, Float>> breakProgress = new HashMap<>(20);
 
     @Override
     public void use(ItemStack stack, Level level, Player player) {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
-        var hitResult = player.pick((float) player.getAttackRange() + 1.5f, 1F, false);
-
-        if (hitResult != null && hitResult.getType() == Type.BLOCK) {
-            BlockHitResult blockhitresult = (BlockHitResult) hitResult;
-            BlockPos blockpos = blockhitresult.getBlockPos();
+    public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
+        BlockHitResult hitResult = (BlockHitResult) player.pick((float) player.getAttackRange() + 1.5f, 1F, false);
+        if (hitResult.getType() == Type.BLOCK) {
+            BlockPos blockpos = hitResult.getBlockPos();
             if (!level.isEmptyBlock(blockpos)) {
                 BlockState block = level.getBlockState(blockpos);
-                if(ForgeEventFactory.doPlayerHarvestCheck(player, block, !block.requiresCorrectToolForDrops() || TierSortingRegistry.isCorrectTierForDrops(config.MINING_LEVEL.get(), block))){
+                if (ForgeEventFactory.doPlayerHarvestCheck(player, block, !block.requiresCorrectToolForDrops() || TierSortingRegistry.isCorrectTierForDrops(config.MINING_LEVEL.get(), block))) {
 
                     if (vanillaBreak.get() && !player.isCreative()) {
-                        synchronized(breakProgress){
-                            Tuple<BlockPos, Float> data = breakProgress.getOrDefault(player, new Tuple<BlockPos,Float>(blockpos, 0f));
+                        synchronized (breakProgress) {
+                            Tuple<BlockPos, Float> data = breakProgress.getOrDefault(player, new Tuple<>(blockpos, 0f));
 
-                            if(!data.getA().equals(blockpos)){
-                                data = new Tuple<BlockPos,Float>(blockpos, 0f);
+                            if (!data.getA().equals(blockpos)) {
+                                data = new Tuple<>(blockpos, 0f);
                             }
 
                             data.setB(data.getB() + getDestroySpeed(player, level, block, blockpos));
-                            level.destroyBlockProgress(player.getId(), blockpos, (int)(data.getB() * 10));
+                            level.destroyBlockProgress(player.getId(), blockpos, (int) (data.getB() * 10));
                             breakProgress.put(player, data);
 
-                            if(data.getB() >= 1f && !level.isClientSide()){
+                            if (data.getB() >= 1f && !level.isClientSide()) {
                                 level.destroyBlock(blockpos, true);
                                 breakProgress.remove(player);
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
-                    } else if (!level.isClientSide()){
+                    } else if (!level.isClientSide()) {
                         level.destroyBlock(blockpos, true);
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
@@ -90,13 +87,13 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
-        if(breakProgress.containsKey(player)) {
+        if (breakProgress.containsKey(player)) {
             level.destroyBlockProgress(player.getId(), breakProgress.get(player).getA(), -1);
         }
         breakProgress.remove(player);
     }
 
-    protected float getDestroySpeed(Player player, Level level, BlockState blockState, BlockPos pos){
+    protected float getDestroySpeed(Player player, Level level, BlockState blockState, BlockPos pos) {
         float destroySpeed = blockState.getDestroySpeed(level, pos);
         if (destroySpeed == -1.0F) {
             return 0.0F;
@@ -104,25 +101,16 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
         float f = config.SPEED_MODIFIER.get().floatValue();
         if (MobEffectUtil.hasDigSpeed(player)) {
-            f *= 1.0F + (float)(MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
+            f *= 1.0F + (float) (MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
         }
 
         if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-            float f1;
-            switch(player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
-                case 0:
-                    f1 = 0.3F;
-                    break;
-                case 1:
-                    f1 = 0.09F;
-                    break;
-                case 2:
-                    f1 = 0.0027F;
-                    break;
-                case 3:
-                default:
-                    f1 = 8.1E-4F;
-            }
+            float f1 = switch (player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
+                case 0 -> 0.3F;
+                case 1 -> 0.09F;
+                case 2 -> 0.0027F;
+                default -> 8.1E-4F;
+            };
 
             f *= f1;
         }
@@ -139,10 +127,10 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
-                                       .append(" per block broken").withStyle(ChatFormatting.GRAY));
+                .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
+                .append(" per block broken").withStyle(ChatFormatting.GRAY));
     }
 
     public static class EarthDefensiveSpellConfig implements IConfig {
@@ -167,8 +155,8 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
             builder.push("Defensive");
             builder.push(LEVEL.toString());
             MANA_COST_ON_CAST = builder.comment("Mana cost on spell cast").defineInRange("mana_cost_on_cast", manaCostOnCast, 0, 10000);
-            MINING_LEVEL = builder.comment("The mining level for the spell module.").<Tiers>defineEnum("item_level", miningLevel, Tiers.values());
-            SPEED_MODIFIER = builder.comment("The speed that this module mines at, modifying its item level").defineInRange("speed_modifier",speedModifier, .1, 10);
+            MINING_LEVEL = builder.comment("The mining level for the spell module.").defineEnum("item_level", miningLevel, Tiers.values());
+            SPEED_MODIFIER = builder.comment("The speed that this module mines at, modifying its item level").defineInRange("speed_modifier", speedModifier, .1, 10);
             builder.pop(2);
         }
 

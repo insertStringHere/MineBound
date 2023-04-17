@@ -3,8 +3,8 @@ package com.mineboundteam.minebound.magic;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
@@ -16,11 +16,11 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
 import com.mineboundteam.minebound.magic.network.MagicAnimationSync;
 import com.mineboundteam.minebound.magic.network.MagicButtonSync;
-import com.mineboundteam.minebound.magic.network.MagicSync;
 import com.mineboundteam.minebound.magic.network.MagicButtonSync.ButtonMsg.MsgType;
+import com.mineboundteam.minebound.magic.network.MagicSync;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,7 +65,7 @@ public class MagicEvents {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
         if (event.side == LogicalSide.SERVER && event.player.level.getGameTime() % 10 == 0
-                    && event.phase == TickEvent.Phase.START) {
+                && event.phase == TickEvent.Phase.START) {
             handlePlayerArmor(event.player);
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(handlePlayerMana(event.player));
         }
@@ -87,8 +87,8 @@ public class MagicEvents {
             });
         }
 
-        if(event.side == LogicalSide.CLIENT){
-            if(ClientRegistry.PRIMARY_MAGIC.isDown()) {
+        if (event.side == LogicalSide.CLIENT) {
+            if (ClientRegistry.PRIMARY_MAGIC.isDown()) {
                 UseSpellHelper.useSpellTick(event.player, PlayerSelectedSpellsProvider.PRIMARY_SPELL, useCountPrimary++);
                 MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonHeldMsg(MagicButtonSync.ButtonHeldMsg.MsgType.PRIMARY, useCountPrimary));
             }
@@ -106,11 +106,6 @@ public class MagicEvents {
         else if (ClientRegistry.SECONDARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_MENU));
 
-        if(ClientRegistry.PRIMARY_MAGIC.consumeClick())
-            useCountPrimary = 0;
-        if(ClientRegistry.SECONDARY_MAGIC.consumeClick())
-            useCountSecondary = 0;
-
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
         if (ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE.consumeClick())
@@ -126,12 +121,7 @@ public class MagicEvents {
     @SubscribeEvent
     public static void onButtonPress(InputEvent.MouseInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
-            if (ClientRegistry.PRIMARY_MAGIC.consumeClick()){
-                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_PRESSED));
-            }
-            if (ClientRegistry.SECONDARY_MAGIC.consumeClick()){
-                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_PRESSED));
-            }
+            magicBindPressed();
         } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getButton() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_RELEASED));
@@ -144,15 +134,23 @@ public class MagicEvents {
     @SubscribeEvent
     public static void onButtonPress(InputEvent.KeyInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
-            if (ClientRegistry.PRIMARY_MAGIC.consumeClick())
-                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_PRESSED));
-            if (ClientRegistry.SECONDARY_MAGIC.consumeClick())
-                MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_PRESSED));
+            magicBindPressed();
         } else if (Minecraft.getInstance().getConnection() != null && event.getAction() == GLFW.GLFW_RELEASE) {
             if (event.getKey() == ClientRegistry.PRIMARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_RELEASED));
             if (event.getKey() == ClientRegistry.SECONDARY_MAGIC.getKey().getValue())
                 MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_RELEASED));
+        }
+    }
+
+    private static void magicBindPressed() {
+        if (ClientRegistry.PRIMARY_MAGIC.consumeClick()) {
+            useCountPrimary = 0;
+            MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_PRESSED));
+        }
+        if (ClientRegistry.SECONDARY_MAGIC.consumeClick()) {
+            useCountSecondary = 0;
+            MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.SECONDARY_PRESSED));
         }
     }
 
@@ -164,7 +162,7 @@ public class MagicEvents {
         };
 
         for (ItemStack item : player.getArmorSlots()) {
-            if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem){
+            if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem) {
                 boolean recovering = item.getOrCreateTag().getBoolean("recovery");
                 if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
                     recovering = true;
@@ -189,7 +187,7 @@ public class MagicEvents {
                     if (armorItem.getDamage(item) < 0)
                         armorItem.setDamage(item, 0);
                 }
-                
+
                 item.getOrCreateTag().putBoolean("recovering", recovering);
             }
         }
@@ -199,7 +197,7 @@ public class MagicEvents {
 
 
         if (healthAttribute.getModifier(healthReductionID) != null
-                    && (int) healthAttribute.getModifier(healthReductionID).getAmount() != healthReduction) {
+                && (int) healthAttribute.getModifier(healthReductionID).getAmount() != healthReduction) {
             healthAttribute.removeModifier(healthReductionID);
             healthAttribute.addTransientModifier(
                     new AttributeModifier(healthReductionID, "HealthReduce", healthReduction, Operation.ADDITION));
@@ -315,14 +313,15 @@ public class MagicEvents {
     }
 
     public static ConcurrentHashMap<Integer, Integer> playerStates = new ConcurrentHashMap<>(20);
+
     @SubscribeEvent
-    public static void playerArmRenderer(RenderPlayerEvent event){
+    public static void playerArmRenderer(RenderPlayerEvent event) {
         Player player = event.getPlayer();
         PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-        
-        for(EquipmentSlot slot : armorSlots){
-            if(player.getItemBySlot(slot).getItem() instanceof MyrialArmorItem)
-                switch(slot){
+
+        for (EquipmentSlot slot : armorSlots) {
+            if (player.getItemBySlot(slot).getItem() instanceof MyrialArmorItem)
+                switch (slot) {
                     case CHEST -> {
                         model.jacket.visible = false;
                         model.leftSleeve.visible = false;
@@ -333,40 +332,41 @@ public class MagicEvents {
                     }
                     case LEGS -> {
                         model.leftPants.visible = false;
-                        model.rightPants.visible = false; 
+                        model.rightPants.visible = false;
                     }
-                    default ->{}
+                    default -> {
+                    }
                 }
         }
 
-        if(!model.rightArmPose.isTwoHanded() && playerStates.containsKey(event.getPlayer().getId())){
+        if (!model.rightArmPose.isTwoHanded() && playerStates.containsKey(event.getPlayer().getId())) {
             int arms = playerStates.get(event.getPlayer().getId());
-            if((arms & MagicAnimationSync.ArmUsersMsg.PRIMARY) != 0)
+            if ((arms & MagicAnimationSync.ArmUsersMsg.PRIMARY) != 0)
                 model.rightArmPose = ArmPose.SPYGLASS;
-            if((arms & MagicAnimationSync.ArmUsersMsg.SECONDARY) != 0)
+            if ((arms & MagicAnimationSync.ArmUsersMsg.SECONDARY) != 0)
                 model.leftArmPose = ArmPose.SPYGLASS;
         }
     }
 
     @SubscribeEvent
-    public static void onGameTick(ServerTickEvent event){
+    public static void onGameTick(ServerTickEvent event) {
         MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicAnimationSync.ArmUsersMsg(playerStates));
     }
-    
+
     @SubscribeEvent
-    public static void firstPersonArmRender(RenderArmEvent event){
+    public static void firstPersonArmRender(RenderArmEvent event) {
         // TODO: figure out how to force left hand to render
-        switch(event.getArm()){
+        switch (event.getArm()) {
             case RIGHT -> {
                 Optional<PrimarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve();
-                if(ClientRegistry.PRIMARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()){
+                if (ClientRegistry.PRIMARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()) {
                     event.getPoseStack().translate(0, .3F, 0f);
                     event.getPoseStack().pushPose();
                 }
             }
-            case LEFT  -> {
+            case LEFT -> {
                 Optional<PrimarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve();
-                if(ClientRegistry.SECONDARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()){
+                if (ClientRegistry.SECONDARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()) {
                     event.getPoseStack().translate(0, .3F, 0f);
                     event.getPoseStack().pushPose();
                 }

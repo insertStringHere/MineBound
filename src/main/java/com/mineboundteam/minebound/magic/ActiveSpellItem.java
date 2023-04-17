@@ -35,7 +35,7 @@ public abstract class ActiveSpellItem extends SpellItem {
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
         if (entity instanceof Player player) {
-            onUsingTick(stack, player.level, player);
+            onUsingTick(stack, player.level, player, getUseDuration(stack) - count);
         }
     }
 
@@ -48,7 +48,7 @@ public abstract class ActiveSpellItem extends SpellItem {
 
     public abstract void use(ItemStack stack, Level level, Player player);
 
-    public abstract void onUsingTick(ItemStack stack, Level level, Player player);
+    public abstract void onUsingTick(ItemStack stack, Level level, Player player, int tickCount);
 
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 

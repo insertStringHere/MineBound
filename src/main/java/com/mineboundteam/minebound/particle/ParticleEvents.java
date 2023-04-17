@@ -1,9 +1,9 @@
 package com.mineboundteam.minebound.particle;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.particle.magic.FireOffensiveParticles;
-import com.mineboundteam.minebound.registry.ParticleRegistry;
-import com.mineboundteam.minebound.registry.config.MagicConfigRegistry;
+import com.mineboundteam.minebound.particle.registry.ParticleRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

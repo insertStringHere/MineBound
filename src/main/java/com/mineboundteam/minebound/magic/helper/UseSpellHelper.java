@@ -25,7 +25,7 @@ public class UseSpellHelper {
             if (!selected.isEmpty()) {
                 ItemStack activeSpell = ItemStack.of(ArmorNBTHelper.getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL).getCompound(selected.index));
                 if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                    spell.onUsingTick(activeSpell, player.level, player);
+                    spell.onUsingTick(activeSpell, player.level, player, count);
                 }
             }
         });
