@@ -13,6 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
@@ -79,8 +81,8 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
-                    } else if (!level.isClientSide()){
-                        level.destroyBlock(blockpos, true);
+                    } else if (player instanceof ServerPlayer sPlayer){
+                        sPlayer.gameMode.destroyBlock(blockpos);
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }

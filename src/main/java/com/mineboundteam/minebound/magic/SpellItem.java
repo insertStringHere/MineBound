@@ -34,7 +34,7 @@ public abstract class SpellItem extends Item {
     }
 
     public static void reduceMana(int manaCost, Player p) {
-        if (!p.level.isClientSide())
+        if (!p.level.isClientSide() && !p.isCreative())
             p.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 // Charge player mana
                 int underflow = mana.subtractMana(manaCost);

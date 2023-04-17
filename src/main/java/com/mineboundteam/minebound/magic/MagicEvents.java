@@ -266,7 +266,7 @@ public class MagicEvents {
             // if mana is recovered, calculate charge drained from armor durability
             if (mana.getBaseManaCap() + manaBoost > mana.getMana()) {
                 for (ItemStack stack : mArmors) {
-                    if (player.getRandom().nextInt(3) == 0) {
+                    if (player.getRandom().nextInt(3) == 0 && stack.getDamageValue() < stack.getMaxDamage()) {
                         stack.setDamageValue(stack.getDamageValue() + 1);
                     }
                 }
