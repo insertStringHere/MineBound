@@ -73,6 +73,8 @@
 
   "item.minebound.magic_fire_o1": "Fire Offensive I",
 
+  "item.minebound.magic.magic_fire_o1": "Fire Offensive I",
+
   "item.minebound.magic_telekinetic_o1": "Telekinetic Offensive I",
   "item.minebound.magic_telekinetic_u2": "Telekinetic Utility II",
   "item.minebound.magic_telekinetic_u3": "Telekinetic Utility III",
