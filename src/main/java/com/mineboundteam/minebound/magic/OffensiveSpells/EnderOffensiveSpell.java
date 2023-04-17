@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
@@ -33,21 +34,14 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
     @Override
     public void use(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
-            float direction = player.getYRot();
-            double x = (0 - Math.sin(direction * Math.PI / 180f));
-            double z = (Math.cos(direction * Math.PI / 180f));
-            int distance = 1;
-            while (distance <= teleportDistance) {
-                BlockPos tpLocation = new BlockPos(player.getPosition(1).add(distance * x, 0, distance * z));
-                // use isPossibleToRespawnInThis function to check if block has collision
-                if (level.getBlockState(tpLocation).getBlock().isPossibleToRespawnInThis()) {
-                    distance++;
-                } else {
-                    break;
-                }
-            }
-            if (--distance > 0) {
-                player.teleportTo(player.getX() + distance * x, player.getY(), player.getZ() + distance * z);
+            BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
+            BlockPos pos = result.getBlockPos().relative(result.getDirection());
+            double dX = Math.abs(player.getX() - pos.getX() - 0.5);
+            double dY = Math.abs(player.getY() - pos.getY());
+            double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
+            // Only execute if player would move > 1 block
+            if (Math.floor(dX + dY + dZ) > 0) {
+                player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
                 reduceMana(manaCost, player);
             }
         }
@@ -66,11 +60,11 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(teleportDistance + " blocks").withStyle(ChatFormatting.DARK_GREEN))
-                                       .append(" in the direction they are looking"));
+                .append(new TextComponent(teleportDistance + " blocks").withStyle(ChatFormatting.DARK_GREEN))
+                .append(" in the direction they are looking"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" per teleport"));
+                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+                .append(" per teleport"));
     }
 
     public static class EnderOffensiveSpellConfig implements IConfig {
