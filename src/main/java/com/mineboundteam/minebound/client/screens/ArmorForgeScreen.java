@@ -26,9 +26,9 @@ public class ArmorForgeScreen extends AbstractContainerScreen<ArmorForgeMenu> {
     @Override
     protected void init() {
         super.init();
-        this.inventoryLabelX += 24;
+        this.inventoryLabelX = 32;
         this.inventoryLabelY = 109;
-        this.titleLabelX += 24;
+        this.titleLabelX = 32;
     }
 
     @Override
