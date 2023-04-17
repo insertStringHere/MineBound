@@ -1,6 +1,6 @@
 package com.mineboundteam.minebound.magic;
 
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import net.minecraft.world.InteractionHand;
@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ActiveSpellItem extends SpellItem {
 
-    public ActiveSpellItem(Properties properties, ArmorTier level) {
-        super(properties, level);
+    public ActiveSpellItem(Properties properties, ArmorTier level, MagicType magicType, SpellType spellType) {
+        super(properties, level, magicType, spellType);
     }
 
     @Override
@@ -33,20 +33,33 @@ public abstract class ActiveSpellItem extends SpellItem {
     }
 
     @Override
+    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+        if (entity instanceof Player player) {
+            onUsingTick(stack, player.level, player);
+        }
+    }
+
+    @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        releaseUsing(pStack, pLevel, (Player) pLivingEntity);
+        if (pLivingEntity instanceof Player player) {
+            releaseUsing(pStack, pLevel, player);
+        }
     }
 
     public abstract void use(ItemStack stack, Level level, Player player);
 
+    public abstract void onUsingTick(ItemStack stack, Level level, Player player);
+
     public abstract void releaseUsing(ItemStack stack, Level level, Player player);
 
-    protected static ItemStack getSelectedSpell(Player player, Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
+    protected static ItemStack getSelectedSpell(Player player,
+                                                Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
         AtomicReference<ItemStack> selectedSpell = new AtomicReference<>(new ItemStack(Items.AIR));
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
-                player.getItemBySlot(selected.equippedSlot).getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS)
-                        .ifPresent(slots -> selectedSpell.set(slots.items.get(selected.index)));
+                selectedSpell.set(ItemStack.of(ArmorNBTHelper
+                                                       .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
+                                                       .getCompound(selected.index)));
             }
         });
         return selectedSpell.get();

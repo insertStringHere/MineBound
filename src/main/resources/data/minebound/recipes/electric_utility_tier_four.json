@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minebound:illuminant_steel_boots"
+    },
+    "M": {
+      "item": "minebound:magic_electric_u3"
+    },
+    "G": {
+      "item": "minebound:myrial_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_electric_u4"
+  }
+}

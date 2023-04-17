@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,11 +21,16 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
+    public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
     public final ArmorTier level;
+    public final MagicType magicType;
+    public final SpellType spellType;
 
-    public SpellItem(Properties pProperties, ArmorTier level) {
+    public SpellItem(Properties pProperties, ArmorTier level, MagicType magicType, SpellType spellType) {
         super(pProperties);
         this.level = level;
+        this.magicType = magicType;
+        this.spellType = spellType;
     }
 
     public static void reduceMana(int manaCost, Player p) {

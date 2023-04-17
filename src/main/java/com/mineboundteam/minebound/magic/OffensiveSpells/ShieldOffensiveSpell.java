@@ -5,8 +5,9 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
+import com.mineboundteam.minebound.magic.MagicType;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,7 +37,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     private final double damageReflected;
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.SHIELD, SpellType.OFFENSIVE);
 
         this.manaCost = config.MANA_COST.get();
         this.damageReduction = config.DMG_REDUCTION.get();
@@ -47,18 +48,18 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     @Override
     public void use(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
-            CompoundTag isActive = new CompoundTag();
-            isActive.putBoolean("minebound.shield_offensive.active", true);
-            stack.setTag(isActive);
+            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
         }
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
-            CompoundTag isActive = new CompoundTag();
-            isActive.putBoolean("minebound.shield_offensive.active", false);
-            stack.setTag(isActive);
+            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
         }
     }
 
@@ -83,7 +84,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) == 0) {
@@ -118,7 +119,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) != 0) {
@@ -133,6 +134,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent((int) (damageReduction * 100) + "%").withStyle(ChatFormatting.GOLD)));
@@ -140,7 +142,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                                        .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
                                        .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(ChatFormatting.BLUE))
+                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                                        .append(" per reflect").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
     }

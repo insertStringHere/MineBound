@@ -1,17 +1,19 @@
 package com.mineboundteam.minebound.inventory;
 
-import com.mineboundteam.minebound.capabilities.ArmorSpellsProvider;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.crafting.ArmorForgeRecipe;
 import com.mineboundteam.minebound.inventory.containers.ArmorSpellContainer;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 import com.mineboundteam.minebound.inventory.slots.InputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.MyrialSpellSlot;
 import com.mineboundteam.minebound.inventory.slots.OutputArmorSlot;
 import com.mineboundteam.minebound.inventory.slots.PlayerArmorSlot;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.SpellItem;
-import com.mineboundteam.minebound.registry.RecipeRegistry;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
@@ -40,35 +43,43 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
             return super.removeItem(index, count);
         }
 
-        // Fix it when you implement the recipe if it doesn't work
-        // I'm hecking tired
         protected void transferStoredItems(ItemStack result, ItemStack source) {
-            if (!player.level.isClientSide()) {
-                result.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(slots -> {
-                    int max = ((MyrialArmorItem) result.getItem()).getConfig().STORAGE_SLOTS.get();
-                    source.getCapability(ArmorSpellsProvider.ARMOR_ACTIVE_SPELLS).ifPresent(mySlots -> {
-                        for (int i = 0; i < mySlots.items.size(); i++) {
-                            if (i < max) {
-                                slots.items.add(mySlots.items.get(i));
-                            } else if (!moveItemStackTo(mySlots.items.get(i), 0, 40, false)) {
-                                player.drop(mySlots.items.get(i), false, false);
-                            }
-                        }
-                    });
-                });
-                result.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(slots -> {
-                    int max = ((MyrialArmorItem) result.getItem()).getConfig().UTILITY_SLOTS.get();
-                    source.getCapability(ArmorSpellsProvider.ARMOR_PASSIVE_SPELLS).ifPresent(mySlots -> {
-                        for (int i = 0; i < mySlots.items.size(); i++) {
-                            if (i < max) {
-                                slots.items.add(mySlots.items.get(i));
-                            } else if (!moveItemStackTo(mySlots.items.get(i), 0, 40, false)) {
-                                player.drop(mySlots.items.get(i), false, false);
-                            }
-                        }
-                    });
-                });
+            List<ItemStack> activeSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.ACTIVE_SPELL).stream().map(t -> {
+                if(t instanceof CompoundTag tag)
+                    return ItemStack.of(tag);
+                return ItemStack.EMPTY;
+            }).filter(i -> !i.isEmpty()).toList();
+            ListTag activeDst = new ListTag(); 
+
+            List<ItemStack> passiveSrc = ArmorNBTHelper.getSpellTag(source, ArmorNBTHelper.PASSIVE_SPELL).stream().map(t -> {
+                if(t instanceof CompoundTag tag)
+                    return ItemStack.of(tag);
+                return ItemStack.EMPTY;
+            }).filter(i -> !i.isEmpty()).toList();
+            ListTag passiveDst = new ListTag();
+
+            int max = activeSpells.armorCount;
+            for (ItemStack spell : activeSrc) {
+                if (max <= 0 && !moveItemStackTo(spell, 0, 40, false)) {
+                    player.drop(spell, false, false);
+                } else {
+                    activeDst.add(spell.serializeNBT());
+                    max--;
+                }
             }
+
+            max = passiveSpells.armorCount;
+            for (ItemStack spell : passiveSrc) {
+                if (max <= 0 && !moveItemStackTo(spell, 0, 40, false)) {
+                    player.drop(spell, false, false);
+                } else {
+                    passiveDst.add(spell.serializeNBT());
+                    max--;
+                }
+            }
+
+            ArmorNBTHelper.saveSpellTag(result, ArmorNBTHelper.ACTIVE_SPELL, activeDst);
+            ArmorNBTHelper.saveSpellTag(result, ArmorNBTHelper.PASSIVE_SPELL, passiveDst);
         }
     };
 
@@ -111,11 +122,11 @@ public class ArmorForgeMenu extends RecipeBookMenu<CraftingContainer> {
         this.addSlot(new Slot(this.craftingContainer, 3, 57, 81));
         this.addSlot(new Slot(this.craftingContainer, 4, 43, 42));
 
-        this.addSlot(new InputArmorSlot(inventory.player, this.craftingContainer, 5, 75, 49));
+        this.addSlot(new InputArmorSlot(this, this.craftingContainer, 5, 75, 49));
         this.addSlot(new OutputArmorSlot(inventory.player, this.craftingContainer, this.resultContainer, 0, 168, 52));
 
-        activeSpells = new ArmorSpellContainer.ActiveSpell(this);
-        passiveSpells = new ArmorSpellContainer.PassiveSpell(this);
+        activeSpells = new ArmorSpellContainer(this, ArmorNBTHelper.ACTIVE_SPELL);
+        passiveSpells = new ArmorSpellContainer(this, ArmorNBTHelper.PASSIVE_SPELL);
 
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++) {

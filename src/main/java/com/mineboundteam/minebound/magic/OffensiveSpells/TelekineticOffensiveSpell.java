@@ -1,14 +1,14 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-import com.mineboundteam.minebound.registry.ItemRegistry;
+import com.mineboundteam.minebound.magic.MagicType;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +27,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
     private final int manaCostPerHit;
 
     public TelekineticOffensiveSpell(Properties properties, TelekineticOffensiveSpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.TELEKINETIC, SpellType.OFFENSIVE);
 
         this.manaCostOnCast = config.MANA_COST_ON_CAST.get();
         this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
@@ -44,6 +44,10 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    }
+
+    @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
     }
 
@@ -56,12 +60,12 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("Myrial Machete").withStyle(ChatFormatting.WHITE)).append(" will cause it to vanish"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCostOnCast + " Mana").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
+                                       .append(new TextComponent(manaCostOnCast + " Mana").withStyle(manaColorStyle))
                                        .append(" to summon ")
                                        .append(new TextComponent("Myrial Machete").withStyle(ChatFormatting.WHITE))
-                                       .append(", even if selected hotbar slot is not empty"));
+                                       .append(", even if main hand is not empty"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCostPerHit + " Mana").withStyle(Style.EMPTY.withColor(MineBound.MANA_COLOR)))
+                                       .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
                                        .append(" per hit with the ")
                                        .append(new TextComponent("Myrial Machete").withStyle(ChatFormatting.WHITE)));
     }

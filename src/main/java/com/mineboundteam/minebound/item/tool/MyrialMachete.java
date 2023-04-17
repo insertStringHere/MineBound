@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.item.tool;
 
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
@@ -10,7 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MyrialMachete extends SwordItem {
 
     private final int manaCost;
@@ -42,5 +47,14 @@ public class MyrialMachete extends SwordItem {
     public boolean onDroppedByPlayer(ItemStack item, Player player) {
         player.getInventory().removeItem(item);
         return false;
+    }
+
+    @SubscribeEvent
+    public static void onDrop(ItemTossEvent event) {
+        if (!event.getPlayer().level.isClientSide()) {
+            if (event.getEntityItem().getItem().getItem() instanceof MyrialMachete) {
+                event.setCanceled(true);
+            }
+        }
     }
 }

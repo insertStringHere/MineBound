@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import com.mineboundteam.minebound.registry.RecipeRegistry;
+import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 
 public class AlloyFurnaceRecipe extends AbstractCookingRecipe {
     protected NonNullList<Ingredient> ingredients; 
@@ -29,8 +29,7 @@ public class AlloyFurnaceRecipe extends AbstractCookingRecipe {
         
         NonNullList<ItemStack> items = NonNullList.create();
         for(int i : slotIds)
-            if(!pInv.getItem(i).isEmpty())
-                items.add(pInv.getItem(i));
+            items.add(pInv.getItem(i));
         
         return net.minecraftforge.common.util.RecipeMatcher.findMatches(items, ingredients) != null;
     }
