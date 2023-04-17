@@ -56,7 +56,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void onUsingTick(ItemStack stack, Level level, Player player) {
-        if(stack.getOrCreateTag().getBoolean(MineBound.MOD_ID + ".necrotic_offensive.active")) {
+        if(stack.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
             int ticks = stack.getOrCreateTag().getInt(TICK_TAG);
             if(ticks < 20)
                 ticks++;
@@ -70,7 +70,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
-        stack.getOrCreateTag().putBoolean(MineBound.MOD_ID + ".necrotic_offensive.active", false);
+        stack.getOrCreateTag().putBoolean(ACTIVE_TAG, false);
         stack.getOrCreateTag().putInt(TICK_TAG, 0);
     }
 
