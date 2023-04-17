@@ -117,6 +117,10 @@
   "item.minebound.magic.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic.magic_electric_u4": "Electric Utility IV",
 
+  "item.minebound.magic_light_d1": "Light Defensive I",
+
+  "item.minebound.magic.magic_light_d1": "Light Defensive I",
+
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
   "block.minebound.gilded_diamond_block": "Gilded Diamond Block",
