@@ -81,23 +81,15 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
             if(player.getUseItem().getItem() instanceof NecroticOffensiveSpell)
                 spell = player.getUseItem();
             else {
-                if(player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).isPresent()){
-                    PrimarySelected selected = player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve().get(); 
-                    if(!selected.isEmpty())
-                        spell = ItemStack.of(ArmorNBTHelper.getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL).getCompound(selected.index));
-                }
-                if(player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).isPresent()){
-                    SecondarySelected selected = player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).resolve().get(); 
-                    if(!selected.isEmpty())
-                        spell = ItemStack.of(ArmorNBTHelper.getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL).getCompound(selected.index));
-                }
+                spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
+                if(spell.isEmpty())
+                    spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
             }
-
-        
+            
             if(spell.getOrCreateTag().getBoolean(ACTIVE_TAG) && spell.getItem() instanceof NecroticOffensiveSpell spellItem) {
-                double amount = event.getAmount();
+                float amount = event.getAmount();
                 amount += amount * spellItem.damageBoost;
-                event.setAmount((float)amount);
+                event.setAmount(amount);
 
                 if(player.getHealth() < player.getMaxHealth())
                     player.heal((float)(amount * spellItem.vampirePercent));
