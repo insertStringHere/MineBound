@@ -1,15 +1,14 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-
+import com.mineboundteam.minebound.magic.MagicType;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +27,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
     private final int manaCostPerHit;
 
     public TelekineticOffensiveSpell(Properties properties, TelekineticOffensiveSpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.TELEKINETIC, SpellType.OFFENSIVE);
 
         this.manaCostOnCast = config.MANA_COST_ON_CAST.get();
         this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
@@ -42,6 +41,10 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
                 player.setItemSlot(EquipmentSlot.MAINHAND, ItemRegistry.MYRIAL_MACHETE.get().getDefaultInstance());
             }
         }
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
     }
 
     @Override

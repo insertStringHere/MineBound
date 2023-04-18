@@ -23,14 +23,18 @@ import java.util.stream.StreamSupport;
 public abstract class SpellItem extends Item {
     public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
     public final ArmorTier level;
+    public final MagicType magicType;
+    public final SpellType spellType;
 
-    public SpellItem(Properties pProperties, ArmorTier level) {
+    public SpellItem(Properties pProperties, ArmorTier level, MagicType magicType, SpellType spellType) {
         super(pProperties);
         this.level = level;
+        this.magicType = magicType;
+        this.spellType = spellType;
     }
 
     public static void reduceMana(int manaCost, Player p) {
-        if (!p.level.isClientSide())
+        if (!p.level.isClientSide() && !p.isCreative())
             p.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 // Charge player mana
                 int underflow = mana.subtractMana(manaCost);

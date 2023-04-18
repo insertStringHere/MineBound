@@ -5,6 +5,8 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
+import com.mineboundteam.minebound.magic.MagicType;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -35,7 +37,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     private final double damageReflected;
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.SHIELD, SpellType.OFFENSIVE);
 
         this.manaCost = config.MANA_COST.get();
         this.damageReduction = config.DMG_REDUCTION.get();
@@ -48,6 +50,10 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         if (!level.isClientSide()) {
             stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
         }
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
     }
 
     @Override

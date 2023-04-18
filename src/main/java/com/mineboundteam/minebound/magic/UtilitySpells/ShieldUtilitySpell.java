@@ -3,7 +3,9 @@ package com.mineboundteam.minebound.magic.UtilitySpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
+import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
+import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,7 +37,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     private final int recovCooldown;
 
     public ShieldUtilitySpell(Properties properties, ShieldUtilitySpellConfig config) {
-        super(properties, config.LEVEL);
+        super(properties, config.LEVEL, MagicType.SHIELD, SpellType.UTILITY);
 
         this.manaCost = config.MANA_COST.get();
         this.totalHits = config.TOTAL_HITS.get();

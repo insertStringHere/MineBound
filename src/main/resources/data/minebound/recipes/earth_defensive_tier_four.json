@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:netherite_pickaxe"
+    },
+    "M": {
+      "item": "minebound:magic_earth_d3"
+    },
+    "G": {
+      "item": "minebound:myrial_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_d4"
+  }
+}
