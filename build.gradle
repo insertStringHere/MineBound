@@ -33,7 +33,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'minebound'
-
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 minebound {
                     source sourceSets.main
@@ -81,7 +82,7 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories { 
+repositories {
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
         // location of the maven that hosts JEI files
@@ -103,7 +104,9 @@ repositories {
 dependencies { 
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
-    
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71")
+
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
