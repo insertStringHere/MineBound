@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "minebound:magic/telekinetic/offensive",
-    "layer1": "minebound:magic/level1"
-  }
-}

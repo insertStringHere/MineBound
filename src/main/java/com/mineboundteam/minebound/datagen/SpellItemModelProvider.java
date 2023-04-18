@@ -77,7 +77,7 @@ public class SpellItemModelProvider extends ItemModelProvider {
 
     private void generateSpellModel(SpellItem item) {
         try {
-            withExistingParent("magic/" + item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
+            withExistingParent("item/magic/" + item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
                     .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/" + item.spellType.getName()))
                     .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/level" + (item.level.getValue() + 1)));
         } catch (IllegalArgumentException e) {
