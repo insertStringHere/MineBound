@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.mineboundteam.minebound.MineBound;
@@ -74,31 +75,29 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
     @SubscribeEvent
     public static void onAttack(LivingDamageEvent event){
         if(event.getSource().getDirectEntity() != null && event.getSource().getDirectEntity() instanceof ServerPlayer player){
-            ItemStack spell = ItemStack.EMPTY; 
-            if(player.getUseItem().getItem() instanceof NecroticOffensiveSpell)
-                spell = player.getUseItem();
-            else {
-                spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
-                if(spell.isEmpty() || !(spell.getItem() instanceof NecroticOffensiveSpell))
-                    spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
-            }
-            
-            if(spell.getOrCreateTag().getBoolean(ACTIVE_TAG) && spell.getItem() instanceof NecroticOffensiveSpell spellItem) {
-                float amount = event.getAmount();
-                amount += amount * spellItem.damageBoost;
-                event.setAmount(amount);
+            LinkedList<ItemStack> spellStack = new LinkedList<>(); 
+            spellStack.addLast(player.getUseItem());
+            spellStack.addLast(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
+            spellStack.addLast(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
 
-                if(player.getHealth() < player.getMaxHealth())
-                    player.heal((float)(amount * spellItem.vampirePercent));
-                else{
-                    FoodData food = player.getFoodData();
-                    int recoveryAmt = (int)(amount * spellItem.vampirePercent * NecroticOffensiveSpell.FOOD_REDUCTION.get());
-                    recoveryAmt = recoveryAmt == 0 ? 1 : recoveryAmt;
+            for(ItemStack spell : spellStack){
+                if(spell.getOrCreateTag().getBoolean(ACTIVE_TAG) && spell.getItem() instanceof NecroticOffensiveSpell spellItem) {
+                    float amount = event.getAmount();
+                    amount += amount * spellItem.damageBoost;
+                    event.setAmount(amount);
 
-                    if(food.getFoodLevel() < 20) 
-                        food.setFoodLevel(food.getFoodLevel() + recoveryAmt);
-                    else
-                        food.setSaturation(food.getSaturationLevel() + recoveryAmt);
+                    if(player.getHealth() < player.getMaxHealth())
+                        player.heal((float)(amount * spellItem.vampirePercent));
+                    else{
+                        FoodData food = player.getFoodData();
+                        int recoveryAmt = (int)(amount * spellItem.vampirePercent * NecroticOffensiveSpell.FOOD_REDUCTION.get());
+                        recoveryAmt = recoveryAmt == 0 ? 1 : recoveryAmt;
+
+                        if(food.getFoodLevel() < 20) 
+                            food.setFoodLevel(food.getFoodLevel() + recoveryAmt);
+                        else
+                            food.setSaturation(food.getSaturationLevel() + recoveryAmt);
+                    }
                 }
             }
         }
