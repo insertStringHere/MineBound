@@ -112,30 +112,30 @@ public class MagicEvents {
 
         LocalPlayer player = Minecraft.getInstance().player;
         UtilityToggle toggle = null;
-        if(player != null) {
+        if (player != null) {
             var cap = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE);
-            if(cap.isPresent())
+            if (cap.isPresent())
                 toggle = cap.resolve().get();
         }
-        
+
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 toggle.fire = !toggle.fire;
         }
         if (ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.EARTH_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 toggle.earth = !toggle.earth;
         }
         if (ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.LIGHT_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 toggle.light = !toggle.light;
         }
         if (ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.ENDER_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 toggle.light = !toggle.light;
         }
 
