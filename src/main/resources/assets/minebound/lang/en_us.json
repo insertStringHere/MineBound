@@ -121,6 +121,15 @@
 
   "item.minebound.magic.magic_light_d1": "Light Defensive I",
 
+  "item.minebound.magic_necrotic_o2": "Necrotic Offensive II",
+  "item.minebound.magic_necrotic_o3": "Necrotic Offensive III",
+  "item.minebound.magic_necrotic_o4": "Necrotic Offensive IV",
+
+  "item.minebound.magic.magic_necrotic_o2": "Necrotic Offensive II",
+  "item.minebound.magic.magic_necrotic_o3": "Necrotic Offensive III",
+  "item.minebound.magic.magic_necrotic_o4": "Necrotic Offensive IV",
+  
+  
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
   "block.minebound.gilded_diamond_block": "Gilded Diamond Block",
