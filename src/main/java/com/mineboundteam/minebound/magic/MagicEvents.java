@@ -372,6 +372,7 @@ public class MagicEvents {
     }
     
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public static void firstPersonArmRender(RenderArmEvent event){
         // TODO: figure out how to force left hand to render
         switch(event.getArm()){
