@@ -29,6 +29,7 @@ import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import java.util.HashMap;
@@ -70,14 +71,31 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                             level.destroyBlockProgress(player.getId(), blockpos, (int) (data.getB() * 10));
                             breakProgress.put(player, data);
 
-                            if (data.getB() >= 1f && !level.isClientSide()) {
+                            if(data.getB() >= 1f && !level.isClientSide()){
+                                // Post the block break event
+                                BlockState state = level.getBlockState(blockpos);
+                                BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                                MinecraftForge.EVENT_BUS.post(event);
+
+                                // Handle if the event is canceled
+                                if (event.isCanceled())
+                                    return;
+
                                 level.destroyBlock(blockpos, true);
                                 breakProgress.remove(player);
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
-                    } else if (!level.isClientSide()) {
-                        level.destroyBlock(blockpos, true);
+                    } else if (!level.isClientSide()){
+                        // Post the block break event
+                        BlockState state = level.getBlockState(blockpos);
+                        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                        MinecraftForge.EVENT_BUS.post(event);
+
+                        // Handle if the event is canceled
+                        if (event.isCanceled())
+                            return;
+                        level.destroyBlock(blockpos, !player.isCreative());
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }

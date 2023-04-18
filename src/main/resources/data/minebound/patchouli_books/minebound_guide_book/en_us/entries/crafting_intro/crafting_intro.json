@@ -1,0 +1,20 @@
+{
+  "name": "Intro To Crafting",
+  "icon": "minebound:energized_focus",
+  "category": "minebound:introduction",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "All recipes for MineBound are compatible with JEI and can be found there. To access our new recipes you'll need a Crafting bench, Armor Forge, and Alloy Furnace. 
+    },
+    {
+      "type": "patchouli:link",
+      "text": "You can find more information in terms of crafting at our Wiki",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/minebound",
+      "link_text": "MineBound Wiki"
+    }
+
+  ]
+
+}
+

@@ -44,6 +44,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.EARTH_DEFENSIVE_2.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_3.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_4.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_2.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_3.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_4.get());
 
         /* Ender */
         generateModels(ItemRegistry.ENDER_OFFENSIVE_3.get());
@@ -57,6 +60,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.LIGHT_DEFENSIVE_1.get());
 
         /* Necrotic */
+        generateModels(ItemRegistry.NECROTIC_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.NECROTIC_OFFENSIVE_3.get());
+        generateModels(ItemRegistry.NECROTIC_OFFENSIVE_4.get());
     }
 
     private void generateModels(SpellItem item) {
@@ -77,7 +83,7 @@ public class SpellItemModelProvider extends ItemModelProvider {
 
     private void generateSpellModel(SpellItem item) {
         try {
-            withExistingParent("magic/" + item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
+            withExistingParent("item/magic/" + item.getRegistryName().getPath(), new ResourceLocation("item/generated"))
                     .texture("layer0", new ResourceLocation(MineBound.MOD_ID, "magic/" + item.magicType.getName() + "/" + item.spellType.getName()))
                     .texture("layer1", new ResourceLocation(MineBound.MOD_ID, "magic/level" + (item.level.getValue() + 1)));
         } catch (IllegalArgumentException e) {
