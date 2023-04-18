@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "SMS",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:obsidian"
+    },
+    "M": {
+      "item": "minebound:magic_earth_u2"
+    },
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_u3"
+  }
+}
