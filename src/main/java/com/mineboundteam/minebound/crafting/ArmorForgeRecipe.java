@@ -65,7 +65,7 @@ public class ArmorForgeRecipe implements Recipe<Container> {
                 itemStacks.add(container.getItem(i));
 
         return net.minecraftforge.common.util.RecipeMatcher.findMatches(itemStacks, ingredients) != null 
-            && container.getItem(5).sameItem(this.armor);
+            && (container.getItem(5).sameItem(this.armor) || container.getItem(5).equals(this.armor, true));
     }
     public boolean matches(Container container, Container ArmorContainer, Level level) {
         if (level.isClientSide) return false;

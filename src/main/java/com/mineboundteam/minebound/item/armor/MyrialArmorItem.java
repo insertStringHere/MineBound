@@ -103,6 +103,16 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     }
 
     @Override
+    public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
+        return false; 
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return false;
+     }
+
+    @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<MyrialArmorItem>(this, getDescriptionId(), 20, this::predicate));
     }
