@@ -53,7 +53,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
         if(stack.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
             int ticks = stack.getOrCreateTag().getInt(TICK_TAG);
             if(ticks < 20)

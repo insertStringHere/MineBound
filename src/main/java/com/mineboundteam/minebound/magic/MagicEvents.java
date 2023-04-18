@@ -3,10 +3,10 @@ package com.mineboundteam.minebound.magic;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
-import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
@@ -104,7 +104,6 @@ public class MagicEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("resource")
     public static void onButtonPress(InputEvent event) {
         if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_MENU));
@@ -113,7 +112,7 @@ public class MagicEvents {
 
         LocalPlayer player = Minecraft.getInstance().player;
         UtilityToggle toggle = new UtilityToggle();
-        if(player != null)
+        if (player != null)
             toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
 
         if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick()) {
@@ -373,7 +372,7 @@ public class MagicEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void firstPersonArmRender(RenderArmEvent event){
+    public static void firstPersonArmRender(RenderArmEvent event) {
         // TODO: figure out how to force left hand to render
         switch (event.getArm()) {
             case RIGHT -> {

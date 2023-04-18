@@ -27,6 +27,7 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
@@ -71,7 +72,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                             level.destroyBlockProgress(player.getId(), blockpos, (int) (data.getB() * 10));
                             breakProgress.put(player, data);
 
-                            if(data.getB() >= 1f && !level.isClientSide()){
+                            if (data.getB() >= 1f && !level.isClientSide()) {
                                 // Post the block break event
                                 BlockState state = level.getBlockState(blockpos);
                                 BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
@@ -86,7 +87,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
-                    } else if (!level.isClientSide()){
+                    } else if (!level.isClientSide()) {
                         // Post the block break event
                         BlockState state = level.getBlockState(blockpos);
                         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
