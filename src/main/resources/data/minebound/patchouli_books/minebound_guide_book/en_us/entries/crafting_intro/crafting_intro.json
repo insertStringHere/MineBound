@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "All recipes for MineBound are compatible with JEI and can be found there. To access our new recipes you'll need a Crafting bench, Armor Forge, and Alloy Furnace. 
+      "text": "All recipes for MineBound are compatible with JEI and can be found there. To access our new recipes you'll need a Crafting bench, Armor Forge, and Alloy Furnace."
     },
     {
       "type": "patchouli:link",
