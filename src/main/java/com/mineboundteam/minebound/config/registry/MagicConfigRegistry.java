@@ -4,15 +4,12 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.particle.registry.ParticleRegistry;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -44,9 +41,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     /* Fire */
 
     /* Fire */
-    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 0, 8, ArmorTier.EFFIGY);
-    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 0, 16, ArmorTier.SUIT);
-    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_3 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 0, 16, ArmorTier.SYNERGY);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 0, 8, ParticleRegistry.FIRE_OFFENSIVE_1, ArmorTier.EFFIGY);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 0, 16, ParticleRegistry.FIRE_OFFENSIVE_2, ArmorTier.SUIT);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_3 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 50, 16, ParticleRegistry.FIRE_OFFENSIVE_3, ArmorTier.SYNERGY);
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
@@ -102,49 +99,51 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Fire");
         FIRE_OFFENSIVE_1.build(builder);
+        FIRE_OFFENSIVE_2.build(builder);
+        FIRE_OFFENSIVE_3.build(builder);
         builder.pop();
 
         builder.push("Telekinetic");
-            TELEKINETIC_OFFENSIVE_1.build(builder);
-            TELEKINETIC_UTILITY_2.build(builder);
-            TELEKINETIC_UTILITY_3.build(builder);
-            TELEKINETIC_UTILITY_4.build(builder);
+        TELEKINETIC_OFFENSIVE_1.build(builder);
+        TELEKINETIC_UTILITY_2.build(builder);
+        TELEKINETIC_UTILITY_3.build(builder);
+        TELEKINETIC_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Shield");
-            SHIELD_OFFENSIVE_1.build(builder);
-            SHIELD_OFFENSIVE_2.build(builder);
-            SHIELD_OFFENSIVE_3.build(builder);
-            SHIELD_UTILITY_2.build(builder);
-            SHIELD_UTILITY_3.build(builder);
-            SHIELD_UTILITY_4.build(builder);
+        SHIELD_OFFENSIVE_1.build(builder);
+        SHIELD_OFFENSIVE_2.build(builder);
+        SHIELD_OFFENSIVE_3.build(builder);
+        SHIELD_UTILITY_2.build(builder);
+        SHIELD_UTILITY_3.build(builder);
+        SHIELD_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Earth");
-            builder.push("Defensive");
-                EarthDefensiveSpell.vanillaBreak = builder.comment("True if breaking blocks should take time, like when using a pickaxe.").define("vanilla_break", true);
-            builder.pop();
-            EARTH_DEFENSIVE_1.build(builder);
-            EARTH_DEFENSIVE_2.build(builder);
-            EARTH_DEFENSIVE_3.build(builder);
-            EARTH_DEFENSIVE_4.build(builder);
-            builder.push("Utility");
-                EarthUtilitySpell.TOLERANCE = builder.comment("How many blocks without an ore will be accepted as part of the same vein before giving up.").defineInRange("tolerance", 2, 1, 10);
-                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the veinmining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
-            builder.pop();
-            EARTH_UTILITY_2.build(builder);
-            EARTH_UTILITY_3.build(builder);
-            EARTH_UTILITY_4.build(builder);
+        builder.push("Defensive");
+        EarthDefensiveSpell.vanillaBreak = builder.comment("True if breaking blocks should take time, like when using a pickaxe.").define("vanilla_break", true);
+        builder.pop();
+        EARTH_DEFENSIVE_1.build(builder);
+        EARTH_DEFENSIVE_2.build(builder);
+        EARTH_DEFENSIVE_3.build(builder);
+        EARTH_DEFENSIVE_4.build(builder);
+        builder.push("Utility");
+        EarthUtilitySpell.TOLERANCE = builder.comment("How many blocks without an ore will be accepted as part of the same vein before giving up.").defineInRange("tolerance", 2, 1, 10);
+        EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the veinmining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
+        builder.pop();
+        EARTH_UTILITY_2.build(builder);
+        EARTH_UTILITY_3.build(builder);
+        EARTH_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Ender");
-            ENDER_OFFENSIVE_3.build(builder);
+        ENDER_OFFENSIVE_3.build(builder);
         builder.pop();
 
         builder.push("Electric");
-            ELECTRIC_UTILITY_2.build(builder);
-            ELECTRIC_UTILITY_3.build(builder);
-            ELECTRIC_UTILITY_4.build(builder);
+        ELECTRIC_UTILITY_2.build(builder);
+        ELECTRIC_UTILITY_3.build(builder);
+        ELECTRIC_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Light");
@@ -152,12 +151,12 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Necrotic");
-            builder.push("Offensive");
-                NecroticOffensiveSpell.FOOD_REDUCTION = builder.comment("The percent reduction from healing to replenishing food while using Necrotic Offensive.").comment("Will always recover at least 1 hunger if applicable.").defineInRange("food_reduction", .80, .01, 10);
-            builder.pop();
-            NECROTIC_OFFENSIVE_2.build(builder);
-            NECROTIC_OFFENSIVE_3.build(builder);
-            NECROTIC_OFFENSIVE_4.build(builder);
+        builder.push("Offensive");
+        NecroticOffensiveSpell.FOOD_REDUCTION = builder.comment("The percent reduction from healing to replenishing food while using Necrotic Offensive.").comment("Will always recover at least 1 hunger if applicable.").defineInRange("food_reduction", .80, .01, 10);
+        builder.pop();
+        NECROTIC_OFFENSIVE_2.build(builder);
+        NECROTIC_OFFENSIVE_3.build(builder);
+        NECROTIC_OFFENSIVE_4.build(builder);
         builder.pop();
     }
 
