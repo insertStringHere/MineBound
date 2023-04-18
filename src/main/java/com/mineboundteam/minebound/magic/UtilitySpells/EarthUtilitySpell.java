@@ -14,15 +14,26 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.TickEvent;
@@ -37,17 +48,13 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     public static IntValue TOLERANCE;
     public static BooleanValue USE_TAGS;
 
-    private final int manaReduction;
-    private final int manaCost;
-    private final int speedLevel;
-    private final int veinExtent;
+    public static final ResourceLocation VEIN_TAGS = new ResourceLocation(MineBound.MOD_ID, "vein_miner");
+
+    private final EarthUtilitySpellConfig config;
 
     public EarthUtilitySpell(Properties properties, EarthUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.EARTH, SpellType.UTILITY);
-        this.manaReduction = config.MANA_REDUCTION.get();
-        this.manaCost = config.MANA_COST.get();
-        this.speedLevel = config.SPEED_LEVEL.get();
-        this.veinExtent = config.VEIN_EXTENT.get();
+        this.config = config;
     }
 
     @SubscribeEvent
@@ -60,8 +67,8 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                 // Mob effect levels start at 0, so this starts at -1 to compensate for the off by 1
                 int speedLevel = -1;
                 for (EarthUtilitySpell s : equippedSpells) {
-                    manaReduction += s.manaReduction;
-                    speedLevel += s.speedLevel;
+                    manaReduction += s.config.MANA_REDUCTION.get();
+                    speedLevel += s.config.SPEED_LEVEL.get();
                 }
 
                 if(speedLevel > -1){
@@ -99,16 +106,14 @@ public class EarthUtilitySpell extends PassiveSpellItem {
             // Check if the player even wants to be vein mining. If not, we can safely leave the method.
             UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
             if(toggle != null && !toggle.earth)
-                return;
-
-            doingSearch = true;
+                return;            
 
             EarthUtilitySpell spell = getHighestSpellItem(EarthUtilitySpell.class, player);
             Level level = player.level; 
-            BlockState block = level.getBlockState(event.getPos());
+            BlockState block = event.getState();
 
             // If we're doing tag checking, make sure the block is vein-mineable 
-            if(spell == null )//|| !.getTags().anyMatch(t -> t.isFor(null)))
+            if(spell == null || (USE_TAGS.get() && !block.getTags().anyMatch(t -> t.location().equals(VEIN_TAGS))))
                 return;
 
             // Simple breadth first search; could implement a quicker search using the block type as a heuristic
@@ -131,15 +136,23 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                 
                 return false;
             };
-            
-            while(!open.isEmpty() && minedBlocks <= spell.veinExtent) {
+
+            doingSearch = true;
+            while(!open.isEmpty() && minedBlocks <= spell.config.VEIN_EXTENT.get()) {
                 BlockPosSearch current = open.removeFirst();
                 BlockState currBlock = level.getBlockState(current.loc); 
 
                 if(currBlock.is(block.getBlock())) {
-                    player.gameMode.destroyBlock(current.loc);
-                    minedBlocks++;
-                    current.notFoundDist = 0; 
+                    // Post the block break event
+                    BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, current.loc, currBlock, player);
+                    MinecraftForge.EVENT_BUS.post(breakEvent);
+
+                    // Handle if the event is canceled
+                    if (!breakEvent.isCanceled()){
+                        level.destroyBlock(current.loc, true);
+                        minedBlocks++;
+                        current.notFoundDist = 0; 
+                    }
                 }
                 
                 if(current.notFoundDist + 1 <= TOLERANCE.get())
@@ -156,10 +169,45 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                 closed.addLast(current);
             }
 
-            reduceMana(spell.manaCost, player);
+            reduceMana(spell.config.MANA_COST.get(), player);
 
             doingSearch = false;
             event.setCanceled(true);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("resource")
+    public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
+                                       .append(":"));
+        if (config.SPEED_LEVEL.get() > 0) {
+            pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ChatFormatting.GRAY)
+                                       .append(new TextComponent("Haste ")
+                                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (config.SPEED_LEVEL.get() - 1))).withStyle(ChatFormatting.WHITE)));
+        }
+        
+        pTooltipComponents.add(new TextComponent("  - Allows vein mining of up to ").withStyle(ChatFormatting.GRAY)
+                                        .append(new TextComponent(config.VEIN_EXTENT.get() + " blocks.").withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the level of ").withStyle(ChatFormatting.GRAY)
+                                        .append(new TextComponent("Haste").withStyle(ChatFormatting.WHITE))
+                                        .append(" effect"));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
+                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
+                                        .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(manaColorStyle)));
+        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ChatFormatting.GRAY)
+                                        .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))); 
+
+        LocalPlayer player = Minecraft.getInstance().player;
+        if(player != null) {
+            MutableComponent active = new TextComponent("Vein mining is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
+            UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
+            if(toggle != null && toggle.earth)
+                pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
+            else
+                pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
         }
     }
 

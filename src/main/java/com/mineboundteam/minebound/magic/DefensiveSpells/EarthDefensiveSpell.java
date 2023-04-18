@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -28,13 +27,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
@@ -76,13 +76,30 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                             breakProgress.put(player, data); 
 
                             if(data.getB() >= 1f && !level.isClientSide()){
+                                // Post the block break event
+                                BlockState state = level.getBlockState(blockpos);
+                                BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                                MinecraftForge.EVENT_BUS.post(event);
+
+                                // Handle if the event is canceled
+                                if (event.isCanceled())
+                                    return;
+
                                 level.destroyBlock(blockpos, true);
                                 breakProgress.remove(player);
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
-                    } else if (player instanceof ServerPlayer sPlayer){
-                        sPlayer.gameMode.destroyBlock(blockpos);
+                    } else if (!level.isClientSide()){
+                        // Post the block break event
+                        BlockState state = level.getBlockState(blockpos);
+                        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                        MinecraftForge.EVENT_BUS.post(event);
+
+                        // Handle if the event is canceled
+                        if (event.isCanceled())
+                            return;
+                        level.destroyBlock(blockpos, true);
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }
