@@ -79,7 +79,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
                 spell = player.getUseItem();
             else {
                 spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
-                if(spell.isEmpty())
+                if(spell.isEmpty() || !(spell.getItem() instanceof NecroticOffensiveSpell))
                     spell = getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
             }
             
