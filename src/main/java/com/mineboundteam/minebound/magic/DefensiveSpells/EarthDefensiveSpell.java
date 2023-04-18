@@ -99,7 +99,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                         // Handle if the event is canceled
                         if (event.isCanceled())
                             return;
-                        level.destroyBlock(blockpos, true);
+                        level.destroyBlock(blockpos, !player.isCreative());
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }
