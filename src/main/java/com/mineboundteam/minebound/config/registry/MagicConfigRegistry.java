@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
@@ -61,6 +62,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_2 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.IRON, 6.0F, ArmorTier.SUIT);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_3 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.DIAMOND, 9.0F, ArmorTier.SYNERGY);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_4 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.NETHERITE, 10.0f, ArmorTier.SINGULARITY);
+    public static final EarthUtilitySpell.EarthUtilitySpellConfig EARTH_UTILITY_2 = new EarthUtilitySpell.EarthUtilitySpellConfig(10, 15, 1, 8, ArmorTier.SUIT);
+    public static final EarthUtilitySpell.EarthUtilitySpellConfig EARTH_UTILITY_3 = new EarthUtilitySpell.EarthUtilitySpellConfig(15, 30, 1, 16, ArmorTier.SYNERGY);
+    public static final EarthUtilitySpell.EarthUtilitySpellConfig EARTH_UTILITY_4 = new EarthUtilitySpell.EarthUtilitySpellConfig(20, 40, 2, 32, ArmorTier.SINGULARITY);
 
     /* Ender */
     public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100, 15, ArmorTier.SYNERGY);
@@ -114,6 +118,13 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             EARTH_DEFENSIVE_2.build(builder);
             EARTH_DEFENSIVE_3.build(builder);
             EARTH_DEFENSIVE_4.build(builder);
+            builder.push("Utility");
+                EarthUtilitySpell.TOLERANCE = builder.comment("How many blocks without an ore will be accepted as part of the same vein before giving up.").defineInRange("tolerance", 2, 1, 10);
+                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the veinmining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
+            builder.pop();
+            EARTH_UTILITY_2.build(builder);
+            EARTH_UTILITY_3.build(builder);
+            EARTH_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Ender");

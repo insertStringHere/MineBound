@@ -44,6 +44,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.EARTH_DEFENSIVE_2.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_3.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_4.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_2.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_3.get());
+        generateModels(ItemRegistry.EARTH_UTILITY_4.get());
 
         /* Ender */
         generateModels(ItemRegistry.ENDER_OFFENSIVE_3.get());

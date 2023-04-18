@@ -2,6 +2,9 @@
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_d2.json
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_d3.json
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_d4.json
+47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_u2.json
+47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_u3.json
+47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_earth_u4.json
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_electric_u2.json
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_electric_u3.json
 47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_electric_u4.json
@@ -24,6 +27,9 @@
 c56f9a47aa30912c03de637a0838f05efa8a5acc assets/minebound/models/item/magic_earth_d2.json
 31dc4ec370b9c003c10e348f523fbe3f1429d5f8 assets/minebound/models/item/magic_earth_d3.json
 d5c062cb3ce1c3d5e29ea629eba3d680449e2b71 assets/minebound/models/item/magic_earth_d4.json
+40e860115e6a7a59d4f6237112e7674db80bf723 assets/minebound/models/item/magic_earth_u2.json
+34bb54a35bd173f04457e3ad4192364378d6c44e assets/minebound/models/item/magic_earth_u3.json
+ab08788af747e751216b13fe77ccbeb6a2fd76ca assets/minebound/models/item/magic_earth_u4.json
 15caac5ea45eabb8514f5a9134b5c06dc5a57b41 assets/minebound/models/item/magic_electric_u2.json
 f51b2744ea375a3d98c0d0fc0f1ffeced479dcbb assets/minebound/models/item/magic_electric_u3.json
 ee3712ec0c097f69d6084b89b1e401eeea25d2e4 assets/minebound/models/item/magic_electric_u4.json

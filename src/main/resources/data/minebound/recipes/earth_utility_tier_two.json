@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "SMS",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_u2"
+  }
+}
