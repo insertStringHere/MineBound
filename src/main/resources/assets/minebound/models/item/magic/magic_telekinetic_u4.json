@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "minebound:item/magic/magic_telekinetic_u4"
-  }
-}
