@@ -1,6 +1,7 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minebound:item/magic/magic_shield_o3"
+    "layer0": "minebound:magic/shield/offensive",
+    "layer1": "minebound:magic/level3"
   }
 }
