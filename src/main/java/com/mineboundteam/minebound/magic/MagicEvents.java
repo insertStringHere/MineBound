@@ -4,7 +4,9 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
@@ -22,6 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -100,6 +103,8 @@ public class MagicEvents {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings("resource")
     public static void onButtonPress(InputEvent event) {
         if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_MENU));
@@ -111,14 +116,27 @@ public class MagicEvents {
         if(ClientRegistry.SECONDARY_MAGIC.consumeClick())
             useCountSecondary = 0;
 
-        if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick())
+        LocalPlayer player = Minecraft.getInstance().player;
+        UtilityToggle toggle = new UtilityToggle();
+        if(player != null) 
+           toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
+        
+        if (ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.FIRE_UTILITY_TOGGLE));
-        if (ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE.consumeClick())
+            toggle.fire = !toggle.fire;
+        }
+        if (ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.EARTH_UTILITY_TOGGLE));
-        if (ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE.consumeClick())
+            toggle.earth = !toggle.earth;
+        }
+        if (ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.LIGHT_UTILITY_TOGGLE));
-        if (ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE.consumeClick())
+            toggle.light = !toggle.light;
+        }
+        if (ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.ENDER_UTILITY_TOGGLE));
+            toggle.light = !toggle.light;
+        }
 
     }
 

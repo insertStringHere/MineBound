@@ -1,6 +1,6 @@
 {
     "values": [
-        "#minecraft:ores",
+        "#forge:ores",
         "#minecraft:logs"
     ]
 }
