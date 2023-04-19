@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " G ",
+      "GMG",
+      " G "
+    ],
+    "key": {
+      "M": {
+        "item": "minebound:myri_manasac"
+      },
+      "G": {
+        "item": "minecraft:glowstone"
+      }
+    },
+    "result": {
+      "item": "minebound:magic_light_u2"
+    }
+  }
+  
