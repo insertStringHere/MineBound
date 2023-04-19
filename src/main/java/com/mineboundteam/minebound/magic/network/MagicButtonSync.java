@@ -31,20 +31,19 @@ public class MagicButtonSync {
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
                 switch (msg.msg) {
                     case PRIMARY_MENU -> {
-                        if (canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                        if (canOpen && chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 0)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, true), TextComponent.EMPTY));
                     }
                     case PRIMARY_PRESSED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0) {
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 0) {
                             UseSpellHelper.useSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
 
                             int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
                             handStates |= MagicAnimationSync.ArmUsersMsg.PRIMARY;
-                            MagicEvents.playerStates.put(player.getId(), handStates);
                         }
                     }
                     case PRIMARY_RELEASED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 0)
                             UseSpellHelper.releaseUsingSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL);
 
                         int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
@@ -55,11 +54,11 @@ public class MagicButtonSync {
                             MagicEvents.playerStates.remove(player.getId());
                     }
                     case SECONDARY_MENU -> {
-                        if (canOpen && chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
+                        if (canOpen && chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 1)
                             player.openMenu(new SimpleMenuProvider((containerID, inventory, p) -> new SelectSpellMenu(containerID, inventory, false), TextComponent.EMPTY));
                     }
                     case SECONDARY_PRESSED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1) {
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 1) {
                             UseSpellHelper.useSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
 
                             int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
@@ -68,9 +67,9 @@ public class MagicButtonSync {
                         }
                     }
                     case SECONDARY_RELEASED -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 1)
                             UseSpellHelper.releaseUsingSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
-
+                        
                         int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
                         handStates &= ~MagicAnimationSync.ArmUsersMsg.SECONDARY;
                         if (handStates != 0)
@@ -101,11 +100,11 @@ public class MagicButtonSync {
                 ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
                 switch (msg.hand) {
                     case PRIMARY -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 0)
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 0)
                             UseSpellHelper.useSpellTick(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL, msg.holdTicks);
                     }
                     case SECONDARY -> {
-                        if (chest.getItem() instanceof MyrialArmorItem && ((MyrialArmorItem) chest.getItem()).getTier().handSlots > 1)
+                        if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 1)
                             UseSpellHelper.useSpellTick(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL, msg.holdTicks);
                     }
                     default -> {
