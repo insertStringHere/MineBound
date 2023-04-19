@@ -124,8 +124,14 @@
   "item.minebound.magic.magic_electric_u4": "Electric Utility IV",
 
   "item.minebound.magic_light_d1": "Light Defensive I",
+  "item.minebound.magic_light_u2": "Light Utility II",
+  "item.minebound.magic_light_u3": "Light Utility III",
+  "item.minebound.magic_light_u4": "Light Utility IV",
 
   "item.minebound.magic.magic_light_d1": "Light Defensive I",
+  "item.minebound.magic.magic_light_u2": "Light Utility II",
+  "item.minebound.magic.magic_light_u3": "Light Utility III",
+  "item.minebound.magic.magic_light_u4": "Light Utility IV",
 
   "item.minebound.magic_necrotic_o2": "Necrotic Offensive II",
   "item.minebound.magic_necrotic_o3": "Necrotic Offensive III",
