@@ -38,30 +38,24 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
-public class LightUtilitySpell extends PassiveSpellItem implements ResourceManagerReloadListener {
+public class LightUtilitySpell extends PassiveSpellItem {
 
     protected final LightUtilitySpellConfig config;
 
     
     // Having this local variable will be quicker than always retrieving the capability.
-    // But, it's only safe to have a variable like this on client.
-    @OnlyIn(Dist.CLIENT)
+    // But, it's only safe to use a variable like this on client.
     public static boolean active = false;
-
-    protected static PostChain entityEffect;
-
-    protected static boolean isRendering = false;
-    protected static boolean hasGlowing = false;
-    protected static Minecraft minecraft = Minecraft.getInstance();
 
     public LightUtilitySpell(Properties properties, LightUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.LIGHT, SpellType.UTILITY);
         this.config = config;
-        initOutline();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> GlowingRenderer.initOutline());
     }
 
     @SubscribeEvent
@@ -79,6 +73,7 @@ public class LightUtilitySpell extends PassiveSpellItem implements ResourceManag
     }
 
     @Override
+    @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
@@ -92,7 +87,7 @@ public class LightUtilitySpell extends PassiveSpellItem implements ResourceManag
                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                                        .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(manaColorStyle)));
 
-        LocalPlayer player = minecraft.player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if(player != null) {
             MutableComponent active = new TextComponent("Mob outlining is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
             UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
@@ -101,79 +96,6 @@ public class LightUtilitySpell extends PassiveSpellItem implements ResourceManag
             else
                 pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
         }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void initOutline() {
-        // At this point I don't care. It shouldn't be private.
-        if (entityEffect == null) {
-            try {
-                var field = LevelRenderer.class.getDeclaredField("entityEffect");
-                field.setAccessible(true);
-
-                entityEffect = (PostChain) field.get(minecraft.levelRenderer);
-            } catch (Exception e) {
-                //i dont' care
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("unchecked")
-    public static <T extends LivingEntity, M extends EntityModel<T>> void renderEntity(RenderLivingEvent.Pre<T, M> event) {
-        List<LightUtilitySpell> spells;
-        if (!isRendering && active && !(spells = getEquippedSpellItemsOfType(LightUtilitySpell.class, minecraft.player)).isEmpty()) {
-            LocalPlayer player = minecraft.player;
-            T entity = (T) event.getEntity();
-            LivingEntityRenderer<T, M> renderer = event.getRenderer();
-
-            int viewRange = 0; 
-            for (LightUtilitySpell spell : spells) {
-                viewRange += spell.config.OUTLINE_RADIUS.get();
-            }
-
-            if (!entity.equals(player) && entity.distanceTo(player) < viewRange) {
-                isRendering = true;
-                if (entity.isCurrentlyGlowing()) {
-                    hasGlowing = true;
-                }
-
-                OutlineBufferSource buff = minecraft.renderBuffers().outlineBufferSource();
-                // TODO: make a client config to change the color
-                buff.setColor(0xee, 0xee, 0xee, 255);
-
-                renderer.render(entity, 0, event.getPartialTick(), event.getPoseStack(), buff, event.getPackedLight());
-                isRendering = false;
-                // Don't re-render if we already did once
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    @SuppressWarnings("removal")
-    @OnlyIn(Dist.CLIENT)
-    public static void renderOutline(net.minecraftforge.client.event.RenderLevelLastEvent event) {
-        // This applies the actual outline. If one of the entities have glowing, because we
-        // switch to an OutlineBufferSource for all entities, they'll all get glowing and we don't
-        // want to apply it twice.
-        if(entityEffect == null)
-            initOutline();
-        if (!hasGlowing) {
-            minecraft.renderBuffers().outlineBufferSource().endOutlineBatch();
-            entityEffect.process(event.getPartialTick());
-            minecraft.getMainRenderTarget().bindWrite(false);
-        }
-        hasGlowing = false;
-    }
-
-    @Override
-    // We need to refresh the entityEffect every time the resourcemanager reloads
-    // We're basically borrowing minecraft's since it's the only one that'll work
-    public void onResourceManagerReload(ResourceManager pResourceManager) {
-        entityEffect = null;
-        initOutline();
     }
 
     public static class LightUtilitySpellConfig implements IConfig {
@@ -204,5 +126,86 @@ public class LightUtilitySpell extends PassiveSpellItem implements ResourceManag
         public void refresh(ModConfigEvent event) {
 
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MineBound.MOD_ID, value = {Dist.CLIENT})
+    public static class GlowingRenderer implements ResourceManagerReloadListener {
+        @OnlyIn(Dist.CLIENT)
+        public static void initOutline() {
+            // At this point I don't care. It shouldn't be private.
+            if (entityEffect == null) {
+                try {
+                    var field = LevelRenderer.class.getDeclaredField("entityEffect");
+                    field.setAccessible(true);
+    
+                    entityEffect = (PostChain) field.get(minecraft.levelRenderer);
+                } catch (Exception e) {
+                    //i dont' care
+                }
+            }
+        }
+    
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        @SuppressWarnings("unchecked")
+        public static <T extends LivingEntity, M extends EntityModel<T>> void renderEntity(RenderLivingEvent.Pre<T, M> event) {
+            List<LightUtilitySpell> spells;
+            if (!isRendering && active && !(spells = getEquippedSpellItemsOfType(LightUtilitySpell.class, minecraft.player)).isEmpty()) {
+                LocalPlayer player = minecraft.player;
+                T entity = (T) event.getEntity();
+                LivingEntityRenderer<T, M> renderer = event.getRenderer();
+    
+                int viewRange = 0; 
+                for (LightUtilitySpell spell : spells) {
+                    viewRange += spell.config.OUTLINE_RADIUS.get();
+                }
+    
+                if (!entity.equals(player) && entity.distanceTo(player) < viewRange) {
+                    isRendering = true;
+                    if (entity.isCurrentlyGlowing()) {
+                        hasGlowing = true;
+                    }
+    
+                    OutlineBufferSource buff = minecraft.renderBuffers().outlineBufferSource();
+                    // TODO: make a client config to change the color
+                    buff.setColor(0xee, 0xee, 0xee, 255);
+    
+                    renderer.render(entity, 0, event.getPartialTick(), event.getPoseStack(), buff, event.getPackedLight());
+                    isRendering = false;
+                    // Don't re-render if we already did once
+                    event.setCanceled(true);
+                }
+            }
+        }
+    
+        @SubscribeEvent
+        @SuppressWarnings("removal")
+        public static void renderOutline(net.minecraftforge.client.event.RenderLevelLastEvent event) {
+            // This applies the actual outline. If one of the entities have glowing, because we
+            // switch to an OutlineBufferSource for all entities, they'll all get glowing and we don't
+            // want to apply it twice.
+            if(entityEffect == null)
+                initOutline();
+            if (!hasGlowing) {
+                minecraft.renderBuffers().outlineBufferSource().endOutlineBatch();
+                entityEffect.process(event.getPartialTick());
+                minecraft.getMainRenderTarget().bindWrite(false);
+            }
+            hasGlowing = false;
+        }
+    
+        @Override
+        // We need to refresh the entityEffect every time the resourcemanager reloads
+        // We're basically borrowing minecraft's since it's the only one that'll work
+        public void onResourceManagerReload(ResourceManager pResourceManager) {
+            entityEffect = null;
+            initOutline();
+        }
+
+        protected static PostChain entityEffect;
+
+        protected static boolean isRendering = false;
+        protected static boolean hasGlowing = false;
+        protected static Minecraft minecraft = Minecraft.getInstance();
     }
 }

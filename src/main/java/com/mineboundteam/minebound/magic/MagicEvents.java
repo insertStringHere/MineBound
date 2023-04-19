@@ -375,6 +375,7 @@ public class MagicEvents {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.DEDICATED_SERVER)
     public static void onGameTick(ServerTickEvent event){
         MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicAnimationSync.ArmUsersMsg(playerStates));
     }
