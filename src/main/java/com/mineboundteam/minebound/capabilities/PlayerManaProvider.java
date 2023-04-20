@@ -3,6 +3,8 @@ package com.mineboundteam.minebound.capabilities;
 import com.mineboundteam.minebound.config.ManaConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -47,8 +49,10 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
 
     public class PlayerMana {
         private int mana;
-        private int availableManaCap;
         private int totalManaCap;
+
+        private int availableManaCap;
+
         private final HashMap<String, Integer> manaCapModifiers = new HashMap<>();
         private final int manaRecRate = ManaConfig.manaRecovery.get();
         private final int baseManaCap = ManaConfig.baseManaCap.get();
@@ -58,12 +62,13 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
             return this;
         }
 
-        public void setAvailableManaCap(int amt) {
+        @OnlyIn(Dist.CLIENT)
+        public void setAvailableManaCap(int amt){
             availableManaCap = amt;
         }
 
         public void setTotalManaCap(int amt) {
-            totalManaCap = amt;
+            totalManaCap = availableManaCap = amt;
         }
 
         public void setManaCapModifier(String key, Integer value) {
@@ -78,12 +83,28 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
             return manaRecRate;
         }
 
+        /**
+         * Get mana useable by the player; may be more or
+         * less than total mana cap.
+         * @return Usable mana cap
+         */
         public int getAvailableManaCap() {
-            return availableManaCap;
+           
+            int available = availableManaCap;
+            for (Integer modifier : manaCapModifiers.values())
+                available += modifier;
+            return available; 
+        
         }
 
+        /**
+         * The total mana cap of the player, based on
+         * equipped armor and baubles. If available mana cap
+         * is larger, will use that
+         * @return total mana cap
+         */
         public int getTotalManaCap() {
-            return totalManaCap;
+            return Math.max(totalManaCap, getAvailableManaCap());
         }
 
         public int getBaseManaCap(){
@@ -95,7 +116,7 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
         }
 
         public void addMana(int amt){
-            this.mana = Math.min(mana + amt, this.availableManaCap);
+            this.mana = Math.min(mana + amt, getAvailableManaCap());
         }
 
         public int subtractMana(int amt){

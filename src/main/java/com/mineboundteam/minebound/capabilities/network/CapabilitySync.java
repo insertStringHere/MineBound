@@ -54,6 +54,7 @@ public class CapabilitySync {
 
         mana.setMana(msg.getCurrentMana());
         mana.setTotalManaCap(msg.getTotalManaCap());
+        mana.setAvailableManaCap(msg.getAvailableManaCap());
     }
 
     public static void handleSelectedSpells(SelectedSpellsSync msg, Supplier<NetworkEvent.Context> ctx) {
@@ -113,10 +114,16 @@ public class CapabilitySync {
     public static class ManaSync {
         private int currentMana;
         private int totalManaCap;
+        private int availableManaCap;
 
-        public ManaSync(int currentMana, int totalManaCap){
+        public ManaSync(int currentMana, int totalManaCap, int availableManaCap){
             this.currentMana = currentMana;
             this.totalManaCap = totalManaCap;
+            this.availableManaCap = availableManaCap;
+        }
+
+        public int getAvailableManaCap() {
+            return availableManaCap;
         }
 
         public int getCurrentMana() {
@@ -130,10 +137,11 @@ public class CapabilitySync {
         public static void encode(ManaSync msg, FriendlyByteBuf buf) {
             buf.writeInt(msg.currentMana);
             buf.writeInt(msg.totalManaCap);
+            buf.writeInt(msg.availableManaCap);
         }
 
         public static ManaSync decode(FriendlyByteBuf buf) {
-            return new ManaSync(buf.readInt(), buf.readInt());
+            return new ManaSync(buf.readInt(), buf.readInt(), buf.readInt());
         }
     }
 }
