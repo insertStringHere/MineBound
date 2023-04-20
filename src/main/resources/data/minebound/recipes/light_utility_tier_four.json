@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " G ",
+      "RMR",
+      " G "
+    ],
+    "key": {
+      "M": {
+        "item": "minebound:magic_light_u3"
+      },
+      "G": {
+        "item": "minebound:myrial_steel_ingot"
+      },
+      "R": {
+        "item": "minecraft:end_rod"
+      }
+    },
+    "result": {
+      "item": "minebound:magic_light_u4"
+    }
+  }
+  
