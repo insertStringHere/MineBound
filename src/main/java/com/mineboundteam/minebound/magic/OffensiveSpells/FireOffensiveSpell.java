@@ -151,7 +151,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             MANA_COST = builder.comment("Mana cost").defineInRange("mana_cost", manaCost, 0, 10000);
             FIRE_DISTANCE = builder.comment("Fire distance in blocks").defineInRange("fire_distance", fireDistance, 0, 10000);
             FIRE_DAMAGE = builder.comment("Damage done by fire").defineInRange("fire_damage", fireDamage, 0, 10000);
-            IGNITE_BLOCKS = builder.comment("Fire from spell should ignite blocks").define("ignite_blocks", igniteBlocks);
+            IGNITE_BLOCKS = builder.comment("Fire from spell will ignite blocks").define("ignite_blocks", igniteBlocks);
             SHOOT_FIREBALL = builder.comment("Shoot a fireball on initial cast").define("shoot_fireball", shootFireball);
             FIREBALL_MANA_COST = builder.comment("Fireball mana cost").defineInRange("fireball_mana_cost", fireBallManaCost, 0, 10000);
             builder.pop(2);
