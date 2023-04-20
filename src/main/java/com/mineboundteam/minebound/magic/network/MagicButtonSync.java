@@ -40,6 +40,7 @@ public class MagicButtonSync {
 
                             int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
                             handStates |= MagicAnimationSync.ArmUsersMsg.PRIMARY;
+                            MagicEvents.playerStates.put(player.getId(), handStates);
                         }
                     }
                     case PRIMARY_RELEASED -> {
