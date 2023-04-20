@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -53,7 +54,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
     @Override
     public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
-        BlockHitResult hitResult = (BlockHitResult) player.pick((float) player.getAttackRange() + 1.5f, 1F, false);
+        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
         if (hitResult.getType() == Type.BLOCK) {
             BlockPos blockpos = hitResult.getBlockPos();
             if (!level.isEmptyBlock(blockpos)) {

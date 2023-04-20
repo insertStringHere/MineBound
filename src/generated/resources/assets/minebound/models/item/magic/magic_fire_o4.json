@@ -2,6 +2,6 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minebound:magic/fire/offensive",
-    "layer1": "minebound:magic/level3"
+    "layer1": "minebound:magic/level4"
   }
 }

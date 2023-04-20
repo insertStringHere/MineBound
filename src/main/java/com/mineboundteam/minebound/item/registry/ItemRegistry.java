@@ -113,7 +113,7 @@ public class ItemRegistry {
     /* Fire */
     public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_1 = ITEMS.register("magic_fire_o1", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_2 = ITEMS.register("magic_fire_o2", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_2));
-    public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_3 = ITEMS.register("magic_fire_o3", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_4 = ITEMS.register("magic_fire_o4", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_4));
 
     /* Telekinetic */
     public static final RegistryObject<SpellItem> TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
@@ -163,7 +163,7 @@ public class ItemRegistry {
     /* Fire */
     public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_1 = ITEMS.register("magic/magic_fire_o1", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_2 = ITEMS.register("magic/magic_fire_o2", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_2));
-    public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_3 = ITEMS.register("magic/magic_fire_o3", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_4 = ITEMS.register("magic/magic_fire_o4", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_4));
 
     /* Telekinetic */
     public static final RegistryObject<SpellItem> GUI_TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic/magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));

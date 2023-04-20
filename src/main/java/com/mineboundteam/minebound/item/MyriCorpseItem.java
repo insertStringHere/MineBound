@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -51,14 +50,14 @@ public class MyriCorpseItem extends Item{
                  if (block == null) {
                     return InteractionResult.FAIL;
                  }
-  
+
                  float f = (float)Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
                  block.moveTo(block.getX(), block.getY(), block.getZ(), f, 0.0F);
                  serverlevel.addFreshEntityWithPassengers(block);
-                 level.playSound((Player)null, block.getX(), block.getY(), block.getZ(), SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+                 level.playSound(null, block.getX(), block.getY(), block.getZ(), SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                  level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, block);
               }
-  
+
               itemstack.shrink(1);
               return InteractionResult.sidedSuccess(level.isClientSide);
            } else {
@@ -66,5 +65,5 @@ public class MyriCorpseItem extends Item{
            }
         }
      }
-    
+
 }

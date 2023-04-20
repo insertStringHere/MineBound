@@ -47,9 +47,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide()) {
-            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
-        }
+        stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
     }
 
     @Override
@@ -58,9 +56,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide()) {
-            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
-        }
+        stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
     }
 
     @SubscribeEvent
@@ -137,13 +133,13 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (damageReduction * 100) + "%").withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent((int) (damageReduction * 100) + "%").withStyle(ChatFormatting.GOLD)));
         pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
-                                       .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
+                .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
+                .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" per reflect").withStyle(ChatFormatting.GRAY));
+                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+                .append(" per reflect").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
     }
 

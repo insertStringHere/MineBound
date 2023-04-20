@@ -154,7 +154,7 @@ public class MyriCorpse extends LivingEntity {
 
     // Plays a sound when the block is broken 
     private void playBrokenSound() {
-        this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_BREAK,
+        this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SLIME_BLOCK_BREAK,
                 this.getSoundSource(), 1.0F, 1.0F);
     }
 
