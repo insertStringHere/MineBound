@@ -49,9 +49,9 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         if (shootFireball) {
             float yRot = player.getYRot();
             float xRot = player.getXRot();
-            double x = (0 - Math.sin(yRot * Math.PI / 180f));
-            double y = (0 - Math.sin(xRot * Math.PI / 180f));
-            double z = (Math.cos(yRot * Math.PI / 180f));
+            double x = 0 - Math.sin(yRot * Math.PI / 180f);
+            double y = 0 - Math.sin(xRot * Math.PI / 180f);
+            double z = Math.cos(yRot * Math.PI / 180f);
             // right hand = 1
             // left hand = -1
             int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
@@ -71,9 +71,9 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
         float yRot = player.getYRot();
         float xRot = player.getXRot();
-        double x = (0 - Math.sin(yRot * Math.PI / 180f));
-        double y = (0 - Math.sin(xRot * Math.PI / 180f));
-        double z = (Math.cos(yRot * Math.PI / 180f));
+        double x = 0 - Math.sin(yRot * Math.PI / 180f);
+        double y = 0 - Math.sin(xRot * Math.PI / 180f);
+        double z = Math.cos(yRot * Math.PI / 180f);
         // right hand = 1
         // left hand = -1
         int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
