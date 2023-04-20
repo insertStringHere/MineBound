@@ -33,8 +33,9 @@ public class FireProjectile extends Fireball {
         super(pEntityType, pLevel);
     }
 
-    public FireProjectile(Level pLevel, double pX, double pY, double pZ, double pOffsetX, double pOffsetY, double pOffsetZ, double damage, boolean igniteBlocks, int maxDistance) {
+    public FireProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, double pOffsetX, double pOffsetY, double pOffsetZ, double damage, boolean igniteBlocks, int maxDistance) {
         super(EntityRegistry.FIRE_PROJECTILE.get(), pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ, pLevel);
+        this.setOwner(shooter);
 
         this.damage = damage;
         this.igniteBlocks = igniteBlocks;

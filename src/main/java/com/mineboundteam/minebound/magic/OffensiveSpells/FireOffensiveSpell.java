@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.ItemStack;
@@ -44,14 +45,22 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (shootFireball) {
             float yRot = player.getYRot();
             float xRot = player.getXRot();
             double x = (0 - Math.sin(yRot * Math.PI / 180f));
             double y = (0 - Math.sin(xRot * Math.PI / 180f));
             double z = (Math.cos(yRot * Math.PI / 180f));
-            SmallFireball smallfireball = new SmallFireball(level, player.getX(), player.getEyeY() - 1.15d, player.getZ(), x, y, z);
+            // right hand = 1
+            // left hand = -1
+            int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
+            SmallFireball smallfireball = new SmallFireball(level,
+                    player.getX() - (z / 2.5d * hand),
+                    player.getEyeY() - 1d,
+                    player.getZ() + (x / 2.5d * hand),
+                    x, y, z);
+            smallfireball.setOwner(player);
             level.addFreshEntity(smallfireball);
             level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1f, 1f);
             reduceMana(fireballManaCost, player);
@@ -59,17 +68,20 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
         float yRot = player.getYRot();
         float xRot = player.getXRot();
         double x = (0 - Math.sin(yRot * Math.PI / 180f));
         double y = (0 - Math.sin(xRot * Math.PI / 180f));
         double z = (Math.cos(yRot * Math.PI / 180f));
-        for (int i = 0; i <= 360; i += 30) {
-            level.addFreshEntity(new FireProjectile(level,
-                    player.getX(),
-                    player.getEyeY() - 1.15d,
-                    player.getZ(),
+        // right hand = 1
+        // left hand = -1
+        int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
+        for (int i = 0; i <= 360; i += 40) {
+            level.addFreshEntity(new FireProjectile(level, player,
+                    player.getX() - (z / 2.5d * hand),
+                    player.getEyeY() - 1d,
+                    player.getZ() + (x / 2.5d * hand),
                     x - (level.getRandom().nextDouble() * (z * Math.sin(i))) / 5d,
                     y + (level.getRandom().nextDouble() * Math.cos(i)) / 5d,
                     z + (level.getRandom().nextDouble() * (x * Math.sin(i))) / 5d,
@@ -89,7 +101,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
     }
 
     @Override

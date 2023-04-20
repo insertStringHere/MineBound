@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -49,11 +50,11 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     protected final HashMap<Player, Tuple<BlockPos, Float>> breakProgress = new HashMap<>(20);
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
         BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
         if (hitResult.getType() == Type.BLOCK) {
             BlockPos blockpos = hitResult.getBlockPos();
@@ -106,7 +107,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (breakProgress.containsKey(player)) {
             level.destroyBlockProgress(player.getId(), breakProgress.get(player).getA(), -1);
         }

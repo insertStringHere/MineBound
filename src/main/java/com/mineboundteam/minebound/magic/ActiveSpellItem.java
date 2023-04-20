@@ -31,7 +31,7 @@ public abstract class ActiveSpellItem extends SpellItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         player.startUsingItem(usedHand);
-        use(player.getItemInHand(usedHand), level, player);
+        use(player.getItemInHand(usedHand), usedHand, level, player);
         return InteractionResultHolder.consume(player.getItemInHand(usedHand));
     }
 
@@ -41,7 +41,7 @@ public abstract class ActiveSpellItem extends SpellItem {
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
         if (entity instanceof Player player) {
-            onUsingTick(stack, player.level, player, getUseDuration(stack) - count);
+            onUsingTick(stack, player.getUsedItemHand(), player.level, player, getUseDuration(stack) - count);
         }
     }
 
@@ -51,7 +51,7 @@ public abstract class ActiveSpellItem extends SpellItem {
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player) {
-            releaseUsing(pStack, pLevel, player);
+            releaseUsing(pStack, player.getUsedItemHand(), pLevel, player);
         }
     }
 
@@ -61,16 +61,16 @@ public abstract class ActiveSpellItem extends SpellItem {
      * Inherited Documentation: {@inheritDoc}
      */
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, Player p){
-        releaseUsing(item, p.level, p);
+    public boolean onDroppedByPlayer(ItemStack item, Player p) {
+        releaseUsing(item, null, p.level, p);
         return true;
     }
 
-    public abstract void use(ItemStack stack, Level level, Player player);
+    public abstract void use(ItemStack stack, InteractionHand usedHand, Level level, Player player);
 
-    public abstract void onUsingTick(ItemStack stack, Level level, Player player, int tickCount);
+    public abstract void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount);
 
-    public abstract void releaseUsing(ItemStack stack, Level level, Player player);
+    public abstract void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player);
 
     protected static ItemStack getSelectedSpell(Player player,
                                                 Capability<? extends PlayerSelectedSpellsProvider.SelectedSpell> cap) {
@@ -78,8 +78,8 @@ public abstract class ActiveSpellItem extends SpellItem {
         player.getCapability(cap).ifPresent(selected -> {
             if (!selected.isEmpty()) {
                 selectedSpell.set(ItemStack.of(ArmorNBTHelper
-                                                       .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
-                                                       .getCompound(selected.index)));
+                        .getSpellTag(player.getItemBySlot(selected.equippedSlot), ArmorNBTHelper.ACTIVE_SPELL)
+                        .getCompound(selected.index)));
             }
         });
         return selectedSpell.get();

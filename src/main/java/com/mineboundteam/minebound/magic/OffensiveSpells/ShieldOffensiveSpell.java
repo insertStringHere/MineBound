@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -46,16 +47,16 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player, int tickCount) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
     }
 

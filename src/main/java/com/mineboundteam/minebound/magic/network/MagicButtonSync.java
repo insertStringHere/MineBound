@@ -70,7 +70,7 @@ public class MagicButtonSync {
                     case SECONDARY_RELEASED -> {
                         if (chest.getItem() instanceof MyrialArmorItem item && item.getTier().handSlots > 1)
                             UseSpellHelper.releaseUsingSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL);
-                        
+
                         int handStates = MagicEvents.playerStates.getOrDefault(player.getId(), 0);
                         handStates &= ~MagicAnimationSync.ArmUsersMsg.SECONDARY;
                         if (handStates != 0)
