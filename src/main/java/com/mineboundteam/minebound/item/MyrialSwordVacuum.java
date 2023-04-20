@@ -13,13 +13,11 @@ public class MyrialSwordVacuum extends Item {
 
     public MyrialSwordVacuum(Properties properties) {
         super(properties);
-        itemStack = new ItemStack(this);
-        itemStack.getOrCreateTag().putBoolean("minebound.return_myrial_sword", false);
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
-        if (!level.isClientSide)
+        if (!level.isClientSide && itemStack != null)
             itemStack.getOrCreateTag().putBoolean("minebound.return_myrial_sword", true);
         return super.use(level, player, interactionHand);
     }
