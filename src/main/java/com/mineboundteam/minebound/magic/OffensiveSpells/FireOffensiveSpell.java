@@ -52,8 +52,6 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             double x = 0 - Math.sin(yRot * Math.PI / 180f);
             double y = 0 - Math.sin(xRot * Math.PI / 180f);
             double z = Math.cos(yRot * Math.PI / 180f);
-            // right hand = 1
-            // left hand = -1
             int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
             SmallFireball smallfireball = new SmallFireball(level,
                     player.getX() - (z / 2.5d * hand),
@@ -74,8 +72,6 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         double x = 0 - Math.sin(yRot * Math.PI / 180f);
         double y = 0 - Math.sin(xRot * Math.PI / 180f);
         double z = Math.cos(yRot * Math.PI / 180f);
-        // right hand = 1
-        // left hand = -1
         int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
         for (int i = 0; i <= 360; i += 40) {
             level.addFreshEntity(new FireProjectile(level, player,
