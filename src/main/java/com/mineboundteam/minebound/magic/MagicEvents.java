@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SecondarySpellProvider.SecondarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
@@ -131,12 +132,12 @@ public class MagicEvents {
         }
         if (ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.LIGHT_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 LightUtilitySpell.active = toggle.light = !toggle.light;
         }
         if (ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.ENDER_UTILITY_TOGGLE));
-            if(toggle != null)
+            if (toggle != null)
                 toggle.ender = !toggle.ender;
         }
 
@@ -375,7 +376,7 @@ public class MagicEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.DEDICATED_SERVER)
-    public static void onGameTick(ServerTickEvent event){
+    public static void onGameTick(ServerTickEvent event) {
         MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicAnimationSync.ArmUsersMsg(playerStates));
     }
 
@@ -392,7 +393,7 @@ public class MagicEvents {
                 }
             }
             case LEFT -> {
-                Optional<PrimarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).resolve();
+                Optional<SecondarySelected> cap = event.getPlayer().getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).resolve();
                 if (ClientRegistry.SECONDARY_MAGIC.isDown() && cap.isPresent() && !cap.get().isEmpty()) {
                     event.getPoseStack().translate(0, .3F, 0f);
                     event.getPoseStack().pushPose();
