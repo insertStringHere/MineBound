@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraft.world.item.Tiers;
@@ -78,6 +79,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Light */
     public static final LightDefensiveSpell.LightDefensiveSpellConfig LIGHT_DEFENSIVE_1 = new LightDefensiveSpell.LightDefensiveSpellConfig(25, true, 600, ArmorTier.EFFIGY);
+    public static final LightUtilitySpell.LightUtilitySpellConfig LIGHT_UTILITY_2 = new LightUtilitySpell.LightUtilitySpellConfig(150, 40, ArmorTier.SUIT);
+    public static final LightUtilitySpell.LightUtilitySpellConfig LIGHT_UTILITY_3 = new LightUtilitySpell.LightUtilitySpellConfig(200, 85, ArmorTier.SYNERGY);
+    public static final LightUtilitySpell.LightUtilitySpellConfig LIGHT_UTILITY_4 = new LightUtilitySpell.LightUtilitySpellConfig(250, 120, ArmorTier.SINGULARITY);
 
     /* Necrotic */
     public static final NecroticOffensiveSpell.NecroticOffensiveSpellConfig NECROTIC_OFFENSIVE_2 = new NecroticOffensiveSpell.NecroticOffensiveSpellConfig(20, .50, .10, ArmorTier.SUIT);
@@ -147,6 +151,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Light");
             LIGHT_DEFENSIVE_1.build(builder);
+            LIGHT_UTILITY_2.build(builder);
+            LIGHT_UTILITY_3.build(builder);
+            LIGHT_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Necrotic");

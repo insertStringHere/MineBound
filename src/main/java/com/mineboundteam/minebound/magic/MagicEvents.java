@@ -15,6 +15,7 @@ import com.mineboundteam.minebound.config.ManaConfig;
 import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
+import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
 import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
 import com.mineboundteam.minebound.magic.network.MagicAnimationSync;
 import com.mineboundteam.minebound.magic.network.MagicButtonSync;
@@ -130,13 +131,13 @@ public class MagicEvents {
         }
         if (ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.LIGHT_UTILITY_TOGGLE));
-            if (toggle != null)
-                toggle.light = !toggle.light;
+            if(toggle != null)
+                LightUtilitySpell.active = toggle.light = !toggle.light;
         }
         if (ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE.consumeClick()) {
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.ENDER_UTILITY_TOGGLE));
-            if (toggle != null)
-                toggle.light = !toggle.light;
+            if(toggle != null)
+                toggle.ender = !toggle.ender;
         }
 
     }
@@ -373,7 +374,8 @@ public class MagicEvents {
     }
 
     @SubscribeEvent
-    public static void onGameTick(ServerTickEvent event) {
+    @OnlyIn(Dist.DEDICATED_SERVER)
+    public static void onGameTick(ServerTickEvent event){
         MagicSync.NET_CHANNEL.send(PacketDistributor.ALL.noArg(), new MagicAnimationSync.ArmUsersMsg(playerStates));
     }
 

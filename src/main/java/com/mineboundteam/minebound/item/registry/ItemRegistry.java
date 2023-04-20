@@ -19,6 +19,7 @@ import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
 import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -151,7 +152,9 @@ public class ItemRegistry {
 
     /* Light */
     public static final RegistryObject<SpellItem> LIGHT_DEFENSIVE_1 = ITEMS.register("magic_light_d1",() -> new LightDefensiveSpell(spellItemProperties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
-
+    public static final RegistryObject<SpellItem> LIGHT_UTILITY_2 = ITEMS.register("magic_light_u2", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_2));
+    public static final RegistryObject<SpellItem> LIGHT_UTILITY_3 = ITEMS.register("magic_light_u3", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_3));
+    public static final RegistryObject<SpellItem> LIGHT_UTILITY_4 = ITEMS.register("magic_light_u4", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_4));
     /* Necrotic */
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_2 = ITEMS.register("magic_necrotic_o2", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_3 = ITEMS.register("magic_necrotic_o3", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_3));
@@ -198,7 +201,9 @@ public class ItemRegistry {
 
     /* Light */
     public static final RegistryObject<SpellItem> GUI_LIGHT_DEFENSIVE_1 = ITEMS.register("magic/magic_light_d1",() -> new LightDefensiveSpell(new Item.Properties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
-
+    public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_2 = ITEMS.register("magic/magic_light_u2", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_2));
+    public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_3 = ITEMS.register("magic/magic_light_u3", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_3));
+    public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_4 = ITEMS.register("magic/magic_light_u4", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_4));
 
     /* Necrotic */
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_2 = ITEMS.register("magic/magic_necrotic_o2", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
