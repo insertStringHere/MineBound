@@ -24,6 +24,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
          */
 
         /* Fire */
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_4.get());
 
         /* Telekinetic */
         generateModels(ItemRegistry.TELEKINETIC_OFFENSIVE_1.get());

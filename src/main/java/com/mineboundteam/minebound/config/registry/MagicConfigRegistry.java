@@ -4,10 +4,7 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
 import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
@@ -42,6 +39,11 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
      */
 
     /* Fire */
+
+    /* Fire */
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 2.5, false, false, 0, ArmorTier.EFFIGY);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 16, 5.0, true, false, 0, ArmorTier.SUIT);
+    public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_4 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 16, 5.0, true, true, 50, ArmorTier.SINGULARITY);
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
@@ -96,6 +98,12 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
          */
 
         builder.push("Fire");
+        builder.pop();
+
+        builder.push("Fire");
+            FIRE_OFFENSIVE_1.build(builder);
+            FIRE_OFFENSIVE_2.build(builder);
+            FIRE_OFFENSIVE_4.build(builder);
         builder.pop();
 
         builder.push("Telekinetic");

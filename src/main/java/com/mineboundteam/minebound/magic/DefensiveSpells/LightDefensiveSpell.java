@@ -37,7 +37,7 @@ public class LightDefensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide()) {
             BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
             if (hitResult.getType() == HitResult.Type.BLOCK) {
@@ -51,11 +51,11 @@ public class LightDefensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
     }
 
     @Override

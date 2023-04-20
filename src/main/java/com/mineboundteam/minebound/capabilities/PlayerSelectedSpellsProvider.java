@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.config.ManaConfig;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,7 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
     protected SelectedSpell spell = null;
     protected final LazyOptional<? extends SelectedSpell> optional = LazyOptional.of(this::createSpell);
 
-    protected abstract SelectedSpell createSpell(); 
+    protected abstract SelectedSpell createSpell();
 
     public static void UpdatePlayerSync(Player oldPlayer, Player newPlayer, Capability<? extends SelectedSpell> cap){
         if(ManaConfig.keepArmor.get())
@@ -48,14 +49,16 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         createSpell().loadNBTData(nbt);
-    } 
+    }
 
     public static abstract class SelectedSpell{
         public EquipmentSlot equippedSlot;
+        public InteractionHand usedHand;
         public int index = -1;
 
-        public SelectedSpell(EquipmentSlot mySlot, int index){
+        public SelectedSpell(EquipmentSlot mySlot, InteractionHand usedHand, int index){
             this.equippedSlot = mySlot;
+            this.usedHand = usedHand;
             this.index = index;
         }
 
@@ -66,7 +69,7 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
                 nbt.putInt("slot", equippedSlot.getIndex());
             nbt.putInt("index", index);
         }
-    
+
         public void loadNBTData(CompoundTag nbt){
             index = nbt.getInt("slot");
             if(index != -1)
@@ -77,10 +80,10 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
         public boolean isEmpty(){
             return equippedSlot == null;
         }
-    }    
-    
+    }
+
     public static class PrimarySpellProvider extends PlayerSelectedSpellsProvider {
-        public static class PrimarySelected extends SelectedSpell{ public PrimarySelected(EquipmentSlot mySlot, int index) { super(mySlot, index); }};
+        public static class PrimarySelected extends SelectedSpell{ public PrimarySelected(EquipmentSlot mySlot, int index) { super(mySlot, InteractionHand.MAIN_HAND, index); }}
         @Override
         protected SelectedSpell createSpell() {
             if(this.spell == null)
@@ -93,7 +96,7 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
         }
     }
     public static class SecondarySpellProvider extends PlayerSelectedSpellsProvider {
-        public static class SecondarySelected extends SelectedSpell{ public SecondarySelected(EquipmentSlot mySlot, int index) { super(mySlot, index); }};
+        public static class SecondarySelected extends SelectedSpell{ public SecondarySelected(EquipmentSlot mySlot, int index) { super(mySlot, InteractionHand.OFF_HAND, index); }}
         @Override
         protected SelectedSpell createSpell() {
             if(this.spell == null)

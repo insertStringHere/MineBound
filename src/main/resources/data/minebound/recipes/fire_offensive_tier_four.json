@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TCT",
+    "SFS",
+    "TDT"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:soul_torch"
+    },
+    "C": {
+      "item": "minecraft:fire_charge"
+    },
+    "S": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "F": {
+      "item": "minebound:magic_fire_o2"
+    },
+    "D": {
+      "item": "minecraft:dragon_breath"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_o4"
+  }
+}
