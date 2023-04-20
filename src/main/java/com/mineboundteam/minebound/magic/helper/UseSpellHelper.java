@@ -17,7 +17,6 @@ public class UseSpellHelper {
 
                 ItemStack activeSpell = ItemStack.of(tagList.getCompound(selected.index));
                 if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-
                     spell.use(activeSpell, selected.usedHand, player.level, player);
                 }
 
