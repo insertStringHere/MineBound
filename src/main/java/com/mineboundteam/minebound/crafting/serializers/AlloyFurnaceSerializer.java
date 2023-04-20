@@ -29,9 +29,9 @@ public class AlloyFurnaceSerializer<T> extends ForgeRegistryEntry<RecipeSerializ
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
         ItemStack itemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "output"));
 
-        NonNullList<Ingredient> ingredients = NonNullList.create();
+        NonNullList<Ingredient> ingredients = NonNullList.withSize(3, Ingredient.EMPTY);
         for(int i = 0; i < jsonArray.size() && i < 3; i++){
-            ingredients.add(Ingredient.fromJson(jsonArray.get(i)));
+            ingredients.set(i, Ingredient.fromJson(jsonArray.get(i)));
         }
 
         float f = GsonHelper.getAsFloat(jsonObject, "experience", 0.0F);

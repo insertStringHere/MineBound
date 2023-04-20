@@ -53,6 +53,10 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    }
+
+    @Override
     public void releaseUsing(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide()) {
             stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);

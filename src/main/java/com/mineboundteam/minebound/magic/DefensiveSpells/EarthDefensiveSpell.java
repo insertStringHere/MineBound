@@ -27,27 +27,33 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
-    protected final EarthDefensiveSpellConfig config; 
+    protected final EarthDefensiveSpellConfig config;
 
     public EarthDefensiveSpell(Properties properties, EarthDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.EARTH, SpellType.DEFENSIVE);
-        this.config = config;        
+        this.config = config;
     }
 
     protected final HashMap<Player, Tuple<BlockPos, Float>> breakProgress = new HashMap<Player, Tuple<BlockPos, Float>>(20);
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {      
+    public void use(ItemStack stack, Level level, Player player) {
+    }
+
+    @Override
+    public void onUsingTick(ItemStack stack, Level level, Player player) {
         var hitResult = player.pick((float) player.getAttackRange() + 1.5f, 1F, false);
 
         if (hitResult != null && hitResult.getType() == Type.BLOCK) {
@@ -67,16 +73,33 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
                             data.setB(data.getB() + getDestroySpeed(player, level, block, blockpos));
                             level.destroyBlockProgress(player.getId(), blockpos, (int)(data.getB() * 10));
-                            breakProgress.put(player, data); 
+                            breakProgress.put(player, data);
 
                             if(data.getB() >= 1f && !level.isClientSide()){
+                                // Post the block break event
+                                BlockState state = level.getBlockState(blockpos);
+                                BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                                MinecraftForge.EVENT_BUS.post(event);
+
+                                // Handle if the event is canceled
+                                if (event.isCanceled())
+                                    return;
+
                                 level.destroyBlock(blockpos, true);
                                 breakProgress.remove(player);
                                 reduceMana(config.MANA_COST_ON_CAST.get(), player);
                             }
                         }
                     } else if (!level.isClientSide()){
-                        level.destroyBlock(blockpos, true);
+                        // Post the block break event
+                        BlockState state = level.getBlockState(blockpos);
+                        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, blockpos, state, player);
+                        MinecraftForge.EVENT_BUS.post(event);
+
+                        // Handle if the event is canceled
+                        if (event.isCanceled())
+                            return;
+                        level.destroyBlock(blockpos, !player.isCreative());
                         reduceMana(config.MANA_COST_ON_CAST.get(), player);
                     }
                 }
@@ -98,12 +121,12 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
             return 0.0F;
         }
 
-        float f = config.SPEED_MODIFIER.get().floatValue(); 
+        float f = config.SPEED_MODIFIER.get().floatValue();
         if (MobEffectUtil.hasDigSpeed(player)) {
             f *= 1.0F + (float)(MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
-            }
-    
-            if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
+        }
+
+        if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
             float f1;
             switch(player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
                 case 0:
@@ -117,14 +140,14 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
                     break;
                 case 3:
                 default:
-                f1 = 8.1E-4F;
+                    f1 = 8.1E-4F;
             }
-    
+
             f *= f1;
         }
 
         if (player.isEyeInFluid(FluidTags.WATER) && !EnchantmentHelper.hasAquaAffinity(player)) {
-        f /= 5.0F;
+            f /= 5.0F;
         }
 
         f = net.minecraftforge.event.ForgeEventFactory.getBreakSpeed(player, blockState, f, pos);
@@ -135,7 +158,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
+                                       .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
                                        .append(" per block broken").withStyle(ChatFormatting.GRAY));
@@ -145,10 +168,10 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
 
         public final ArmorTier LEVEL;
         public IntValue MANA_COST_ON_CAST;
-        public EnumValue<Tiers> MINING_LEVEL; 
+        public EnumValue<Tiers> MINING_LEVEL;
         public DoubleValue SPEED_MODIFIER;
         private final int manaCostOnCast;
-        private final Tiers miningLevel; 
+        private final Tiers miningLevel;
         private final float speedModifier;
 
         public EarthDefensiveSpellConfig(int manaCostOnCast, Tiers miningLevel, float miningSpeed, ArmorTier level) {

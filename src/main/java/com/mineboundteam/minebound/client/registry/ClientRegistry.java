@@ -47,6 +47,10 @@ public class ClientRegistry {
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
     public static final KeyMapping EARTH_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("earth_utility_spell_toggle"),
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
+    public static final KeyMapping LIGHT_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("light_utility_spell_toggle"),
+            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
+    public static final KeyMapping ENDER_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("ender_utility_spell_toggle"),
+            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
     public static void registerKeys() {
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(PRIMARY_MAGIC);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC);
@@ -54,6 +58,8 @@ public class ClientRegistry {
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(SECONDARY_MAGIC_SELECT);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(FIRE_UTILITY_SPELL_TOGGLE);
         net.minecraftforge.client.ClientRegistry.registerKeyBinding(EARTH_UTILITY_SPELL_TOGGLE);
+        net.minecraftforge.client.ClientRegistry.registerKeyBinding(LIGHT_UTILITY_SPELL_TOGGLE);
+        net.minecraftforge.client.ClientRegistry.registerKeyBinding(ENDER_UTILITY_SPELL_TOGGLE);
     }
 
     public static void registerRenderers(){

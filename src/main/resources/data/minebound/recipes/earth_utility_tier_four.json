@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "SMS",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:end_stones"
+    },
+    "M": {
+      "item": "minebound:magic_earth_u3"
+    },
+    "G": {
+      "item": "minebound:myrial_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_u4"
+  }
+}
