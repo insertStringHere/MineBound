@@ -3,7 +3,6 @@ package com.mineboundteam.minebound.entity;
 import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -15,15 +14,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class MyrialSwordEntity extends ThrowableItemProjectile {
-    ItemStack itemStack;
+    ItemStack myrialSwordVacuum;
 
     public MyrialSwordEntity(EntityType<MyrialSwordEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MyrialSwordEntity(Level level, Player shooter, ItemStack itemStack) {
-        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), shooter, level);
-        this.itemStack = itemStack;
+    public MyrialSwordEntity(Player player, Level level, ItemStack myrialSwordVacuum) {
+        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), player, level);
+        this.myrialSwordVacuum = myrialSwordVacuum;
     }
 
     @Override
@@ -42,27 +41,34 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public void onHitEntity(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
-        if (getOwner() == null || itemStack == null) return;
-
-        if (entity.is(getOwner())) {
+    public void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+        if (getOwner() != null && entityHitResult.getEntity().is(getOwner())) {
             discard();
-            itemStack.getOrCreateTag().putInt("minebound.myrial_sword", 0);
+            switchToMyrialSword((Player) getOwner());
         } else {
-            entity.hurt(DamageSource.MAGIC, 7);
+            entityHitResult.getEntity().hurt(DamageSource.MAGIC, 7);
         }
     }
 
     @Override
     public void tick() {
+        if (getOwner() != null && getOwner().position().distanceTo(position()) > 15)
+            setDeltaMovement(Vec3.ZERO);
+        if (myrialSwordVacuum != null && getOwner() != null && myrialSwordVacuum.getOrCreateTag().getBoolean("minebound.return_myrial_sword"))
+            setDeltaMovement(getDeltaMovement().scale(.95).add(getOwner().position().subtract(position()).normalize().scale(.5)));
         setYRot(getYRot() + 100);
         super.tick();
-        if (itemStack == null || getOwner() == null) return;
+    }
 
-        if (getOwner().position().distanceTo(position()) > 15)
-            setDeltaMovement(Vec3.ZERO);
-        if (itemStack.getOrCreateTag().getInt("minebound.myrial_sword") == 2)
-            setDeltaMovement(getDeltaMovement().scale(.95).add(getOwner().position().subtract(position()).normalize().scale(.5)));
+    // helper methods
+    public void switchToMyrialSword(Player player) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack potentialVacuum = player.getInventory().getItem(i);
+            if (!potentialVacuum.isEmpty() && potentialVacuum.sameItem(new ItemStack(ItemRegistry.MYRIAL_SWORD_VACUUM.get()))) {
+                player.getInventory().removeItem(i, 1);
+                player.getInventory().add(i, new ItemStack(ItemRegistry.MYRIAL_SWORD.get()));
+                break;
+            }
+        }
     }
 }
