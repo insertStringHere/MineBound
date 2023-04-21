@@ -54,21 +54,21 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
                 CompoundTag tag = spellStack.getOrCreateTagElement(SHIELD_TAG);
                 float hitsRemaining = tag.getFloat(HITS_TAG);
-                if (!tag.contains(HITS_TAG)) 
+                if (!tag.contains(HITS_TAG))
                     hitsRemaining = getShieldCount(player);
-        
+
                 if (hitsRemaining > 0) {
-                    player.getLevel().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
+                    player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     reduceMana(spell.config.MANA_COST.get(), player);
-                    
-                    hitsRemaining-=event.getAmount();
-                    if(hitsRemaining < 0){
+
+                    hitsRemaining -= event.getAmount();
+                    if (hitsRemaining < 0) {
                         event.setAmount(-hitsRemaining);
                         hitsRemaining = 0;
                     } else {
                         event.setCanceled(true);
                     }
-                    
+
                     tag.putFloat(HITS_TAG, hitsRemaining);
                     tag.putInt(COOLDOWN_TAG, spell.config.RECOV_TICKS.get());
                     spellStack.getOrCreateTag().put(SHIELD_TAG, tag);
@@ -100,9 +100,9 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         }
     }
 
-    private static int getShieldCount(Player player){
+    private static int getShieldCount(Player player) {
         int hitCount = 0;
-        for(ShieldUtilitySpell spell : getEquippedSpellItemsOfType(ShieldUtilitySpell.class, player))
+        for (ShieldUtilitySpell spell : getEquippedSpellItemsOfType(ShieldUtilitySpell.class, player))
             hitCount += spell.config.TOTAL_HITS.get();
         return hitCount;
     }
@@ -123,18 +123,18 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                        .append(":"));
+                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
+                .append(":"));
         pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.TOTAL_HITS.get() + " charges").withStyle(ChatFormatting.AQUA))
-                                        .append(" to a player's total, each absorbing half a heart of damage."));
+                .append(new TextComponent(config.TOTAL_HITS.get() + " charges").withStyle(ChatFormatting.AQUA))
+                .append(" to a player's total, each absorbing half a heart of damage."));
         pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
-                                        .append(" has been depleted for ")
-                                        .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
+                .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
+                .append(" has been depleted for ")
+                .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))
-                                        .append(" every time damage is absorbed"));
+                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))
+                .append(" every time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {

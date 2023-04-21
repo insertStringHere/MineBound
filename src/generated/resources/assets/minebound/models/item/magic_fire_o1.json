@@ -2,7 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minebound:magic/spell_item1",
-    "layer1": "minebound:magic/light/item",
-    "layer2": "minebound:magic/spell_defensive"
+    "layer1": "minebound:magic/fire/item",
+    "layer2": "minebound:magic/spell_offensive"
   }
 }

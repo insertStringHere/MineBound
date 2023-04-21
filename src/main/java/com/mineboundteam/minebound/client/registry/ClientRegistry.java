@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.client.overlay.ManaHUDOverlay;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
+import com.mineboundteam.minebound.client.renderer.entity.FireProjectileRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
@@ -72,8 +73,9 @@ public class ClientRegistry {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistry.MYRIAL_GLASS.get(), RenderType.translucent());
 
         EntityRenderers.register(EntityRegistry.MYRI_CORPSE.get(), MyriCorpseRenderer::new);
+        EntityRenderers.register(EntityRegistry.FIRE_PROJECTILE.get(), FireProjectileRenderer::new);
 
-        GeoArmorRenderer.registerArmorRenderer(MyrialArmorItem.class, () -> new MyrialArmorRenderer());
+        GeoArmorRenderer.registerArmorRenderer(MyrialArmorItem.class, MyrialArmorRenderer::new);
     }
 
     public static void registerScreens(){

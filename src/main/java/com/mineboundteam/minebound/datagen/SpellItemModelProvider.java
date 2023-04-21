@@ -24,6 +24,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
          */
 
         /* Fire */
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.FIRE_OFFENSIVE_4.get());
 
         /* Telekinetic */
         generateModels(ItemRegistry.TELEKINETIC_OFFENSIVE_1.get());
@@ -58,6 +61,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
 
         /* Light */
         generateModels(ItemRegistry.LIGHT_DEFENSIVE_1.get());
+        generateModels(ItemRegistry.LIGHT_UTILITY_2.get());
+        generateModels(ItemRegistry.LIGHT_UTILITY_3.get());
+        generateModels(ItemRegistry.LIGHT_UTILITY_4.get());
 
         /* Necrotic */
         generateModels(ItemRegistry.NECROTIC_OFFENSIVE_2.get());
