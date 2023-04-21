@@ -11,6 +11,7 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
@@ -128,6 +129,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_1 = ITEMS.register("magic_shield_d1", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_2 = ITEMS.register("magic_shield_d2", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_2));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_3 = ITEMS.register("magic_shield_d3", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_2));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_3));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_4));
@@ -178,6 +182,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_1 = ITEMS.register("magic/magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_2 = ITEMS.register("magic/magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_3 = ITEMS.register("magic/magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_1 = ITEMS.register("magic/magic_shield_d1", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_2 = ITEMS.register("magic/magic_shield_d2", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_2));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_3 = ITEMS.register("magic/magic_shield_d3", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_2 = ITEMS.register("magic/magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_2));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_3 = ITEMS.register("magic/magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_3));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_4 = ITEMS.register("magic/magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_4));

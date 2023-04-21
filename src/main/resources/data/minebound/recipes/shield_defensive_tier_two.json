@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CGC",
+    "CSC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:crimson_planks"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "S": {
+      "item": "minebound:magic_shield_d1"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_d2"
+  }
+}

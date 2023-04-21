@@ -38,6 +38,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_1.get());
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_2.get());
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_3.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_1.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_2.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_3.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_2.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_3.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_4.get());
