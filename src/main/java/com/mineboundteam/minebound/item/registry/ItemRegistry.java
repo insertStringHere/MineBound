@@ -17,11 +17,7 @@ import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
-import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -144,6 +140,7 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> ENDER_OFFENSIVE_3 = ITEMS.register("magic_ender_o3", () -> new EnderOffensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> ENDER_UTILITY_3 = ITEMS.register("magic_ender_u3", () -> new EnderUtilitySpell(spellItemProperties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
     public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(spellItemProperties(), MagicConfigRegistry.ELECTRIC_UTILITY_2));
@@ -193,6 +190,7 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> GUI_ENDER_OFFENSIVE_3 = ITEMS.register("magic/magic_ender_o3", () -> new EnderOffensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_ENDER_UTILITY_3 = ITEMS.register("magic/magic_ender_u3", () -> new EnderUtilitySpell(new Item.Properties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
     public static final RegistryObject<SpellItem> GUI_ELECTRIC_UTILITY_2 = ITEMS.register("magic/magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties(), MagicConfigRegistry.ELECTRIC_UTILITY_2));

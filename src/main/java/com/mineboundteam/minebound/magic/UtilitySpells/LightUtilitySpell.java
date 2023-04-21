@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.magic.UtilitySpells;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
@@ -55,7 +56,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
     public LightUtilitySpell(Properties properties, LightUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.LIGHT, SpellType.UTILITY);
         this.config = config;
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> GlowingRenderer.initOutline());
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> GlowingRenderer::initOutline);
     }
 
     @SubscribeEvent
@@ -73,7 +74,6 @@ public class LightUtilitySpell extends PassiveSpellItem {
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
@@ -90,8 +90,8 @@ public class LightUtilitySpell extends PassiveSpellItem {
         LocalPlayer player = Minecraft.getInstance().player;
         if(player != null) {
             MutableComponent active = new TextComponent("Mob outlining is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
-            UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
-            if(toggle != null && toggle.light)
+            Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
+            if (toggle.isPresent() && toggle.get().light)
                 pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
             else
                 pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
@@ -120,6 +120,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
                     manaReduction, 0, 10000);
             OUTLINE_RADIUS = builder.comment("The number of blocks around the player that outline effect will be seen").defineInRange("outline_radius", outlineRadius, 0,
                     10000);
+            builder.pop(2);
         }
 
         @Override
