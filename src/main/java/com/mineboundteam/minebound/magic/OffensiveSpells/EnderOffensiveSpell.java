@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -32,7 +33,7 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide()) {
             BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
             BlockPos pos = result.getBlockPos().relative(result.getDirection());
@@ -48,11 +49,11 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
     }
 
     @Override

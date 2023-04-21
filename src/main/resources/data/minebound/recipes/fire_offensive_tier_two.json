@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "BFB",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "minebound:magic_fire_o1"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_o2"
+  }
+}
