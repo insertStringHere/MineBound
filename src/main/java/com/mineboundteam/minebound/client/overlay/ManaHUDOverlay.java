@@ -1,8 +1,11 @@
 package com.mineboundteam.minebound.client.overlay;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellItem;
@@ -15,9 +18,11 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
@@ -41,14 +46,23 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
         PlayerManaProvider.PlayerMana mana = minecraft.player.getCapability(PlayerManaProvider.PLAYER_MANA).orElse(null);
         ItemStack armorSpell = PassiveSpellItem.getHighestEquippedSpellOfType(ShieldUtilitySpell.class, minecraft.player);
 
+        PlayerSelectedSpellsProvider.SelectedSpell primary = minecraft.player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).orElse(null);
+        PlayerSelectedSpellsProvider.SelectedSpell secondary = minecraft.player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).orElse(null);
+
         this.xOffset = 10;
         this.yOffset = minecraft.getWindow().getGuiScaledHeight() - 10;
 
         renderPlayerMana(poseStack, mana);
         renderPlayerShield(poseStack, armorSpell);
 
+        renderPlayerSpell(poseStack, primary, 43, 0);
+        renderPlayerSpell(poseStack, secondary, 43, 22);
+
+        this.yOffset = minecraft.getWindow().getGuiScaledHeight() - 10;
         renderText(poseStack, mana);
     }
+
+
 
     protected void renderPlayerMana(PoseStack matrixStack, PlayerMana mana){
         if (!(minecraft.player.getMainHandItem().getItem() instanceof SpellItem ||
@@ -88,6 +102,24 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
 
             xOffset += 25;
         }
+    }
+
+    protected void renderPlayerSpell(PoseStack poseStack, SelectedSpell spell, int uOffset, int vOffset) {
+        if(spell == null || spell.isEmpty() || !(minecraft.player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof MyrialArmorItem)) return;
+
+        ItemStack armor = minecraft.player.getItemBySlot(spell.equippedSlot);
+        ItemStack realSpell = ItemStack.of(ArmorNBTHelper.getSpellTag(armor, ArmorNBTHelper.ACTIVE_SPELL).getCompound(spell.index));
+        ItemStack item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MineBound.MOD_ID,  "magic/" + realSpell.getItem().getRegistryName().getPath())).getDefaultInstance();
+
+
+        if(item == null || item.isEmpty()) return;
+
+        int yOffset = this.yOffset - 22;
+        RenderSystem.setShaderTexture(0,overlay);
+        blit(poseStack, xOffset, yOffset, uOffset, vOffset, 22, 22, TEX_WIDTH, TEX_HEIGHT);
+        minecraft.getItemRenderer().renderAndDecorateFakeItem(item, xOffset+3, yOffset+3);
+
+        this.yOffset -= 25;
     }
 
     protected void renderText(PoseStack matrixStack, PlayerMana mana){

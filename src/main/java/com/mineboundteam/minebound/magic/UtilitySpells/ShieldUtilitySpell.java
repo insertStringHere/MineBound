@@ -90,9 +90,11 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 if (cooldown > 0) {
                     spellTag.putInt(COOLDOWN_TAG, cooldown - 1);
                 } else if (hitsRemaining < shieldMax) {
-                    spellTag.putFloat(HITS_TAG, Math.min(hitsRemaining + 0.5f, shieldMax));
+                    hitsRemaining += 0.5f;
                     spellTag.putInt(COOLDOWN_TAG, -1);
                 }
+
+                spellTag.putFloat(HITS_TAG, Math.min(hitsRemaining, shieldMax));
                 spellTag.putInt(MAX_TAG, shieldMax);
 
                 spellStack.getOrCreateTag().put(SHIELD_TAG, spellTag);
