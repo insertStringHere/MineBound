@@ -22,6 +22,7 @@ import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
     public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
+    public static final Style reductionColorStyle = Style.EMPTY.withColor(MineBound.REDUCTION_COLOR);
     public final ArmorTier level;
     public final MagicType magicType;
     public final SpellType spellType;
