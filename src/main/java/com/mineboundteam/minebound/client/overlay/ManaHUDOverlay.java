@@ -75,7 +75,7 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
 
         int yOffset = this.yOffset - 56;
         int reductionHeight = (int) (52 * ((mana.getTotalManaCap() - mana.getAvailableManaCap()) / (double) mana.getTotalManaCap())); 
-        int manaHeight = (int) (52*(mana.getMana() / ((double) mana.getTotalManaCap())));
+        int manaHeight = (int) Math.ceil(52*(mana.getMana() / ((double) mana.getTotalManaCap())));
 
         blit(matrixStack, xOffset + 2, yOffset + (54 - manaHeight), 15, 0, 13, manaHeight, TEX_WIDTH, TEX_HEIGHT);
         blit(matrixStack, xOffset + 2, yOffset + 2, 30, 0, 13, reductionHeight, TEX_WIDTH, TEX_HEIGHT);
@@ -92,9 +92,9 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
             float hits_remaining = shieldTag.getFloat(ShieldUtilitySpell.HITS_TAG);
 
             int yOffset = this.yOffset - 66;
-            int shieldHeight = (int) (60 * (hits_remaining / shieldTag.getInt(ShieldUtilitySpell.MAX_TAG)));
+            int shieldHeight = (int) Math.ceil(60 * (hits_remaining / shieldTag.getInt(ShieldUtilitySpell.MAX_TAG)));
             int cooldownHeight = (int) (63 * (shieldTag.getInt(ShieldUtilitySpell.COOLDOWN_TAG) / (double) spellItem.config.RECOV_TICKS.get()));
-            cooldownHeight = cooldownHeight < 0 ? 0 : cooldownHeight;
+            cooldownHeight = Math.max(cooldownHeight, 0);
 
             blit(matrixStack, xOffset + 1, yOffset + 2, 22, 56, 20, 63 - cooldownHeight, TEX_WIDTH, TEX_HEIGHT);
             blit(matrixStack, xOffset + 4, yOffset + (60 - shieldHeight) + 2, 42, 56, 14, shieldHeight, TEX_WIDTH, TEX_HEIGHT);
