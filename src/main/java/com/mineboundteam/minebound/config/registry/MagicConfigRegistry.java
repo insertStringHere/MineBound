@@ -5,11 +5,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
-import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -44,6 +40,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 2.5, false, false, 0, ArmorTier.EFFIGY);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 16, 5.0, true, false, 0, ArmorTier.SUIT);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_4 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 16, 5.0, true, true, 50, ArmorTier.SINGULARITY);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_2 = new FireUtilitySpell.FireUtilitySpellConfig(5,10,40,0,0,ArmorTier.SUIT);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_3 = new FireUtilitySpell.FireUtilitySpellConfig(7,15,20,30,3,ArmorTier.SUIT);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_4 = new FireUtilitySpell.FireUtilitySpellConfig(10,20,40,60,7,ArmorTier.SUIT);
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
@@ -104,6 +103,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             FIRE_OFFENSIVE_1.build(builder);
             FIRE_OFFENSIVE_2.build(builder);
             FIRE_OFFENSIVE_4.build(builder);
+            FIRE_UTILITY_2.build(builder);
+            FIRE_UTILITY_3.build(builder);
+            FIRE_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Telekinetic");
