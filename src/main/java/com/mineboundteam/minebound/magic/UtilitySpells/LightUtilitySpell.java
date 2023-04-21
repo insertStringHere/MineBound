@@ -85,7 +85,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
                                        .append(new TextComponent("outline radius").withStyle(ChatFormatting.YELLOW)));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                       .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(manaColorStyle)));
+                                       .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if(player != null) {

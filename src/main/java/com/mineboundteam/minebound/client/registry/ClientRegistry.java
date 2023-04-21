@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.client.registry;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.block.registry.BlockRegistry;
+import com.mineboundteam.minebound.client.overlay.ManaHUDOverlay;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.FireProjectileRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
@@ -12,7 +13,6 @@ import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mojang.blaze3d.platform.InputConstants;
-
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -20,6 +20,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
@@ -31,7 +34,10 @@ public class ClientRegistry {
         registerKeys();
         registerRenderers();
         registerScreens();
+        
     }
+
+    public static final IIngameOverlay MANA_OVERLAY = OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "minebound:mana_overlay", new ManaHUDOverlay());
 
 
     public static final String MINEBOUND_CATEGORY = "key.categories.minebound";

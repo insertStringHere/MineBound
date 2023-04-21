@@ -106,6 +106,7 @@ public class MagicEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings("resource")
     public static void onButtonPress(InputEvent event) {
         if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_MENU));
@@ -282,11 +283,6 @@ public class MagicEvents {
                 }
             }
 
-            for (Integer modifier : mana.getManaCapModifiers().values()) {
-                totalMana += modifier;
-                manaBoost += modifier;
-            }
-
             // if mana is recovered, calculate charge drained from armor durability
             if (mana.getBaseManaCap() + manaBoost > mana.getMana()) {
                 for (ItemStack stack : mArmors) {
@@ -297,10 +293,9 @@ public class MagicEvents {
             }
 
             mana.setTotalManaCap(totalMana);
-            mana.setAvailableManaCap(mana.getBaseManaCap() + manaBoost);
             mana.addMana(mana.getManaRecRate() + recBoost);
 
-            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana));
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana, mana.getAvailableManaCap()));
         };
     }
 
@@ -332,6 +327,9 @@ public class MagicEvents {
             synchronized (cacheData) {
                 armorTag = cacheData.remove(original);
             }
+
+            if(armorTag == null)
+                return;
 
             for (String key : armorTag.getAllKeys())
                 event.getPlayer().setItemSlot(EquipmentSlot.byName(key), ItemStack.of(armorTag.getCompound(key)));
