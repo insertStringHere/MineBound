@@ -64,7 +64,7 @@ public abstract class SpellItem extends Item {
 
                 // Reduce player health.
                 if (underflow > 0) {
-                    p.hurt(DamageSource.MAGIC, underflow / 3f);
+                    p.hurt(DamageSource.STARVE, underflow / 3f);
                 }
             });
     }

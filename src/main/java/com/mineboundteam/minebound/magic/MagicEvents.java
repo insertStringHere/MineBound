@@ -106,6 +106,7 @@ public class MagicEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings("resource")
     public static void onButtonPress(InputEvent event) {
         if (ClientRegistry.PRIMARY_MAGIC_SELECT.consumeClick())
             MagicSync.NET_CHANNEL.sendToServer(new MagicButtonSync.ButtonMsg(MsgType.PRIMARY_MENU));

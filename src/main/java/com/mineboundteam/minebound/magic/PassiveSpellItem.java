@@ -73,7 +73,7 @@ public abstract class PassiveSpellItem extends SpellItem {
                 for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
                     if (tag instanceof CompoundTag cTag) {
                         ItemStack item = ItemStack.of(cTag);
-                        if (type.isInstance(item.getItem()) && ((T)item.getItem()).level.getValue() > highestSpell.level.getValue())
+                        if (type.isInstance(item.getItem()) && (highestSpell == null || ((T)item.getItem()).level.getValue() > highestSpell.level.getValue()))
                             highestSpell = (T)item.getItem(); 
                     }
                 }

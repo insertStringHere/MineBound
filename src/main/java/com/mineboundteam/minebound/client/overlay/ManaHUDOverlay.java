@@ -15,10 +15,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
@@ -74,14 +74,14 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
             return;
 
         int yOffset = this.yOffset - 56;
-        int manaHeight = (int) (52*(mana.getMana() / ((double) mana.getAvailableManaCap())));
         int reductionHeight = (int) (52 * ((mana.getTotalManaCap() - mana.getAvailableManaCap()) / (double) mana.getTotalManaCap())); 
-        
+        int manaHeight = (int) (52*(mana.getMana() / ((double) mana.getTotalManaCap())));
+
         blit(matrixStack, xOffset + 2, yOffset + (54 - manaHeight), 15, 0, 13, manaHeight, TEX_WIDTH, TEX_HEIGHT);
         blit(matrixStack, xOffset + 2, yOffset + 2, 30, 0, 13, reductionHeight, TEX_WIDTH, TEX_HEIGHT);
         blit(matrixStack, xOffset, yOffset, 0, 0, 17, 56, TEX_WIDTH, TEX_HEIGHT);
 
-        xOffset += 20;
+        xOffset += 22;
     }
 
     protected void renderPlayerShield(PoseStack matrixStack, ItemStack spell){
@@ -117,7 +117,9 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
         int yOffset = this.yOffset - 22;
         RenderSystem.setShaderTexture(0,overlay);
         blit(poseStack, xOffset, yOffset, uOffset, vOffset, 22, 22, TEX_WIDTH, TEX_HEIGHT);
-        minecraft.getItemRenderer().renderAndDecorateFakeItem(item, xOffset+3, yOffset+3);
+        ItemRenderer renderer = minecraft.getItemRenderer();
+        renderer.blitOffset = -100;
+        renderer.renderGuiItem(item, xOffset+3, yOffset+3);
 
         this.yOffset -= 25;
     }
