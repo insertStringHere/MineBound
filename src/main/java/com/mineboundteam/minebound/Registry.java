@@ -6,6 +6,8 @@ import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.inventory.registry.MenuRegistry;
 import com.mineboundteam.minebound.inventory.registry.RecipeRegistry;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
+import com.mineboundteam.minebound.worldgen.registry.StructureRegistry;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class Registry {
@@ -21,5 +23,7 @@ public class Registry {
 
         RecipeRegistry.RECIPE_SERIALIZERS.register(iEventBus);
         RecipeRegistry.RECIPE_TYPE.register(iEventBus);
+
+        StructureRegistry.register(iEventBus);
     }
 }

@@ -1,0 +1,104 @@
+{
+    "name": "minebound:base/room",
+    "fallback" :"minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element":{
+                "location": "minebound:base/core",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/barrack",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/big_crossway",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.65
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/small_crossway",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/farm",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.75
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    },
+                    {
+                        "processor_type": "minecraft:block_ignore",
+                        "blocks": [
+                            {
+                                "Name": "minecraft:farmland"
+                            }
+                        ]
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        }
+    ]
+}

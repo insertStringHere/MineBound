@@ -1,0 +1,16 @@
+{
+    "structures" : [
+        {
+            "structure" : "minebound:ruined_base",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spread_type": "triangular",
+        "frequency": 0.8,
+        "spacing": 13,
+        "separation": 10,
+        "salt": 1399283
+    }
+}
