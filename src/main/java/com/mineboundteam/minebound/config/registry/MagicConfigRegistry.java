@@ -5,11 +5,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
-import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -71,6 +67,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Ender */
     public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100, 15, ArmorTier.SYNERGY);
+    public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
@@ -132,7 +129,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             EARTH_DEFENSIVE_4.build(builder);
             builder.push("Utility");
                 EarthUtilitySpell.TOLERANCE = builder.comment("How many blocks without an ore will be accepted as part of the same vein before giving up.").defineInRange("tolerance", 2, 1, 10);
-                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the veinmining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
+                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the vein mining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
             builder.pop();
             EARTH_UTILITY_2.build(builder);
             EARTH_UTILITY_3.build(builder);
@@ -141,6 +138,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Ender");
             ENDER_OFFENSIVE_3.build(builder);
+            ENDER_UTILITY_3.build(builder);
         builder.pop();
 
         builder.push("Electric");
