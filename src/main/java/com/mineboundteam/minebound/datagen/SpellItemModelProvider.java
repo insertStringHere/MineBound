@@ -41,6 +41,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_1.get());
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_2.get());
         generateModels(ItemRegistry.SHIELD_OFFENSIVE_3.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_1.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_2.get());
+        generateModels(ItemRegistry.SHIELD_DEFENSIVE_3.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_2.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_3.get());
         generateModels(ItemRegistry.SHIELD_UTILITY_4.get());
@@ -56,6 +59,7 @@ public class SpellItemModelProvider extends ItemModelProvider {
 
         /* Ender */
         generateModels(ItemRegistry.ENDER_OFFENSIVE_3.get());
+        generateModels(ItemRegistry.ENDER_UTILITY_3.get());
 
         /* Electric */
         generateModels(ItemRegistry.ELECTRIC_UTILITY_2.get());

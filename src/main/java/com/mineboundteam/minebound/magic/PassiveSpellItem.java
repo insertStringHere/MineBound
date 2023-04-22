@@ -21,7 +21,7 @@ public abstract class PassiveSpellItem extends SpellItem {
     // These functions could potentially be running every tick, so they should be as performant as possible.
     // Streams can help with readability, but they are massively slower than a for each loop (2 - 6 times slower in my testing).
 
-    protected static <T extends PassiveSpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player) {
+    public static <T extends PassiveSpellItem> List<ItemStack> getEquippedSpellsOfType(Class<T> type, Player player) {
         NonNullList<ItemStack> spells = NonNullList.create();
         for (EquipmentSlot e : EquipmentSlot.values())
             if(e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem)
@@ -36,7 +36,7 @@ public abstract class PassiveSpellItem extends SpellItem {
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T extends PassiveSpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player) {
+    public static <T extends PassiveSpellItem> List<T> getEquippedSpellItemsOfType(Class<T> type, Player player) {
         NonNullList<T> spells = NonNullList.create();
         for (EquipmentSlot e : EquipmentSlot.values())
             if(e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem)
@@ -51,7 +51,7 @@ public abstract class PassiveSpellItem extends SpellItem {
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type,
+    public static <T extends PassiveSpellItem> ItemStack getHighestEquippedSpellOfType(Class<T> type,
                                                                                           Player player) {
         List<ItemStack> spells = getEquippedSpellsOfType(type, player);
         ItemStack highestSpell = null;
@@ -65,11 +65,22 @@ public abstract class PassiveSpellItem extends SpellItem {
         return highestSpell;
     }
 
-    protected static <T extends PassiveSpellItem> T getHighestSpellItem(Class<T> type, Player player) {
-        return getHighestSpellItem(getEquippedSpellItemsOfType(type, player));
+    @SuppressWarnings("unchecked")
+    public static <T extends PassiveSpellItem> T getHighestSpellItem(Class<T> type, Player player) {
+        T highestSpell = null;
+        for (EquipmentSlot e : EquipmentSlot.values())
+            if(e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem)
+                for (Tag tag : ArmorNBTHelper.getSpellTag(player.getItemBySlot(e), ArmorNBTHelper.PASSIVE_SPELL)) {
+                    if (tag instanceof CompoundTag cTag) {
+                        ItemStack item = ItemStack.of(cTag);
+                        if (type.isInstance(item.getItem()) && (highestSpell == null || ((T)item.getItem()).level.getValue() > highestSpell.level.getValue()))
+                            highestSpell = (T)item.getItem(); 
+                    }
+                }
+        return highestSpell;
     }
 
-    protected static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {
+    public static <T extends PassiveSpellItem> T getHighestSpellItem(List<T> spells) {
         T highestSpell = null;
         for (T spell : spells) {
             if (highestSpell == null) {

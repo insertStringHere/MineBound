@@ -53,6 +53,7 @@ public class MineBound {
     };
 
     public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
+    public static final int REDUCTION_COLOR = 0xF6F116;
 
     public MineBound(){
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();

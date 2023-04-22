@@ -196,7 +196,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                                         .append(" effect"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
                                         .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                        .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(manaColorStyle)));
+                                        .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(reductionColorStyle)));
         pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ChatFormatting.GRAY)
                                         .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))); 
 
