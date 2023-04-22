@@ -4,12 +4,9 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
-import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -55,6 +52,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_1 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(30, 0.5, 0.4, ArmorTier.EFFIGY);
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_2 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(40, 0.7, 0.6, ArmorTier.SUIT);
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_3 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(50, 1.0, 0.8, ArmorTier.SYNERGY);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_1 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(20, ArmorTier.EFFIGY);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_2 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(10, ArmorTier.SUIT);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_3 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(5, ArmorTier.SYNERGY);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_2 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(20, 20, 200, ArmorTier.SUIT);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_3 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(20, 40, 140, ArmorTier.SYNERGY);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_4 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(10, 40, 100, ArmorTier.SINGULARITY);
@@ -71,6 +71,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Ender */
     public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100, 15, ArmorTier.SYNERGY);
+    public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
@@ -117,6 +118,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             SHIELD_OFFENSIVE_1.build(builder);
             SHIELD_OFFENSIVE_2.build(builder);
             SHIELD_OFFENSIVE_3.build(builder);
+            SHIELD_DEFENSIVE_1.build(builder);
+            SHIELD_DEFENSIVE_2.build(builder);
+            SHIELD_DEFENSIVE_3.build(builder);
             SHIELD_UTILITY_2.build(builder);
             SHIELD_UTILITY_3.build(builder);
             SHIELD_UTILITY_4.build(builder);
@@ -132,7 +136,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             EARTH_DEFENSIVE_4.build(builder);
             builder.push("Utility");
                 EarthUtilitySpell.TOLERANCE = builder.comment("How many blocks without an ore will be accepted as part of the same vein before giving up.").defineInRange("tolerance", 2, 1, 10);
-                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the veinmining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
+                EarthUtilitySpell.USE_TAGS = builder.comment("Whether or not the vein mining will use the minebound:tags/vein_mineable tag to choose whether or not a broken block will apply to veinmine.").comment("Turn off at risk of your own home.").define("use_tags", true);
             builder.pop();
             EARTH_UTILITY_2.build(builder);
             EARTH_UTILITY_3.build(builder);
@@ -141,6 +145,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Ender");
             ENDER_OFFENSIVE_3.build(builder);
+            ENDER_UTILITY_3.build(builder);
         builder.pop();
 
         builder.push("Electric");

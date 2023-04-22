@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "EME",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minebound:illuminant_steel_ingot"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    },
+    "E": {
+      "item": "minecraft:spider_eye"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_ender_u3"
+  }
+}

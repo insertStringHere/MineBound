@@ -135,7 +135,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                                        .append(" effect"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                       .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(manaColorStyle)));
+                                       .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(reductionColorStyle)));
     }
 
     public static class ElectricUtilitySpellConfig implements IConfig {
