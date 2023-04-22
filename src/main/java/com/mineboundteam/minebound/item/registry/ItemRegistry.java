@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
@@ -147,6 +148,9 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> ENDER_OFFENSIVE_3 = ITEMS.register("magic_ender_o3", () -> new EnderOffensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> ENDER_DEFENSIVE_1 = ITEMS.register("magic_ender_d1", () -> new EnderDefensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> ENDER_DEFENSIVE_3 = ITEMS.register("magic_ender_d3", () -> new EnderDefensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_DEFENSIVE_3));
+    public static final RegistryObject<SpellItem> ENDER_DEFENSIVE_4 = ITEMS.register("magic_ender_d4", () -> new EnderDefensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_DEFENSIVE_4));
     public static final RegistryObject<SpellItem> ENDER_UTILITY_3 = ITEMS.register("magic_ender_u3", () -> new EnderUtilitySpell(spellItemProperties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
@@ -203,6 +207,9 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> GUI_ENDER_OFFENSIVE_3 = ITEMS.register("magic/magic_ender_o3", () -> new EnderOffensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_ENDER_DEFENSIVE_1 = ITEMS.register("magic/magic_ender_d1", () -> new EnderDefensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_ENDER_DEFENSIVE_3 = ITEMS.register("magic/magic_ender_d3", () -> new EnderDefensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_DEFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_ENDER_DEFENSIVE_4 = ITEMS.register("magic/magic_ender_d4", () -> new EnderDefensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_DEFENSIVE_4));
     public static final RegistryObject<SpellItem> GUI_ENDER_UTILITY_3 = ITEMS.register("magic/magic_ender_u3", () -> new EnderUtilitySpell(new Item.Properties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
