@@ -68,7 +68,7 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
             setDeltaMovement(Vec3.ZERO);
             moveTo(getOwner().getEyePosition().add(getOwner().getLookAngle().scale(maxDistance)));
         } else { // chaotic homing motion
-            setDeltaMovement(getDeltaMovement().scale(.9).add(getOwner().getEyePosition().add(getOwner().getLookAngle().scale(15)).subtract(position()).normalize().scale(.4)));
+            setDeltaMovement(getDeltaMovement().scale(.9).add(getOwner().getEyePosition().add(getOwner().getLookAngle().scale(maxDistance)).subtract(position()).normalize().scale(.4)));
         }
     }
 
