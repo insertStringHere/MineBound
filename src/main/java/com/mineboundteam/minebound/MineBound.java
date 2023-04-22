@@ -5,7 +5,6 @@ import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.magic.network.MagicSync;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,6 +19,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 @Mod(MineBound.MOD_ID)
 public class MineBound {
     public static final String MOD_ID = "minebound";
@@ -31,14 +32,14 @@ public class MineBound {
         }
 
         @Override
-        public void fillItemList(NonNullList<ItemStack> list){
+        public void fillItemList(NonNullList<ItemStack> list) {
             super.fillItemList(list);
             list.sort((curr, next) -> {
-                if(curr.getItem() instanceof BlockItem && next.getItem() instanceof BlockItem)
+                if (curr.getItem() instanceof BlockItem && next.getItem() instanceof BlockItem)
                     return 0;
-                if(curr.getItem() instanceof BlockItem)
+                if (curr.getItem() instanceof BlockItem)
                     return -1;
-                if(next.getItem() instanceof BlockItem)
+                if (next.getItem() instanceof BlockItem)
                     return 1;
                 return 0;
             });
@@ -55,7 +56,7 @@ public class MineBound {
     public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
     public static final int REDUCTION_COLOR = 0xF6F116;
 
-    public MineBound(){
+    public MineBound() {
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);
         iEventBus.addListener(this::clientSetup);
@@ -68,8 +69,14 @@ public class MineBound {
         ClientRegistry.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event){
+    private void commonSetup(final FMLCommonSetupEvent event) {
         CapabilitySync.registerPackets(event);
         MagicSync.registerPackets(event);
+    }
+
+
+    @SafeVarargs
+    public static <T> T randomlyChooseFrom(T... values) {
+        return values[new Random().nextInt(values.length)];
     }
 }

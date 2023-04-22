@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minebound:magic/spell_item2",
+    "layer0": "minebound:magic/spell_item3",
     "layer1": "minebound:magic/fire/item",
     "layer2": "minebound:magic/spell_utility"
   }
