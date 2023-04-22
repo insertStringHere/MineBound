@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "SFS",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:soul_campfire"
+    },
+    "F": {
+      "item": "minebound:magic_fire_u3"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_u4"
+  }
+}

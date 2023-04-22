@@ -42,6 +42,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 2.5, false, false, 0, ArmorTier.EFFIGY);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 16, 5.0, true, false, 0, ArmorTier.SUIT);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_4 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 16, 5.0, true, true, 50, ArmorTier.SINGULARITY);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_2 = new FireUtilitySpell.FireUtilitySpellConfig(5, 25, 10, 0.5, 40, ArmorTier.SUIT);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_3 = new FireUtilitySpell.FireUtilitySpellConfig(7, 25, 15, 1.0, 20, ArmorTier.SYNERGY);
+    public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_4 = new FireUtilitySpell.FireUtilitySpellConfig(10, 25, 20, 1.5, 20, ArmorTier.SINGULARITY);
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
@@ -110,6 +113,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             FIRE_OFFENSIVE_1.build(builder);
             FIRE_OFFENSIVE_2.build(builder);
             FIRE_OFFENSIVE_4.build(builder);
+            FIRE_UTILITY_2.build(builder);
+            FIRE_UTILITY_3.build(builder);
+            FIRE_UTILITY_4.build(builder);
         builder.pop();
 
         builder.push("Telekinetic");
