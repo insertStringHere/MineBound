@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -101,6 +102,17 @@ public class FireUtilitySpell extends PassiveSpellItem {
         }
     }
 
+    @SubscribeEvent
+    public static void interceptFireDamage(LivingAttackEvent event) {
+        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource().isFire()) {
+            List<FireUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(FireUtilitySpell.class, player);
+            if (equippedSpells.size() > 0) {
+                event.setCanceled(true);
+                player.clearFire();
+            }
+        }
+    }
+
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
@@ -114,6 +126,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent(new DecimalFormat("0.#").format(damage) + " heart" + (damage != 1 ? "s" : "") + " of fire damage").withStyle(ChatFormatting.RED))
                 .append(" every ")
                 .append(new TextComponent(new DecimalFormat("0.#").format(rateInSeconds) + " second" + (rateInSeconds > 1 ? "s" : "")).withStyle(ChatFormatting.DARK_GREEN)));
+        pTooltipComponents.add(new TextComponent("  - Gives fire immunity").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent("range").withStyle(ChatFormatting.DARK_GREEN))
                 .append(", ")
