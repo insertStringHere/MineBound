@@ -4,24 +4,24 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
-import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlot.Type;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor.PacketTarget;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-@SuppressWarnings("resource")
+@Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class CapabilitySync {
     public static final SimpleChannel NET_CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MineBound.MOD_ID, "capability_sync"),
@@ -30,12 +30,11 @@ public class CapabilitySync {
 
     public static void registerPackets(FMLCommonSetupEvent event) {
         NET_CHANNEL.registerMessage(1, SelectedSpellsSync.class, SelectedSpellsSync::encode, SelectedSpellsSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleSelectedSpells));
+                (msg, ctx) -> clientHandle(msg, ctx, SelectedSpellsSync::handleSelectedSpells));
         NET_CHANNEL.registerMessage(2, ManaSync.class, ManaSync::encode, ManaSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, CapabilitySync::handleMana));
+                (msg, ctx) -> clientHandle(msg, ctx, ManaSync::handleMana));
+        NET_CHANNEL.registerMessage(3, UtilitySync.class, UtilitySync::encode, UtilitySync::decode, UtilitySync::handleToggles);
     }
-
-
 
 
     protected static <T> void clientHandle(T msg, Supplier<NetworkEvent.Context> ctx,
@@ -46,102 +45,28 @@ public class CapabilitySync {
         ctx.get().setPacketHandled(true);
     }
 
+    @SubscribeEvent
+    public static void onConnection(PlayerLoggedInEvent event){
+        if(event.getPlayer() instanceof ServerPlayer player){
+            PacketTarget target = PacketDistributor.PLAYER.with(() -> player);
+            
+            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+                NET_CHANNEL.send(target, new ManaSync(mana.getMana(), mana.getTotalManaCap(), mana.getAvailableManaCap())));
+            
+            player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).ifPresent(primary -> 
+                NET_CHANNEL.send(target, new SelectedSpellsSync(true, primary.equippedSlot, primary.index)));
+            
+            player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).ifPresent(secondary ->
+                NET_CHANNEL.send(target, new SelectedSpellsSync(false, secondary.equippedSlot, secondary.index)));
 
-    @OnlyIn(Dist.CLIENT)
-    public static void handleMana(ManaSync msg, Supplier<NetworkEvent.Context> ctx) {
-        PlayerManaProvider.PlayerMana mana = Minecraft.getInstance().player.getCapability(PlayerManaProvider.PLAYER_MANA).orElse(null);
-        if (mana == null) return;
-
-        mana.setMana(msg.getCurrentMana());
-        mana.setTotalManaCap(msg.getTotalManaCap());
-        mana.setAvailableManaCap(msg.getAvailableManaCap());
-    }
-
-    public static void handleSelectedSpells(SelectedSpellsSync msg, Supplier<NetworkEvent.Context> ctx) {
-       Minecraft.getInstance().player.getCapability((Capability<? extends SelectedSpell>)(msg.isPrimary() ? PlayerSelectedSpellsProvider.PRIMARY_SPELL
-                : PlayerSelectedSpellsProvider.SECONDARY_SPELL)).ifPresent(spell -> {
-                    spell.equippedSlot = msg.getSlot();
-                    spell.index = msg.getIndex();
-                });
-    }
-
-    public static class SelectedSpellsSync {
-        private int slot;
-        private int index;
-        private boolean isPrimary;
-
-        public SelectedSpellsSync(boolean isPrimary, EquipmentSlot pSlot, int pIndex) {
-            if(pSlot == null)
-                this.slot = -1;
-            else
-                this.slot = pSlot.getIndex();
-            this.index = pIndex;
-            this.isPrimary = isPrimary;
-        }
-
-        private SelectedSpellsSync() {
-        }
-
-        public EquipmentSlot getSlot() {
-            if (slot == -1)
-                return null;
-            return EquipmentSlot.byTypeAndIndex(Type.ARMOR, slot);
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public boolean isPrimary() {
-            return isPrimary;
-        }
-
-        public static void encode(SelectedSpellsSync msg, FriendlyByteBuf buf) {
-            buf.writeBoolean(msg.isPrimary);
-            buf.writeInt(msg.index);
-            buf.writeInt(msg.slot);
-        }
-
-        public static SelectedSpellsSync decode(FriendlyByteBuf buf) {
-            SelectedSpellsSync msg = new SelectedSpellsSync();
-            msg.isPrimary = buf.readBoolean();
-            msg.index = buf.readInt();
-            msg.slot = buf.readInt();
-            return msg;
+            player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(toggles -> 
+                NET_CHANNEL.send(target, new UtilitySync(toggles.fire, toggles.earth, toggles.light, toggles.ender)));
         }
     }
 
-    public static class ManaSync {
-        private int currentMana;
-        private int totalManaCap;
-        private int availableManaCap;
 
-        public ManaSync(int currentMana, int totalManaCap, int availableManaCap){
-            this.currentMana = currentMana;
-            this.totalManaCap = totalManaCap;
-            this.availableManaCap = availableManaCap;
-        }
 
-        public int getAvailableManaCap() {
-            return availableManaCap;
-        }
 
-        public int getCurrentMana() {
-            return currentMana;
-        }
 
-        public int getTotalManaCap() {
-            return totalManaCap;
-        }
 
-        public static void encode(ManaSync msg, FriendlyByteBuf buf) {
-            buf.writeInt(msg.currentMana);
-            buf.writeInt(msg.totalManaCap);
-            buf.writeInt(msg.availableManaCap);
-        }
-
-        public static ManaSync decode(FriendlyByteBuf buf) {
-            return new ManaSync(buf.readInt(), buf.readInt(), buf.readInt());
-        }
-    }
 }

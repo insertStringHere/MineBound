@@ -9,7 +9,8 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.Sec
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
-import com.mineboundteam.minebound.capabilities.network.CapabilitySync.SelectedSpellsSync;
+import com.mineboundteam.minebound.capabilities.network.ManaSync;
+import com.mineboundteam.minebound.capabilities.network.SelectedSpellsSync;
 import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.ArmorConfig;
 import com.mineboundteam.minebound.config.ManaConfig;
@@ -295,7 +296,7 @@ public class MagicEvents {
             mana.setTotalManaCap(totalMana);
             mana.addMana(mana.getManaRecRate() + recBoost);
 
-            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CapabilitySync.ManaSync(mana.getMana(), totalMana, mana.getAvailableManaCap()));
+            CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ManaSync(mana.getMana(), totalMana, mana.getAvailableManaCap()));
         };
     }
 
