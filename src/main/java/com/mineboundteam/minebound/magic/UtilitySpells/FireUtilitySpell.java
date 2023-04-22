@@ -67,7 +67,8 @@ public class FireUtilitySpell extends PassiveSpellItem {
             if (equippedSpells.size() > 0) {
                 FireUtilitySpell highestSpell = getHighestSpellItem(equippedSpells);
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.manaReduction));
-                player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 1, false, false));
+                player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 0, false, false));
+                player.clearFire();
 
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
                     if (utilityToggle.fire) {        
