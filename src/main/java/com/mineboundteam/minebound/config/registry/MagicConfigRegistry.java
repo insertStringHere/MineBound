@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.config.registry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
@@ -71,6 +72,10 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Ender */
     public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100, 15, ArmorTier.SYNERGY);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_1 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(20, 15, 40, ArmorTier.SUIT);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_3 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(40, 20, 80, ArmorTier.SYNERGY);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_4 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(50, 25, 160, ArmorTier.SINGULARITY);
+
     public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
@@ -145,6 +150,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Ender");
             ENDER_OFFENSIVE_3.build(builder);
+            ENDER_DEFENSIVE_1.build(builder);
+            ENDER_DEFENSIVE_3.build(builder);
+            ENDER_DEFENSIVE_4.build(builder);
             ENDER_UTILITY_3.build(builder);
         builder.pop();
 

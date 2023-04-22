@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -64,8 +65,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
+            if (event.getSource().getEntity() instanceof LivingEntity sourceEntity) {
                 boolean spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
                 if (!spellTriggered) {
                     spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
@@ -99,8 +99,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     @SubscribeEvent
     public static void triggerSpell(LivingHurtEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
+            if (event.getSource().getEntity() instanceof LivingEntity) {
                 boolean spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
                 if (!spellTriggered) {
                     spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
