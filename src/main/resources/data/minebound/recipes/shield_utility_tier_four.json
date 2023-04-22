@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "SMS",
+    "SGS"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:myrial_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    },
+    "M": {
+      "item": "minebound:magic_shield_u3"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_u4"
+  }
+}

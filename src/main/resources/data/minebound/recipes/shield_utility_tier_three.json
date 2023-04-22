@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SMS",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gilded_diamond_ingot"
+    },
+    "S": {
+      "item": "minecraft:turtle_helmet"
+    },
+    "M": {
+      "item": "minebound:magic_shield_u2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_u3"
+  }
+}
