@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
@@ -51,6 +52,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_1 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(30, 0.5, 0.4, ArmorTier.EFFIGY);
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_2 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(40, 0.7, 0.6, ArmorTier.SUIT);
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_3 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(50, 1.0, 0.8, ArmorTier.SYNERGY);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_1 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(20, ArmorTier.EFFIGY);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_2 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(10, ArmorTier.SUIT);
+    public static final ShieldDefensiveSpell.ShieldDefensiveSpellConfig SHIELD_DEFENSIVE_3 = new ShieldDefensiveSpell.ShieldDefensiveSpellConfig(5, ArmorTier.SYNERGY);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_2 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(20, 20, 200, ArmorTier.SUIT);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_3 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(20, 40, 140, ArmorTier.SYNERGY);
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_4 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(10, 40, 100, ArmorTier.SINGULARITY);
@@ -114,6 +118,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             SHIELD_OFFENSIVE_1.build(builder);
             SHIELD_OFFENSIVE_2.build(builder);
             SHIELD_OFFENSIVE_3.build(builder);
+            SHIELD_DEFENSIVE_1.build(builder);
+            SHIELD_DEFENSIVE_2.build(builder);
+            SHIELD_DEFENSIVE_3.build(builder);
             SHIELD_UTILITY_2.build(builder);
             SHIELD_UTILITY_3.build(builder);
             SHIELD_UTILITY_4.build(builder);

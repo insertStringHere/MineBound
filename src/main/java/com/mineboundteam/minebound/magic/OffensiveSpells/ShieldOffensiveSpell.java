@@ -32,6 +32,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ShieldOffensiveSpell extends ActiveSpellItem {
+    public static final String ACTIVE_TAG = "minebound.shield_offensive.active";
 
     private final int manaCost;
     private final double damageReduction;
@@ -48,7 +49,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
+        stack.getOrCreateTag().putBoolean(ACTIVE_TAG, true);
     }
 
     @Override
@@ -57,12 +58,12 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
+        stack.getOrCreateTag().putBoolean(ACTIVE_TAG, false);
     }
 
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
                 boolean spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
@@ -81,7 +82,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) == 0) {
@@ -97,7 +98,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingHurtEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
+        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity != null) {
                 boolean spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
@@ -116,7 +117,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
+            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
             if (isActive) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) != 0) {

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WGW",
+    "WSW",
+    " W "
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:warped_stems"
+    },
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    },
+    "S": {
+      "item": "minebound:magic_shield_d2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_shield_d3"
+  }
+}
