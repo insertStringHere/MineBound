@@ -3,6 +3,7 @@
   "textures": {
     "top": "minebound:block/alloy_furnace_top",
     "front": "minebound:block/alloy_furnace_front_on",
-    "side": "minebound:block/alloy_furnace_side"
+    "side": "minebound:block/alloy_furnace_side",
+    "bottom": "minebound:block/alloy_furnace_side"
   }
 }
