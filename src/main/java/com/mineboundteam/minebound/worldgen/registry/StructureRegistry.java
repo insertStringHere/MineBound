@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.worldgen.registry;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import com.mineboundteam.minebound.MineBound;
@@ -17,15 +18,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class StructureRegistry {
 
-    protected static Map<StructureFeature<?>, GenerationStep.Decoration> STEP = null;
+    protected static Field STEP = null;
 
     static{
         try {
-            var hashField = StructureFeature.class.getDeclaredField("STEP");
-            hashField.setAccessible(true);
-            STEP = (Map<StructureFeature<?>, GenerationStep.Decoration>)hashField.get(StructureFeature.VILLAGE);
+            STEP = StructureFeature.class.getDeclaredField("STEP");
+            STEP.setAccessible(true);
         } catch (Exception e){
-            Minecraft.crash(new CrashReport("Not my fault this game is coded like garbage", e));
+            Minecraft.crash(new CrashReport("Could not extract decoration step hashmap field.", e));
         }
         
         
@@ -34,10 +34,19 @@ public class StructureRegistry {
     public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, MineBound.MOD_ID); 
     
     public static final StructureFeature<JigsawConfiguration> MYRIAL_BASE = new MyrialBase(JigsawConfiguration.CODEC, (e)-> true);
-
+    
+    @SuppressWarnings("unchecked")
     public static void register(IEventBus iEventBus){
+        Map<StructureFeature<?>, GenerationStep.Decoration> stepMap = null;
+       
+        try {
+            stepMap = (Map<StructureFeature<?>, GenerationStep.Decoration>)STEP.get(StructureFeature.VILLAGE);
+        } catch (IllegalArgumentException | IllegalAccessException | ClassCastException e) {
+            Minecraft.crash(new CrashReport("Could not extract decoration step hashmap from StructureFeature", e));
+        }
+        
         STRUCTURES.register("myrial_base", () -> MYRIAL_BASE);
-        STEP.put(MYRIAL_BASE, Decoration.UNDERGROUND_STRUCTURES);
+        stepMap.put(MYRIAL_BASE, Decoration.UNDERGROUND_STRUCTURES);
         
         STRUCTURES.register(iEventBus);
         
