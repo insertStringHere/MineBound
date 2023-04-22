@@ -11,17 +11,14 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
-import com.mineboundteam.minebound.magic.UtilitySpells.EarthUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ElectricUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.ShieldUtilitySpell;
-import com.mineboundteam.minebound.magic.UtilitySpells.TelekineticUtilitySpell;
+import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -128,6 +125,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_2 = ITEMS.register("magic_shield_o2", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_3 = ITEMS.register("magic_shield_o3", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_1 = ITEMS.register("magic_shield_d1", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_2 = ITEMS.register("magic_shield_d2", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_2));
+    public static final RegistryObject<SpellItem> SHIELD_DEFENSIVE_3 = ITEMS.register("magic_shield_d3", () -> new ShieldDefensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_2 = ITEMS.register("magic_shield_u2", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_2));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_3 = ITEMS.register("magic_shield_u3", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_3));
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_4));
@@ -144,6 +144,7 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> ENDER_OFFENSIVE_3 = ITEMS.register("magic_ender_o3", () -> new EnderOffensiveSpell(spellItemProperties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> ENDER_UTILITY_3 = ITEMS.register("magic_ender_u3", () -> new EnderUtilitySpell(spellItemProperties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
     public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_2 = ITEMS.register("magic_electric_u2", () -> new ElectricUtilitySpell(spellItemProperties(), MagicConfigRegistry.ELECTRIC_UTILITY_2));
@@ -178,6 +179,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_1 = ITEMS.register("magic/magic_shield_o1", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_2 = ITEMS.register("magic/magic_shield_o2", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_SHIELD_OFFENSIVE_3 = ITEMS.register("magic/magic_shield_o3", () -> new ShieldOffensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_1 = ITEMS.register("magic/magic_shield_d1", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_2 = ITEMS.register("magic/magic_shield_d2", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_2));
+    public static final RegistryObject<SpellItem> GUI_SHIELD_DEFENSIVE_3 = ITEMS.register("magic/magic_shield_d3", () -> new ShieldDefensiveSpell(new Item.Properties(), MagicConfigRegistry.SHIELD_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_2 = ITEMS.register("magic/magic_shield_u2", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_2));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_3 = ITEMS.register("magic/magic_shield_u3", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_3));
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_4 = ITEMS.register("magic/magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_4));
@@ -193,6 +197,7 @@ public class ItemRegistry {
 
     /* Ender */
     public static final RegistryObject<SpellItem> GUI_ENDER_OFFENSIVE_3 = ITEMS.register("magic/magic_ender_o3", () -> new EnderOffensiveSpell(new Item.Properties(), MagicConfigRegistry.ENDER_OFFENSIVE_3));
+    public static final RegistryObject<SpellItem> GUI_ENDER_UTILITY_3 = ITEMS.register("magic/magic_ender_u3", () -> new EnderUtilitySpell(new Item.Properties(), MagicConfigRegistry.ENDER_UTILITY_3));
 
     /* Electric */
     public static final RegistryObject<SpellItem> GUI_ELECTRIC_UTILITY_2 = ITEMS.register("magic/magic_electric_u2", () -> new ElectricUtilitySpell(new Item.Properties(), MagicConfigRegistry.ELECTRIC_UTILITY_2));

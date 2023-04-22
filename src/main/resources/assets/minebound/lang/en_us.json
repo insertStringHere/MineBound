@@ -92,17 +92,23 @@
   "item.minebound.magic_shield_o1": "Shield Offensive I",
   "item.minebound.magic_shield_o2": "Shield Offensive II",
   "item.minebound.magic_shield_o3": "Shield Offensive III",
+  "item.minebound.magic_shield_d1": "Shield Defensive I",
+  "item.minebound.magic_shield_d2": "Shield Defensive II",
+  "item.minebound.magic_shield_d3": "Shield Defensive III",
   "item.minebound.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic_shield_u4": "Shield Utility IV",
-  
+
   "item.minebound.magic.magic_shield_o1": "Shield Offensive I",
   "item.minebound.magic.magic_shield_o2": "Shield Offensive II",
   "item.minebound.magic.magic_shield_o3": "Shield Offensive III",
+  "item.minebound.magic.magic_shield_d1": "Shield Defensive I",
+  "item.minebound.magic.magic_shield_d2": "Shield Defensive II",
+  "item.minebound.magic.magic_shield_d3": "Shield Defensive III",
   "item.minebound.magic.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic.magic_shield_u4": "Shield Utility IV",
-  
+
   "item.minebound.magic_earth_d1": "Earth Defensive I",
   "item.minebound.magic_earth_d2": "Earth Defensive II",
   "item.minebound.magic_earth_d3": "Earth Defensive III",
@@ -120,9 +126,11 @@
   "item.minebound.magic.magic_earth_u4": "Earth Utility IV",
 
   "item.minebound.magic_ender_o3": "Ender Offensive III",
+  "item.minebound.magic_ender_u3": "Ender Utility III",
 
   "item.minebound.magic.magic_ender_o3": "Ender Offensive III",
-  
+  "item.minebound.magic.magic_ender_u3": "Ender Utility III",
+
   "item.minebound.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic_electric_u4": "Electric Utility IV",
@@ -148,8 +156,8 @@
   "item.minebound.magic.magic_necrotic_o2": "Necrotic Offensive II",
   "item.minebound.magic.magic_necrotic_o3": "Necrotic Offensive III",
   "item.minebound.magic.magic_necrotic_o4": "Necrotic Offensive IV",
-  
-  
+
+
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
   "block.minebound.gilded_diamond_block": "Gilded Diamond Block",
