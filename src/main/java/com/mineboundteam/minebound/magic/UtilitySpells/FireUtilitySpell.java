@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.magic.UtilitySpells;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
@@ -20,8 +21,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -37,6 +41,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class FireUtilitySpell extends PassiveSpellItem {
     private final int manaCost;
+    private final int manaReduction;
     private final int aoeRange;
     private final double damage;
     private final int damageRate;
@@ -46,6 +51,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
         super(properties, config.LEVEL, MagicType.FIRE, SpellType.UTILITY);
 
         this.manaCost = config.MANA_COST.get();
+        this.manaReduction = config.MANA_REDUCTION.get();
         this.aoeRange = config.AOE_RANGE.get();
         this.damage = config.DAMAGE.get();
         this.damageRate = config.DAMAGE_RATE.get();
@@ -61,6 +67,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
                     if (utilityToggle.fire) {
                         FireUtilitySpell highestSpell = getHighestSpellItem(equippedSpells);
+                        player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.manaReduction));
                         int damageRate = highestSpell.damageRate;
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
@@ -76,11 +83,22 @@ public class FireUtilitySpell extends PassiveSpellItem {
                             int particleCount = range / 5;
                             for (int degree = 0; degree < 360; degree++) {
                                 for (int count = 0; count < particleCount; count++) {
-                                    level.addParticle(ParticleTypes.FLAME,
+                                    /**
+                                     * Derived from {@link LivingEntity.hasLineOfSight}
+                                     */
+                                    Vec3 playerVec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
+                                    Vec3 particleVec = new Vec3(
                                             player.getX() + level.getRandom().nextDouble(range) * Math.cos(degree),
                                             player.getY() + (level.getRandom().nextDouble(range) * MineBound.randomlyChooseFrom(-1, 1)),
-                                            player.getZ() + level.getRandom().nextDouble(range) * Math.sin(degree),
-                                            0, 0, 0);
+                                            player.getZ() + level.getRandom().nextDouble(range) * Math.sin(degree)
+                                    );
+                                    if (level.clip(new ClipContext(playerVec, particleVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
+                                        level.addParticle(ParticleTypes.FLAME,
+                                                particleVec.x(),
+                                                particleVec.y(),
+                                                particleVec.z(),
+                                                0, 0, 0);
+                                    }
                                 }
                             }
 
@@ -98,6 +116,8 @@ public class FireUtilitySpell extends PassiveSpellItem {
                         }
                     }
                 });
+            } else {
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", 0));
             }
         }
     }
@@ -135,6 +155,9 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent("Mana cost").withStyle(manaColorStyle)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle)).append(" per entity damaged"));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
+                .append(" by ").append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
@@ -149,18 +172,21 @@ public class FireUtilitySpell extends PassiveSpellItem {
 
     public static class FireUtilitySpellConfig implements IConfig {
         public ForgeConfigSpec.IntValue MANA_COST;
+        public ForgeConfigSpec.IntValue MANA_REDUCTION;
         public ForgeConfigSpec.IntValue AOE_RANGE;
         public ForgeConfigSpec.DoubleValue DAMAGE;
         public ForgeConfigSpec.IntValue DAMAGE_RATE;
         public final ArmorTier LEVEL;
 
         private final int manaCost;
+        private final int manaReduction;
         private final int aoeRange;
         private final double damage;
         private final int damageRate;
 
-        public FireUtilitySpellConfig(int manaCost, int aoeRange, double damage, int damageRate, ArmorTier level) {
+        public FireUtilitySpellConfig(int manaCost, int manaReduction, int aoeRange, double damage, int damageRate, ArmorTier level) {
             this.manaCost = manaCost;
+            this.manaReduction = manaReduction;
             this.aoeRange = aoeRange;
             this.damage = damage;
             this.damageRate = damageRate;
@@ -172,6 +198,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
             builder.push("Utility");
             builder.push(LEVEL.toString());
             MANA_COST = builder.comment("Mana cost per application of damage").defineInRange("mana_cost", manaCost, 0, 10000);
+            MANA_REDUCTION = builder.comment("How much total mana will be reduced by").defineInRange("mana_reduction", manaReduction, 0, 10000);
             AOE_RANGE = builder.comment("Area of effect in blocks").defineInRange("aoe_range", aoeRange, 0, 10000);
             DAMAGE = builder.comment("Damage dealt in hearts").defineInRange("damage", damage, 0, 10000);
             DAMAGE_RATE = builder.comment("How often in ticks the spell will damage entities in range (20 ticks = 1 second)").defineInRange("damage_rate", damageRate, 0, 10000);
