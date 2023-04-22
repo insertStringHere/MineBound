@@ -16,6 +16,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +30,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -64,10 +65,12 @@ public class FireUtilitySpell extends PassiveSpellItem {
             Player player = event.player;
             List<FireUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(FireUtilitySpell.class, player);
             if (equippedSpells.size() > 0) {
+                FireUtilitySpell highestSpell = getHighestSpellItem(equippedSpells);
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.manaReduction));
+                player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 1, false, false));
+
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
-                    if (utilityToggle.fire) {
-                        FireUtilitySpell highestSpell = getHighestSpellItem(equippedSpells);
-                        player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.manaReduction));
+                    if (utilityToggle.fire) {        
                         int damageRate = highestSpell.damageRate;
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
@@ -106,7 +109,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                                 List<Entity> entities = level.getEntities(player, new AABB(player.getX() - range, player.getY() - range, player.getZ() - range, player.getX() + range, player.getY() + range, player.getZ() + range));
                                 for (Entity entity : entities) {
                                     if (entity instanceof LivingEntity && player.hasLineOfSight(entity) && player.distanceTo(entity) <= range) {
-                                        entity.hurt(DamageSource.ON_FIRE, damage);
+                                        entity.hurt(DamageSource.playerAttack(player).setIsFire(), damage);
                                         // + 1 is so the fire doesn't flicker
                                         entity.setRemainingFireTicks(damageRate + 1);
                                         reduceMana(manaCost, player);
@@ -122,18 +125,8 @@ public class FireUtilitySpell extends PassiveSpellItem {
         }
     }
 
-    @SubscribeEvent
-    public static void interceptFireDamage(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource().isFire()) {
-            List<FireUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(FireUtilitySpell.class, player);
-            if (equippedSpells.size() > 0) {
-                event.setCanceled(true);
-                player.clearFire();
-            }
-        }
-    }
-
     @Override
+    @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
