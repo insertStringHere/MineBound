@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.magic.UtilitySpells;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.CrashReport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -74,6 +76,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
     }
 
     @Override
+    @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
@@ -132,17 +135,25 @@ public class LightUtilitySpell extends PassiveSpellItem {
     @OnlyIn(Dist.CLIENT)
     @Mod.EventBusSubscriber(modid = MineBound.MOD_ID, value = {Dist.CLIENT})
     public static class GlowingRenderer implements ResourceManagerReloadListener {
+        protected static Field field = null;
+        
+        static {
+            try {
+                field = LevelRenderer.class.getDeclaredField("entityEffect");
+                field.setAccessible(true);
+            } catch (Exception e) {
+                Minecraft.crash(new CrashReport("Couldn't extract entity effect PostChain field", e));
+            }
+        }
+
         @OnlyIn(Dist.CLIENT)
         public static void initOutline() {
             // At this point I don't care. It shouldn't be private.
-            if (entityEffect == null) {
+            if (entityEffect == null && field != null) {
                 try {
-                    var field = LevelRenderer.class.getDeclaredField("entityEffect");
-                    field.setAccessible(true);
-    
                     entityEffect = (PostChain) field.get(minecraft.levelRenderer);
                 } catch (Exception e) {
-                    //i dont' care
+                    // Doesn't matter too much; it's just a graphical bug. 
                 }
             }
         }
