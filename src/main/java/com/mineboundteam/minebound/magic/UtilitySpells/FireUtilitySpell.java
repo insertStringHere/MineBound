@@ -84,7 +84,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                             for (int degree = 0; degree < 360; degree++) {
                                 for (int count = 0; count < particleCount; count++) {
                                     /**
-                                     * Derived from {@link LivingEntity.hasLineOfSight}
+                                     * Derived from {@link LivingEntity#hasLineOfSight(Entity)}
                                      */
                                     Vec3 playerVec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
                                     Vec3 particleVec = new Vec3(
