@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.entity.MyrialSwordEntity;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -17,19 +18,35 @@ public class MyrialSword extends SwordItem {
     }
 
     @Override
+    public void inventoryTick(@NotNull ItemStack itemStack, Level level, @NotNull Entity entity, int slotID, boolean isSelected) {
+        if (!level.isClientSide && entity instanceof Player player && (!isSelected || player.containerMenu != player.inventoryMenu))
+            player.getInventory().removeItem(itemStack);
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack itemStack, Player player) {
+        player.getInventory().removeItem(itemStack);
+        return false;
+    }
+
+    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (!level.isClientSide) {
-            MyrialSwordVacuum myrialSwordVacuum = (MyrialSwordVacuum) ItemRegistry.MYRIAL_SWORD_VACUUM.get();
-            ItemStack itemStack = new ItemStack(myrialSwordVacuum);
-            myrialSwordVacuum.itemStack = itemStack;
-
-            switchToVacuum(player, itemStack);
-            throwItem(player, level, itemStack);
+            ItemStack myrialSwordVacuum = createVacuum();
+            switchToVacuum(player, myrialSwordVacuum);
+            level.addFreshEntity(new MyrialSwordEntity(player, level, myrialSwordVacuum));
         }
         return super.use(level, player, interactionHand);
     }
 
     // helper methods
+    public ItemStack createVacuum() {
+        MyrialSwordVacuum myrialSwordVacuum = (MyrialSwordVacuum) ItemRegistry.MYRIAL_SWORD_VACUUM.get();
+        ItemStack itemStack = new ItemStack(myrialSwordVacuum);
+        myrialSwordVacuum.itemStack = itemStack;
+        return itemStack;
+    }
+
     public void switchToVacuum(Player player, ItemStack myrialSwordVacuum) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack potentialMyrialSword = player.getInventory().getItem(i);
@@ -39,11 +56,5 @@ public class MyrialSword extends SwordItem {
                 break;
             }
         }
-    }
-
-    public void throwItem(Player player, Level level, ItemStack myrialSwordVacuum) {
-        MyrialSwordEntity myrialSwordEntity = new MyrialSwordEntity(player, level, myrialSwordVacuum);
-        myrialSwordEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 1.5f, 1);
-        level.addFreshEntity(myrialSwordEntity);
     }
 }
