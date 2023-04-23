@@ -45,8 +45,8 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
 
     @Override
     public void onInsideBlock(@NotNull BlockState blockState) {
-        if (myrialSwordVacuum != null && !blockState.is(Blocks.AIR))
-            myrialSwordVacuum.getOrCreateTag().putBoolean("minebound.return_myrial_sword", true);
+        if (myrialSwordVacuum != null && !blockState.is(Blocks.AIR) && !myrialSwordVacuum.getOrCreateTag().getBoolean("minebound.return_myrial_sword"))
+            setDeltaMovement(Vec3.ZERO);
     }
 
     @Override
@@ -63,12 +63,9 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
         if (getOwner() == null || myrialSwordVacuum == null) return;
 
         if (myrialSwordVacuum.getOrCreateTag().getBoolean("minebound.return_myrial_sword")) {
-            setDeltaMovement(getDeltaMovement().scale(.9).add(getOwner().getEyePosition().subtract(position()).normalize().scale(.4)));
-        } else if (position().distanceTo(getOwner().getEyePosition()) > maxDistance - 1) { // smooth hovering motion
-            setDeltaMovement(Vec3.ZERO);
-            moveTo(getOwner().getEyePosition().add(getOwner().getLookAngle().scale(maxDistance)));
-        } else { // chaotic homing motion
-            setDeltaMovement(getDeltaMovement().scale(.9).add(getOwner().getEyePosition().add(getOwner().getLookAngle().scale(maxDistance)).subtract(position()).normalize().scale(.4)));
+            setDeltaMovement(getOwner().getEyePosition().subtract(position()).scale(.3));
+        } else {
+            setDeltaMovement(getOwner().getLookAngle().scale(maxDistance).add(getOwner().getEyePosition()).subtract(position()).scale(.3));
         }
     }
 

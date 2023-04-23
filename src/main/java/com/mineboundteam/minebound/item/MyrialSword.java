@@ -1,32 +1,20 @@
 package com.mineboundteam.minebound.item;
 
+import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.entity.MyrialSwordEntity;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
+import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class MyrialSword extends SwordItem {
+public class MyrialSword extends MyrialMachete {
     public MyrialSword(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
-    }
-
-    @Override
-    public void inventoryTick(@NotNull ItemStack itemStack, Level level, @NotNull Entity entity, int slotID, boolean isSelected) {
-        if (!level.isClientSide && entity instanceof Player player && (!isSelected || player.containerMenu != player.inventoryMenu))
-            player.getInventory().removeItem(itemStack);
-    }
-
-    @Override
-    public boolean onDroppedByPlayer(ItemStack itemStack, Player player) {
-        player.getInventory().removeItem(itemStack);
-        return false;
+        super(tier, attackDamageModifier, attackSpeedModifier, properties, MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1);
     }
 
     @Override
