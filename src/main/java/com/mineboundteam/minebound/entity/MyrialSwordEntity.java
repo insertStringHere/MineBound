@@ -16,7 +16,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class MyrialSwordEntity extends ThrowableItemProjectile {
-    int maxDistance = 10;
     ItemStack myrialSwordVacuum;
 
     public MyrialSwordEntity(EntityType<MyrialSwordEntity> entityType, Level level) {
@@ -65,7 +64,7 @@ public class MyrialSwordEntity extends ThrowableItemProjectile {
         if (myrialSwordVacuum.getOrCreateTag().getBoolean("minebound.return_myrial_sword")) {
             setDeltaMovement(getOwner().getEyePosition().subtract(position()).scale(.3));
         } else {
-            setDeltaMovement(getOwner().getLookAngle().scale(maxDistance).add(getOwner().getEyePosition()).subtract(position()).scale(.3));
+            setDeltaMovement(getOwner().getLookAngle().scale(10).add(getOwner().getEyePosition()).subtract(position()).scale(.3));
         }
     }
 
