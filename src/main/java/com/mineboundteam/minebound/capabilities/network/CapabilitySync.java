@@ -30,10 +30,11 @@ public class CapabilitySync {
 
     public static void registerPackets(FMLCommonSetupEvent event) {
         NET_CHANNEL.registerMessage(1, SelectedSpellsSync.class, SelectedSpellsSync::encode, SelectedSpellsSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, SelectedSpellsSync::handleSelectedSpells));
+            (msg, ctx) -> clientHandle(msg, ctx, SelectedSpellsSync::handleSelectedSpells));
         NET_CHANNEL.registerMessage(2, ManaSync.class, ManaSync::encode, ManaSync::decode,
-                (msg, ctx) -> clientHandle(msg, ctx, ManaSync::handleMana));
-        NET_CHANNEL.registerMessage(3, UtilitySync.class, UtilitySync::encode, UtilitySync::decode, UtilitySync::handleToggles);
+            (msg, ctx) -> clientHandle(msg, ctx, ManaSync::handleMana));
+        NET_CHANNEL.registerMessage(3, UtilitySync.class, UtilitySync::encode, UtilitySync::decode, 
+            (msg, ctx) -> clientHandle(msg, ctx, UtilitySync::handleToggles));
     }
 
 
