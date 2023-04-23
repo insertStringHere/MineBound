@@ -134,9 +134,15 @@
   "item.minebound.magic.magic_earth_u4": "Earth Utility IV",
 
   "item.minebound.magic_ender_o3": "Ender Offensive III",
+  "item.minebound.magic_ender_d1": "Ender Defensive I",
+  "item.minebound.magic_ender_d3": "Ender Defensive III",
+  "item.minebound.magic_ender_d4": "Ender Defensive IV",
   "item.minebound.magic_ender_u3": "Ender Utility III",
 
   "item.minebound.magic.magic_ender_o3": "Ender Offensive III",
+  "item.minebound.magic.magic_ender_d1": "Ender Defensive I",
+  "item.minebound.magic.magic_ender_d3": "Ender Defensive III",
+  "item.minebound.magic.magic_ender_d4": "Ender Defensive IV",
   "item.minebound.magic.magic_ender_u3": "Ender Utility III",
 
   "item.minebound.magic_electric_u2": "Electric Utility II",
