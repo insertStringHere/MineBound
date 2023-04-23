@@ -141,8 +141,10 @@ public class LightUtilitySpell extends PassiveSpellItem {
             try {
                 var fields = LevelRenderer.class.getDeclaredFields();
                 for (Field field : fields) {
-                    if(field.getType().equals(PostChain.class))
+                    if(field.getType().equals(PostChain.class)) {
                         effectField = field;
+                        break;
+                    }
                 }
                 effectField.setAccessible(true);
             } catch (Exception e) {
@@ -153,10 +155,11 @@ public class LightUtilitySpell extends PassiveSpellItem {
         @OnlyIn(Dist.CLIENT)
         public static void initOutline() {
             // At this point I don't care. It shouldn't be private.
-            if (entityEffect == null && effectField != null) {
+            if (entityEffect == null) {
                 try {
                     entityEffect = (PostChain) effectField.get(minecraft.levelRenderer);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     // Doesn't matter too much; it's just a graphical bug. 
                 }
             }
@@ -202,7 +205,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
             // want to apply it twice.
             if(entityEffect == null)
                 initOutline();
-            if (!hasGlowing) {
+            if (!hasGlowing && entityEffect != null) {
                 minecraft.renderBuffers().outlineBufferSource().endOutlineBatch();
                 entityEffect.process(event.getPartialTick());
                 minecraft.getMainRenderTarget().bindWrite(false);
