@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.item.tool;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ public class MyrialMachete extends SwordItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (!pLevel.isClientSide() && pEntity instanceof Player player) {
-            if(!pIsSelected || player.containerMenu != player.inventoryMenu) {
+            if (!pIsSelected || (player.containerMenu != player.inventoryMenu && !(player.containerMenu instanceof SelectSpellMenu))) {
                 player.getInventory().removeItem(pStack);
             }
         }

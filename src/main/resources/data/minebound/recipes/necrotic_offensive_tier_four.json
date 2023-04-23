@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "WMW",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "M": {
+      "item": "minebound:magic_necrotic_o3"
+    },
+    "W": {
+      "item": "minecraft:wither_rose"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_necrotic_o4"
+  }
+}

@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.config.registry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
 import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
@@ -47,9 +48,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ArmorTier.EFFIGY);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(10, 0.20, false, ArmorTier.SUIT);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(7, 0.35, true, ArmorTier.SYNERGY);
-    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(3, 0.50, true, ArmorTier.SINGULARITY);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_2 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(30, 0.20, false, ArmorTier.SUIT);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_3 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(25, 0.35, false, ArmorTier.SYNERGY);
+    public static final TelekineticUtilitySpell.TelekineticUtilitySpellConfig TELEKINETIC_UTILITY_4 = new TelekineticUtilitySpell.TelekineticUtilitySpellConfig(25, 0.50, true, ArmorTier.SINGULARITY);
 
     /* Shield */
     public static final ShieldOffensiveSpell.ShieldOffensiveSpellConfig SHIELD_OFFENSIVE_1 = new ShieldOffensiveSpell.ShieldOffensiveSpellConfig(30, 0.5, 0.4, ArmorTier.EFFIGY);
@@ -74,6 +75,10 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Ender */
     public static final EnderOffensiveSpell.EnderOffensiveSpellConfig ENDER_OFFENSIVE_3 = new EnderOffensiveSpell.EnderOffensiveSpellConfig(100, 15, ArmorTier.SYNERGY);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_1 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(20, 15, 40, ArmorTier.SUIT);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_3 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(40, 20, 80, ArmorTier.SYNERGY);
+    public static final EnderDefensiveSpell.EnderDefensiveSpellConfig ENDER_DEFENSIVE_4 = new EnderDefensiveSpell.EnderDefensiveSpellConfig(50, 25, 160, ArmorTier.SINGULARITY);
+
     public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
@@ -151,6 +156,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
         builder.push("Ender");
             ENDER_OFFENSIVE_3.build(builder);
+            ENDER_DEFENSIVE_1.build(builder);
+            ENDER_DEFENSIVE_3.build(builder);
+            ENDER_DEFENSIVE_4.build(builder);
             ENDER_UTILITY_3.build(builder);
         builder.pop();
 

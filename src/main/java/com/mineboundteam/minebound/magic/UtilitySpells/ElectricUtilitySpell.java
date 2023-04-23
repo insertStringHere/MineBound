@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -20,13 +21,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -109,6 +113,42 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 if (autoStep.getModifier(autoStepID) != null) 
                     autoStep.removeModifier(autoStepID);
             }
+        }
+    }
+
+    // Want this to run first so all further calculations use this value
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("resource")
+    // Taken from AbstractClientPlayer
+    // Instead of carefully undoing the calculations, if the player has speed boost from electric spell,
+    // disable speed FOV altogether
+    public static void removeFOV(FOVModifierEvent event){
+        Player player = event.getEntity();
+        if(getHighestSpellItem(ElectricUtilitySpell.class, player) != null){
+            float f = 1.0F;
+        
+            if (player.getAbilities().flying) {
+                f *= 1.1F;
+            }
+
+            ItemStack itemstack = player.getUseItem();
+            if (player.isUsingItem()) {
+                if (itemstack.is(Items.BOW)) {
+                    int i = player.getTicksUsingItem();
+                    float f1 = (float)i / 20.0F;
+                    if (f1 > 1.0F) {
+                    f1 = 1.0F;
+                    } else {
+                    f1 *= f1;
+                    }
+
+                    f *= 1.0F - f1 * 0.15F;
+                } else if (Minecraft.getInstance().options.getCameraType().isFirstPerson() && player.isScoping()) {
+                    f = 0.1f;
+                }
+            }
+
+            event.setNewfov(f);
         }
     }
 

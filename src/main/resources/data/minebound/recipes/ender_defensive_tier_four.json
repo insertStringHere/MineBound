@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PMP",
+    "SES",
+    "PMP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:purpur_block"
+    },
+    "M": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "E": {
+      "item": "minebound:magic_ender_d3"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_ender_d4"
+  }
+}

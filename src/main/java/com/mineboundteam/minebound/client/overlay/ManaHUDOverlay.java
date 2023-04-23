@@ -65,6 +65,8 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
 
 
     protected void renderPlayerMana(PoseStack matrixStack, PlayerMana mana){
+        if (mana == null || mana.getAvailableManaCap() == 0) return;
+        
         if (!(minecraft.player.getMainHandItem().getItem() instanceof SpellItem ||
                 minecraft.player.getOffhandItem().getItem() instanceof SpellItem ||
                 minecraft.player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof MyrialArmorItem ||
@@ -126,6 +128,14 @@ public class ManaHUDOverlay extends GuiComponent implements IIngameOverlay {
 
     protected void renderText(PoseStack matrixStack, PlayerMana mana){
         if (mana == null || mana.getAvailableManaCap() == 0) return;
+
+        if (!(minecraft.player.getMainHandItem().getItem() instanceof SpellItem ||
+            minecraft.player.getOffhandItem().getItem() instanceof SpellItem ||
+            minecraft.player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof MyrialArmorItem ||
+            minecraft.player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof MyrialArmorItem ||
+            minecraft.player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof MyrialArmorItem ||
+            minecraft.player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof MyrialArmorItem))
+        return;
 
         String manaText = Integer.toString(mana.getMana());
         int yOffset = this.yOffset - 56;
