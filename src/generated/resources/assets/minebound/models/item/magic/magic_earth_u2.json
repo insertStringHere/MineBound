@@ -1,3 +1,7 @@
 {
-  "parent": "minecraft:item/generated"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minebound:magic/earth/utility",
+    "layer1": "minebound:magic/level2"
+  }
 }
