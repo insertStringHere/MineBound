@@ -5,6 +5,8 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
+import com.mineboundteam.minebound.capabilities.network.SelectedSpellsSync;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -119,7 +121,7 @@ public class InventorySpellContainer implements Container {
                         secondarySelected = pSlot;
                     CapabilitySync.NET_CHANNEL.send(
                             PacketDistributor.PLAYER.with(() -> (ServerPlayer) inventory.player),
-                            new CapabilitySync.SelectedSpellsSync(isPrimary, selected.equippedSlot, selected.index));
+                            new SelectedSpellsSync(isPrimary, selected.equippedSlot, selected.index));
                 });
 
             inventory.player.closeContainer();
