@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -8,12 +9,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 
 import java.util.List;
@@ -22,7 +22,6 @@ import static com.mineboundteam.minebound.entity.registry.EntityRegistry.ROCK_PR
 
 
 /**
- * Derived from {@link AbstractHurtingProjectile}
  * Derived from {@link FireProjectile}
  * Derived from {@link net.minecraft.world.entity.projectile.AbstractArrow}
  */
@@ -35,6 +34,8 @@ public class RockProjectile extends AbstractArrow {
     private float damageRadius;
     public RockProjectile(EntityType<? extends RockProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        //Adds trailing particles
+        this.setCritArrow(true);
         this.setSoundEvent(SoundEvents.STONE_BREAK);
         //Overwrite damage that would have been applied in AbstractArrow
         this.setBaseDamage(0.0D);
@@ -99,6 +100,16 @@ public class RockProjectile extends AbstractArrow {
     @Override
     public void tick() {
         super.tick();
+
+        //Add Trail
+        Vec3 vec3 = this.getDeltaMovement();
+        double d5 = vec3.x;
+        double d6 = vec3.y;
+        double d1 = vec3.z;
+        for(int i = 0; i < 4; ++i) {
+            this.level.addParticle(ParticleTypes.ASH, this.getX() + d5 * (double)i / 4.0D, this.getY() + d6 * (double)i / 4.0D, this.getZ() + d1 * (double)i / 4.0D, -d5, -d6 + 0.2D, -d1);
+        }
+
         if (!this.level.isClientSide()) {
             double dX = Math.abs(this.getX() - originalX);
             double dY = Math.abs(this.getY() - originalY);
