@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "FMF",
+    " E "
+  ],
+  "key": {
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    },
+    "E": {
+      "item": "minebound:energized_iron_ingot"
+    },
+    "F": {
+      "item": "minebound:myri_chunk"
+    },
+    "M": {
+      "item": "minebound:magic_telekinetic_d2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_telekinetic_d3"
+  }
+}
