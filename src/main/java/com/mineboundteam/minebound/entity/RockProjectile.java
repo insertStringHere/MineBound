@@ -20,6 +20,7 @@ import static com.mineboundteam.minebound.entity.registry.EntityRegistry.ROCK_PR
 
 /**
  * Derived from {@link AbstractHurtingProjectile}
+ * Derived from {@link FireProjectile}
  */
 public class RockProjectile extends AbstractHurtingProjectile {
     private double damage;
@@ -34,6 +35,8 @@ public class RockProjectile extends AbstractHurtingProjectile {
 
     public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, double pOffsetX, double pOffsetY, double pOffsetZ, double damage, int maxDistance) {
         super(ROCK_PROJECTILE.get(), pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ, pLevel);
+        this.setOwner(shooter);
+
         this.damage = damage;
         this.originalX = pX;
         this.originalY = pY;

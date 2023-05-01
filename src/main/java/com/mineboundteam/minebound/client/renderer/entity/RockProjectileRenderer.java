@@ -11,6 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RockProjectileRenderer extends EntityRenderer<RockProjectile> {
+
     public static final ResourceLocation TEXTURE = new ResourceLocation(MineBound.MOD_ID, "textures/entity/rock_projectile.png");
 
     public RockProjectileRenderer(EntityRendererProvider.Context pContext) {
