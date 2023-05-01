@@ -26,7 +26,7 @@ import static com.mineboundteam.minebound.entity.registry.EntityRegistry.ROCK_PR
  * Derived from {@link net.minecraft.world.entity.projectile.AbstractArrow}
  */
 public class RockProjectile extends AbstractArrow {
-    private double damage;
+    private float damage;
     private double originalX;
     private double originalY;
     private double originalZ;
@@ -34,14 +34,9 @@ public class RockProjectile extends AbstractArrow {
     private float damageRadius;
     public RockProjectile(EntityType<? extends RockProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        //Adds trailing particles
-        this.setCritArrow(true);
-        this.setSoundEvent(SoundEvents.STONE_BREAK);
-        //Overwrite damage that would have been applied in AbstractArrow
-        this.setBaseDamage(0.0D);
     }
 
-    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, double damage, float damageRadius, int maxDistance) {
+    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, float damage, float damageRadius, int maxDistance) {
         super(ROCK_PROJECTILE.get(), pX, pY, pZ, pLevel);
         this.setOwner(shooter);
 
@@ -62,7 +57,7 @@ public class RockProjectile extends AbstractArrow {
         if(!this.level.isClientSide){
             Entity target = pResult.getEntity();
             Entity player = this.getOwner();
-            target.hurt(DamageSource.thrown(this, player), (float) damage);
+            target.hurt(DamageSource.thrown(this, player), damage);
             if (player instanceof LivingEntity p ) {
                 this.doEnchantDamageEffects(p, target);
             }
@@ -80,7 +75,7 @@ public class RockProjectile extends AbstractArrow {
                     List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
                     for (Entity target : hitEntities) {
                         if (target instanceof LivingEntity) {
-                            target.hurt(DamageSource.thrown(this, entity), (float) damage);
+                            target.hurt(DamageSource.thrown(this, entity), damage);
                             if (entity instanceof LivingEntity p) {
                                 this.doEnchantDamageEffects(p, target);
                             }
@@ -94,7 +89,7 @@ public class RockProjectile extends AbstractArrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -103,11 +98,11 @@ public class RockProjectile extends AbstractArrow {
 
         //Add Trail
         Vec3 vec3 = this.getDeltaMovement();
-        double d5 = vec3.x;
-        double d6 = vec3.y;
-        double d1 = vec3.z;
+        double deltaX = vec3.x;
+        double deltaY = vec3.y;
+        double deltaZ = vec3.z;
         for(int i = 0; i < 4; ++i) {
-            this.level.addParticle(ParticleTypes.ASH, this.getX() + d5 * (double)i / 4.0D, this.getY() + d6 * (double)i / 4.0D, this.getZ() + d1 * (double)i / 4.0D, -d5, -d6 + 0.2D, -d1);
+            this.level.addParticle(ParticleTypes.ASH, this.getX() + deltaX * (double)i / 4.0D, this.getY() + deltaY * (double)i / 4.0D, this.getZ() + deltaZ * (double)i / 4.0D, -deltaX, -deltaY + 0.2D, -deltaZ);
         }
 
         if (!this.level.isClientSide()) {
