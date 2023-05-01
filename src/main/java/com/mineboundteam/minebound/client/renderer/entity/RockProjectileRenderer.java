@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound.client.renderer.entity;
 
 import com.mineboundteam.minebound.MineBound;
-import com.mineboundteam.minebound.entity.FireProjectile;
 import com.mineboundteam.minebound.entity.RockProjectile;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

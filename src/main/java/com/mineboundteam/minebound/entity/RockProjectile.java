@@ -50,7 +50,7 @@ public class RockProjectile extends AbstractHurtingProjectile {
         if(!this.level.isClientSide){
             Entity target = pResult.getEntity();
             Entity player = this.getOwner();
-            boolean flag = target.hurt(DamageSource.thrown(this, player), (float) damage);
+            target.hurt(DamageSource.thrown(this, player), (float) damage);
             if (player instanceof LivingEntity p ) {
                 this.doEnchantDamageEffects(p, target);
             }
