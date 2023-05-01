@@ -16,6 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 
+import java.util.List;
+
 import static com.mineboundteam.minebound.entity.registry.EntityRegistry.ROCK_PROJECTILE;
 
 
@@ -30,7 +32,7 @@ public class RockProjectile extends AbstractArrow {
     private double originalY;
     private double originalZ;
     private int maxDist;
-
+    private float damageRadius;
     public RockProjectile(EntityType<? extends RockProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setSoundEvent(SoundEvents.STONE_BREAK);
@@ -38,7 +40,7 @@ public class RockProjectile extends AbstractArrow {
         this.setBaseDamage(0.0D);
     }
 
-    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, double damage, int maxDistance) {
+    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, double damage, float damageRadius, int maxDistance) {
         super(ROCK_PROJECTILE.get(), pX, pY, pZ, pLevel);
         this.setOwner(shooter);
 
@@ -47,6 +49,7 @@ public class RockProjectile extends AbstractArrow {
         this.originalY = pY;
         this.originalZ = pZ;
         this.maxDist = maxDistance;
+        this.damageRadius = damageRadius;
         this.setSoundEvent(SoundEvents.STONE_BREAK);
         //Overwrite damage that would have been applied in AbstractArrow
         this.setBaseDamage(0.0D);
@@ -73,7 +76,15 @@ public class RockProjectile extends AbstractArrow {
             if (!(entity instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                 BlockPos blockpos = pResult.getBlockPos().relative(pResult.getDirection());
                 if (this.level.isEmptyBlock(blockpos)) {
-                    this.level.explode(this, blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0.5F, false, Explosion.BlockInteraction.BREAK);
+                    List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
+                    for (Entity target : hitEntities) {
+                        if (target instanceof LivingEntity) {
+                            target.hurt(DamageSource.thrown(this, entity), (float) damage);
+                            if (entity instanceof LivingEntity p) {
+                                this.doEnchantDamageEffects(p, target);
+                            }
+                        }
+                    }
                 }
             }
             this.discard();
