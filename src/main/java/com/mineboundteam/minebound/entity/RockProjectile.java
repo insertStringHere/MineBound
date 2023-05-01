@@ -27,24 +27,16 @@ import static com.mineboundteam.minebound.entity.registry.EntityRegistry.ROCK_PR
  */
 public class RockProjectile extends AbstractArrow {
     private float damage;
-    private double originalX;
-    private double originalY;
-    private double originalZ;
-    private int maxDist;
     private float damageRadius;
     public RockProjectile(EntityType<? extends RockProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, float damage, float damageRadius, int maxDistance) {
+    public RockProjectile(Level pLevel, LivingEntity shooter, double pX, double pY, double pZ, float damage, float damageRadius) {
         super(ROCK_PROJECTILE.get(), pX, pY, pZ, pLevel);
         this.setOwner(shooter);
 
         this.damage = damage;
-        this.originalX = pX;
-        this.originalY = pY;
-        this.originalZ = pZ;
-        this.maxDist = maxDistance;
         this.damageRadius = damageRadius;
         this.setSoundEvent(SoundEvents.STONE_BREAK);
         //Overwrite damage that would have been applied in AbstractArrow
@@ -103,15 +95,6 @@ public class RockProjectile extends AbstractArrow {
         double deltaZ = vec3.z;
         for(int i = 0; i < 4; ++i) {
             this.level.addParticle(ParticleTypes.ASH, this.getX() + deltaX * (double)i / 4.0D, this.getY() + deltaY * (double)i / 4.0D, this.getZ() + deltaZ * (double)i / 4.0D, -deltaX, -deltaY + 0.2D, -deltaZ);
-        }
-
-        if (!this.level.isClientSide()) {
-            double dX = Math.abs(this.getX() - originalX);
-            double dY = Math.abs(this.getY() - originalY);
-            double dZ = Math.abs(this.getZ() - originalZ);
-            if (dX + dY + dZ > maxDist) {
-                this.discard();
-            }
         }
     }
     @Override
