@@ -1,6 +1,5 @@
 package com.mineboundteam.minebound.entity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -47,12 +46,17 @@ public class RockProjectile extends AbstractArrow {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if(!this.level.isClientSide){
-            Entity target = pResult.getEntity();
             Entity player = this.getOwner();
-            target.hurt(DamageSource.thrown(this, player), damage);
-            if (player instanceof LivingEntity p ) {
-                this.doEnchantDamageEffects(p, target);
+            List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
+            for (Entity target : hitEntities) {
+                if (target instanceof LivingEntity) {
+                    target.hurt(DamageSource.thrown(this, player), damage);
+                    if (player instanceof LivingEntity p) {
+                        this.doEnchantDamageEffects(p, target);
+                    }
+                }
             }
+
         }
     }
 
@@ -60,20 +64,19 @@ public class RockProjectile extends AbstractArrow {
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         if (!this.level.isClientSide) {
-            Entity entity = this.getOwner();
-            if (!(entity instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                BlockPos blockpos = pResult.getBlockPos().relative(pResult.getDirection());
-                if (this.level.isEmptyBlock(blockpos)) {
-                    List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
-                    for (Entity target : hitEntities) {
-                        if (target instanceof LivingEntity) {
-                            target.hurt(DamageSource.thrown(this, entity), damage);
-                            if (entity instanceof LivingEntity p) {
-                                this.doEnchantDamageEffects(p, target);
-                            }
+            Entity player = this.getOwner();
+            //Mobs won't explode everything you own
+            if (!(player instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
+                for (Entity target : hitEntities) {
+                    if (target instanceof LivingEntity) {
+                        target.hurt(DamageSource.thrown(this, player), damage);
+                        if (player instanceof LivingEntity p) {
+                            this.doEnchantDamageEffects(p, target);
                         }
                     }
                 }
+
             }
             this.discard();
         }
