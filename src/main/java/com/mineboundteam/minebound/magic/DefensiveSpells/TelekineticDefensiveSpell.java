@@ -59,7 +59,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
             } else {
                 Vec3 start = player.getEyePosition();
                 Vec3 end = player.getViewVector(0).scale(config.GRAB_DISTANCE.get()).add(player.getEyePosition());
-                EntityHitResult entity = ProjectileUtil.getEntityHitResult(level, player, start, end, (new AABB(start, end)).inflate(1), e -> !e.isSpectator(), 0);
+                EntityHitResult entity = ProjectileUtil.getEntityHitResult(level, player, start, end, (new AABB(start, end)).inflate(1), e -> !e.isSpectator(), 1);
                 if(entity != null && entity.getEntity() instanceof LivingEntity living){
                     selectedMap.put(player.getId(), living.getId());
                 }
@@ -136,7 +136,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
         if(config.DO_DAMAGE.get())
             pTooltipComponents.add(new TextComponent("  - Slamming the mob into walls will do ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ChatFormatting.RED))
-                .append(" per unit of speed upon inpact"));
+                .append(" per unit of speed upon impact"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(config.MANA_COST.get()  + " Mana").withStyle(manaColorStyle))
                 .append(" per tick per unit of movement performed by the mob"));

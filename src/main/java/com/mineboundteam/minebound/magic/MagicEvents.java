@@ -320,7 +320,7 @@ public class MagicEvents {
                 
                 if(!event.getFrom().isEmpty() && event.getFrom().getItem() instanceof ActiveSpellItem)
                     MinecraftForge.EVENT_BUS.post(new MagicSelectedEvent.Remove(player, event.getFrom(), new SelectedSpell(null, h, 0)));
-                if(!event.getTo().isEmpty() && event.getTo().getItem() instanceof ActiveSpellItem);
+                if(!event.getTo().isEmpty() && event.getTo().getItem() instanceof ActiveSpellItem)
                     MinecraftForge.EVENT_BUS.post(new MagicSelectedEvent.Select(player, event.getTo(), new SelectedSpell(null, h, 0)));
             } else if(!event.getFrom().isEmpty() 
                 && event.getFrom().getItem() instanceof MyrialArmorItem 
