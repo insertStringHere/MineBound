@@ -135,12 +135,18 @@ public class LightUtilitySpell extends PassiveSpellItem {
     @OnlyIn(Dist.CLIENT)
     @Mod.EventBusSubscriber(modid = MineBound.MOD_ID, value = {Dist.CLIENT})
     public static class GlowingRenderer implements ResourceManagerReloadListener {
-        protected static Field field = null;
+        protected static Field effectField = null;
         
         static {
             try {
-                field = LevelRenderer.class.getDeclaredField("entityEffect");
-                field.setAccessible(true);
+                var fields = LevelRenderer.class.getDeclaredFields();
+                for (Field field : fields) {
+                    if(field.getType().equals(PostChain.class)) {
+                        effectField = field;
+                        break;
+                    }
+                }
+                effectField.setAccessible(true);
             } catch (Exception e) {
                 Minecraft.crash(new CrashReport("Couldn't extract entity effect PostChain field", e));
             }
@@ -149,10 +155,11 @@ public class LightUtilitySpell extends PassiveSpellItem {
         @OnlyIn(Dist.CLIENT)
         public static void initOutline() {
             // At this point I don't care. It shouldn't be private.
-            if (entityEffect == null && field != null) {
+            if (entityEffect == null) {
                 try {
-                    entityEffect = (PostChain) field.get(minecraft.levelRenderer);
+                    entityEffect = (PostChain) effectField.get(minecraft.levelRenderer);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     // Doesn't matter too much; it's just a graphical bug. 
                 }
             }
@@ -198,7 +205,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
             // want to apply it twice.
             if(entityEffect == null)
                 initOutline();
-            if (!hasGlowing) {
+            if (!hasGlowing && entityEffect != null) {
                 minecraft.renderBuffers().outlineBufferSource().endOutlineBatch();
                 entityEffect.process(event.getPartialTick());
                 minecraft.getMainRenderTarget().bindWrite(false);

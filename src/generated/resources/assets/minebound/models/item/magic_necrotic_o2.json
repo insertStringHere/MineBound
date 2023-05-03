@@ -1,6 +1,8 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minebound:magic/spell_item2"
+    "layer0": "minebound:magic/spell_item2",
+    "layer1": "minebound:magic/necrotic/item",
+    "layer2": "minebound:magic/spell_offensive"
   }
 }

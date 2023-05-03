@@ -22,7 +22,11 @@ public class StructureRegistry {
 
     static{
         try {
-            STEP = StructureFeature.class.getDeclaredField("STEP");
+            var fields = StructureFeature.class.getDeclaredFields(); 
+            for (Field field : fields) {
+                if(field.getType().equals(Map.class))
+                    STEP = field;
+            }
             STEP.setAccessible(true);
         } catch (Exception e){
             Minecraft.crash(new CrashReport("Could not extract decoration step hashmap field.", e));
