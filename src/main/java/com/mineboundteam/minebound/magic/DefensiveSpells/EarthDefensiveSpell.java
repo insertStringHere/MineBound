@@ -147,11 +147,11 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(defaultColor)
                 .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
-                .append(" per block broken").withStyle(ChatFormatting.GRAY));
+                .append(" per block broken").withStyle(defaultColor));
     }
 
     public static class EarthDefensiveSpellConfig implements IConfig {
@@ -176,7 +176,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
             builder.push("Defensive");
             builder.push(LEVEL.toString());
             MANA_COST_ON_CAST = builder.comment("Mana cost on spell cast").defineInRange("mana_cost_on_cast", manaCostOnCast, 0, 10000);
-            MINING_LEVEL = builder.comment("The mining level for the spell module.").defineEnum("item_level", miningLevel, Tiers.values());
+            MINING_LEVEL = builder.comment("The mining level for the spell module").defineEnum("item_level", miningLevel, Tiers.values());
             SPEED_MODIFIER = builder.comment("The speed that this module mines at, modifying its item level").defineInRange("speed_modifier", speedModifier, .1, 10);
             builder.pop(2);
         }

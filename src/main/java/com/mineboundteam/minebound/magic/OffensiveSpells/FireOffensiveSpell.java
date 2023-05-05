@@ -1,5 +1,6 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.entity.FireProjectile;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
@@ -21,7 +22,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class FireOffensiveSpell extends ActiveSpellItem {
@@ -103,25 +103,25 @@ public class FireOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Shoots a cone of fire ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(fireDistance + " blocks").withStyle(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Shoots a cone of fire ").withStyle(defaultColor)
+                .append(new TextComponent(MineBound.pluralize(fireDistance, "block")).withStyle(timeAndDistanceColor))
                 .append(" that deals ")
-                .append(new TextComponent(new DecimalFormat("0.#").format(fireDamage) + " hearts of damage").withStyle(ChatFormatting.RED)));
+                .append(new TextComponent(MineBound.pluralize(fireDamage / 2d, "heart") + " of damage").withStyle(damageColor)));
         if (igniteBlocks) {
-            pTooltipComponents.add(new TextComponent("  - Will ").withStyle(ChatFormatting.GRAY)
+            pTooltipComponents.add(new TextComponent("  - Will ").withStyle(defaultColor)
                     .append(new TextComponent("ignite").withStyle(ChatFormatting.GOLD))
                     .append(" blocks hit by the fire"));
         }
         if (shootFireball) {
-            pTooltipComponents.add(new TextComponent("  - On initial cast, shoots a ").withStyle(ChatFormatting.GRAY)
+            pTooltipComponents.add(new TextComponent("  - On initial cast, shoots a ").withStyle(defaultColor)
                     .append(new TextComponent("fireball").withStyle(ChatFormatting.GOLD))
                     .append(" from the center of the cone"));
-            pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+            pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                     .append(new TextComponent(fireballManaCost + " Mana").withStyle(manaColorStyle))
                     .append(" to create the fireball"));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" per second of use"));
     }

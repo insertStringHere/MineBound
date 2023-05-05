@@ -1,11 +1,11 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
+import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -59,11 +59,11 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(teleportDistance + " blocks").withStyle(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(defaultColor)
+                .append(new TextComponent(MineBound.pluralize(teleportDistance, "block")).withStyle(timeAndDistanceColor))
                 .append(" in the direction they are looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" per teleport"));
     }

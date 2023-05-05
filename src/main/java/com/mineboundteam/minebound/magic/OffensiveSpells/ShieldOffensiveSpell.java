@@ -131,16 +131,16 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent((int) (damageReduction * 100) + "%").withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
-                .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(defaultColor)
+                .append(new TextComponent(String.format("%.0f%%", damageReduction * 100)).withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(defaultColor)
+                .append(new TextComponent(String.format("%.0f%%", damageReflected * 100)).withStyle(damageColor))
+                .append(" of the initial damage").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" per reflect").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
+                .append(" per reflect").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(defaultColor));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

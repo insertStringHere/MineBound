@@ -19,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 @Mod(MineBound.MOD_ID)
@@ -78,5 +79,13 @@ public class MineBound {
     @SafeVarargs
     public static <T> T randomlyChooseFrom(T... values) {
         return values[new Random().nextInt(values.length)];
+    }
+
+    public static String pluralize(Number num, String word) {
+        return pluralize(num, word, word + "s");
+    }
+
+    public static String pluralize(Number num, String singular, String plural) {
+        return new DecimalFormat("0.#").format(num) + " " + (num.doubleValue() == 1 ? singular : plural);
     }
 }

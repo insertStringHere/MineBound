@@ -7,7 +7,6 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
@@ -91,17 +90,17 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(defaultColor)
                 .append(new TextComponent("levitate").withStyle(Style.EMPTY.withColor(MobEffects.LEVITATION.getColor())))
                 .append(" for ")
-                .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent(MineBound.pluralize(durationInTicks / 20d, "second")).withStyle(timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
-                .append(" on initial cast").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(" on initial cast").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
-                .append(" each time the player is hit").withStyle(ChatFormatting.GRAY));
+                .append(" each time the player is hit").withStyle(defaultColor));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {

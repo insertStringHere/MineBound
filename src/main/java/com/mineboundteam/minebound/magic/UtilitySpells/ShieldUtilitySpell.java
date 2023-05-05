@@ -124,17 +124,14 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.TOTAL_HITS.get() + " charges").withStyle(ChatFormatting.AQUA))
+        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(defaultColor)
+                .append(new TextComponent(MineBound.pluralize(config.TOTAL_HITS.get(), "charge")).withStyle(ChatFormatting.AQUA))
                 .append(" to a player's total, each absorbing half a heart of damage."));
-        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(defaultColor)
                 .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                 .append(" has been depleted for ")
-                .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))
                 .append(" every time damage is absorbed"));
     }

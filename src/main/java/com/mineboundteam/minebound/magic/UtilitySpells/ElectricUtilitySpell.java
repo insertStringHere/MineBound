@@ -8,7 +8,6 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -65,10 +64,10 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             if (equippedSpells.size() > 0) {
                 ElectricUtilitySpell spell = getHighestSpellItem(equippedSpells);
 
-                if(spell.level.getValue() > ArmorTier.SUIT.getValue()){
+                if (spell.level.getValue() > ArmorTier.SUIT.getValue()) {
                     AttributeInstance autoStep = player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
 
-                    if (autoStep.getModifier(autoStepID) == null) 
+                    if (autoStep.getModifier(autoStepID) == null)
                         autoStep.addTransientModifier(new AttributeModifier(autoStepID, "AutoStep", 1, Operation.ADDITION));
                 }
 
@@ -110,7 +109,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
 
                 AttributeInstance autoStep = player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
 
-                if (autoStep.getModifier(autoStepID) != null) 
+                if (autoStep.getModifier(autoStepID) != null)
                     autoStep.removeModifier(autoStepID);
             }
         }
@@ -122,11 +121,11 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
     // Taken from AbstractClientPlayer
     // Instead of carefully undoing the calculations, if the player has speed boost from electric spell,
     // disable speed FOV altogether
-    public static void removeFOV(FOVModifierEvent event){
+    public static void removeFOV(FOVModifierEvent event) {
         Player player = event.getEntity();
-        if(getHighestSpellItem(ElectricUtilitySpell.class, player) != null){
+        if (getHighestSpellItem(ElectricUtilitySpell.class, player) != null) {
             float f = 1.0F;
-        
+
             if (player.getAbilities().flying) {
                 f *= 1.1F;
             }
@@ -135,11 +134,11 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
             if (player.isUsingItem()) {
                 if (itemstack.is(Items.BOW)) {
                     int i = player.getTicksUsingItem();
-                    float f1 = (float)i / 20.0F;
+                    float f1 = (float) i / 20.0F;
                     if (f1 > 1.0F) {
-                    f1 = 1.0F;
+                        f1 = 1.0F;
                     } else {
-                    f1 *= f1;
+                        f1 *= f1;
                     }
 
                     f *= 1.0F - f1 * 0.15F;
@@ -155,27 +154,24 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                       .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Speed ")
-                                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (speedEffectLevel - 1))).withStyle(ChatFormatting.WHITE)));
+        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
+                .append(new TextComponent("Speed ").withStyle(itemAndEffectColor)
+                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (speedEffectLevel - 1)))));
         if (thorns) {
-            pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("Thorns ")
-                                                           .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (level.getValue() - 1))).withStyle(ChatFormatting.AQUA)));
+            pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(defaultColor)
+                    .append(new TextComponent("Thorns ").withStyle(enchantmentColor)
+                            .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (level.getValue() - 1)))));
         }
-        if(level.getValue() > ArmorTier.SUIT.getValue()){
-            pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("one block.").withStyle(ChatFormatting.AQUA)));
+        if (level.getValue() > ArmorTier.SUIT.getValue()) {
+            pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(defaultColor)
+                    .append(new TextComponent("one block").withStyle(timeAndDistanceColor)));
         }
-        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Speed").withStyle(ChatFormatting.WHITE))
-                                       .append(" effect"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                       .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(reductionColorStyle)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
+                .append(new TextComponent("Speed").withStyle(itemAndEffectColor))
+                .append(" effect"));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
+                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
+                .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(reductionColorStyle)));
     }
 
     public static class ElectricUtilitySpellConfig implements IConfig {

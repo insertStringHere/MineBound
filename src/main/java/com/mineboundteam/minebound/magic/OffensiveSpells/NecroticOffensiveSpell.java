@@ -106,17 +106,16 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Increases damage by ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format("%.0f%%", damageBoost * 100)).withStyle(ChatFormatting.RED))
-                .append(" to all attacks performed by the user"));
-        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Increases damage dealt by ").withStyle(defaultColor)
+                .append(new TextComponent(String.format("%.0f%%", damageBoost * 100)).withStyle(damageColor)));
+        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(defaultColor)
                 .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100)).withStyle(ChatFormatting.GOLD))
-                .append(" of damage dealt as health to user"));
-        pTooltipComponents.add(new TextComponent("  - If user health is full, restores ").withStyle(ChatFormatting.GRAY)
+                .append(" of damage dealt as health"));
+        pTooltipComponents.add(new TextComponent("  - If health is full, restores ").withStyle(defaultColor)
                 .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100 * FOOD_REDUCTION.get())).withStyle(ChatFormatting.GOLD))
-                .append(" of damage dealt as hunger to user"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(" of damage dealt as hunger"));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" per second of use"));
     }

@@ -61,11 +61,11 @@ public class LightDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(defaultColor)
                 .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
                 .append(" where the player is looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" to place"));
     }

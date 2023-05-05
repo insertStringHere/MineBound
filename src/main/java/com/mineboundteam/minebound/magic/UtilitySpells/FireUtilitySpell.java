@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,7 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -35,7 +33,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +68,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 player.clearFire();
 
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
-                    if (utilityToggle.fire) {        
+                    if (utilityToggle.fire) {
                         int damageRate = highestSpell.damageRate;
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
@@ -90,13 +87,12 @@ public class FireUtilitySpell extends PassiveSpellItem {
                                     /**
                                      * Derived from {@link LivingEntity#hasLineOfSight(Entity)}
                                      */
-                                    Vec3 playerVec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
                                     Vec3 particleVec = new Vec3(
                                             player.getX() + level.getRandom().nextDouble(range) * Math.cos(degree),
                                             player.getY() + (level.getRandom().nextDouble(range) * MineBound.randomlyChooseFrom(-1, 1)),
                                             player.getZ() + level.getRandom().nextDouble(range) * Math.sin(degree)
                                     );
-                                    if (level.clip(new ClipContext(playerVec, particleVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
+                                    if (level.clip(new ClipContext(player.getEyePosition(), particleVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
                                         level.addParticle(ParticleTypes.FLAME,
                                                 particleVec.x(),
                                                 particleVec.y(),
@@ -107,7 +103,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                             }
 
                             if (event.side.isServer()) {
-                                List<Entity> entities = level.getEntities(player, new AABB(player.getX() - range, player.getY() - range, player.getZ() - range, player.getX() + range, player.getY() + range, player.getZ() + range));
+                                List<Entity> entities = level.getEntities(player, player.getBoundingBox().inflate(range));
                                 for (Entity entity : entities) {
                                     if (entity instanceof LivingEntity && player.hasLineOfSight(entity) && player.distanceTo(entity) <= range) {
                                         entity.hurt(DamageSource.playerAttack(player).setIsFire(), damage);
@@ -130,37 +126,34 @@ public class FireUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        double rateInSeconds = damageRate / 20d;
-        pTooltipComponents.add(new TextComponent("  - To all entities in an ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("AOE of " + aoeRange + " blocks").withStyle(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
+                .append(new TextComponent("fire resistance").withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - To all entities within ").withStyle(defaultColor)
+                .append(new TextComponent(MineBound.pluralize(aoeRange, "block")).withStyle(timeAndDistanceColor))
                 .append(", deals ")
-                .append(new TextComponent(new DecimalFormat("0.#").format(damage) + " heart" + (damage != 1 ? "s" : "") + " of fire damage").withStyle(ChatFormatting.RED))
+                .append(new TextComponent(MineBound.pluralize(damage / 2d, "heart") + " of fire damage").withStyle(damageColor))
                 .append(" every ")
-                .append(new TextComponent(new DecimalFormat("0.#").format(rateInSeconds) + " second" + (rateInSeconds > 1 ? "s" : "")).withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("  - Gives fire immunity").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("range").withStyle(ChatFormatting.DARK_GREEN))
+                .append(new TextComponent(MineBound.pluralize(damageRate / 20d, "second")).withStyle(timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(defaultColor)
+                .append(new TextComponent("range").withStyle(timeAndDistanceColor))
                 .append(", ")
-                .append(new TextComponent("damage").withStyle(ChatFormatting.RED))
+                .append(new TextComponent("damage").withStyle(damageColor))
                 .append(", and ")
                 .append(new TextComponent("Mana cost").withStyle(manaColorStyle)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle)).append(" per entity damaged"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                 .append(" by ").append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            MutableComponent active = new TextComponent("Fire AOE is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
             if (toggle.isPresent() && toggle.get().fire)
-                pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
+                pTooltipComponents.add(enabled);
             else
-                pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
+                pTooltipComponents.add(disabled);
         }
     }
 

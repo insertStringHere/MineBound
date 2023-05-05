@@ -6,7 +6,6 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -91,21 +90,17 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents,
-            TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(defaultColor));
         if (elytraFlight) {
-            pTooltipComponents.add(new TextComponent("  - Gives elytra flight (must have a Myrial Chestpiece equipped)")
-                    .withStyle(ChatFormatting.GRAY));
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight (requires a Myrial Chestpiece to be equipped)")
+                    .withStyle(defaultColor));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" per second of flight"));
-        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(defaultColor)
                 .append(new TextComponent("Mana").withStyle(manaColorStyle))
                 .append(" cost of highest equipped tier by ")
                 .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(reductionColorStyle))
