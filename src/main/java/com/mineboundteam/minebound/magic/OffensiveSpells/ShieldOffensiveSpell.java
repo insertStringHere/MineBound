@@ -140,7 +140,6 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
                 .append(" per reflect").withStyle(defaultColor));
-        pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(defaultColor));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

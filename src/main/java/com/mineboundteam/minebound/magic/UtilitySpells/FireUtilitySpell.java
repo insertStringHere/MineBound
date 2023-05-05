@@ -9,11 +9,11 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -128,7 +128,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
-                .append(new TextComponent("fire resistance").withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent("fire resistance").withStyle(Style.EMPTY.withColor(MobEffects.FIRE_RESISTANCE.getColor()))));
         pTooltipComponents.add(enabledHeader);
         pTooltipComponents.add(new TextComponent("    - To all entities within ").withStyle(defaultColor)
                 .append(new TextComponent(MineBound.pluralize(aoeRange, "block")).withStyle(timeAndDistanceColor))
@@ -146,12 +146,13 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle)).append(" per entity damaged"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
+                .append(" by ")
+                .append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE,toggle.isPresent() && toggle.get().fire);
+            appendToggleTooltip(pTooltipComponents, ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().fire);
         }
     }
 
