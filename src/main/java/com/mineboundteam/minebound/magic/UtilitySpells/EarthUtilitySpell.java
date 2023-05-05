@@ -194,16 +194,16 @@ public class EarthUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
                 .append(new TextComponent("Haste").withStyle(Style.EMPTY.withColor(MobEffects.DIG_SPEED.getColor())))
                 .append(" effect level"));
+        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(defaultColor)
+                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle)));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                 .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(reductionColorStyle)));
-        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(defaultColor)
-                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE,toggle.isPresent() && toggle.get().earth);
+            appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().earth);
         }
     }
 
