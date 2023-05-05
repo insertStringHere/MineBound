@@ -169,7 +169,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         }
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
                 .append(new TextComponent("Speed").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SPEED.getColor())))
-                .append(" effect"));
+                .append(" effect level"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                 .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(reductionColorStyle)));

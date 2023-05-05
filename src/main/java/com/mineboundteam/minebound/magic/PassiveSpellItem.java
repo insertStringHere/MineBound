@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -109,5 +110,24 @@ public abstract class PassiveSpellItem extends SpellItem {
         pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(defaultColor)
                 .append(new TextComponent("utility slot").withStyle(utilityColor))
                 .append(":"));
+    }
+
+    protected void appendToggleTooltip(List<Component> pTooltipComponents, KeyMapping keybind, boolean predicate) {
+        // Spacing
+        pTooltipComponents.add(new TextComponent(" "));
+
+        if (predicate) {
+            pTooltipComponents.add(enabled.copy().append(getKey(keybind)));
+        } else {
+            pTooltipComponents.add(disabled.copy().append(getKey(keybind)));
+        }
+    }
+
+    private MutableComponent getKey(KeyMapping keybind) {
+        return new TextComponent(" [").withStyle(defaultColor)
+                .append(keybind.getKey().getValue() == -1 ?
+                        new TextComponent("unbound") :
+                        new TextComponent("").withStyle(ChatFormatting.WHITE).append(keybind.getTranslatedKeyMessage()))
+                .append("]");
     }
 }

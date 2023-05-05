@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
@@ -190,9 +191,9 @@ public class EarthUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(enabledHeader);
         pTooltipComponents.add(new TextComponent("    - Allows vein mining of up to ").withStyle(defaultColor)
                 .append(new TextComponent(MineBound.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Additional copies increase the level of ").withStyle(defaultColor)
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
                 .append(new TextComponent("Haste").withStyle(Style.EMPTY.withColor(MobEffects.DIG_SPEED.getColor())))
-                .append(" effect"));
+                .append(" effect level"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))
                 .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(reductionColorStyle)));
@@ -202,10 +203,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            if (toggle.isPresent() && toggle.get().earth)
-                pTooltipComponents.add(enabled);
-            else
-                pTooltipComponents.add(disabled);
+            appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE,toggle.isPresent() && toggle.get().earth);
         }
     }
 

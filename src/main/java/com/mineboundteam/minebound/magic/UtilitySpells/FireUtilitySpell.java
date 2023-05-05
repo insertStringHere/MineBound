@@ -3,6 +3,7 @@ package com.mineboundteam.minebound.magic.UtilitySpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
@@ -150,10 +151,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            if (toggle.isPresent() && toggle.get().fire)
-                pTooltipComponents.add(enabled);
-            else
-                pTooltipComponents.add(disabled);
+            appendToggleTooltip(pTooltipComponents, ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE,toggle.isPresent() && toggle.get().fire);
         }
     }
 

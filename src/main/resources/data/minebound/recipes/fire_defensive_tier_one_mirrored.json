@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  F",
+    " M ",
+    "E  "
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    },
+    "E": {
+      "item": "minebound:energized_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_d1"
+  }
+}

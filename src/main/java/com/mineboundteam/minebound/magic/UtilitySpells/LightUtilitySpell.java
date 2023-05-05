@@ -4,6 +4,7 @@ import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
@@ -88,10 +89,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            if (toggle.isPresent() && toggle.get().light)
-                pTooltipComponents.add(enabled);
-            else
-                pTooltipComponents.add(disabled);
+            appendToggleTooltip(pTooltipComponents, ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().light);
         }
     }
 
