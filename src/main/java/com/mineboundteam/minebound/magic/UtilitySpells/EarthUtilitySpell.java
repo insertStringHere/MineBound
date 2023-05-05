@@ -114,7 +114,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
             BlockState block = event.getState();
 
             // If we're doing tag checking, make sure the block is vein-mineable 
-            if (spell == null || (USE_TAGS.get() && block.getTags().noneMatch(t -> t.location().equals(VEIN_TAGS))))
+            if (spell == null || (USE_TAGS.get() && !block.getTags().anyMatch(t -> t.location().equals(VEIN_TAGS))))
                 return;
 
             // Simple breadth first search; could implement a quicker search using the block type as a heuristic
