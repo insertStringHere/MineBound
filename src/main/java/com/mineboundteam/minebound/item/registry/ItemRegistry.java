@@ -9,10 +9,7 @@ import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.*;
 import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
 import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
@@ -113,6 +110,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_1 = ITEMS.register("magic_fire_o1", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_2 = ITEMS.register("magic_fire_o2", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> FIRE_OFFENSIVE_4 = ITEMS.register("magic_fire_o4", () -> new FireOffensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_OFFENSIVE_4));
+    public static final RegistryObject<SpellItem> FIRE_DEFENSIVE_1 = ITEMS.register("magic_fire_d1", () -> new FireDefensiveSpell(spellItemProperties(), MagicConfigRegistry.FIRE_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> FIRE_UTILITY_2 = ITEMS.register("magic_fire_u2", () -> new FireUtilitySpell(spellItemProperties(), MagicConfigRegistry.FIRE_UTILITY_2));
     public static final RegistryObject<SpellItem> FIRE_UTILITY_3 = ITEMS.register("magic_fire_u3", () -> new FireUtilitySpell(spellItemProperties(), MagicConfigRegistry.FIRE_UTILITY_3));
     public static final RegistryObject<SpellItem> FIRE_UTILITY_4 = ITEMS.register("magic_fire_u4", () -> new FireUtilitySpell(spellItemProperties(), MagicConfigRegistry.FIRE_UTILITY_4));
@@ -175,6 +173,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_1 = ITEMS.register("magic/magic_fire_o1", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_2 = ITEMS.register("magic/magic_fire_o2", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_FIRE_OFFENSIVE_4 = ITEMS.register("magic/magic_fire_o4", () -> new FireOffensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_OFFENSIVE_4));
+    public static final RegistryObject<SpellItem> GUI_FIRE_DEFENSIVE_1 = ITEMS.register("magic/magic_fire_d1", () -> new FireDefensiveSpell(new Item.Properties(), MagicConfigRegistry.FIRE_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_FIRE_UTILITY_2 = ITEMS.register("magic/magic_fire_u2", () -> new FireUtilitySpell(new Item.Properties(), MagicConfigRegistry.FIRE_UTILITY_2));
     public static final RegistryObject<SpellItem> GUI_FIRE_UTILITY_3 = ITEMS.register("magic/magic_fire_u3", () -> new FireUtilitySpell(new Item.Properties(), MagicConfigRegistry.FIRE_UTILITY_3));
     public static final RegistryObject<SpellItem> GUI_FIRE_UTILITY_4 = ITEMS.register("magic/magic_fire_u4", () -> new FireUtilitySpell(new Item.Properties(), MagicConfigRegistry.FIRE_UTILITY_4));

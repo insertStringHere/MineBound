@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -155,7 +156,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
-                .append(new TextComponent("Speed ").withStyle(itemAndEffectColor)
+                .append(new TextComponent("Speed ").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SPEED.getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (speedEffectLevel - 1)))));
         if (thorns) {
             pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(defaultColor)
@@ -167,7 +168,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                     .append(new TextComponent("one block").withStyle(timeAndDistanceColor)));
         }
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
-                .append(new TextComponent("Speed").withStyle(itemAndEffectColor))
+                .append(new TextComponent("Speed").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SPEED.getColor())))
                 .append(" effect"));
         pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
                 .append(new TextComponent("Manapool").withStyle(manaColorStyle))

@@ -13,6 +13,7 @@ cb084d3c2b485d9b542a3a7a0ed9f894ccec68c5 assets/minebound/models/item/magic/magi
 e35908dbb5dcb617bb3e7547bc1cafd257dbca7d assets/minebound/models/item/magic/magic_ender_d4.json
 277b26c883a78c2836e8791ecb0446d63980ed14 assets/minebound/models/item/magic/magic_ender_o3.json
 b456f7dfe1341e8eaac36bb2b9eb674520028dc9 assets/minebound/models/item/magic/magic_ender_u3.json
+47376b609429605639ab76cf964518032bb5721e assets/minebound/models/item/magic/magic_fire_d1.json
 a72b8c84c468011a5aa16027752bdea163371a96 assets/minebound/models/item/magic/magic_fire_o1.json
 ff64c83d073bc36a2fa02737d2503ec5493aee53 assets/minebound/models/item/magic/magic_fire_o2.json
 d6d8875310dc9e33ab9e75c38c798bbc0d027514 assets/minebound/models/item/magic/magic_fire_o4.json
@@ -54,6 +55,7 @@ ee3712ec0c097f69d6084b89b1e401eeea25d2e4 assets/minebound/models/item/magic_elec
 d11589eb77331f83ac76094b56b3728ecab5e364 assets/minebound/models/item/magic_ender_d4.json
 67131501277b498013dc3b146c60fdf20a429014 assets/minebound/models/item/magic_ender_o3.json
 f8151d76044f7a057d8f4125af284ddaad6c9a09 assets/minebound/models/item/magic_ender_u3.json
+624ab4f3b4b224ed86f66a573a627ef1009cb7bf assets/minebound/models/item/magic_fire_d1.json
 85a60378a3f5d0ffbea035b9e71d9068b66339ea assets/minebound/models/item/magic_fire_o1.json
 4a06780dc4a343a9659f1bc98db781a169a37c48 assets/minebound/models/item/magic_fire_o2.json
 89e989d80604c8decf8cb3a049487231c7f208ca assets/minebound/models/item/magic_fire_o4.json

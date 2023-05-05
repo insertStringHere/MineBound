@@ -2,10 +2,7 @@ package com.mineboundteam.minebound.config.registry;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.*;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
@@ -42,6 +39,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 5.0, false, false, 0, ArmorTier.EFFIGY);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 16, 10.0, true, false, 0, ArmorTier.SUIT);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_4 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 16, 10.0, true, true, 50, ArmorTier.SINGULARITY);
+    public static final FireDefensiveSpell.FireDefensiveSpellConfig FIRE_DEFENSIVE_1 = new FireDefensiveSpell.FireDefensiveSpellConfig(35, ArmorTier.EFFIGY);
     public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_2 = new FireUtilitySpell.FireUtilitySpellConfig(5, 25, 10, 1.0, 40, ArmorTier.SUIT);
     public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_3 = new FireUtilitySpell.FireUtilitySpellConfig(7, 25, 15, 2.0, 20, ArmorTier.SYNERGY);
     public static final FireUtilitySpell.FireUtilitySpellConfig FIRE_UTILITY_4 = new FireUtilitySpell.FireUtilitySpellConfig(10, 25, 20, 3.0, 20, ArmorTier.SINGULARITY);
@@ -113,6 +111,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
             FIRE_OFFENSIVE_1.build(builder);
             FIRE_OFFENSIVE_2.build(builder);
             FIRE_OFFENSIVE_4.build(builder);
+            FIRE_DEFENSIVE_1.build(builder);
             FIRE_UTILITY_2.build(builder);
             FIRE_UTILITY_3.build(builder);
             FIRE_UTILITY_4.build(builder);

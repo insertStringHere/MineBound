@@ -28,7 +28,7 @@ public abstract class SpellItem extends Item {
     public static final ChatFormatting damageColor = ChatFormatting.RED;
     public static final ChatFormatting timeAndDistanceColor = ChatFormatting.DARK_GREEN;
     public static final ChatFormatting enchantmentColor = ChatFormatting.AQUA;
-    public static final ChatFormatting itemAndEffectColor = ChatFormatting.WHITE;
+    public static final ChatFormatting itemColor = ChatFormatting.WHITE;
     public final ArmorTier level;
     public final MagicType magicType;
     public final SpellType spellType;
