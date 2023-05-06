@@ -6,12 +6,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 
@@ -43,8 +41,8 @@ public class RockProjectile extends AbstractArrow {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult pResult) {
-        super.onHitEntity(pResult);
+    protected void onHit(HitResult pResult) {
+        super.onHit(pResult);
         if(!this.level.isClientSide){
             Entity player = this.getOwner();
             List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
@@ -58,28 +56,7 @@ public class RockProjectile extends AbstractArrow {
             }
 
         }
-    }
-
-    @Override
-    protected void onHitBlock(BlockHitResult pResult) {
-        super.onHitBlock(pResult);
-        if (!this.level.isClientSide) {
-            Entity player = this.getOwner();
-            //Mobs won't explode everything you own
-            if (!(player instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
-                for (Entity target : hitEntities) {
-                    if (target instanceof LivingEntity && target != player) {
-                        target.hurt(DamageSource.thrown(this, player), damage);
-                        if (player instanceof LivingEntity p) {
-                            this.doEnchantDamageEffects(p, target);
-                        }
-                    }
-                }
-
-            }
-            this.discard();
-        }
+        this.discard();
     }
 
     @Override
