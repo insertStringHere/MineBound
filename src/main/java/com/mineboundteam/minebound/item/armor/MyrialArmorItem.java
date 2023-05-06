@@ -71,13 +71,13 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
                                            .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(SpellItem.manaColorStyle)));
         }
         pTooltipComponents.add(new TextComponent("Active Magic slots: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));
+                                       .append(new TextComponent(config.STORAGE_SLOTS.get().toString()).withStyle(ChatFormatting.RED)));
         pTooltipComponents.add(new TextComponent("Utility Magic slots: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.UTILITY_SLOTS.get() + "").withStyle(ChatFormatting.DARK_PURPLE)));
+                                       .append(new TextComponent(config.UTILITY_SLOTS.get().toString()).withStyle(ChatFormatting.DARK_PURPLE)));
         pTooltipComponents.add(new TextComponent("Energy: ").withStyle(ChatFormatting.GRAY)
                                        .append(new TextComponent((config.ENERGY.get() - this.getDamage(pStack)) + "").withStyle(Style.EMPTY.withColor(pStack.getBarColor())))
                                        .append(" / ")
-                                       .append(new TextComponent(config.ENERGY.get() + "").withStyle(ChatFormatting.GREEN)));
+                                       .append(new TextComponent(config.ENERGY.get().toString()).withStyle(ChatFormatting.GREEN)));
         // For spacing
         pTooltipComponents.add(new TextComponent(""));
     }
