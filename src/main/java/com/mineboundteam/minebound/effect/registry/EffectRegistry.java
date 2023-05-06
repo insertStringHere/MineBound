@@ -15,5 +15,5 @@ public class EffectRegistry {
             MineBound.MOD_ID);
 
     public static final RegistryObject<MobEffect> ELECTRIC_DEBUFF = MOB_EFFECTS.register("electric_debuff",
-            () -> new ElectricDebuff(MobEffectCategory.HARMFUL, new Color(255, 119, 40).getRGB()));
+            () -> new ElectricDebuff(MobEffectCategory.HARMFUL, new Color(234, 232, 166).getRGB()));
 }
