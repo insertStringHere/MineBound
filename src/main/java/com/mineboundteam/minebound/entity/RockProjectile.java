@@ -49,7 +49,7 @@ public class RockProjectile extends AbstractArrow {
             Entity player = this.getOwner();
             List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
             for (Entity target : hitEntities) {
-                if (target instanceof LivingEntity) {
+                if (target instanceof LivingEntity && target != player) {
                     target.hurt(DamageSource.thrown(this, player), damage);
                     if (player instanceof LivingEntity p) {
                         this.doEnchantDamageEffects(p, target);
@@ -69,7 +69,7 @@ public class RockProjectile extends AbstractArrow {
             if (!(player instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                 List<Entity> hitEntities = this.level.getEntities(this, this.getBoundingBox().inflate(damageRadius));
                 for (Entity target : hitEntities) {
-                    if (target instanceof LivingEntity) {
+                    if (target instanceof LivingEntity && target != player) {
                         target.hurt(DamageSource.thrown(this, player), damage);
                         if (player instanceof LivingEntity p) {
                             this.doEnchantDamageEffects(p, target);
