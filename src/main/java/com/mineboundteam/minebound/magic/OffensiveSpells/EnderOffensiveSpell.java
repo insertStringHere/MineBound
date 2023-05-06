@@ -9,6 +9,8 @@ import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +45,7 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
             // Only execute if player would move > 1 block
             if (Math.floor(dX + dY + dZ) > 0) {
                 player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
                 reduceMana(manaCost, player);
             }
         }

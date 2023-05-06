@@ -60,7 +60,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
                     x, y, z);
             smallfireball.setOwner(player);
             level.addFreshEntity(smallfireball);
-            level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1f, 1f);
+            level.playSound(null, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1f, 1f);
             reduceMana(fireballManaCost, player);
         }
     }
@@ -88,8 +88,8 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         }
 
         if (tickCount % 10 == 0) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRE_AMBIENT, SoundSource.PLAYERS, 1f, 1f);
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CAMPFIRE_CRACKLE, SoundSource.PLAYERS, 1f, 1f);
+            level.playSound(null, player, SoundEvents.FIRE_AMBIENT, SoundSource.PLAYERS, 1f, 1f);
+            level.playSound(null, player, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.PLAYERS, 1f, 1f);
         }
         if (tickCount % 20 == 0) {
             reduceMana(manaCost, player);

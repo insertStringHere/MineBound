@@ -58,7 +58,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     hitsRemaining = getShieldCount(player);
 
                 if (hitsRemaining > 0) {
-                    player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
+                    player.getLevel().playSound(null, player, SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     reduceMana(spell.config.MANA_COST.get(), player);
 
                     hitsRemaining -= event.getAmount();

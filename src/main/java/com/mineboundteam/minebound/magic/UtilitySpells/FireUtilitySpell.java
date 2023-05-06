@@ -15,6 +15,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -73,6 +75,8 @@ public class FireUtilitySpell extends PassiveSpellItem {
                         int damageRate = highestSpell.damageRate;
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
+                            level.playSound(null, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.1f, 0.75f);
+
                             int manaCost = 0;
                             int range = 0;
                             int damage = 0;

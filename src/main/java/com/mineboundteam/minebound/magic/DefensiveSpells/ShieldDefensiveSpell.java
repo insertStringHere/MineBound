@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -62,20 +61,16 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
                 spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
             }
             if (!spellTriggered) {
-                spellTriggered = triggerSpell(player, player.getItemBySlot(EquipmentSlot.MAINHAND), event);
-            }
-            if (!spellTriggered) {
-                triggerSpell(player, player.getItemBySlot(EquipmentSlot.OFFHAND), event);
+                triggerSpell(player, player.getUseItem(), event);
             }
         }
     }
 
     protected static boolean triggerSpell(Player player, ItemStack selectedSpell, LivingAttackEvent event) {
-        if (selectedSpell.getItem() instanceof ShieldDefensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
-            if (isActive) {
+        if (selectedSpell.getItem() instanceof ShieldDefensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 event.setCanceled(true);
-                player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
+                player.getLevel().playSound(null, player, SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                 reduceMana(spell.manaCost, player);
                 return true;
             }

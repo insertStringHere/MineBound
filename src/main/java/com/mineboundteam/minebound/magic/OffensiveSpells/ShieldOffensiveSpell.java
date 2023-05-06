@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,19 +69,15 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemBySlot(EquipmentSlot.MAINHAND), event);
-                }
-                if (!spellTriggered) {
-                    triggerLivingAttackEvent(player, sourceEntity, player.getItemBySlot(EquipmentSlot.OFFHAND), event);
+                    triggerLivingAttackEvent(player, sourceEntity, player.getUseItem(), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingAttackEvent(Player player, LivingEntity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
-        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
-            if (isActive) {
+        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) == 0) {
                     event.setCanceled(true);
@@ -104,19 +99,15 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
                     spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingHurtEvent(player.getItemBySlot(EquipmentSlot.MAINHAND), event);
-                }
-                if (!spellTriggered) {
-                    triggerLivingHurtEvent(player.getItemBySlot(EquipmentSlot.OFFHAND), event);
+                    triggerLivingHurtEvent(player.getUseItem(), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
-        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
-            if (isActive) {
+        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
                 if ((1 - spell.damageReduction) != 0) {
                     event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
