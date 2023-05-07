@@ -10,6 +10,7 @@ import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -56,7 +57,7 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             boolean spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
             if (!spellTriggered) {
                 spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);

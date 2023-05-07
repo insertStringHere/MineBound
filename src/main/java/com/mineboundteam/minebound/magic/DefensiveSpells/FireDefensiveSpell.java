@@ -56,7 +56,7 @@ public class FireDefensiveSpell extends ActiveSpellItem {
             if (!CampfireBlock.canLight(blockstate) && !CandleBlock.canLight(blockstate) && !CandleCakeBlock.canLight(blockstate)) {
                 BlockPos relativeBlockPos = blockpos.relative(hitResult.getDirection());
                 if (BaseFireBlock.canBePlacedAt(level, relativeBlockPos, player.getDirection())) {
-                    level.playSound(null, relativeBlockPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+                    level.playSound(player, relativeBlockPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                     BlockState relativeBlockState = BaseFireBlock.getState(level, relativeBlockPos);
                     level.setBlock(relativeBlockPos, relativeBlockState, 11);
                     level.gameEvent(player, GameEvent.BLOCK_PLACE, blockpos);
@@ -66,7 +66,7 @@ public class FireDefensiveSpell extends ActiveSpellItem {
                     reduceMana(manaCost, player);
                 }
             } else {
-                level.playSound(null, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+                level.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.TRUE), 11);
                 level.gameEvent(player, GameEvent.BLOCK_PLACE, blockpos);
                 reduceMana(manaCost, player);

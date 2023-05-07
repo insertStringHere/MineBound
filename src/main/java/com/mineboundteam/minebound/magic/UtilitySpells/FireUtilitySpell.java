@@ -78,7 +78,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                         int damageRate = highestSpell.damageRate;
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
-                            level.playSound(null, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.1f, 0.75f);
+                            level.playSound(player, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.1f, 0.75f);
 
                             int manaCost = 0;
                             int range = 0;
