@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.util;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
@@ -33,7 +34,7 @@ public class TooltipUtil {
 
     public static MutableComponent getKey(KeyMapping keybind) {
         return new TextComponent(" [").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(keybind.getKey().getValue() == -1 ?
+                .append(keybind.getKey() == InputConstants.UNKNOWN ?
                         new TextComponent("unbound") :
                         new TextComponent("").withStyle(ChatFormatting.WHITE).append(keybind.getTranslatedKeyMessage()))
                 .append("]");
