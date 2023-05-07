@@ -207,6 +207,9 @@
   "tooltip.minebound.level.1": "II",
   "tooltip.minebound.level.2": "III",
   "tooltip.minebound.level.3": "IV",
+  "tooltip.minebound.level.4": "V",
+  "tooltip.minebound.level.5": "VI",
+  "tooltip.minebound.level.6": "VII",
 
   "death.attack.minebound.electricity": "%1$s was electrified to death",
   "death.attack.minebound.electricity.player": "%1$s was electrified to death by %2$s",

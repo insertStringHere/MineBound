@@ -9,7 +9,6 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -93,15 +92,15 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("levitate").withStyle(Style.EMPTY.withColor(MobEffects.LEVITATION.getColor())))
+                .append(new TextComponent("levitate").withStyle(effectColor(MobEffects.LEVITATION)))
                 .append(" for ")
                 .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
-                .append(" on initial cast").withStyle(ChatFormatting.GRAY));
+                .append(" on initial cast"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
-                .append(" each time the player is hit").withStyle(ChatFormatting.GRAY));
+                .append(" each time the player is hit"));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {

@@ -3,22 +3,32 @@ package com.mineboundteam.minebound.magic.DefensiveSpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.config.IConfig;
+import com.mineboundteam.minebound.effect.ElectricDebuff;
 import com.mineboundteam.minebound.effect.registry.EffectRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ElectricDefensiveSpell extends ActiveSpellItem {
@@ -73,6 +83,33 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
             }
         }
         return false;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("  - When hit by a mob, ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent("Electric Debuff ").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get()))
+                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
+                .append(" will be applied to that mob for ")
+                .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
+        pTooltipComponents.add(new TextComponent("  - ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent("Electric Debuff ").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get()))
+                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
+                .append(" applies ")
+                .append(new TextComponent("Slowness ").withStyle(effectColor(MobEffects.MOVEMENT_SLOWDOWN))
+                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + ElectricDebuff.getSlownessLevel(level.getValue()))))
+                .append(" and increases vulnerability to ")
+                .append(new TextComponent("electricity").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get())))
+                .append(" by ")
+                .append(new TextComponent(String.format("%.0f%%", (ElectricDebuff.getDmgMult(level.getValue()) - 1) * 100)).withStyle(ChatFormatting.RED)));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
+                .append(" on initial cast"));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
+                .append(" each time the player is hit"));
     }
 
     public static class ElectricDefensiveConfig implements IConfig {

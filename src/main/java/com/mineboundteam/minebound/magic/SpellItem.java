@@ -2,6 +2,7 @@ package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
+import com.mineboundteam.minebound.effect.registry.EffectRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import net.minecraft.ChatFormatting;
@@ -10,6 +11,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -75,5 +77,9 @@ public abstract class SpellItem extends Item {
                                        .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()]))
                                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue()).withStyle(MyrialArmorItem.tierColors[level.getValue()]))
                                        .append(" or higher armor"));
+    }
+
+    protected Style effectColor(MobEffect effect) {
+        return Style.EMPTY.withColor(effect.getColor());
     }
 }

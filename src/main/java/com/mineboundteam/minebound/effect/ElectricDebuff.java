@@ -25,7 +25,11 @@ public class ElectricDebuff extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        pLivingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, ((pAmplifier + 1) * 2) - 1));
+        pLivingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, getSlownessLevel(pAmplifier)));
+    }
+
+    public static int getSlownessLevel(int amplifier) {
+        return ((amplifier + 1) * 2) - 1;
     }
 
     public static double getDmgMult(int amplifier) {
