@@ -14,10 +14,6 @@ public class TooltipUtil {
     public static MutableComponent enabledHeader = new TextComponent("  Only while ").withStyle(ColorUtil.Tooltip.defaultColor)
             .append(enabled).append(":");
 
-    public static TranslatableComponent levelTooltip(int level) {
-        return new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level);
-    }
-
     public static void appendToggleTooltip(List<Component> pTooltipComponents, KeyMapping keybind, boolean predicate) {
         // Spacing
         pTooltipComponents.add(new TextComponent(" "));
@@ -35,5 +31,22 @@ public class TooltipUtil {
                         new TextComponent("unbound") :
                         new TextComponent("").withStyle(ChatFormatting.WHITE).append(keybind.getTranslatedKeyMessage()))
                 .append("]").withStyle(Style.EMPTY.withBold(false));
+    }
+
+    public static TranslatableComponent level(int level) {
+        return new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level);
+    }
+
+    public static MutableComponent manaCost(Number manaCost, String description) {
+        return new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.formatDecimal(manaCost) + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(description);
+    }
+
+    public static MutableComponent manaReduction(Number manaReduction) {
+        return new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" by ")
+                .append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle));
     }
 }

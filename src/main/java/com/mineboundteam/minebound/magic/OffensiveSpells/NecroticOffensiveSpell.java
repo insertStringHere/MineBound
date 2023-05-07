@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -117,9 +118,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - If health is full, restores ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(StringUtil.percentage(vampirePercent * FOOD_REDUCTION.get())).withStyle(ChatFormatting.GOLD))
                 .append(" of damage dealt as hunger"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per second of use"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per second of use"));
     }
 
     public static class NecroticOffensiveSpellConfig implements IConfig {

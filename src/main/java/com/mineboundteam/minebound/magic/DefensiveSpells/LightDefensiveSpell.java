@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -66,9 +67,7 @@ public class LightDefensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
                 .append(" where the player is looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" to place"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " to place"));
     }
 
     public static class LightDefensiveSpellConfig implements IConfig {

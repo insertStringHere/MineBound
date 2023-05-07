@@ -57,7 +57,7 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TextComponent("Tier ").withStyle(ColorUtil.Tooltip.armorTierColors.get(tier))
-                .append(TooltipUtil.levelTooltip(tier.getValue())));
+                .append(TooltipUtil.level(tier.getValue())));
         pTooltipComponents.add(new TextComponent("Manapool: ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(ColorUtil.Tooltip.manaColorStyle)));
         if (config.RECOVERY.get() > 0) {

@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -134,9 +135,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                 .append(" has been depleted for ")
                 .append(new TextComponent(StringUtil.pluralize(config.RECOV_TICKS.get() / 20, "second") + " at a rate of 10 charges per second").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" every time damage is absorbed"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " every time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {

@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -37,19 +38,17 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-//        if (!level.isClientSide()) {
-            BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
-            BlockPos pos = result.getBlockPos().relative(result.getDirection());
-            double dX = Math.abs(player.getX() - pos.getX() - 0.5);
-            double dY = Math.abs(player.getY() - pos.getY());
-            double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
-            // Only execute if player would move > 1 block
-            if (Math.floor(dX + dY + dZ) > 0) {
-                player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                level.playSound(player, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
-                reduceMana(manaCost, player);
-            }
-//        }
+        BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
+        BlockPos pos = result.getBlockPos().relative(result.getDirection());
+        double dX = Math.abs(player.getX() - pos.getX() - 0.5);
+        double dY = Math.abs(player.getY() - pos.getY());
+        double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
+        // Only execute if player would move > 1 block
+        if (Math.floor(dX + dY + dZ) > 0) {
+            player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            level.playSound(player, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
+            reduceMana(manaCost, player);
+        }
     }
 
     @Override
@@ -67,9 +66,7 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(StringUtil.pluralize(teleportDistance, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" in the direction they are looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per teleport"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per teleport"));
     }
 
     public static class EnderOffensiveSpellConfig implements IConfig {

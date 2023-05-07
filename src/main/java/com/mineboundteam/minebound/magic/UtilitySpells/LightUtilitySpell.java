@@ -85,9 +85,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent(StringUtil.pluralize(config.OUTLINE_RADIUS.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("outline radius").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

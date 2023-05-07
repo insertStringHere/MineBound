@@ -43,14 +43,14 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ElectricUtilitySpell extends PassiveSpellItem {
 
-    private final int totalManaReduction;
+    private final int manaReduction;
     private final int speedEffectLevel;
     private final boolean thorns;
 
     public ElectricUtilitySpell(Properties properties, ElectricUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.ELECTRIC, SpellType.UTILITY);
 
-        this.totalManaReduction = config.MANA_REDUCTION.get();
+        this.manaReduction = config.MANA_REDUCTION.get();
         this.speedEffectLevel = config.SPEED_LEVEL.get();
         this.thorns = config.THORNS.get();
     }
@@ -76,7 +76,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 // Mob effect levels start at 0, so this starts at -1 to compensate for the off by 1
                 int speedLevel = -1;
                 for (ElectricUtilitySpell s : equippedSpells) {
-                    manaReduction += s.totalManaReduction;
+                    manaReduction += s.manaReduction;
                     speedLevel += s.speedEffectLevel;
                 }
 
@@ -157,11 +157,11 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Speed ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED))
-                        .append(TooltipUtil.levelTooltip(speedEffectLevel - 1))));
+                        .append(TooltipUtil.level(speedEffectLevel - 1))));
         if (thorns) {
             pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("Thorns ").withStyle(ColorUtil.Tooltip.enchantmentColor)
-                            .append(TooltipUtil.levelTooltip(level.getValue() - 1))));
+                            .append(TooltipUtil.level(level.getValue() - 1))));
         }
         if (level.getValue() > ArmorTier.SUIT.getValue()) {
             pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(ColorUtil.Tooltip.defaultColor)
@@ -170,9 +170,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Speed").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED)))
                 .append(" effect level"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" by ").append(new TextComponent(String.valueOf(totalManaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
     }
 
     public static class ElectricUtilitySpellConfig implements IConfig {

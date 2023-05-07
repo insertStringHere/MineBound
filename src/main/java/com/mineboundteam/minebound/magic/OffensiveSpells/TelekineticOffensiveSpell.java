@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -62,14 +63,10 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
                 .append(" will cause it to vanish"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCostOnCast + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" to summon ")
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCostOnCast, " to summon ")
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
                 .append(", even if main hand is not empty"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per hit with the ")
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCostPerHit, " per hit with the ")
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor)));
     }
 

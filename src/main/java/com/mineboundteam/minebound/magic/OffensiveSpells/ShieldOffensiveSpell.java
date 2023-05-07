@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -130,9 +131,7 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(StringUtil.percentage(damageReflected)).withStyle(ColorUtil.Tooltip.damageColor))
                 .append(" of the initial damage"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per reflect"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per reflect"));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

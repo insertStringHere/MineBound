@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -118,13 +119,9 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             pTooltipComponents.add(new TextComponent("  - On initial cast, shoots a ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("fireball").withStyle(ChatFormatting.GOLD))
                     .append(" from the center of the cone"));
-            pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                    .append(new TextComponent(fireballManaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                    .append(" to create the fireball"));
+            pTooltipComponents.add(TooltipUtil.manaCost(fireballManaCost, "to create the fireball"));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per second of use"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per second of use"));
     }
 
     public static class FireOffensiveSpellConfig implements IConfig {

@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -88,9 +89,7 @@ public class FireDefensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Functions identically to a ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Flint and Steel").withStyle(ColorUtil.Tooltip.itemColor)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per use"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per use"));
     }
 
     public static class FireDefensiveSpellConfig implements IConfig {

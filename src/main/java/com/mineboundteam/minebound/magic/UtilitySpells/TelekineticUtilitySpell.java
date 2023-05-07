@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -99,9 +100,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
             pTooltipComponents.add(new TextComponent("  - Gives elytra flight (requires a Myrial Chestpiece to be equipped)")
                     .withStyle(ColorUtil.Tooltip.defaultColor));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" per second of flight"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per second of flight"));
         pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" cost of highest equipped tier by ")

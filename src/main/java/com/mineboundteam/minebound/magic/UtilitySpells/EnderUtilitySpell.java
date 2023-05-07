@@ -67,9 +67,7 @@ public class EnderUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(TooltipUtil.enabledHeader);
         pTooltipComponents.add(new TextComponent("    - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Night Vision").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.NIGHT_VISION))));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" by ").append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

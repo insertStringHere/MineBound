@@ -149,12 +149,8 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent("damage").withStyle(ColorUtil.Tooltip.damageColor))
                 .append(", and ")
                 .append(new TextComponent("Mana cost").withStyle(ColorUtil.Tooltip.manaColorStyle)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle)).append(" per entity damaged"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" by ")
-                .append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per entity damaged"));
+        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

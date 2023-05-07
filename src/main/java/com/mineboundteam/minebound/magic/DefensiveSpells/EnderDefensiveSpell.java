@@ -9,6 +9,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
 import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -96,12 +97,8 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
                 .append(new TextComponent("levitate").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.LEVITATION)))
                 .append(" for ")
                 .append(new TextComponent(StringUtil.pluralize(durationInTicks / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(initialManaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" on initial cast"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" each time the player is hit"));
+        pTooltipComponents.add(TooltipUtil.manaCost(initialManaCost, " on initial cast"));
+        pTooltipComponents.add(TooltipUtil.manaCost(manaCostPerHit, " each time the player is hit"));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {

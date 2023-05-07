@@ -185,7 +185,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
         if (config.SPEED_LEVEL.get() > 0) {
             pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("Haste ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED))
-                            .append(TooltipUtil.levelTooltip(config.SPEED_LEVEL.get() - 1))));
+                            .append(TooltipUtil.level(config.SPEED_LEVEL.get() - 1))));
         }
 
         pTooltipComponents.add(TooltipUtil.enabledHeader);
@@ -196,9 +196,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                 .append(" effect level"));
         pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle)));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
-                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

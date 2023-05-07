@@ -69,7 +69,7 @@ public abstract class SpellItem extends Item {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Tier ").withStyle(ColorUtil.Tooltip.armorTierColors.get(level))
-                        .append(TooltipUtil.levelTooltip(level.getValue())))
+                        .append(TooltipUtil.level(level.getValue())))
                 .append(" or higher armor"));
     }
 }
