@@ -97,7 +97,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ColorUtil.Tooltip.defaultColor));
         if (elytraFlight) {
-            pTooltipComponents.add(new TextComponent("  - Gives elytra flight (requires a Myrial Chestpiece to be equipped)")
+            pTooltipComponents.add(new TextComponent("  - Gives elytra flight (must have a Myrial Chestpiece equipped)")
                     .withStyle(ColorUtil.Tooltip.defaultColor));
         }
         pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per second of flight"));
