@@ -191,7 +191,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
 
         pTooltipComponents.add(TooltipUtil.enabledHeader);
         pTooltipComponents.add(new TextComponent("    - Allows vein mining of up to ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent(StringUtil.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Haste").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED)))
                 .append(" effect level"));
