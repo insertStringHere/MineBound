@@ -47,6 +47,6 @@ public class TooltipUtil {
         return new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" by ")
-                .append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle));
+                .append(new TextComponent(StringUtil.formatDecimal(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle));
     }
 }
