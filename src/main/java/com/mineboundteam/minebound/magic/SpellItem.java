@@ -1,14 +1,12 @@
 package com.mineboundteam.minebound.magic;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -21,14 +19,6 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
-    public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
-    public static final Style reductionColorStyle = Style.EMPTY.withColor(MineBound.REDUCTION_COLOR);
-    public static final ChatFormatting defaultColor = ChatFormatting.GRAY;
-    public static final ChatFormatting utilityColor = ChatFormatting.DARK_PURPLE;
-    public static final ChatFormatting damageColor = ChatFormatting.RED;
-    public static final ChatFormatting timeAndDistanceColor = ChatFormatting.DARK_GREEN;
-    public static final ChatFormatting enchantmentColor = ChatFormatting.AQUA;
-    public static final ChatFormatting itemColor = ChatFormatting.WHITE;
     public final ArmorTier level;
     public final MagicType magicType;
     public final SpellType spellType;
@@ -77,9 +67,9 @@ public abstract class SpellItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()])
-                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
+        pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Tier ").withStyle(ColorUtil.Tooltip.armorTierColors.get(level))
+                        .append(TooltipUtil.levelTooltip(level.getValue())))
                 .append(" or higher armor"));
     }
 }

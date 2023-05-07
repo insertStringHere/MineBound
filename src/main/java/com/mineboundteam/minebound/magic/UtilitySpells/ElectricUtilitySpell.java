@@ -8,11 +8,11 @@ import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -155,24 +155,24 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
-                .append(new TextComponent("Speed ").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SPEED.getColor()))
-                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (speedEffectLevel - 1)))));
+        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Speed ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED))
+                        .append(TooltipUtil.levelTooltip(speedEffectLevel - 1))));
         if (thorns) {
-            pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(defaultColor)
-                    .append(new TextComponent("Thorns ").withStyle(enchantmentColor)
-                            .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (level.getValue() - 1)))));
+            pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("Thorns ").withStyle(ColorUtil.Tooltip.enchantmentColor)
+                            .append(TooltipUtil.levelTooltip(level.getValue() - 1))));
         }
         if (level.getValue() > ArmorTier.SUIT.getValue()) {
-            pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(defaultColor)
-                    .append(new TextComponent("one block").withStyle(timeAndDistanceColor)));
+            pTooltipComponents.add(new TextComponent("  - Allows the player to automatically step up ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("one block").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
         }
-        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
-                .append(new TextComponent("Speed").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SPEED.getColor())))
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Speed").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED)))
                 .append(" effect level"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(totalManaReduction + "").withStyle(reductionColorStyle)));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" by ").append(new TextComponent(String.valueOf(totalManaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
     }
 
     public static class ElectricUtilitySpellConfig implements IConfig {

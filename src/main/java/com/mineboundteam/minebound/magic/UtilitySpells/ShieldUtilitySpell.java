@@ -6,6 +6,8 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,7 +46,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
 
         this.config = config;
     }
-    
+
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void triggerSpell(LivingDamageEvent event) {
@@ -124,15 +126,15 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(defaultColor)
-                .append(new TextComponent(MineBound.pluralize(config.TOTAL_HITS.get(), "charge")).withStyle(ChatFormatting.AQUA))
+        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.TOTAL_HITS.get(), "charge")).withStyle(ChatFormatting.AQUA))
                 .append(" to a player's total, each absorbing half a heart of damage."));
-        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(defaultColor)
+        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                 .append(" has been depleted for ")
-                .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))
+                .append(new TextComponent(StringUtil.pluralize(config.RECOV_TICKS.get() / 20, "second") + " at a rate of 10 charges per second").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" every time damage is absorbed"));
     }
 

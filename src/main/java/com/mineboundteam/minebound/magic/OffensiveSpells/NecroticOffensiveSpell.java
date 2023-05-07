@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -106,17 +107,17 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(defaultColor));
-        pTooltipComponents.add(new TextComponent("  - Increases damage dealt by ").withStyle(defaultColor)
-                .append(new TextComponent(String.format("%.0f%%", damageBoost * 100)).withStyle(damageColor)));
-        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(defaultColor)
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Increases damage dealt by ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(String.format("%.0f%%", damageBoost * 100)).withStyle(ColorUtil.Tooltip.damageColor)));
+        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100)).withStyle(ChatFormatting.GOLD))
                 .append(" of damage dealt as health"));
-        pTooltipComponents.add(new TextComponent("  - If health is full, restores ").withStyle(defaultColor)
+        pTooltipComponents.add(new TextComponent("  - If health is full, restores ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100 * FOOD_REDUCTION.get())).withStyle(ChatFormatting.GOLD))
                 .append(" of damage dealt as hunger"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" per second of use"));
     }
 

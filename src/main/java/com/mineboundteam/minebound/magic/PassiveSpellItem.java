@@ -3,13 +3,11 @@ package com.mineboundteam.minebound.magic;
 import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
+import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -21,11 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public abstract class PassiveSpellItem extends SpellItem {
-    protected MutableComponent enabled = new TextComponent("ENABLED").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN);
-    protected MutableComponent disabled = new TextComponent("DISABLED").withStyle(ChatFormatting.BOLD, ChatFormatting.RED);
-    protected MutableComponent enabledHeader = new TextComponent("  Only while ").withStyle(defaultColor)
-            .append(enabled).append(":");
-
     public PassiveSpellItem(Properties properties, ArmorTier level, MagicType magicType, SpellType spellType) {
         super(properties, level, magicType, spellType);
     }
@@ -107,27 +100,8 @@ public abstract class PassiveSpellItem extends SpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(defaultColor)
-                .append(new TextComponent("utility slot").withStyle(utilityColor))
+        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("utility slot").withStyle(ColorUtil.Tooltip.utilityColor))
                 .append(":"));
-    }
-
-    protected void appendToggleTooltip(List<Component> pTooltipComponents, KeyMapping keybind, boolean predicate) {
-        // Spacing
-        pTooltipComponents.add(new TextComponent(" "));
-
-        if (predicate) {
-            pTooltipComponents.add(enabled.copy().append(getKey(keybind)));
-        } else {
-            pTooltipComponents.add(disabled.copy().append(getKey(keybind)));
-        }
-    }
-
-    private MutableComponent getKey(KeyMapping keybind) {
-        return new TextComponent(" [").withStyle(defaultColor)
-                .append(keybind.getKey().getValue() == -1 ?
-                        new TextComponent("unbound") :
-                        new TextComponent("").withStyle(ChatFormatting.WHITE).append(keybind.getTranslatedKeyMessage()))
-                .append("]");
     }
 }

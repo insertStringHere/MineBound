@@ -9,11 +9,14 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.ListUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -94,7 +97,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
                                      */
                                     Vec3 particleVec = new Vec3(
                                             player.getX() + level.getRandom().nextDouble(range) * Math.cos(degree),
-                                            player.getY() + (level.getRandom().nextDouble(range) * MineBound.randomlyChooseFrom(-1, 1)),
+                                            player.getY() + (level.getRandom().nextDouble(range) * ListUtil.randomlyChooseFrom(-1, 1)),
                                             player.getZ() + level.getRandom().nextDouble(range) * Math.sin(degree)
                                     );
                                     if (level.clip(new ClipContext(player.getEyePosition(), particleVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
@@ -131,32 +134,32 @@ public class FireUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
-                .append(new TextComponent("fire resistance").withStyle(Style.EMPTY.withColor(MobEffects.FIRE_RESISTANCE.getColor()))));
-        pTooltipComponents.add(enabledHeader);
-        pTooltipComponents.add(new TextComponent("    - To all entities within ").withStyle(defaultColor)
-                .append(new TextComponent(MineBound.pluralize(aoeRange, "block")).withStyle(timeAndDistanceColor))
+        pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("fire resistance").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.FIRE_RESISTANCE))));
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - To all entities within ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(aoeRange, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(", deals ")
-                .append(new TextComponent(MineBound.pluralize(damage / 2d, "heart") + " of fire damage").withStyle(damageColor))
+                .append(new TextComponent(StringUtil.pluralize(damage / 2d, "heart") + " of fire damage").withStyle(ColorUtil.Tooltip.damageColor))
                 .append(" every ")
-                .append(new TextComponent(MineBound.pluralize(damageRate / 20d, "second")).withStyle(timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(defaultColor)
-                .append(new TextComponent("range").withStyle(timeAndDistanceColor))
+                .append(new TextComponent(StringUtil.pluralize(damageRate / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("range").withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(", ")
-                .append(new TextComponent("damage").withStyle(damageColor))
+                .append(new TextComponent("damage").withStyle(ColorUtil.Tooltip.damageColor))
                 .append(", and ")
-                .append(new TextComponent("Mana cost").withStyle(manaColorStyle)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle)).append(" per entity damaged"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
+                .append(new TextComponent("Mana cost").withStyle(ColorUtil.Tooltip.manaColorStyle)));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle)).append(" per entity damaged"));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" by ")
-                .append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
+                .append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().fire);
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.FIRE_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().fire);
         }
     }
 

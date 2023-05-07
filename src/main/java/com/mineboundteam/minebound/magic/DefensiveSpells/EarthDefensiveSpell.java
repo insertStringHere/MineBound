@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -147,11 +148,11 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(defaultColor)
+        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
-                .append(" per block broken").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" per block broken").withStyle(ColorUtil.Tooltip.defaultColor));
     }
 
     public static class EarthDefensiveSpellConfig implements IConfig {

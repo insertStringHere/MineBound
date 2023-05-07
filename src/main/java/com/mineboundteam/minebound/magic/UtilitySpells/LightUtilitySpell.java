@@ -10,6 +10,9 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.CrashReport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -77,19 +80,19 @@ public class LightUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(enabledHeader);
-        pTooltipComponents.add(new TextComponent("    - Outlines mobs within a radius of ").withStyle(defaultColor)
-                .append(new TextComponent(MineBound.pluralize(config.OUTLINE_RADIUS.get(), "block")).withStyle(timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
-                .append(new TextComponent("outline radius").withStyle(timeAndDistanceColor)));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Outlines mobs within a radius of ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.OUTLINE_RADIUS.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("outline radius").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().light);
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().light);
         }
     }
 

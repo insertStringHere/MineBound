@@ -1,11 +1,12 @@
 package com.mineboundteam.minebound.magic.OffensiveSpells;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -62,12 +63,12 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(defaultColor));
-        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(defaultColor)
-                .append(new TextComponent(MineBound.pluralize(teleportDistance, "block")).withStyle(timeAndDistanceColor))
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(teleportDistance, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" in the direction they are looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" per teleport"));
     }
 

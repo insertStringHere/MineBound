@@ -9,10 +9,11 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -63,17 +64,17 @@ public class EnderUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(enabledHeader);
-        pTooltipComponents.add(new TextComponent("    - Gives ").withStyle(defaultColor)
-                .append(new TextComponent("Night Vision").withStyle(Style.EMPTY.withColor(MobEffects.NIGHT_VISION.getColor()))));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Night Vision").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.NIGHT_VISION))));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" by ").append(new TextComponent(String.valueOf(manaReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE,toggle.isPresent() && toggle.get().ender);
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().ender);
         }
     }
 

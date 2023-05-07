@@ -10,14 +10,15 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -183,27 +184,27 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         if (config.SPEED_LEVEL.get() > 0) {
-            pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(defaultColor)
-                    .append(new TextComponent("Haste ").withStyle(Style.EMPTY.withColor(MobEffects.DIG_SPEED.getColor()))
-                            .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (config.SPEED_LEVEL.get() - 1)))));
+            pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("Haste ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED))
+                            .append(TooltipUtil.levelTooltip(config.SPEED_LEVEL.get() - 1))));
         }
 
-        pTooltipComponents.add(enabledHeader);
-        pTooltipComponents.add(new TextComponent("    - Allows vein mining of up to ").withStyle(defaultColor)
-                .append(new TextComponent(MineBound.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(defaultColor)
-                .append(new TextComponent("Haste").withStyle(Style.EMPTY.withColor(MobEffects.DIG_SPEED.getColor())))
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Allows vein mining of up to ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Haste").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED)))
                 .append(" effect level"));
-        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(defaultColor)
-                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle)));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(defaultColor)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(reductionColorStyle)));
+        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle)));
+        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Manapool").withStyle(ColorUtil.Tooltip.manaColorStyle))
+                .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get().toString()).withStyle(ColorUtil.Tooltip.reductionColorStyle)));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().earth);
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().earth);
         }
     }
 

@@ -6,6 +6,7 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -92,18 +93,18 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ColorUtil.Tooltip.defaultColor));
         if (elytraFlight) {
             pTooltipComponents.add(new TextComponent("  - Gives elytra flight (requires a Myrial Chestpiece to be equipped)")
-                    .withStyle(defaultColor));
+                    .withStyle(ColorUtil.Tooltip.defaultColor));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" per second of flight"));
-        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(defaultColor)
-                .append(new TextComponent("Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" cost of highest equipped tier by ")
-                .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(reductionColorStyle))
+                .append(new TextComponent(String.format("%.0f%%", (manaCostReduction * 100))).withStyle(ColorUtil.Tooltip.reductionColorStyle))
                 .append(" each"));
     }
 

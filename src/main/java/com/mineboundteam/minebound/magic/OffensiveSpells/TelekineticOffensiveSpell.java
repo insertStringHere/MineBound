@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.item.tool.MyrialMachete;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -54,20 +55,22 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(defaultColor));
-        pTooltipComponents.add(new TextComponent("  - If main hand is empty, places a ").withStyle(defaultColor)
-                .append(new TextComponent("Myrial Machete").withStyle(itemColor)).append(" into selected hotbar slot"));
-        pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(defaultColor)
-                .append(new TextComponent("Myrial Machete").withStyle(itemColor)).append(" will cause it to vanish"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCostOnCast + " Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - If main hand is empty, places a ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
+                .append(" into selected hotbar slot"));
+        pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
+                .append(" will cause it to vanish"));
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCostOnCast + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" to summon ")
-                .append(new TextComponent("Myrial Machete").withStyle(itemColor))
+                .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
                 .append(", even if main hand is not empty"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(defaultColor)
-                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" per hit with the ")
-                .append(new TextComponent("Myrial Machete").withStyle(itemColor)));
+                .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor)));
     }
 
     public static class TelekineticOffensiveSpellConfig implements IConfig {
