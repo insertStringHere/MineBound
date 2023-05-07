@@ -39,7 +39,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
     private final int manaCostPerHit;
     private final int durationInTicks;
 
-    public ElectricDefensiveSpell(Properties properties, ElectricDefensiveConfig config) {
+    public ElectricDefensiveSpell(Properties properties, ElectricDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ELECTRIC, SpellType.DEFENSIVE);
 
         this.initialManaCost = config.INITIAL_MANA_COST.get();
@@ -113,7 +113,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
                 .append(" each time the player is hit"));
     }
 
-    public static class ElectricDefensiveConfig implements IConfig {
+    public static class ElectricDefensiveSpellConfig implements IConfig {
         ForgeConfigSpec.IntValue INITIAL_MANA_COST;
         ForgeConfigSpec.IntValue MANA_COST_PER_HIT;
         ForgeConfigSpec.IntValue DURATION_TICKS;
@@ -123,7 +123,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
         private final int manaCostPerHit;
         private final int durationInTicks;
 
-        public ElectricDefensiveConfig(int initialManaCost, int manaCostPerHit, int durationInTicks, ArmorTier level) {
+        public ElectricDefensiveSpellConfig(int initialManaCost, int manaCostPerHit, int durationInTicks, ArmorTier level) {
             this.initialManaCost = initialManaCost;
             this.manaCostPerHit = manaCostPerHit;
             this.durationInTicks = durationInTicks;
