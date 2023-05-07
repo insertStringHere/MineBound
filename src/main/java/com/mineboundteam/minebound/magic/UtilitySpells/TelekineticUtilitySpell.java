@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -104,7 +105,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" cost of highest equipped tier by ")
-                .append(new TextComponent(String.format("%.0f%%", (manaCostReduction * 100))).withStyle(ColorUtil.Tooltip.reductionColorStyle))
+                .append(new TextComponent(StringUtil.percentage(manaCostReduction)).withStyle(ColorUtil.Tooltip.reductionColorStyle))
                 .append(" each"));
     }
 

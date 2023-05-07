@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -125,9 +126,9 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(String.format("%.0f%%", damageReduction * 100)).withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent(StringUtil.percentage(damageReduction)).withStyle(ChatFormatting.GOLD)));
         pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(String.format("%.0f%%", damageReflected * 100)).withStyle(ColorUtil.Tooltip.damageColor))
+                .append(new TextComponent(StringUtil.percentage(damageReflected)).withStyle(ColorUtil.Tooltip.damageColor))
                 .append(" of the initial damage"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(manaCost + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
