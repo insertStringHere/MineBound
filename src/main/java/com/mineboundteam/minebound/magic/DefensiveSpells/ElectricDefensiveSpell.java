@@ -11,6 +11,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
@@ -90,18 +91,18 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - When hit by a mob, ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Electric Debuff ").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get()))
+                .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
                 .append(" will be applied to that mob for ")
                 .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("  - ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Electric Debuff ").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get()))
+                .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
                 .append(" applies ")
-                .append(new TextComponent("Slowness ").withStyle(effectColor(MobEffects.MOVEMENT_SLOWDOWN))
+                .append(new TextComponent("Slowness ").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SLOWDOWN.getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + ElectricDebuff.getSlownessLevel(level.getValue()))))
                 .append(" and increases vulnerability to ")
-                .append(new TextComponent("electricity").withStyle(effectColor(EffectRegistry.ELECTRIC_DEBUFF.get())))
+                .append(new TextComponent("electricity").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor())))
                 .append(" by ")
                 .append(new TextComponent(String.format("%.0f%%", (ElectricDebuff.getDmgMult(level.getValue()) - 1) * 100)).withStyle(ChatFormatting.RED)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
