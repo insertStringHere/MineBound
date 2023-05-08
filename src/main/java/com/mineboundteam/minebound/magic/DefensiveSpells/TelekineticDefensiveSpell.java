@@ -53,8 +53,8 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
                 Entity entity = level.getEntity(id);
                 if(entity != null){
                     attackMap.put(player.getId(), usedHand);
-                    entity.hurt(DamageSource.playerAttack(player).setIsFall(), (float)(config.DAMAGE.get().doubleValue()));
-                    reduceMana((int)(config.MANA_COST.get() * 10), player);
+                    if(entity.hurt(DamageSource.playerAttack(player).setIsFall(), (float)(config.DAMAGE.get().doubleValue())))
+                        reduceMana((int)(config.MANA_COST.get() * 10), player);
                 }
             } else {
                 Vec3 start = player.getEyePosition();
@@ -70,7 +70,8 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
     @Override
     public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
         Integer id = selectedMap.get(player.getId());
-        if(!level.isClientSide() && id != null){
+        InteractionHand cacheHand = attackMap.get(player.getId());
+        if(!level.isClientSide() && id != null && (cacheHand == null || cacheHand != usedHand)) {
             Entity e = level.getEntity(id);
             if(e != null && e.isAlive() && e instanceof LivingEntity entity){
                 double velocity = entity.getDeltaMovement().lengthSqr();
@@ -128,10 +129,10 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("  - Picks up the currently looked at mob from up to ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.GRAB_DISTANCE.get() + " blocks away").withStyle(ChatFormatting.WHITE))
+                .append(new TextComponent(config.GRAB_DISTANCE.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN))
                 .append(" and moves them where the player is looking from a distance of ")
-                .append(new TextComponent(config.HOLD_DIST.get() + " blocks away").withStyle(ChatFormatting.WHITE)));
-        pTooltipComponents.add(new TextComponent("  - Squeezes a currently held mob for ").withStyle(ChatFormatting.GRAY)
+                .append(new TextComponent(config.HOLD_DIST.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN)));
+        pTooltipComponents.add(new TextComponent("  - While holding a mob, casting with an additional hand squeezes mob for ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ChatFormatting.RED)));
         if(config.DO_DAMAGE.get())
             pTooltipComponents.add(new TextComponent("  - Slamming the mob into walls will do ").withStyle(ChatFormatting.GRAY)
