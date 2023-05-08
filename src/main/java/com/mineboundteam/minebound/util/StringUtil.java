@@ -7,8 +7,8 @@ public class StringUtil {
         return new DecimalFormat("0.#").format(num);
     }
 
-    public static String pluralize(Number num, String word) {
-        return pluralize(num, word, word + "s");
+    public static String pluralize(Number num, String singular) {
+        return pluralize(num, singular, singular + "s");
     }
 
     public static String pluralize(Number num, String singular, String plural) {
