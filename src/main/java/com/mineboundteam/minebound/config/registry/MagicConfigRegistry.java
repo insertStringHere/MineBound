@@ -34,8 +34,6 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
      */
 
     /* Fire */
-
-    /* Fire */
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 5.0, false, false, 0, ArmorTier.EFFIGY);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_2 = new FireOffensiveSpell.FireOffensiveSpellConfig(20, 16, 10.0, true, false, 0, ArmorTier.SUIT);
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_4 = new FireOffensiveSpell.FireOffensiveSpellConfig(30, 16, 10.0, true, true, 50, ArmorTier.SINGULARITY);
