@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,12 +42,10 @@ public class LightDefensiveSpell extends ActiveSpellItem {
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide()) {
             BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
-            if (hitResult.getType() == HitResult.Type.BLOCK) {
-                BlockItem magelight = (BlockItem) ForgeRegistries.ITEMS.getValue(BlockRegistry.MAGELIGHT.getId());
-                UseOnContext context = new UseOnContext(level, null, InteractionHand.MAIN_HAND, magelight.getDefaultInstance(), hitResult);
-                if (magelight.useOn(context) != InteractionResult.FAIL) {
-                    reduceMana(config.MANA_COST.get(), player);
-                }
+            BlockItem magelight = (BlockItem) ForgeRegistries.ITEMS.getValue(BlockRegistry.MAGELIGHT.getId());
+            UseOnContext context = new UseOnContext(level, player, InteractionHand.MAIN_HAND, magelight.getDefaultInstance(), hitResult);
+            if (magelight.useOn(context) != InteractionResult.FAIL) {
+                reduceMana(config.MANA_COST.get(), player);
             }
         }
     }
@@ -67,6 +65,11 @@ public class LightDefensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
                 .append(" where the player is looking"));
+        if (config.DESTROY_MAGELIGHT.get()) {
+            pTooltipComponents.add(new TextComponent("  - ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("Magelights").withStyle(ChatFormatting.YELLOW))
+                    .append(" are destroyed after " + StringUtil.pluralize(config.MAGELIGHT_DURATION.get() / 60d, "minute")));
+        }
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " to place"));
     }
 
