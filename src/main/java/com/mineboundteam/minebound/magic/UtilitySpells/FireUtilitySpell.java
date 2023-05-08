@@ -44,21 +44,12 @@ import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class FireUtilitySpell extends PassiveSpellItem {
-    private final int manaCost;
-    private final int manaReduction;
-    private final int aoeRange;
-    private final double damage;
-    private final int damageRate;
-
+    private final FireUtilitySpellConfig config;
 
     public FireUtilitySpell(Properties properties, FireUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.FIRE, SpellType.UTILITY);
 
-        this.manaCost = config.MANA_COST.get();
-        this.manaReduction = config.MANA_REDUCTION.get();
-        this.aoeRange = config.AOE_RANGE.get();
-        this.damage = config.DAMAGE.get();
-        this.damageRate = config.DAMAGE_RATE.get();
+        this.config = config;
     }
 
 
@@ -69,13 +60,13 @@ public class FireUtilitySpell extends PassiveSpellItem {
             List<FireUtilitySpell> equippedSpells = getEquippedSpellItemsOfType(FireUtilitySpell.class, player);
             if (equippedSpells.size() > 0) {
                 FireUtilitySpell highestSpell = getHighestSpellItem(equippedSpells);
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.manaReduction));
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("fire_utility", -highestSpell.config.MANA_REDUCTION.get()));
                 player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2, 0, false, false));
                 player.clearFire();
 
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
                     if (utilityToggle.fire) {
-                        int damageRate = highestSpell.damageRate;
+                        int damageRate = highestSpell.config.DAMAGE_RATE.get();
                         Level level = player.getLevel();
                         if (level.getGameTime() % damageRate == 0) {
                             level.playSound(player, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.1f, 0.75f);
@@ -84,9 +75,9 @@ public class FireUtilitySpell extends PassiveSpellItem {
                             int range = 0;
                             int damage = 0;
                             for (FireUtilitySpell spell : equippedSpells) {
-                                manaCost += spell.manaCost;
-                                range += spell.aoeRange;
-                                damage += spell.damage;
+                                manaCost += spell.config.MANA_COST.get();
+                                range += spell.config.AOE_RANGE.get();
+                                damage += spell.config.DAMAGE.get();
                             }
 
                             int particleCount = range / 5;
@@ -138,19 +129,19 @@ public class FireUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent("fire resistance").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.FIRE_RESISTANCE))));
         pTooltipComponents.add(TooltipUtil.enabledHeader);
         pTooltipComponents.add(new TextComponent("    - To all entities within ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.pluralize(aoeRange, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                .append(new TextComponent(StringUtil.pluralize(config.AOE_RANGE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(", deals ")
-                .append(new TextComponent(StringUtil.pluralize(damage / 2d, "heart") + " of fire damage").withStyle(ColorUtil.Tooltip.damageColor))
+                .append(new TextComponent(StringUtil.pluralize(config.DAMAGE.get() / 2d, "heart") + " of fire damage").withStyle(ColorUtil.Tooltip.damageColor))
                 .append(" every ")
-                .append(new TextComponent(StringUtil.pluralize(damageRate / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+                .append(new TextComponent(StringUtil.pluralize(config.DAMAGE_RATE.get() / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
         pTooltipComponents.add(new TextComponent("Multiple copies stack to increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("range").withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(", ")
                 .append(new TextComponent("damage").withStyle(ColorUtil.Tooltip.damageColor))
                 .append(", and ")
                 .append(new TextComponent("Mana cost").withStyle(ColorUtil.Tooltip.manaColorStyle)));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per entity damaged"));
-        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per entity damaged"));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

@@ -34,22 +34,18 @@ import java.util.List;
 public class EnderDefensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.ender_defensive.active";
 
-    private final int initialManaCost;
-    private final int manaCostPerHit;
-    private final int durationInTicks;
+    private final EnderDefensiveSpellConfig config;
 
     public EnderDefensiveSpell(Properties properties, EnderDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.DEFENSIVE);
 
-        this.initialManaCost = config.INITIAL_MANA_COST.get();
-        this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
-        this.durationInTicks = config.DURATION_TICKS.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         stack.getOrCreateTag().putBoolean(ACTIVE_TAG, true);
-        reduceMana(initialManaCost, player);
+        reduceMana(config.INITIAL_MANA_COST.get(), player);
     }
 
     @Override
@@ -78,8 +74,8 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
         if (selectedSpell.getItem() instanceof EnderDefensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
             if (isActive) {
-                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.durationInTicks, 0, false, false));
-                reduceMana(spell.manaCostPerHit, player);
+                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.config.DURATION_TICKS.get(), 0, false, false));
+                reduceMana(spell.config.MANA_COST_PER_HIT.get(), player);
                 return true;
             }
         }
@@ -93,9 +89,9 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("levitate").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.LEVITATION)))
                 .append(" for ")
-                .append(new TextComponent(StringUtil.pluralize(durationInTicks / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
-        pTooltipComponents.add(TooltipUtil.manaCost(initialManaCost, " on initial cast"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCostPerHit, " each time the player is hit"));
+                .append(new TextComponent(StringUtil.pluralize(config.DURATION_TICKS.get() / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.INITIAL_MANA_COST.get(), " on initial cast"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_PER_HIT.get(), " each time the player is hit"));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {

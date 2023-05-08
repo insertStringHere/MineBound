@@ -28,27 +28,17 @@ import java.util.List;
 
 public class FireOffensiveSpell extends ActiveSpellItem {
 
-    private final int manaCost;
-    private final int fireDistance;
-    private final double fireDamage;
-    private final boolean igniteBlocks;
-    private final boolean shootFireball;
-    private final int fireballManaCost;
+    private final FireOffensiveSpellConfig config;
 
     public FireOffensiveSpell(Properties properties, FireOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.FIRE, SpellType.OFFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
-        this.fireDistance = config.FIRE_DISTANCE.get();
-        this.fireDamage = config.FIRE_DAMAGE.get();
-        this.igniteBlocks = config.IGNITE_BLOCKS.get();
-        this.shootFireball = config.SHOOT_FIREBALL.get();
-        this.fireballManaCost = config.FIREBALL_MANA_COST.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        if (shootFireball) {
+        if (config.SHOOT_FIREBALL.get()) {
             float yRot = player.getYRot();
             float xRot = player.getXRot();
             double x = 0 - Math.sin(yRot * Math.PI / 180f);
@@ -63,7 +53,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             smallfireball.setOwner(player);
             level.addFreshEntity(smallfireball);
             level.playSound(player, player, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1f, 1f);
-            reduceMana(fireballManaCost, player);
+            reduceMana(config.FIREBALL_MANA_COST.get(), player);
         }
     }
 
@@ -83,9 +73,9 @@ public class FireOffensiveSpell extends ActiveSpellItem {
                     x - (level.getRandom().nextDouble() * (z * Math.sin(i))) / 5d,
                     y + (level.getRandom().nextDouble() * Math.cos(i)) / 5d,
                     z + (level.getRandom().nextDouble() * (x * Math.sin(i))) / 5d,
-                    fireDamage,
-                    igniteBlocks,
-                    fireDistance
+                    config.FIRE_DAMAGE.get(),
+                    config.IGNITE_BLOCKS.get(),
+                    config.FIRE_DISTANCE.get()
             ));
         }
 
@@ -94,7 +84,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             level.playSound(player, player, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.PLAYERS, 1f, 1f);
         }
         if (tickCount % 20 == 0) {
-            reduceMana(manaCost, player);
+            reduceMana(config.MANA_COST.get(), player);
         }
     }
 
@@ -107,21 +97,21 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Shoots a cone of fire ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.pluralize(fireDistance, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                .append(new TextComponent(StringUtil.pluralize(config.FIRE_DISTANCE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" that deals ")
-                .append(new TextComponent(StringUtil.pluralize(fireDamage / 2d, "heart") + " of damage").withStyle(ColorUtil.Tooltip.damageColor)));
-        if (igniteBlocks) {
+                .append(new TextComponent(StringUtil.pluralize(config.FIRE_DAMAGE.get() / 2d, "heart") + " of damage").withStyle(ColorUtil.Tooltip.damageColor)));
+        if (config.IGNITE_BLOCKS.get()) {
             pTooltipComponents.add(new TextComponent("  - Will ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("ignite").withStyle(ChatFormatting.GOLD))
                     .append(" blocks hit by the fire"));
         }
-        if (shootFireball) {
+        if (config.SHOOT_FIREBALL.get()) {
             pTooltipComponents.add(new TextComponent("  - On initial cast, shoots a ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("fireball").withStyle(ChatFormatting.GOLD))
                     .append(" from the center of the cone"));
-            pTooltipComponents.add(TooltipUtil.manaCost(fireballManaCost, "to create the fireball"));
+            pTooltipComponents.add(TooltipUtil.manaCost(config.FIREBALL_MANA_COST.get(), "to create the fireball"));
         }
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per second of use"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per second of use"));
     }
 
     public static class FireOffensiveSpellConfig implements IConfig {

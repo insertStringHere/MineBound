@@ -41,7 +41,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
 
     public static final String MAX_TAG = "max_hits";
 
-    public final ShieldUtilitySpellConfig config;
+    private final ShieldUtilitySpellConfig config;
 
     public ShieldUtilitySpell(Properties properties, ShieldUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.SHIELD, SpellType.UTILITY);

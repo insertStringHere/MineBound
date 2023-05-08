@@ -33,12 +33,12 @@ import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class EnderUtilitySpell extends PassiveSpellItem {
-    private final int manaReduction;
+    private final EnderUtilitySpellConfig config;
 
     public EnderUtilitySpell(Properties properties, EnderUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.UTILITY);
 
-        this.manaReduction = config.MANA_REDUCTION.get();
+        this.config = config;
     }
 
     @SubscribeEvent
@@ -47,7 +47,7 @@ public class EnderUtilitySpell extends PassiveSpellItem {
             Player player = event.player;
             EnderUtilitySpell spell = getHighestSpellItem(EnderUtilitySpell.class, player);
             if (spell != null) {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("ender_utility", -spell.manaReduction));
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("ender_utility", -spell.config.MANA_REDUCTION.get()));
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
                     if (utilityToggle.ender) {
                         // Has to be longer than 10 seconds otherwise it flickers horribly
@@ -67,7 +67,7 @@ public class EnderUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(TooltipUtil.enabledHeader);
         pTooltipComponents.add(new TextComponent("    - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Night Vision").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.NIGHT_VISION))));
-        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {

@@ -42,17 +42,12 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ElectricUtilitySpell extends PassiveSpellItem {
-
-    private final int manaReduction;
-    private final int speedEffectLevel;
-    private final boolean thorns;
+    private final ElectricUtilitySpellConfig config;
 
     public ElectricUtilitySpell(Properties properties, ElectricUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.ELECTRIC, SpellType.UTILITY);
 
-        this.manaReduction = config.MANA_REDUCTION.get();
-        this.speedEffectLevel = config.SPEED_LEVEL.get();
-        this.thorns = config.THORNS.get();
+        this.config = config;
     }
 
     protected static UUID autoStepID = new UUID(1837183113, 22255113);
@@ -76,8 +71,8 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 // Mob effect levels start at 0, so this starts at -1 to compensate for the off by 1
                 int speedLevel = -1;
                 for (ElectricUtilitySpell s : equippedSpells) {
-                    manaReduction += s.manaReduction;
-                    speedLevel += s.speedEffectLevel;
+                    manaReduction += s.config.MANA_REDUCTION.get();
+                    speedLevel += s.config.SPEED_LEVEL.get();
                 }
 
                 // Java doesn't like non "final" variables being used in lambdas
@@ -85,7 +80,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("electric_utility", -finalManaReduction));
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, speedLevel, false, false));
 
-                if (spell.thorns) {
+                if (spell.config.THORNS.get()) {
                     for (EquipmentSlot e : EquipmentSlot.values()) {
                         if (e.getType() == EquipmentSlot.Type.ARMOR && player.getItemBySlot(e).getItem() instanceof MyrialArmorItem) {
                             // Apply corresponding thorns enchantment if not already applied or a lower level is currently applied by lower tier version of spell
@@ -157,8 +152,8 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Speed ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED))
-                        .append(TooltipUtil.level(speedEffectLevel - 1))));
-        if (thorns) {
+                        .append(TooltipUtil.level(config.SPEED_LEVEL.get() - 1))));
+        if (config.THORNS.get()) {
             pTooltipComponents.add(new TextComponent("  - Enchants equipped Myrial Armor with ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("Thorns ").withStyle(ColorUtil.Tooltip.enchantmentColor)
                             .append(TooltipUtil.level(level.getValue() - 1))));
@@ -170,7 +165,7 @@ public class ElectricUtilitySpell extends PassiveSpellItem {
         pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Speed").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SPEED)))
                 .append(" effect level"));
-        pTooltipComponents.add(TooltipUtil.manaReduction(manaReduction));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
     }
 
     public static class ElectricUtilitySpellConfig implements IConfig {

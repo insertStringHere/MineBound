@@ -19,19 +19,18 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class MyrialMachete extends SwordItem {
-
-    private final int manaCost;
+    TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config;
 
     public MyrialMachete(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
 
-        this.manaCost = config.MANA_COST_PER_HIT.get();
+        this.config = config;
     }
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (pAttacker instanceof Player player) {
-            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> SpellItem.reduceMana(manaCost, player));
+            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> SpellItem.reduceMana(config.MANA_COST_PER_HIT.get(), player));
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }

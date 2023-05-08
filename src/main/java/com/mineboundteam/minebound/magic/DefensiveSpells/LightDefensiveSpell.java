@@ -30,12 +30,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LightDefensiveSpell extends ActiveSpellItem {
-    private final int manaCost;
+    private final LightDefensiveSpellConfig config;
 
     public LightDefensiveSpell(Properties properties, LightDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.LIGHT, SpellType.DEFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
+        this.config = config;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class LightDefensiveSpell extends ActiveSpellItem {
                 BlockItem magelight = (BlockItem) ForgeRegistries.ITEMS.getValue(BlockRegistry.MAGELIGHT.getId());
                 UseOnContext context = new UseOnContext(level, null, InteractionHand.MAIN_HAND, magelight.getDefaultInstance(), hitResult);
                 if (magelight.useOn(context) != InteractionResult.FAIL) {
-                    reduceMana(manaCost, player);
+                    reduceMana(config.MANA_COST.get(), player);
                 }
             }
         }
@@ -67,7 +67,7 @@ public class LightDefensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
                 .append(" where the player is looking"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " to place"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " to place"));
     }
 
     public static class LightDefensiveSpellConfig implements IConfig {

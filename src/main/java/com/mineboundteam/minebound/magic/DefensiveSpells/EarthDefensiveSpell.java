@@ -42,7 +42,7 @@ import java.util.List;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
-    protected final EarthDefensiveSpellConfig config;
+    private final EarthDefensiveSpellConfig config;
 
     public EarthDefensiveSpell(Properties properties, EarthDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.EARTH, SpellType.DEFENSIVE);

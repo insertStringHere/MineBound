@@ -26,20 +26,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class EnderOffensiveSpell extends ActiveSpellItem {
-    private final int manaCost;
-    private final int teleportDistance;
+    private final EnderOffensiveSpellConfig config;
 
     public EnderOffensiveSpell(Properties properties, EnderOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.OFFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
-        this.teleportDistance = config.TP_DISTANCE.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        if(!level.isClientSide()) {
-            BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
+        if (!level.isClientSide()) {
+            BlockHitResult result = (BlockHitResult) player.pick(config.TP_DISTANCE.get(), 1f, false);
             BlockPos pos = result.getBlockPos().relative(result.getDirection());
             double dX = Math.abs(player.getX() - pos.getX() - 0.5);
             double dY = Math.abs(player.getY() - pos.getY());
@@ -48,7 +46,7 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
             if (Math.floor(dX + dY + dZ) > 0) {
                 player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
                 level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
-                reduceMana(manaCost, player);
+                reduceMana(config.MANA_COST.get(), player);
             }
         }
     }
@@ -66,9 +64,9 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.pluralize(teleportDistance, "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                .append(new TextComponent(StringUtil.pluralize(config.TP_DISTANCE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" in the direction they are looking"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per teleport"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per teleport"));
     }
 
     public static class EnderOffensiveSpellConfig implements IConfig {

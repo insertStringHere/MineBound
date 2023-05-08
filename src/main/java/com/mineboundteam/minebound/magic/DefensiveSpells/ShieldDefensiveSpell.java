@@ -33,12 +33,12 @@ import java.util.List;
 public class ShieldDefensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.shield_defensive.active";
 
-    private final int manaCost;
+    private final ShieldDefensiveSpellConfig config;
 
     public ShieldDefensiveSpell(Properties properties, ShieldDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.SHIELD, SpellType.DEFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
+        this.config = config;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
             if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 event.setCanceled(true);
                 player.getLevel().playSound(null, player, SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
-                reduceMana(spell.manaCost, player);
+                reduceMana(spell.config.MANA_COST.get(), player);
                 return true;
             }
         }
@@ -86,7 +86,7 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Blocks incoming damage from all directions like a shield").withStyle(ColorUtil.Tooltip.defaultColor));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " each time damage is blocked"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " each time damage is blocked"));
     }
 
     public static class ShieldDefensiveSpellConfig implements IConfig {

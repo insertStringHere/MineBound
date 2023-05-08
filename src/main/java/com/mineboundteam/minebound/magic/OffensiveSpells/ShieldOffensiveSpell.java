@@ -37,18 +37,13 @@ import java.util.List;
 public class ShieldOffensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.shield_offensive.active";
 
-    private final int manaCost;
-    private final double damageReduction;
-    private final double damageReflected;
+    private final ShieldOffensiveSpellConfig config;
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.SHIELD, SpellType.OFFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
-        this.damageReduction = config.DMG_REDUCTION.get();
-        this.damageReflected = config.DMG_REFLECTED.get();
+        this.config = config;
     }
-
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
@@ -83,11 +78,11 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
             if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) == 0) {
+                if ((1 - spell.config.DMG_REDUCTION.get()) == 0) {
                     event.setCanceled(true);
                 }
-                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
-                reduceMana(spell.manaCost, player);
+                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.config.DMG_REFLECTED.get()));
+                reduceMana(spell.config.MANA_COST.get(), player);
                 return true;
             }
         }
@@ -113,8 +108,8 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
             if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) != 0) {
-                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
+                if ((1 - spell.config.DMG_REDUCTION.get()) != 0) {
+                    event.setAmount((float) (dmgAmount * (1 - spell.config.DMG_REDUCTION.get())));
                 }
                 return true;
                 // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
@@ -128,11 +123,11 @@ public class ShieldOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.percentage(damageReduction)).withStyle(ChatFormatting.GOLD)));
+                .append(new TextComponent(StringUtil.percentage(config.DMG_REDUCTION.get())).withStyle(ChatFormatting.GOLD)));
         pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent(StringUtil.percentage(damageReflected)).withStyle(ColorUtil.Tooltip.damageColor))
+                .append(new TextComponent(StringUtil.percentage(config.DMG_REFLECTED.get())).withStyle(ColorUtil.Tooltip.damageColor))
                 .append(" of the initial damage"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCost, " per reflect"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per reflect"));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

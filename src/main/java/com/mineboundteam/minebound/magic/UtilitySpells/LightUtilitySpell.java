@@ -49,7 +49,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class LightUtilitySpell extends PassiveSpellItem {
 
-    protected final LightUtilitySpellConfig config;
+    private final LightUtilitySpellConfig config;
 
 
     // Having this local variable will be quicker than always retrieving the capability.

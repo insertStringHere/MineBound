@@ -24,21 +24,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TelekineticOffensiveSpell extends ActiveSpellItem {
-
-    private final int manaCostOnCast;
-    private final int manaCostPerHit;
+    private final TelekineticOffensiveSpellConfig config;
 
     public TelekineticOffensiveSpell(Properties properties, TelekineticOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.TELEKINETIC, SpellType.OFFENSIVE);
 
-        this.manaCostOnCast = config.MANA_COST_ON_CAST.get();
-        this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide() && !(player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof MyrialMachete)) {
-            reduceMana(manaCostOnCast, player);
+            reduceMana(config.MANA_COST_ON_CAST.get(), player);
             if (player.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
                 player.setItemSlot(EquipmentSlot.MAINHAND, ItemRegistry.MYRIAL_MACHETE.get().getDefaultInstance());
             }
@@ -63,10 +60,10 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
                 .append(" will cause it to vanish"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCostOnCast, " to summon ")
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_ON_CAST.get(), " to summon ")
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor))
                 .append(", even if main hand is not empty"));
-        pTooltipComponents.add(TooltipUtil.manaCost(manaCostPerHit, " per hit with the ")
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_PER_HIT.get(), " per hit with the ")
                 .append(new TextComponent("Myrial Machete").withStyle(ColorUtil.Tooltip.itemColor)));
     }
 
