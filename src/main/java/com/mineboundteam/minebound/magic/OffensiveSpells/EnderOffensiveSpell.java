@@ -38,16 +38,18 @@ public class EnderOffensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
-        BlockPos pos = result.getBlockPos().relative(result.getDirection());
-        double dX = Math.abs(player.getX() - pos.getX() - 0.5);
-        double dY = Math.abs(player.getY() - pos.getY());
-        double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
-        // Only execute if player would move > 1 block
-        if (Math.floor(dX + dY + dZ) > 0) {
-            player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            level.playSound(player, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
-            reduceMana(manaCost, player);
+        if(!level.isClientSide()) {
+            BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
+            BlockPos pos = result.getBlockPos().relative(result.getDirection());
+            double dX = Math.abs(player.getX() - pos.getX() - 0.5);
+            double dY = Math.abs(player.getY() - pos.getY());
+            double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
+            // Only execute if player would move > 1 block
+            if (Math.floor(dX + dY + dZ) > 0) {
+                player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
+                reduceMana(manaCost, player);
+            }
         }
     }
 
