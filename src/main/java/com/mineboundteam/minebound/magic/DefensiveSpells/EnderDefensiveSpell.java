@@ -98,10 +98,10 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
                 .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
-                .append(" on initial cast"));
+                .append(" on initial cast").withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
-                .append(" each time the player is hit"));
+                .append(" each time the player is hit").withStyle(ChatFormatting.GRAY));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {
