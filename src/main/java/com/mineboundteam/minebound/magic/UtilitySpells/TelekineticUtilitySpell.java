@@ -12,6 +12,7 @@ import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -82,7 +83,7 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void triggerSpell(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide()
+        if (event.getEntityLiving() instanceof ServerPlayer player
                 && (event.getSource() == DamageSource.FALL || event.getSource() == DamageSource.FLY_INTO_WALL)) {
             TelekineticUtilitySpell spell = getHighestSpellItem(TelekineticUtilitySpell.class, player);
             if (spell != null) {
