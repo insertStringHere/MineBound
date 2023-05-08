@@ -109,7 +109,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
             pTooltipComponents.add(new TextComponent("  - On initial cast, shoots a ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("fireball").withStyle(ChatFormatting.GOLD))
                     .append(" from the center of the cone"));
-            pTooltipComponents.add(TooltipUtil.manaCost(config.FIREBALL_MANA_COST.get(), "to create the fireball"));
+            pTooltipComponents.add(TooltipUtil.manaCost(config.FIREBALL_MANA_COST.get(), " to create the fireball"));
         }
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per second of use"));
     }
