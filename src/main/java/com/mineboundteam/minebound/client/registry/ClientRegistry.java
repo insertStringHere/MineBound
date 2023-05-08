@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.client.overlay.ManaHUDOverlay;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.FireProjectileRenderer;
+import com.mineboundteam.minebound.client.renderer.entity.RockProjectileRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
 import com.mineboundteam.minebound.client.screens.ArmorForgeScreen;
@@ -86,7 +87,7 @@ public class ClientRegistry {
 
         EntityRenderers.register(EntityRegistry.MYRI_CORPSE.get(), MyriCorpseRenderer::new);
         EntityRenderers.register(EntityRegistry.FIRE_PROJECTILE.get(), FireProjectileRenderer::new);
-
+        EntityRenderers.register(EntityRegistry.ROCK_PROJECTILE.get(), RockProjectileRenderer::new);
         GeoArmorRenderer.registerArmorRenderer(MyrialArmorItem.class, MyrialArmorRenderer::new);
     }
 
