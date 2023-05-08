@@ -68,7 +68,9 @@ public class LightDefensiveSpell extends ActiveSpellItem {
         if (config.DESTROY_MAGELIGHT.get()) {
             pTooltipComponents.add(new TextComponent("  - ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent("Magelights").withStyle(ChatFormatting.YELLOW))
-                    .append(" are destroyed after " + StringUtil.pluralize(config.MAGELIGHT_DURATION.get() / 60d, "minute")));
+                    .append(" are destroyed ")
+                    .append(new TextComponent(StringUtil.pluralize(config.MAGELIGHT_DURATION.get() / 60d, "minute")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                    .append(" after being placed"));
         }
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " to place"));
     }
