@@ -49,7 +49,6 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
         this.config = config;
     }
 
-
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void triggerSpell(LivingDamageEvent event) {
         if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
