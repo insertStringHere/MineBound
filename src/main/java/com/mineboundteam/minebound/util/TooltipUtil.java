@@ -27,7 +27,7 @@ public class TooltipUtil {
 
     public static MutableComponent getKey(KeyMapping keybind) {
         return new TextComponent(" [").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(keybind.getKey() == InputConstants.UNKNOWN ?
+                .append(keybind.getKey().equals(InputConstants.UNKNOWN) ?
                         new TextComponent("unbound") :
                         new TextComponent("").withStyle(ChatFormatting.WHITE).append(keybind.getTranslatedKeyMessage()))
                 .append("]").withStyle(Style.EMPTY.withBold(false));
