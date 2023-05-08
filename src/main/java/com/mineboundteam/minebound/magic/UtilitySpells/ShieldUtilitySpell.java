@@ -134,7 +134,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                 .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                 .append(" has been depleted for ")
                 .append(new TextComponent(StringUtil.pluralize(config.RECOV_TICKS.get() / 20, "second") + " at a rate of 10 charges per second").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
-        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " every time damage is absorbed"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " each time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {
