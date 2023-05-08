@@ -65,7 +65,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingDamageEvent event) {
-        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource().getEntity() instanceof LivingEntity entity) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource().getEntity() instanceof LivingEntity entity && !player.is(entity)) {
             boolean spellTriggered = triggerSpell(player, entity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
             if (!spellTriggered) {
                 spellTriggered = triggerSpell(player, entity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
