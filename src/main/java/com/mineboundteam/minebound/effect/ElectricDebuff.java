@@ -8,7 +8,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -37,9 +37,9 @@ public class ElectricDebuff extends MobEffect {
     }
 
     @SubscribeEvent
-    public static void triggerEffect(LivingHurtEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getSource().getMsgId().equals(MBDamageSources.ELECTRICITY)
-                && event.getEntityLiving().hasEffect(EffectRegistry.ELECTRIC_DEBUFF.get())) {
+    public static void triggerEffect(LivingDamageEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntityLiving().hasEffect(EffectRegistry.ELECTRIC_DEBUFF.get())
+                && event.getSource().getMsgId().equals(MBDamageSources.ELECTRICITY)) {
             MobEffectInstance effect = event.getEntityLiving().getEffect(EffectRegistry.ELECTRIC_DEBUFF.get());
             double amount = event.getAmount() * getDmgMult(effect.getAmplifier());
             event.setAmount((float) amount);
