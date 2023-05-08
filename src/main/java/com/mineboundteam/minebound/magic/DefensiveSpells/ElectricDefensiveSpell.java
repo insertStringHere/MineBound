@@ -36,22 +36,18 @@ import java.util.List;
 public class ElectricDefensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.electric_defensive.active";
 
-    private final int initialManaCost;
-    private final int manaCostPerHit;
-    private final int durationInTicks;
+    private final ElectricDefensiveSpellConfig config;
 
     public ElectricDefensiveSpell(Properties properties, ElectricDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ELECTRIC, SpellType.DEFENSIVE);
 
-        this.initialManaCost = config.INITIAL_MANA_COST.get();
-        this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
-        this.durationInTicks = config.DURATION_TICKS.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         stack.getOrCreateTag().putBoolean(ACTIVE_TAG, true);
-        reduceMana(initialManaCost, player);
+        reduceMana(config.INITIAL_MANA_COST.get(), player);
     }
 
     @Override
@@ -79,8 +75,8 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
     protected static boolean triggerSpell(Player player, LivingEntity entity, ItemStack selectedSpell) {
         if (selectedSpell.getItem() instanceof ElectricDefensiveSpell spell) {
             if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
-                entity.addEffect(new MobEffectInstance(EffectRegistry.ELECTRIC_DEBUFF.get(), spell.durationInTicks, spell.level.getValue()));
-                reduceMana(spell.manaCostPerHit, player);
+                entity.addEffect(new MobEffectInstance(EffectRegistry.ELECTRIC_DEBUFF.get(), spell.config.DURATION_TICKS.get(), spell.level.getValue()));
+                reduceMana(spell.config.MANA_COST_PER_HIT.get(), player);
                 return true;
             }
         }
@@ -95,7 +91,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
                 .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
                 .append(" will be applied to that mob for ")
-                .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
+                .append(new TextComponent(config.DURATION_TICKS.get() / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
         pTooltipComponents.add(new TextComponent("  - ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
                         .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
@@ -107,10 +103,10 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
                 .append(" by ")
                 .append(new TextComponent(String.format("%.0f%%", (ElectricDebuff.getDmgMult(level.getValue()) - 1) * 100)).withStyle(ChatFormatting.RED)));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
+                .append(new TextComponent(config.INITIAL_MANA_COST.get() + " Mana").withStyle(manaColorStyle))
                 .append(" on initial cast"));
         pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
+                .append(new TextComponent(config.MANA_COST_PER_HIT.get() + " Mana").withStyle(manaColorStyle))
                 .append(" each time the player is hit"));
     }
 
