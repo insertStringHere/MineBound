@@ -132,7 +132,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
                 .append(new TextComponent(config.GRAB_DISTANCE.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN))
                 .append(" and moves them where the player is looking from a distance of ")
                 .append(new TextComponent(config.HOLD_DIST.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("  - While holding a mob, casting with an additional hand squeezes mob for ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("  - If a mob is already being held, additionally equipped and cast Telekinetic Defensive spells instead squeeze that mob for ").withStyle(ChatFormatting.GRAY)
                 .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ChatFormatting.RED)));
         if(config.DO_DAMAGE.get())
             pTooltipComponents.add(new TextComponent("  - Slamming the mob into walls will do ").withStyle(ChatFormatting.GRAY)
