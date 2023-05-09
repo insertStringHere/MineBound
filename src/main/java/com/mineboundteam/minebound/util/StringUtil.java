@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class StringUtil {
     public static String formatDecimal(Number num) {
-        return new DecimalFormat("0.#").format(num);
+        return new DecimalFormat("0.##").format(num);
     }
 
     public static String pluralize(Number num, String singular) {

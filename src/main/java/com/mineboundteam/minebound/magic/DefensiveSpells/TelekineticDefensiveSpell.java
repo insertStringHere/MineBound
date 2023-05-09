@@ -1,8 +1,5 @@
 package com.mineboundteam.minebound.magic.DefensiveSpells;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
@@ -10,8 +7,9 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.magic.events.MagicSelectedEvent;
-
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -32,6 +30,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class TelekineticDefensiveSpell extends ActiveSpellItem {
 
@@ -47,20 +48,20 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             Integer id = selectedMap.get(player.getId());
-            if(id != null){
+            if (id != null) {
                 Entity entity = level.getEntity(id);
-                if(entity != null){
+                if (entity != null) {
                     attackMap.put(player.getId(), usedHand);
-                    if(entity.hurt(DamageSource.playerAttack(player).setIsFall(), (float)(config.DAMAGE.get().doubleValue())))
-                        reduceMana((int)(config.MANA_COST.get() * 10), player);
+                    if (entity.hurt(DamageSource.playerAttack(player).setIsFall(), (float) (config.DAMAGE.get().doubleValue())))
+                        reduceMana((int) (config.MANA_COST.get() * 10), player);
                 }
             } else {
                 Vec3 start = player.getEyePosition();
                 Vec3 end = player.getViewVector(0).scale(config.GRAB_DISTANCE.get()).add(player.getEyePosition());
                 EntityHitResult entity = ProjectileUtil.getEntityHitResult(level, player, start, end, (new AABB(start, end)).inflate(1), e -> !e.isSpectator(), 1);
-                if(entity != null && entity.getEntity() instanceof LivingEntity living){
+                if (entity != null && entity.getEntity() instanceof LivingEntity living) {
                     selectedMap.put(player.getId(), living.getId());
                 }
             }
@@ -71,20 +72,20 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
     public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
         Integer id = selectedMap.get(player.getId());
         InteractionHand cacheHand = attackMap.get(player.getId());
-        if(!level.isClientSide() && id != null && (cacheHand == null || cacheHand != usedHand)) {
+        if (!level.isClientSide() && id != null && (cacheHand == null || cacheHand != usedHand)) {
             Entity e = level.getEntity(id);
-            if(e != null && e.isAlive() && e instanceof LivingEntity entity){
+            if (e != null && e.isAlive() && e instanceof LivingEntity entity) {
                 double velocity = entity.getDeltaMovement().lengthSqr();
-                reduceMana((int)(Math.ceil(velocity * 100 * config.MANA_COST.get())), player);
+                reduceMana((int) (Math.ceil(velocity * 100 * config.MANA_COST.get())), player);
 
                 entity.move(MoverType.PLAYER, getShift(player, usedHand, entity));
                 entity.resetFallDistance();
 
                 // Handle collision damage
                 // Kinda glitchy, keep off by default
-                if(config.DO_DAMAGE.get()){
-                    float dmg = (float)(entity.getDeltaMovement().lengthSqr() * 100 * config.DAMAGE.get());
-                    if(dmg >= 1 && (entity.horizontalCollision || entity.verticalCollision)){
+                if (config.DO_DAMAGE.get()) {
+                    float dmg = (float) (entity.getDeltaMovement().lengthSqr() * 100 * config.DAMAGE.get());
+                    if (dmg >= 1 && (entity.horizontalCollision || entity.verticalCollision)) {
                         entity.hurt(DamageSource.playerAttack(player).setIsFall(), dmg);
                     }
                 }
@@ -99,19 +100,19 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
     @Override
     public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         InteractionHand cacheHand = attackMap.remove(player.getId());
-        if(cacheHand == null || cacheHand != usedHand){
+        if (cacheHand == null || cacheHand != usedHand) {
             Integer id = selectedMap.remove(player.getId());
-            if(id != null){
+            if (id != null) {
                 Entity e = level.getEntity(id);
-                if(e != null && e.isAlive() && e instanceof LivingEntity entity)
+                if (e != null && e.isAlive() && e instanceof LivingEntity entity)
                     entity.setDeltaMovement(getShift(player, usedHand, entity));
             }
         }
     }
 
-    protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity){
+    protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity) {
         Vec3 view = player.getViewVector(0);
-                
+
         float yRot = player.getYRot();
         double x = 0 - Math.sin(yRot * Math.PI / 180f);
         double z = Math.cos(yRot * Math.PI / 180f);
@@ -127,30 +128,26 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Picks up the currently looked at mob from up to ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.GRAB_DISTANCE.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Picks up the currently looked at mob from up to ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.GRAB_DISTANCE.get(), "block") + " away").withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" and moves them where the player is looking from a distance of ")
-                .append(new TextComponent(config.HOLD_DIST.get() + " blocks away").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("  - If a mob is already being held, additionally equipped and cast Telekinetic Defensive spells instead squeeze that mob for ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ChatFormatting.RED)));
-        if(config.DO_DAMAGE.get())
-            pTooltipComponents.add(new TextComponent("  - Slamming the mob into walls will do ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ChatFormatting.RED))
-                .append(" per unit of speed upon impact"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.MANA_COST.get()  + " Mana").withStyle(manaColorStyle))
-                .append(" per tick per unit of movement performed by the mob"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.MANA_COST.get() * 10  + " Mana").withStyle(manaColorStyle))
-                .append(" per squeeze"));
+                .append(new TextComponent(StringUtil.pluralize(config.HOLD_DIST.get(), "block") + " away").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("  - If a mob is already being held, additionally cast Telekinetic Defensive spells instead squeeze that mob for ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.formatDecimal(config.DAMAGE.get()) + " damage").withStyle(ColorUtil.Tooltip.damageColor)));
+        if (config.DO_DAMAGE.get())
+            pTooltipComponents.add(new TextComponent("  - Slamming the mob into walls will do ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent(config.DAMAGE.get() + " damage").withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                    .append(" per unit of speed upon impact"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per tick per unit of movement performed by the mob"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get() * 10, " per squeeze"));
     }
 
     // Possibly move up to ActiveSpellItem
     @SubscribeEvent
     public static void onSpellRemoved(MagicSelectedEvent.Remove event) {
-        if(event.spell.getItem() instanceof TelekineticDefensiveSpell spell){
-            spell.releaseUsing(event.spell, event.spellSlot.usedHand, event.player.level, event.player); 
+        if (event.spell.getItem() instanceof TelekineticDefensiveSpell spell) {
+            spell.releaseUsing(event.spell, event.spellSlot.usedHand, event.player.level, event.player);
         }
     }
 
@@ -164,10 +161,10 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
 
         public final ArmorTier LEVEL;
         private final double manaCost;
-        private final double holdDist; 
+        private final double holdDist;
         private final double grabDist;
         private final double damage;
-        private final boolean doDamage; 
+        private final boolean doDamage;
 
         public TelekineticDefensiveSpellConfig(double manaCost, double holdDist, double grabDist, double damage, boolean doDamage, ArmorTier level) {
             this.manaCost = manaCost;
@@ -196,5 +193,5 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
 
         }
     }
-    
+
 }
