@@ -180,7 +180,7 @@ public class FireUtilitySpell extends PassiveSpellItem {
             MANA_COST = builder.comment("Mana cost per application of damage").defineInRange("mana_cost", manaCost, 0, 10000);
             MANA_REDUCTION = builder.comment("How much total mana will be reduced by").defineInRange("mana_reduction", manaReduction, 0, 10000);
             AOE_RANGE = builder.comment("Area of effect in blocks").defineInRange("aoe_range", aoeRange, 0, 10000);
-            DAMAGE = builder.comment("Damage dealt in hearts").defineInRange("damage", damage, 0, 10000);
+            DAMAGE = builder.comment("Damage dealt (2 damage = 1 heart)").defineInRange("damage", damage, 0, 10000);
             DAMAGE_RATE = builder.comment("How often in ticks the spell will damage entities in range (20 ticks = 1 second)").defineInRange("damage_rate", damageRate, 0, 10000);
             builder.pop(2);
         }
