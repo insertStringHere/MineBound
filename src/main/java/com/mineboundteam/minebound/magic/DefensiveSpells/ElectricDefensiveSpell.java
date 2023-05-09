@@ -9,11 +9,11 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -86,28 +86,24 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - When hit by a mob, ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
-                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - When hit by a mob, ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Electric Debuff ").withStyle(ColorUtil.Tooltip.color(ColorUtil.ELECTRIC_DEBUFF_COLOR))
+                        .append(TooltipUtil.level(level.getValue())))
                 .append(" will be applied to that mob for ")
-                .append(new TextComponent(config.DURATION_TICKS.get() / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("  - ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Electric Debuff ").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor()))
-                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue())))
+                .append(new TextComponent(StringUtil.pluralize(config.DURATION_TICKS.get() / 20, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("  - ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Electric Debuff ").withStyle(ColorUtil.Tooltip.color(ColorUtil.ELECTRIC_DEBUFF_COLOR))
+                        .append(TooltipUtil.level(level.getValue())))
                 .append(" applies ")
-                .append(new TextComponent("Slowness ").withStyle(Style.EMPTY.withColor(MobEffects.MOVEMENT_SLOWDOWN.getColor()))
-                        .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + ElectricDebuff.getSlownessLevel(level.getValue()))))
+                .append(new TextComponent("Slowness ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.MOVEMENT_SLOWDOWN))
+                        .append(TooltipUtil.level(ElectricDebuff.getSlownessLevel(level.getValue()))))
                 .append(" and increases vulnerability to ")
-                .append(new TextComponent("electricity").withStyle(Style.EMPTY.withColor(EffectRegistry.ELECTRIC_DEBUFF.get().getColor())))
+                .append(new TextComponent("electricity").withStyle(ColorUtil.Tooltip.color(ColorUtil.ELECTRIC_DEBUFF_COLOR)))
                 .append(" by ")
-                .append(new TextComponent(String.format("%.0f%%", (ElectricDebuff.getDmgMult(level.getValue()) - 1) * 100)).withStyle(ChatFormatting.RED)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.INITIAL_MANA_COST.get() + " Mana").withStyle(manaColorStyle))
-                .append(" on initial cast"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.MANA_COST_PER_HIT.get() + " Mana").withStyle(manaColorStyle))
-                .append(" each time the player is hit"));
+                .append(new TextComponent(StringUtil.percentage(ElectricDebuff.getDmgMult(level.getValue()) - 1)).withStyle(ColorUtil.Tooltip.damageColor)));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.INITIAL_MANA_COST.get(), " on initial cast"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_PER_HIT.get(), " each time the player is hit"));
     }
 
     public static class ElectricDefensiveSpellConfig implements IConfig {

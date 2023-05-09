@@ -5,11 +5,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffect;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class ColorUtil {
     public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
     public static final int REDUCTION_COLOR = 0xF6F116;
+    public static final int ELECTRIC_DEBUFF_COLOR = new Color(234, 232, 166).getRGB();
 
     public static class Tooltip {
         public static final HashMap<ArmorTier, ChatFormatting> armorTierColors = new HashMap<>() {{
@@ -30,6 +32,10 @@ public class ColorUtil {
 
         public static Style effectColor(MobEffect effect) {
             return Style.EMPTY.withColor(effect.getColor());
+        }
+
+        public static Style color(int color) {
+            return Style.EMPTY.withColor(color);
         }
     }
 }
