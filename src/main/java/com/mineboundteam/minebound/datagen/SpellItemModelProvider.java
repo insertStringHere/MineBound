@@ -68,6 +68,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.ENDER_UTILITY_3.get());
 
         /* Electric */
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_1.get());
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_2.get());
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_3.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_2.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_3.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_4.get());

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "CMC",
+    " G "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:waxed_copper_block"
+    },
+    "M": {
+      "item": "minebound:magic_electric_d2"
+    },
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_electric_d3"
+  }
+}
