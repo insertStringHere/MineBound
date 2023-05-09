@@ -43,8 +43,8 @@ public abstract class SpellItem extends Item {
                 // Reduce player's armor charge directly
                 if (underflow > 0) {
                     List<ItemStack> armors = StreamSupport.stream(p.getArmorSlots().spliterator(), false)
-                                                     .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
-                                                     .toList();
+                            .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
+                            .toList();
 
                     if (armors.size() != 0) {
                         int amnt = underflow / armors.size();
@@ -72,8 +72,8 @@ public abstract class SpellItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()]))
-                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue()).withStyle(MyrialArmorItem.tierColors[level.getValue()]))
-                                       .append(" or higher armor"));
+                .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()]))
+                .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue()).withStyle(MyrialArmorItem.tierColors[level.getValue()]))
+                .append(" or higher armor"));
     }
 }

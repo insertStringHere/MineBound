@@ -2,10 +2,7 @@ package com.mineboundteam.minebound.config.registry;
 
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EarthDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.EnderDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.LightDefensiveSpell;
-import com.mineboundteam.minebound.magic.DefensiveSpells.ShieldDefensiveSpell;
+import com.mineboundteam.minebound.magic.DefensiveSpells.*;
 import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.item.Tiers;
@@ -35,8 +32,6 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
      * [defensive spells]
      * [utility spells]
      */
-
-    /* Fire */
 
     /* Fire */
     public static final FireOffensiveSpell.FireOffensiveSpellConfig FIRE_OFFENSIVE_1 = new FireOffensiveSpell.FireOffensiveSpellConfig(10, 8, 2.5, false, false, 0, ArmorTier.EFFIGY);
@@ -82,6 +77,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_1 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 5, 100, ArmorTier.EFFIGY);
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_2 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 10, 200, ArmorTier.SUIT);
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_3 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 10, 300, ArmorTier.SYNERGY);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_3 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 2, true, ArmorTier.SYNERGY);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_4 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 3, true, ArmorTier.SINGULARITY);
@@ -163,6 +161,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Electric");
+            ELECTRIC_DEFENSIVE_1.build(builder);
+            ELECTRIC_DEFENSIVE_2.build(builder);
+            ELECTRIC_DEFENSIVE_3.build(builder);
             ELECTRIC_UTILITY_2.build(builder);
             ELECTRIC_UTILITY_3.build(builder);
             ELECTRIC_UTILITY_4.build(builder);
