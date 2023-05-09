@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FSF",
+    "FMF",
+    "FSF"
+  ],
+  "key": {
+    "S": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "F": {
+      "item": "minebound:myri_chunk"
+    },
+    "M": {
+      "item": "minebound:magic_telekinetic_d3"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_telekinetic_d4"
+  }
+}
