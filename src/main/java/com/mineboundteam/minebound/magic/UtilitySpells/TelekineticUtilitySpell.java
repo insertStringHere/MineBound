@@ -6,10 +6,13 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -32,17 +35,12 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class TelekineticUtilitySpell extends PassiveSpellItem {
-
-    private final int manaCost;
-    private final double manaCostReduction;
-    private final boolean elytraFlight;
+    private final TelekineticUtilitySpellConfig config;
 
     public TelekineticUtilitySpell(Properties properties, TelekineticUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.TELEKINETIC, SpellType.UTILITY);
 
-        manaCost = config.MANA_COST.get();
-        manaCostReduction = config.MANA_COST_REDUCTION.get();
-        this.elytraFlight = config.ELYTRA_FLIGHT.get();
+        this.config = config;
     }
 
     @SubscribeEvent
@@ -61,14 +59,14 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
             CompoundTag elytraTag = player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag();
             if (equippedSpells.size() > 0) {
                 TelekineticUtilitySpell highestLevelSpell = getHighestSpellItem(equippedSpells);
-                elytraTag.putBoolean("minebound.telekinetic_utility.elytra_flight", highestLevelSpell.elytraFlight);
+                elytraTag.putBoolean("minebound.telekinetic_utility.elytra_flight", highestLevelSpell.config.ELYTRA_FLIGHT.get());
 
                 // Calculate mana cost only once per second (every 20 ticks) if player is flying
                 if (player.level.getGameTime() % 20 == 0 && (player.getAbilities().flying || player.isFallFlying())) {
                     equippedSpells.remove(highestLevelSpell);
-                    int reducedManaCost = highestLevelSpell.manaCost;
+                    int reducedManaCost = highestLevelSpell.config.MANA_COST.get();
                     for (TelekineticUtilitySpell spell : equippedSpells) {
-                        reducedManaCost *= 1 - spell.manaCostReduction;
+                        reducedManaCost *= 1 - spell.config.MANA_COST_REDUCTION.get();
                     }
                     reduceMana(reducedManaCost, player);
                 }
@@ -80,35 +78,29 @@ public class TelekineticUtilitySpell extends PassiveSpellItem {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void triggerSpell(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide()
+        if (event.getEntityLiving() instanceof ServerPlayer player
                 && (event.getSource() == DamageSource.FALL || event.getSource() == DamageSource.FLY_INTO_WALL)) {
             TelekineticUtilitySpell spell = getHighestSpellItem(TelekineticUtilitySpell.class, player);
             if (spell != null) {
                 event.setCanceled(true);
-                reduceMana(spell.manaCost, player);
+                reduceMana(spell.config.MANA_COST.get(), player);
             }
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents,
-            TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ChatFormatting.GRAY));
-        if (elytraFlight) {
+        pTooltipComponents.add(new TextComponent("  - Gives creative flight").withStyle(ColorUtil.Tooltip.defaultColor));
+        if (config.ELYTRA_FLIGHT.get()) {
             pTooltipComponents.add(new TextComponent("  - Gives elytra flight (must have a Myrial Chestpiece equipped)")
-                    .withStyle(ChatFormatting.GRAY));
+                    .withStyle(ColorUtil.Tooltip.defaultColor));
         }
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" per second of flight"));
-        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Mana").withStyle(manaColorStyle))
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per second of flight"));
+        pTooltipComponents.add(new TextComponent("Additional copies instead reduce ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Mana").withStyle(ColorUtil.Tooltip.manaColorStyle))
                 .append(" cost of highest equipped tier by ")
-                .append(new TextComponent((int) (manaCostReduction * 100) + "%").withStyle(reductionColorStyle))
+                .append(new TextComponent(StringUtil.percentage(config.MANA_COST_REDUCTION.get())).withStyle(ColorUtil.Tooltip.reductionColorStyle))
                 .append(" each"));
     }
 

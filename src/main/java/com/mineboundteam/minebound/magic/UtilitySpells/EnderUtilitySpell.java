@@ -3,16 +3,17 @@ package com.mineboundteam.minebound.magic.UtilitySpells;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -32,12 +33,12 @@ import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class EnderUtilitySpell extends PassiveSpellItem {
-    private final int manaReduction;
+    private final EnderUtilitySpellConfig config;
 
     public EnderUtilitySpell(Properties properties, EnderUtilitySpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.UTILITY);
 
-        this.manaReduction = config.MANA_REDUCTION.get();
+        this.config = config;
     }
 
     @SubscribeEvent
@@ -46,7 +47,7 @@ public class EnderUtilitySpell extends PassiveSpellItem {
             Player player = event.player;
             EnderUtilitySpell spell = getHighestSpellItem(EnderUtilitySpell.class, player);
             if (spell != null) {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("ender_utility", -spell.manaReduction));
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("ender_utility", -spell.config.MANA_REDUCTION.get()));
                 player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).ifPresent(utilityToggle -> {
                     if (utilityToggle.ender) {
                         // Has to be longer than 10 seconds otherwise it flickers horribly
@@ -63,22 +64,15 @@ public class EnderUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Gives night vision").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                .append(" by ").append(new TextComponent(manaReduction + "").withStyle(reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Night Vision").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.NIGHT_VISION))));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            MutableComponent active = new TextComponent("Night vision is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
             Optional<PlayerUtilityToggleProvider.UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            if (toggle.isPresent() && toggle.get().ender)
-                pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
-            else
-                pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.ENDER_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().ender);
         }
     }
 

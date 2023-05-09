@@ -6,6 +6,9 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -19,7 +22,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,24 +30,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LightDefensiveSpell extends ActiveSpellItem {
-    private final int manaCost;
+    private final LightDefensiveSpellConfig config;
 
     public LightDefensiveSpell(Properties properties, LightDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.LIGHT, SpellType.DEFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide()) {
             BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
-            if (hitResult.getType() == HitResult.Type.BLOCK) {
-                BlockItem magelight = (BlockItem) ForgeRegistries.ITEMS.getValue(BlockRegistry.MAGELIGHT.getId());
-                UseOnContext context = new UseOnContext(level, null, InteractionHand.MAIN_HAND, magelight.getDefaultInstance(), hitResult);
-                if (magelight.useOn(context) != InteractionResult.FAIL) {
-                    reduceMana(manaCost, player);
-                }
+            BlockItem magelight = (BlockItem) ForgeRegistries.ITEMS.getValue(BlockRegistry.MAGELIGHT.getId());
+            UseOnContext context = new UseOnContext(level, player, InteractionHand.MAIN_HAND, magelight.getDefaultInstance(), hitResult);
+            if (magelight.useOn(context) != InteractionResult.FAIL) {
+                reduceMana(config.MANA_COST.get(), player);
             }
         }
     }
@@ -61,13 +61,18 @@ public class LightDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Places a ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("Magelight").withStyle(ChatFormatting.YELLOW))
                 .append(" where the player is looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" to place"));
+        if (config.DESTROY_MAGELIGHT.get()) {
+            pTooltipComponents.add(new TextComponent("  - ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("Magelights").withStyle(ChatFormatting.YELLOW))
+                    .append(" are destroyed ")
+                    .append(new TextComponent(StringUtil.pluralize(config.MAGELIGHT_DURATION.get() / 60d, "minute")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                    .append(" after being placed"));
+        }
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " to place"));
     }
 
     public static class LightDefensiveSpellConfig implements IConfig {

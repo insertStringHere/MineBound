@@ -1,20 +1,18 @@
 package com.mineboundteam.minebound.magic.UtilitySpells;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Optional;
-
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.CrashReport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -24,7 +22,6 @@ import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -45,12 +42,16 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Optional;
+
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class LightUtilitySpell extends PassiveSpellItem {
 
-    protected final LightUtilitySpellConfig config;
+    private final LightUtilitySpellConfig config;
 
-    
+
     // Having this local variable will be quicker than always retrieving the capability.
     // But, it's only safe to use a variable like this on client.
     public static boolean active = false;
@@ -79,25 +80,17 @@ public class LightUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                       .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Outlines mobs within a radius of ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.OUTLINE_RADIUS.get() + " blocks.").withStyle(ChatFormatting.YELLOW)));
-        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("outline radius").withStyle(ChatFormatting.YELLOW)));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                       .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(reductionColorStyle)));
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Outlines mobs within a radius of ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.OUTLINE_RADIUS.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("outline radius").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
-        if(player != null) {
-            MutableComponent active = new TextComponent("Mob outlining is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
+        if (player != null) {
             Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
-            if (toggle.isPresent() && toggle.get().light)
-                pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
-            else
-                pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.LIGHT_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().light);
         }
     }
 
@@ -105,7 +98,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
         public IntValue MANA_REDUCTION;
         public IntValue OUTLINE_RADIUS;
         public final ArmorTier LEVEL;
-       
+
         private final int manaReduction;
         private final int outlineRadius;
 
@@ -136,12 +129,12 @@ public class LightUtilitySpell extends PassiveSpellItem {
     @Mod.EventBusSubscriber(modid = MineBound.MOD_ID, value = {Dist.CLIENT})
     public static class GlowingRenderer implements ResourceManagerReloadListener {
         protected static Field effectField = null;
-        
+
         static {
             try {
                 var fields = LevelRenderer.class.getDeclaredFields();
                 for (Field field : fields) {
-                    if(field.getType().equals(PostChain.class)) {
+                    if (field.getType().equals(PostChain.class)) {
                         effectField = field;
                         break;
                     }
@@ -164,7 +157,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
                 }
             }
         }
-    
+
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         @SuppressWarnings("unchecked")
         public static <T extends LivingEntity, M extends EntityModel<T>> void renderEntity(RenderLivingEvent.Pre<T, M> event) {
@@ -173,22 +166,22 @@ public class LightUtilitySpell extends PassiveSpellItem {
                 LocalPlayer player = minecraft.player;
                 T entity = (T) event.getEntity();
                 LivingEntityRenderer<T, M> renderer = event.getRenderer();
-    
-                int viewRange = 0; 
+
+                int viewRange = 0;
                 for (LightUtilitySpell spell : spells) {
                     viewRange += spell.config.OUTLINE_RADIUS.get();
                 }
-    
+
                 if (!entity.equals(player) && entity.distanceTo(player) < viewRange) {
                     isRendering = true;
                     if (entity.isCurrentlyGlowing()) {
                         hasGlowing = true;
                     }
-    
+
                     OutlineBufferSource buff = minecraft.renderBuffers().outlineBufferSource();
                     // TODO: make a client config to change the color
                     buff.setColor(0xee, 0xee, 0xee, 255);
-    
+
                     renderer.render(entity, 0, event.getPartialTick(), event.getPoseStack(), buff, event.getPackedLight());
                     isRendering = false;
                     // Don't re-render if we already did once
@@ -196,14 +189,14 @@ public class LightUtilitySpell extends PassiveSpellItem {
                 }
             }
         }
-    
+
         @SubscribeEvent
         @SuppressWarnings("removal")
         public static void renderOutline(net.minecraftforge.client.event.RenderLevelLastEvent event) {
             // This applies the actual outline. If one of the entities have glowing, because we
             // switch to an OutlineBufferSource for all entities, they'll all get glowing and we don't
             // want to apply it twice.
-            if(entityEffect == null)
+            if (entityEffect == null)
                 initOutline();
             if (!hasGlowing && entityEffect != null) {
                 minecraft.renderBuffers().outlineBufferSource().endOutlineBatch();
@@ -212,7 +205,7 @@ public class LightUtilitySpell extends PassiveSpellItem {
             }
             hasGlowing = false;
         }
-    
+
         @Override
         // We need to refresh the entityEffect every time the resourcemanager reloads
         // We're basically borrowing minecraft's since it's the only one that'll work
