@@ -78,6 +78,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final EnderUtilitySpell.EnderUtilitySpellConfig ENDER_UTILITY_3 = new EnderUtilitySpell.EnderUtilitySpellConfig(100,ArmorTier.SYNERGY);
 
     /* Electric */
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_1 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 5, 100, ArmorTier.EFFIGY);
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_2 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 10, 200, ArmorTier.SUIT);
+    public static final ElectricDefensiveSpell.ElectricDefensiveSpellConfig ELECTRIC_DEFENSIVE_3 = new ElectricDefensiveSpell.ElectricDefensiveSpellConfig(20, 10, 300, ArmorTier.SYNERGY);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_2 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(50, 1, false, ArmorTier.SUIT);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_3 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 2, true, ArmorTier.SYNERGY);
     public static final ElectricUtilitySpell.ElectricUtilitySpellConfig ELECTRIC_UTILITY_4 = new ElectricUtilitySpell.ElectricUtilitySpellConfig(75, 3, true, ArmorTier.SINGULARITY);
@@ -160,6 +163,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Electric");
+            ELECTRIC_DEFENSIVE_1.build(builder);
+            ELECTRIC_DEFENSIVE_2.build(builder);
+            ELECTRIC_DEFENSIVE_3.build(builder);
             ELECTRIC_UTILITY_2.build(builder);
             ELECTRIC_UTILITY_3.build(builder);
             ELECTRIC_UTILITY_4.build(builder);

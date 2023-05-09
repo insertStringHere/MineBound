@@ -145,10 +145,16 @@
   "item.minebound.magic.magic_ender_d4": "Ender Defensive IV",
   "item.minebound.magic.magic_ender_u3": "Ender Utility III",
 
+  "item.minebound.magic_electric_d1": "Electric Defensive I",
+  "item.minebound.magic_electric_d2": "Electric Defensive II",
+  "item.minebound.magic_electric_d3": "Electric Defensive III",
   "item.minebound.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic_electric_u4": "Electric Utility IV",
 
+  "item.minebound.magic.magic_electric_d1": "Electric Defensive I",
+  "item.minebound.magic.magic_electric_d2": "Electric Defensive II",
+  "item.minebound.magic.magic_electric_d3": "Electric Defensive III",
   "item.minebound.magic.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic.magic_electric_u4": "Electric Utility IV",
@@ -205,5 +211,10 @@
   "tooltip.minebound.level.3": "IV",
   "tooltip.minebound.level.4": "V",
   "tooltip.minebound.level.5": "VI",
-  "tooltip.minebound.level.6": "VII"
+  "tooltip.minebound.level.6": "VII",
+
+  "death.attack.minebound.electricity": "%1$s was electrified to death",
+  "death.attack.minebound.electricity.player": "%1$s was electrified to death by %2$s",
+
+  "effect.minebound.electric_debuff": "Electric Debuff"
 }
