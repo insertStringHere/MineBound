@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.magic.events.MagicSelectedEvent;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.PlayerUtil;
 import com.mineboundteam.minebound.util.StringUtil;
 import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
@@ -112,17 +113,8 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
 
     protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity) {
         Vec3 view = player.getViewVector(0);
-
-        float yRot = player.getYRot();
-        double x = 0 - Math.sin(yRot * Math.PI / 180f);
-        double z = Math.cos(yRot * Math.PI / 180f);
-        int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
-        Vec3 playerPos = new Vec3(
-                player.getX() - (z / 2.5d * hand),
-                player.getEyeY() - 1d,
-                player.getZ() + (x / 2.5d * hand)
-        );
-        return view.scale(config.HOLD_DIST.get()).add(playerPos).subtract(entity.position());
+        Vec3 handPos = PlayerUtil.getHandPos(player, usedHand);
+        return view.scale(config.HOLD_DIST.get()).add(handPos).subtract(entity.position());
     }
 
     @Override
