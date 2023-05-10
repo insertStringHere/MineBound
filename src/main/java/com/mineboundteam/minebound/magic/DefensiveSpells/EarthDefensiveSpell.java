@@ -5,6 +5,8 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -40,7 +42,7 @@ import java.util.List;
 
 public class EarthDefensiveSpell extends ActiveSpellItem {
     public static BooleanValue vanillaBreak;
-    protected final EarthDefensiveSpellConfig config;
+    private final EarthDefensiveSpellConfig config;
 
     public EarthDefensiveSpell(Properties properties, EarthDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.EARTH, SpellType.DEFENSIVE);
@@ -147,11 +149,9 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("Mines blocks using the mining level of ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent(config.MINING_LEVEL.get().name()).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.MANA_COST_ON_CAST.get() + " Mana").withStyle(manaColorStyle))
-                .append(" per block broken").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_ON_CAST.get(), " per block broken"));
     }
 
     public static class EarthDefensiveSpellConfig implements IConfig {
@@ -176,7 +176,7 @@ public class EarthDefensiveSpell extends ActiveSpellItem {
             builder.push("Defensive");
             builder.push(LEVEL.toString());
             MANA_COST_ON_CAST = builder.comment("Mana cost on spell cast").defineInRange("mana_cost_on_cast", manaCostOnCast, 0, 10000);
-            MINING_LEVEL = builder.comment("The mining level for the spell module.").defineEnum("item_level", miningLevel, Tiers.values());
+            MINING_LEVEL = builder.comment("The mining level for the spell module").defineEnum("item_level", miningLevel, Tiers.values());
             SPEED_MODIFIER = builder.comment("The speed that this module mines at, modifying its item level").defineInRange("speed_modifier", speedModifier, .1, 10);
             builder.pop(2);
         }

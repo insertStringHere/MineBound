@@ -5,6 +5,7 @@ import com.mineboundteam.minebound.block.registry.BlockRegistry;
 import com.mineboundteam.minebound.client.overlay.ManaHUDOverlay;
 import com.mineboundteam.minebound.client.renderer.armor.MyrialArmorRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.FireProjectileRenderer;
+import com.mineboundteam.minebound.client.renderer.entity.RockProjectileRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyriCorpseRenderer;
 import com.mineboundteam.minebound.client.renderer.entity.MyrialSwordRenderer;
 import com.mineboundteam.minebound.client.screens.AlloyFurnaceScreen;
@@ -43,14 +44,26 @@ public class ClientRegistry {
 
     public static final String MINEBOUND_CATEGORY = "key.categories.minebound";
 
+    /**
+     * Use right hand magic
+     */
     public static final KeyMapping PRIMARY_MAGIC = new KeyMapping(getName("primary_magic"), KeyConflictContext.IN_GAME,
             InputConstants.Type.MOUSE, 4, MINEBOUND_CATEGORY);
+    /**
+     * Use left hand magic
+     */
     public static final KeyMapping SECONDARY_MAGIC = new KeyMapping(getName("secondary_magic"),
             KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, 3, MINEBOUND_CATEGORY);
+    /**
+     * Select right hand magic
+     */
     public static final KeyMapping PRIMARY_MAGIC_SELECT = new KeyMapping(getName("primary_magic_select"),
-            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_X, MINEBOUND_CATEGORY);
-    public static final KeyMapping SECONDARY_MAGIC_SELECT = new KeyMapping(getName("secondary_magic_select"),
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_C, MINEBOUND_CATEGORY);
+    /**
+     * Select left hand magic
+     */
+    public static final KeyMapping SECONDARY_MAGIC_SELECT = new KeyMapping(getName("secondary_magic_select"),
+            KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_X, MINEBOUND_CATEGORY);
     public static final KeyMapping FIRE_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("fire_utility_spell_toggle"),
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), MINEBOUND_CATEGORY);
     public static final KeyMapping EARTH_UTILITY_SPELL_TOGGLE = new KeyMapping(getName("earth_utility_spell_toggle"),
@@ -76,7 +89,7 @@ public class ClientRegistry {
         EntityRenderers.register(EntityRegistry.MYRI_CORPSE.get(), MyriCorpseRenderer::new);
         EntityRenderers.register(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), MyrialSwordRenderer::new);
         EntityRenderers.register(EntityRegistry.FIRE_PROJECTILE.get(), FireProjectileRenderer::new);
-
+        EntityRenderers.register(EntityRegistry.ROCK_PROJECTILE.get(), RockProjectileRenderer::new);
         GeoArmorRenderer.registerArmorRenderer(MyrialArmorItem.class, MyrialArmorRenderer::new);
     }
 

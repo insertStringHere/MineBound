@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "L",
+    "M",
+    "L"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lightning_rod"
+    },
+    "M": {
+      "item": "minebound:myri_manasac"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_electric_d1"
+  }
+}

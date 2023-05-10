@@ -6,10 +6,14 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -44,11 +48,10 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
 
         this.config = config;
     }
-    
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void triggerSpell(LivingDamageEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             ItemStack spellStack = getHighestEquippedSpellOfType(ShieldUtilitySpell.class, player);
             if (spellStack != null) {
                 ShieldUtilitySpell spell = (ShieldUtilitySpell) spellStack.getItem();
@@ -58,7 +61,7 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
                     hitsRemaining = getShieldCount(player);
 
                 if (hitsRemaining > 0) {
-                    player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
+                    player.getLevel().playSound(null, player, SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
                     reduceMana(spell.config.MANA_COST.get(), player);
 
                     hitsRemaining -= event.getAmount();
@@ -124,19 +127,14 @@ public class ShieldUtilitySpell extends PassiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                .append(":"));
-        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.TOTAL_HITS.get() + " charges").withStyle(ChatFormatting.AQUA))
+        pTooltipComponents.add(new TextComponent("  - Adds ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.TOTAL_HITS.get(), "charge")).withStyle(ChatFormatting.AQUA))
                 .append(" to a player's total, each absorbing half a heart of damage."));
-        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ChatFormatting.GRAY)
+        pTooltipComponents.add(new TextComponent("  - Charges will begin to replenish after ").withStyle(ColorUtil.Tooltip.defaultColor)
                 .append(new TextComponent("no charge").withStyle(ChatFormatting.AQUA))
                 .append(" has been depleted for ")
-                .append(new TextComponent((config.RECOV_TICKS.get() / 20) + " seconds at a rate of 10 charges per second").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))
-                .append(" every time damage is absorbed"));
+                .append(new TextComponent(StringUtil.pluralize(config.RECOV_TICKS.get() / 20, "second") + " at a rate of 10 charges per second").withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " each time damage is absorbed"));
     }
 
     public static class ShieldUtilitySpellConfig implements IConfig {

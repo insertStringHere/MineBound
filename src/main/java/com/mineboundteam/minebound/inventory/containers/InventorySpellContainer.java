@@ -6,8 +6,10 @@ import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.capabilities.network.CapabilitySync;
 import com.mineboundteam.minebound.capabilities.network.SelectedSpellsSync;
+import com.mineboundteam.minebound.magic.events.MagicSelectedEvent;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -103,26 +106,50 @@ public class InventorySpellContainer implements Container {
     @Override
     public ItemStack removeItem(int pSlot, int pAmount) {
         if (!inventory.player.level.isClientSide()) {
-
-            if (isPrimary && pSlot == secondarySelected || !isPrimary && pSlot == primarySelected)
+            
+            SelectedSpell selected = inventory.player.getCapability(cap).orElse(null);
+            if (selected == null || isPrimary && pSlot == secondarySelected || !isPrimary && pSlot == primarySelected)
                 return ItemStack.EMPTY;
+            // TODO: Probably change this to be a bit nicer for players; the code is a mess anyway
+            if (isPrimary && pSlot != primarySelected || !isPrimary && pSlot != secondarySelected) {
+                ItemStack armorItem;
+                ListTag equippedSpells;
 
-            if (isPrimary && pSlot != primarySelected || !isPrimary && pSlot != secondarySelected)
-                inventory.player.getCapability(cap).ifPresent(selected -> {
-                    selected.equippedSlot = spells.get(pSlot).getA();
+                if(selected.equippedSlot != null) {
+                    armorItem = inventory.player.getItemBySlot(selected.equippedSlot);
+                
+                    // Update old spell when removed from selected
+                    equippedSpells = ArmorNBTHelper.getSpellTag(armorItem, source);
+                    MagicSelectedEvent.Remove removeEvent = new MagicSelectedEvent.Remove(inventory.player, ItemStack.of(equippedSpells.getCompound(selected.index)), selected);
+                    
+                    if(MinecraftForge.EVENT_BUS.post(removeEvent))
+                        return ItemStack.EMPTY;
+                    
+                    equippedSpells.set(selected.index, removeEvent.spell.serializeNBT());
+                    ArmorNBTHelper.saveSpellTag(armorItem, source, equippedSpells);
+                }
+                // Update new spell when selecting it.
+                selected.equippedSlot = spells.get(pSlot).getA();
+                armorItem = inventory.player.getItemBySlot(selected.equippedSlot);
+                
+                equippedSpells = ArmorNBTHelper.getSpellTag(armorItem, source);
+                selected.index = equippedSpells.indexOf(spells.get(pSlot).getB().serializeNBT());
 
-                    selected.index = ArmorNBTHelper
-                            .getSpellTag(inventory.player.getItemBySlot(selected.equippedSlot), source)
-                            .indexOf(spells.get(pSlot).getB().serializeNBT());
+                if (isPrimary)
+                    primarySelected = pSlot;
+                else
+                    secondarySelected = pSlot;
 
-                    if (isPrimary)
-                        primarySelected = pSlot;
-                    else
-                        secondarySelected = pSlot;
-                    CapabilitySync.NET_CHANNEL.send(
-                            PacketDistributor.PLAYER.with(() -> (ServerPlayer) inventory.player),
-                            new SelectedSpellsSync(isPrimary, selected.equippedSlot, selected.index));
-                });
+                MagicSelectedEvent.Select selectEvent = new MagicSelectedEvent.Select(inventory.player, ItemStack.of(equippedSpells.getCompound(selected.index)), selected);
+                MinecraftForge.EVENT_BUS.post(selectEvent); 
+
+                equippedSpells.set(selected.index, selectEvent.spell.serializeNBT());
+                ArmorNBTHelper.saveSpellTag(armorItem, source, equippedSpells);
+                
+                CapabilitySync.NET_CHANNEL.send(
+                        PacketDistributor.PLAYER.with(() -> (ServerPlayer) inventory.player),
+                        new SelectedSpellsSync(isPrimary, selected.equippedSlot, selected.index));
+            }
 
             inventory.player.closeContainer();
         }
@@ -149,5 +176,4 @@ public class InventorySpellContainer implements Container {
     public boolean stillValid(Player pPlayer) {
         return true;
     }
-
 }

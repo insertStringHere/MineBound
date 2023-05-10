@@ -7,14 +7,15 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -32,12 +33,12 @@ import java.util.List;
 public class ShieldDefensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.shield_defensive.active";
 
-    private final int manaCost;
+    private final ShieldDefensiveSpellConfig config;
 
     public ShieldDefensiveSpell(Properties properties, ShieldDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.SHIELD, SpellType.DEFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
+        this.config = config;
     }
 
     @Override
@@ -57,27 +58,23 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
             boolean spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
             if (!spellTriggered) {
                 spellTriggered = triggerSpell(player, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
             }
             if (!spellTriggered) {
-                spellTriggered = triggerSpell(player, player.getItemBySlot(EquipmentSlot.MAINHAND), event);
-            }
-            if (!spellTriggered) {
-                triggerSpell(player, player.getItemBySlot(EquipmentSlot.OFFHAND), event);
+                triggerSpell(player, player.getUseItem(), event);
             }
         }
     }
 
     protected static boolean triggerSpell(Player player, ItemStack selectedSpell, LivingAttackEvent event) {
-        if (selectedSpell.getItem() instanceof ShieldDefensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
-            if (isActive) {
+        if (selectedSpell.getItem() instanceof ShieldDefensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 event.setCanceled(true);
-                player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
-                reduceMana(spell.manaCost, player);
+                player.getLevel().playSound(null, player, SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1f, 1f);
+                reduceMana(spell.config.MANA_COST.get(), player);
                 return true;
             }
         }
@@ -87,11 +84,9 @@ public class ShieldDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Blocks incoming damage from all directions like a shield").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" each time damage is blocked").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Blocks incoming damage from all directions like a shield").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " each time damage is blocked"));
     }
 
     public static class ShieldDefensiveSpellConfig implements IConfig {

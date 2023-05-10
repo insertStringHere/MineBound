@@ -14,16 +14,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class Magelight extends Block {
-
-    private final boolean shouldDestroy;
-    private final int duration;
+    private final LightDefensiveSpell.LightDefensiveSpellConfig config;
     private static final VoxelShape SHAPE = Block.box(6, 6, 6, 10, 10, 10);
 
     public Magelight(Properties pProperties, LightDefensiveSpell.LightDefensiveSpellConfig config) {
         super(pProperties);
 
-        this.shouldDestroy = config.DESTROY_MAGELIGHT.get();
-        this.duration = config.MAGELIGHT_DURATION.get() * 20;
+        this.config = config;
     }
 
     @Override
@@ -33,8 +30,8 @@ public class Magelight extends Block {
 
     @Override
     public void onPlace(BlockState newBlockState, Level level, @NotNull BlockPos blockPos, @NotNull BlockState oldBlockState, boolean isMoving) {
-        if (shouldDestroy) {
-            level.scheduleTick(blockPos, newBlockState.getBlock(), duration);
+        if (config.DESTROY_MAGELIGHT.get()) {
+            level.scheduleTick(blockPos, newBlockState.getBlock(), config.MAGELIGHT_DURATION.get() * 20);
         }
     }
 
