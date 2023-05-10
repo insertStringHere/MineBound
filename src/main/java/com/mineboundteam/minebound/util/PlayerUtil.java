@@ -6,8 +6,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PlayerUtil {
     public static Vec3 getLookDirection(Player player) {
-        double xRad = player.getXRot() * Math.PI / 180f;
-        double yRad = player.getYRot() * Math.PI / 180f;
+        double xRad = player.getXRot() * Math.PI / 180d;
+        double yRad = player.getYRot() * Math.PI / 180d;
         double x = 0 - Math.sin(yRad);
         double y = 0 - Math.sin(xRad);
         double z = Math.cos(yRad);
