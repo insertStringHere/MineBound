@@ -18,15 +18,19 @@ public class MyrialSwordVacuum extends Item {
 
     @Override
     public void inventoryTick(@NotNull ItemStack itemStack, Level level, @NotNull Entity entity, int slotID, boolean isSelected) {
-        if (!level.isClientSide && entity instanceof Player player && (!isSelected || player.containerMenu != player.inventoryMenu)) {
+        if (!level.isClientSide && this.itemStack != null && entity instanceof Player player && (!isSelected || player.containerMenu != player.inventoryMenu)) {
             this.itemStack.getOrCreateTag().putBoolean("minebound.return_myrial_sword", true);
+            player.getInventory().removeItem(itemStack);
+        } else if (this.itemStack == null && entity instanceof Player player) {
             player.getInventory().removeItem(itemStack);
         }
     }
 
     @Override
     public boolean onDroppedByPlayer(ItemStack itemStack, Player player) {
-        this.itemStack.getOrCreateTag().putBoolean("minebound.return_myrial_sword", true);
+        if (this.itemStack != null) {
+            this.itemStack.getOrCreateTag().putBoolean("minebound.return_myrial_sword", true);
+        }
         player.getInventory().removeItem(itemStack);
         return false;
     }

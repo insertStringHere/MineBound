@@ -111,7 +111,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
     }
 
     protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity) {
-        Vec3 view = player.getViewVector(0);
+        Vec3 view = player.getLookAngle();
 
         float yRot = player.getYRot();
         double x = 0 - Math.sin(yRot * Math.PI / 180f);
