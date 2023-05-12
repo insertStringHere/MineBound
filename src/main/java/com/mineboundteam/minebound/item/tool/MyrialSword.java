@@ -1,9 +1,9 @@
-package com.mineboundteam.minebound.item;
+package com.mineboundteam.minebound.item.tool;
 
-import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.entity.MyrialSwordEntity;
+import com.mineboundteam.minebound.item.MyrialSwordVacuum;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
-import com.mineboundteam.minebound.item.tool.MyrialMachete;
+import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -12,17 +12,17 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class MyrialSword extends MyrialMachete {
-    public MyrialSword(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties, MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1);
+public class MyrialSword extends MyrialSwordItem {
+    public MyrialSword(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
+        super(tier, attackDamageModifier, attackSpeedModifier, properties, config);
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (!level.isClientSide) {
-            ItemStack myrialSwordVacuum = createVacuum();
-            switchToVacuum(player, myrialSwordVacuum);
-            level.addFreshEntity(new MyrialSwordEntity(player, level, myrialSwordVacuum));
+            ItemStack myrialSwordVacuum = this.createVacuum();
+            this.switchToVacuum(player, player.getItemInHand(interactionHand), myrialSwordVacuum);
+            level.addFreshEntity(new MyrialSwordEntity(player, level, interactionHand, myrialSwordVacuum, this.config));
         }
         return super.use(level, player, interactionHand);
     }
@@ -35,10 +35,10 @@ public class MyrialSword extends MyrialMachete {
         return itemStack;
     }
 
-    public void switchToVacuum(Player player, ItemStack myrialSwordVacuum) {
+    public void switchToVacuum(Player player, ItemStack myrialSword, ItemStack myrialSwordVacuum) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack potentialMyrialSword = player.getInventory().getItem(i);
-            if (!potentialMyrialSword.isEmpty() && potentialMyrialSword.sameItem(new ItemStack(this))) {
+            if (!potentialMyrialSword.isEmpty() && potentialMyrialSword.sameItem(myrialSword)) {
                 player.getInventory().removeItem(i, 1);
                 player.getInventory().add(i, myrialSwordVacuum);
                 break;

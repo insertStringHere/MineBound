@@ -8,6 +8,7 @@ import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.magic.events.MagicSelectedEvent;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.PlayerUtil;
 import com.mineboundteam.minebound.util.StringUtil;
 import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
@@ -78,7 +79,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
                 double velocity = entity.getDeltaMovement().lengthSqr();
                 reduceMana((int) (Math.ceil(velocity * 100 * config.MANA_COST.get())), player);
 
-                entity.move(MoverType.PLAYER, getShift(player, usedHand, entity));
+                entity.move(MoverType.PLAYER, PlayerUtil.getShift(player, usedHand, entity, config.HOLD_DIST.get()));
                 entity.resetFallDistance();
 
                 // Handle collision damage
@@ -105,24 +106,9 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
             if (id != null) {
                 Entity e = level.getEntity(id);
                 if (e != null && e.isAlive() && e instanceof LivingEntity entity)
-                    entity.setDeltaMovement(getShift(player, usedHand, entity));
+                    entity.setDeltaMovement(PlayerUtil.getShift(player, usedHand, entity, config.HOLD_DIST.get()));
             }
         }
-    }
-
-    protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity) {
-        Vec3 view = player.getLookAngle();
-
-        float yRot = player.getYRot();
-        double x = 0 - Math.sin(yRot * Math.PI / 180f);
-        double z = Math.cos(yRot * Math.PI / 180f);
-        int hand = usedHand == InteractionHand.MAIN_HAND ? 1 : -1;
-        Vec3 playerPos = new Vec3(
-                player.getX() - (z / 2.5d * hand),
-                player.getEyeY() - 1d,
-                player.getZ() + (x / 2.5d * hand)
-        );
-        return view.scale(config.HOLD_DIST.get()).add(playerPos).subtract(entity.position());
     }
 
     @Override
