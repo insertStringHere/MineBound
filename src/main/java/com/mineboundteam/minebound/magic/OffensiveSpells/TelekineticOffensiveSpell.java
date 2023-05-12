@@ -76,7 +76,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         public ForgeConfigSpec.DoubleValue PROJECTILE_DMG;
         public ForgeConfigSpec.DoubleValue PROJECTILE_RANGE;
         public final RegistryObject<MyrialSwordItem> SWORD_ITEM;
-        public final RegistryObject<Item> VACUUM_ITEM;
+        public final RegistryObject<Item> PLACEHOLDER_ITEM;
         private final int manaCostOnCast;
         private final int manaCostPerHit;
         private final boolean hasProjectile;
@@ -84,11 +84,13 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         private final double projectileRange;
 
 
-        public TelekineticOffensiveSpellConfig(int manaCostOnCast, int manaCostPerHit, RegistryObject<MyrialSwordItem> swordItem, RegistryObject<Item> vacuumItem, boolean hasProjectile, double projectileDamage, double projectileRange, ArmorTier level) {
+        public TelekineticOffensiveSpellConfig(int manaCostOnCast, int manaCostPerHit, RegistryObject<MyrialSwordItem> swordItem,
+                                               RegistryObject<Item> placeholderItem, boolean hasProjectile, double projectileDamage,
+                                               double projectileRange, ArmorTier level) {
             this.manaCostOnCast = manaCostOnCast;
             this.manaCostPerHit = manaCostPerHit;
             this.SWORD_ITEM = swordItem;
-            this.VACUUM_ITEM = vacuumItem;
+            this.PLACEHOLDER_ITEM = placeholderItem;
             this.hasProjectile = hasProjectile;
             this.projectileDamage = projectileDamage;
             this.projectileRange = projectileRange;

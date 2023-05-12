@@ -15,6 +15,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -25,7 +26,7 @@ import java.util.function.Predicate;
 
 public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     protected InteractionHand usedHand;
-    protected ItemStack swordVacuum;
+    protected ItemStack swordPlaceholder;
     protected TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config;
 
     /**
@@ -42,10 +43,11 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         super(pEntityType, pLevel);
     }
 
-    public MyrialSwordEntityBase(EntityType<? extends ThrowableItemProjectile> pEntityType, Player player, Level pLevel, InteractionHand usedHand, ItemStack swordVacuum, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
+    public MyrialSwordEntityBase(EntityType<? extends ThrowableItemProjectile> pEntityType, Player player, Level pLevel,
+                                 InteractionHand usedHand, ItemStack swordPlaceholder, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
         super(pEntityType, player, pLevel);
         this.usedHand = usedHand;
-        this.swordVacuum = swordVacuum;
+        this.swordPlaceholder = swordPlaceholder;
         this.config = config;
         this.setPos(PlayerUtil.getHandPos(player, usedHand));
         this.setNoGravity(true);
@@ -53,7 +55,7 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return config.SWORD_ITEM.get();
+        return config == null ? Items.AIR : config.SWORD_ITEM.get();
     }
 
     @Override
@@ -72,9 +74,9 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         if (pResult.getEntity() instanceof LivingEntity entity && entity.hasLineOfSight(this)) {
             if (this.getOwner() != null && entity.is(this.getOwner())) {
                 this.discard();
-                this.switchToSword((Player) this.getOwner());
+                this.getPlayerOwner().setItemInHand(usedHand, config.SWORD_ITEM.get().getDefaultInstance());
             } else {
-                entity.hurt(DamageSource.playerAttack((Player) this.getOwner()), config.PROJECTILE_DMG.get().floatValue());
+                entity.hurt(DamageSource.playerAttack(this.getPlayerOwner()), config.PROJECTILE_DMG.get().floatValue());
             }
         }
     }
@@ -91,7 +93,8 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
                     BoundingBoxUtil.vectorFromMin(inflatedBB),
                     BoundingBoxUtil.vectorFromMax(inflatedBB),
                     inflatedBB, this::canHitEntity, .75f);
-            if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+            if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY
+                    && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
                 this.onHitEntity(hitresult);
             }
         }
@@ -107,13 +110,13 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
             this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
         }
         if (this.lerpSteps > 0) {
-            double d0 = this.getX() + (this.lerpX - this.getX()) / (double) this.lerpSteps;
-            double d2 = this.getY() + (this.lerpY - this.getY()) / (double) this.lerpSteps;
-            double d4 = this.getZ() + (this.lerpZ - this.getZ()) / (double) this.lerpSteps;
+            double dX = this.getX() + (this.lerpX - this.getX()) / (double) this.lerpSteps;
+            double dY = this.getY() + (this.lerpY - this.getY()) / (double) this.lerpSteps;
+            double dZ = this.getZ() + (this.lerpZ - this.getZ()) / (double) this.lerpSteps;
             float yRot = this.getYRot() + (float) (this.lerpYRot - (double) this.getYRot()) / (float) this.lerpSteps;
             float xRot = this.getXRot() + (float) (this.lerpXRot - (double) this.getXRot()) / (float) this.lerpSteps;
             --this.lerpSteps;
-            this.setPos(d0, d2, d4);
+            this.setPos(dX, dY, dZ);
             this.setRot(yRot, xRot);
         }
     }
@@ -131,31 +134,24 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         this.lerpSteps = pPosRotationIncrements;
     }
 
+    protected Player getPlayerOwner() {
+        return (Player) this.getOwner();
+    }
+
     protected void move() {
-        if (this.getOwner() == null || swordVacuum == null) return;
+        if (this.getOwner() == null || swordPlaceholder == null) return;
         this.move(MoverType.PLAYER, getMoveVector());
         // TODO: Modify this when model is implemented
         this.setRot(this.getYRot() + 90, this.getOwner().getXRot());
     }
 
     protected Vec3 getMoveVector() {
-        if (this.getOwner() == null || swordVacuum == null) return Vec3.ZERO;
+        if (this.getOwner() == null || swordPlaceholder == null) return Vec3.ZERO;
 
-        if (swordVacuum.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
+        if (swordPlaceholder.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
             return PlayerUtil.getHandPos(this.getOwner(), this.usedHand).subtract(this.position()).scale(0.3);
         }
 
         return PlayerUtil.getShift(this.getOwner(), this.usedHand, this, config.PROJECTILE_RANGE.get());
-    }
-
-    protected void switchToSword(Player player) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack potentialVacuum = player.getInventory().getItem(i);
-            if (!potentialVacuum.isEmpty() && potentialVacuum.sameItem(new ItemStack(config.VACUUM_ITEM.get()))) {
-                player.getInventory().removeItem(i, 1);
-                player.getInventory().add(i, new ItemStack(config.SWORD_ITEM.get()));
-                break;
-            }
-        }
     }
 }

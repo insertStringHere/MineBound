@@ -50,6 +50,16 @@ public abstract class MyrialSwordItem extends SwordItem {
         return false;
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return false;
+    }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
+        return false;
+    }
+
     @SubscribeEvent
     public static void onDrop(ItemTossEvent event) {
         if (!event.getPlayer().level.isClientSide()) {

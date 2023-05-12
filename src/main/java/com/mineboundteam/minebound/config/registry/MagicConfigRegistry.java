@@ -45,7 +45,7 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
 
     /* Telekinetic */
     public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_1 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(50, 10, ItemRegistry.MYRIAL_MACHETE, null, false, 0, 0, ArmorTier.EFFIGY);
-    public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_2 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(55, 15, ItemRegistry.MYRIAL_SWORD, ItemRegistry.MYRIAL_SWORD_VACUUM, true, 7, 10, ArmorTier.SUIT);
+    public static final TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig TELEKINETIC_OFFENSIVE_2 = new TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig(55, 15, ItemRegistry.MYRIAL_SWORD, ItemRegistry.MYRIAL_SWORD_PLACEHOLDER, true, 7, 10, ArmorTier.SUIT);
     public static final TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig TELEKINETIC_DEFENSIVE_2 = new TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig(2, 4, 10, 3.5, false, ArmorTier.SUIT);
     public static final TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig TELEKINETIC_DEFENSIVE_3 = new TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig(1.75, 4, 15, 4, false, ArmorTier.SYNERGY);
     public static final TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig TELEKINETIC_DEFENSIVE_4 = new TelekineticDefensiveSpell.TelekineticDefensiveSpellConfig(1.5, 4, 20, 5, false, ArmorTier.SINGULARITY);

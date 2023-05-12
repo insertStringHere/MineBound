@@ -5,7 +5,7 @@ import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
-import com.mineboundteam.minebound.item.MyrialSwordVacuum;
+import com.mineboundteam.minebound.item.MyrialSwordPlaceholder;
 import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
@@ -126,7 +126,7 @@ public class ItemRegistry {
 
     public static final RegistryObject<MyrialSwordItem> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 7, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
     public static final RegistryObject<MyrialSwordItem> MYRIAL_SWORD = ITEMS.register("myrial_sword", () -> new MyrialSword(Tiers.DIAMOND, 10, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
-    public static final RegistryObject<Item> MYRIAL_SWORD_VACUUM = ITEMS.register("myrial_sword_vacuum", () -> new MyrialSwordVacuum(new Item.Properties()));
+    public static final RegistryObject<Item> MYRIAL_SWORD_PLACEHOLDER = ITEMS.register("myrial_sword_placeholder", () -> new MyrialSwordPlaceholder(new Item.Properties()));
 
     /* Shield */
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
