@@ -7,6 +7,7 @@ import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
 import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
 import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -56,16 +57,32 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - If main hand is empty, places a ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()).withStyle(ColorUtil.Tooltip.itemColor))
+                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
                 .append(" into selected hotbar slot"));
         pTooltipComponents.add(new TextComponent("  - Unequipping the ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()).withStyle(ColorUtil.Tooltip.itemColor))
+                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
                 .append(" will cause it to vanish"));
+        if (config.hasProjectile) {
+            pTooltipComponents.add(new TextComponent("  - Right clicking with the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
+                    .append(" will throw it"));
+            pTooltipComponents.add(new TextComponent("  - When thrown, the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
+                    .append(" hover ")
+                    .append(new TextComponent(StringUtil.pluralize(config.PROJECTILE_RANGE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
+                    .append(new TextComponent(" from the player and will follow where they look")));
+            pTooltipComponents.add(new TextComponent("  - When thrown, the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
+                    .append(" will deal ")
+                    .append(new TextComponent(StringUtil.pluralize(config.PROJECTILE_DMG.get() / 2d, "heart") + " of damage").withStyle(ColorUtil.Tooltip.damageColor))
+                    .append(" to mobs it hits"));
+            pTooltipComponents.add(new TextComponent("  - Right clicking will return it to the player").withStyle(ColorUtil.Tooltip.defaultColor));
+        }
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_ON_CAST.get(), " to summon ")
-                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()).withStyle(ColorUtil.Tooltip.itemColor))
+                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
                 .append(", even if main hand is not empty"));
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_PER_HIT.get(), " per hit with the ")
-                .append(TooltipUtil.itemName(config.SWORD_ITEM.get()).withStyle(ColorUtil.Tooltip.itemColor)));
+                .append(TooltipUtil.itemName(config.SWORD_ITEM.get())));
     }
 
     public static class TelekineticOffensiveSpellConfig implements IConfig {
@@ -79,7 +96,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
         public final RegistryObject<Item> PLACEHOLDER_ITEM;
         private final int manaCostOnCast;
         private final int manaCostPerHit;
-        private final boolean hasProjectile;
+        public final boolean hasProjectile;
         private final double projectileDamage;
         private final double projectileRange;
 
@@ -104,7 +121,7 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
             MANA_COST_ON_CAST = builder.comment("Mana cost on spell cast").defineInRange("mana_cost_on_cast", manaCostOnCast, 0, 10000);
             MANA_COST_PER_HIT = builder.comment("Mana cost each time weapon deals damage").defineInRange("mana_cost_per_hit", manaCostPerHit, 0, 10000);
             if (hasProjectile) {
-                PROJECTILE_DMG = builder.comment("Damage dealt by the projectile sword").defineInRange("projectile_dmg", projectileDamage, 0, 10000);
+                PROJECTILE_DMG = builder.comment("Damage dealt by the projectile sword (2 damage = 1 heart)").defineInRange("projectile_dmg", projectileDamage, 0, 10000);
                 PROJECTILE_RANGE = builder.comment("Maximum range in blocks of the projectile sword").defineInRange("projectile_range", projectileRange, 0, 10000);
             }
             builder.pop(2);
