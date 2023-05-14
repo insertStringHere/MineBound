@@ -180,9 +180,9 @@ public class AlloyFurnaceMenu extends RecipeBookMenu<Container> {
     public int getLitProgress() {
        int i = this.data.get(1);
        if (i == 0) {
-          i = 200;
+          i = 1600;
        }
- 
+
        return this.data.get(0) * 13 / i;
     }
  
