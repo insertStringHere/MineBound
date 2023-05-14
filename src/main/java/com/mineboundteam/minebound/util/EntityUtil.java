@@ -14,13 +14,12 @@ public class EntityUtil {
     /**
      * Derived from {@link net.minecraft.world.entity.projectile.ProjectileUtil#getEntityHitResult(Level, Entity, Vec3, Vec3, AABB, Predicate, float)}
      */
-    public static ArrayList<EntityHitResult> multiEntityHitResult(Level level, Projectile projectile, AABB projectileBB, Predicate<Entity> filter, double entityBBInflation) {
+    public static ArrayList<EntityHitResult> multiEntityHitResult(Level level, Projectile projectile, AABB projectileBB,
+                                                                  Predicate<Entity> filter, double inflation) {
         ArrayList<EntityHitResult> entityHitResults = new ArrayList<>();
 
-        for (Entity entity : level.getEntities(projectile, projectileBB, filter)) {
-            if (BoundingBoxUtil.intersects(entity.getBoundingBox().inflate(entityBBInflation), projectileBB)) {
-                entityHitResults.add(new EntityHitResult(entity));
-            }
+        for (Entity entity : level.getEntities(projectile, projectileBB.inflate(inflation), filter)) {
+            entityHitResults.add(new EntityHitResult(entity));
         }
 
         return entityHitResults;
