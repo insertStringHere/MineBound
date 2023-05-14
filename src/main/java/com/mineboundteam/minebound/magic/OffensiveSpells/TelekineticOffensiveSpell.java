@@ -66,17 +66,13 @@ public class TelekineticOffensiveSpell extends ActiveSpellItem {
             pTooltipComponents.add(new TextComponent("  - Right clicking with the ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
                     .append(" will throw it"));
-            pTooltipComponents.add(new TextComponent("  - When thrown, the ").withStyle(ColorUtil.Tooltip.defaultColor)
-                    .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
-                    .append(" hover ")
+            pTooltipComponents.add(new TextComponent("    - Will hover ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent(StringUtil.pluralize(config.PROJECTILE_RANGE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
-                    .append(new TextComponent(" from the player and will follow where they look")));
-            pTooltipComponents.add(new TextComponent("  - When thrown, the ").withStyle(ColorUtil.Tooltip.defaultColor)
-                    .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))
-                    .append(" will deal ")
+                    .append(new TextComponent(" from the player and move where they look")));
+            pTooltipComponents.add(new TextComponent("    - Will deal ").withStyle(ColorUtil.Tooltip.defaultColor)
                     .append(new TextComponent(StringUtil.pluralize(config.PROJECTILE_DMG.get() / 2d, "heart") + " of damage").withStyle(ColorUtil.Tooltip.damageColor))
                     .append(" to mobs it hits"));
-            pTooltipComponents.add(new TextComponent("  - Right clicking will return it to the player").withStyle(ColorUtil.Tooltip.defaultColor));
+            pTooltipComponents.add(new TextComponent("    - Right clicking again will return it to the player").withStyle(ColorUtil.Tooltip.defaultColor));
         }
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_ON_CAST.get(), " to summon ")
                 .append(TooltipUtil.itemName(config.SWORD_ITEM.get()))

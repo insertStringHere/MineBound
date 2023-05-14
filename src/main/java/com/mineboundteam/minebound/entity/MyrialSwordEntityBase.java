@@ -2,24 +2,20 @@ package com.mineboundteam.minebound.entity;
 
 import com.mineboundteam.minebound.item.tool.MyrialSwordItem;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
-import com.mineboundteam.minebound.util.BoundingBoxUtil;
+import com.mineboundteam.minebound.util.EntityUtil;
 import com.mineboundteam.minebound.util.PlayerUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
@@ -89,23 +85,16 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     public void tick() {
         if (this.isControlledByLocalInstance()) {
             // Need to do this so if the placeholder is dropped from the inventory it comes back since setting the NBT
-            // data was not working correctly
+            // data from ItemTossEvent was not working correctly
             if (this.getPlayerOwner() != null && usedHand != null) {
                 this.swordPlaceholder = this.getPlayerOwner().getItemInHand(usedHand);
             }
 
-            /**
-             * Derived from {@link ProjectileUtil#getHitResult(Entity, Predicate)}
-             * Derived from {@link ThrowableItemProjectile#tick()}
-             */
-            AABB inflatedBB = this.getBoundingBox().expandTowards(this.getMoveVector()).inflate(1);
-            EntityHitResult hitresult = ProjectileUtil.getEntityHitResult(this.getLevel(), this,
-                    BoundingBoxUtil.vectorFromMin(inflatedBB),
-                    BoundingBoxUtil.vectorFromMax(inflatedBB),
-                    inflatedBB, this::canHitEntity, .75f);
-            if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY
-                    && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
-                this.onHitEntity(hitresult);
+            for (EntityHitResult entityHitResult : EntityUtil.multiEntityHitResult(this.getLevel(), this,
+                    this.getBoundingBox().expandTowards(this.getMoveVector()), this::canHitEntity, 0)) {
+                if (!net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, entityHitResult)) {
+                    this.onHitEntity(entityHitResult);
+                }
             }
         }
 
