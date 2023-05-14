@@ -88,6 +88,8 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     @Override
     public void tick() {
         if (this.isControlledByLocalInstance()) {
+            // Need to do this so if the placeholder is dropped from the inventory it comes back since setting the NBT
+            // data was not working correctly
             if (this.getPlayerOwner() != null && usedHand != null) {
                 this.swordPlaceholder = this.getPlayerOwner().getItemInHand(usedHand);
             }
