@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 
 public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     protected InteractionHand usedHand;
-    protected Predicate<ItemStack> placeholder;
+    protected Predicate<ItemStack> isPlaceholder;
     protected ItemStack swordPlaceholder;
     protected TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config;
     protected int invSlot;
@@ -46,10 +46,10 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     }
 
     public MyrialSwordEntityBase(EntityType<? extends ThrowableItemProjectile> pEntityType, Player player, Level pLevel,
-                                 InteractionHand usedHand, Predicate<ItemStack> placeholder, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
+                                 InteractionHand usedHand, Predicate<ItemStack> isPlaceholder, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
         super(pEntityType, player, pLevel);
         this.usedHand = usedHand;
-        this.placeholder = placeholder;
+        this.isPlaceholder = isPlaceholder;
         this.swordPlaceholder = player.getItemInHand(usedHand);
         this.config = config;
         this.invSlot = player.getInventory().selected;
@@ -159,7 +159,7 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     protected Vec3 getMoveVector() {
         if (this.getOwner() == null || swordPlaceholder == null) return Vec3.ZERO;
 
-        if (!placeholder.test(swordPlaceholder) || swordPlaceholder.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
+        if (!isPlaceholder.test(swordPlaceholder) || swordPlaceholder.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
             return PlayerUtil.getHandPos(this.getPlayerOwner(), this.usedHand).subtract(this.position()).scale(0.3);
         }
 

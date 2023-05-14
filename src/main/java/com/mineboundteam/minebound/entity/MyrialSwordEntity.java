@@ -16,8 +16,8 @@ public class MyrialSwordEntity extends MyrialSwordEntityBase {
         super(entityType, level);
     }
 
-    public MyrialSwordEntity(Player player, Level level, InteractionHand usedHand, Predicate<ItemStack> placeholder,
+    public MyrialSwordEntity(Player player, Level level, InteractionHand usedHand, Predicate<ItemStack> isPlaceholder,
                              TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
-        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), player, level, usedHand, placeholder, config);
+        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), player, level, usedHand, isPlaceholder, config);
     }
 }
