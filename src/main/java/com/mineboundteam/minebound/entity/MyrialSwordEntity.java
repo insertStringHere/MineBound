@@ -8,14 +8,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Predicate;
+
 public class MyrialSwordEntity extends MyrialSwordEntityBase {
 
     public MyrialSwordEntity(EntityType<MyrialSwordEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MyrialSwordEntity(Player player, Level level, InteractionHand usedHand, ItemStack swordPlaceholder,
+    public MyrialSwordEntity(Player player, Level level, InteractionHand usedHand, Predicate<ItemStack> placeholder,
                              TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
-        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), player, level, usedHand, swordPlaceholder, config);
+        super(EntityRegistry.MYRIAL_SWORD_ENTITY.get(), player, level, usedHand, placeholder, config);
     }
 }

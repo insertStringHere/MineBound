@@ -2,9 +2,9 @@ package com.mineboundteam.minebound.item.tool;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
-import com.mineboundteam.minebound.inventory.SelectSpellMenu;
 import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
 import com.mineboundteam.minebound.magic.SpellItem;
+import com.mineboundteam.minebound.util.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +38,7 @@ public abstract class MyrialSwordItem extends SwordItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof ServerPlayer player) {
-            if (!pIsSelected || (player.containerMenu != player.inventoryMenu && !(player.containerMenu instanceof SelectSpellMenu))) {
+            if (!pIsSelected || !PlayerUtil.isValidDisappearingItemMenu(player.containerMenu)) {
                 player.getInventory().removeItem(pStack);
             }
         }
@@ -62,10 +62,8 @@ public abstract class MyrialSwordItem extends SwordItem {
 
     @SubscribeEvent
     public static void onDrop(ItemTossEvent event) {
-        if (!event.getPlayer().level.isClientSide()) {
-            if (event.getEntityItem().getItem().getItem() instanceof MyrialSwordItem) {
-                event.setCanceled(true);
-            }
+        if (event.getEntityItem().getItem().getItem() instanceof MyrialSwordItem) {
+            event.setCanceled(true);
         }
     }
 }

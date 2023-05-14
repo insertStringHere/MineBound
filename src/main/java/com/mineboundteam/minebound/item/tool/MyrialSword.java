@@ -13,24 +13,18 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class MyrialSword extends MyrialSwordItem {
-    public MyrialSword(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
+    public MyrialSword(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties,
+                       TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
         super(tier, attackDamageModifier, attackSpeedModifier, properties, config);
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (!level.isClientSide) {
-            ItemStack myrialSwordPlaceholder = this.createPlaceholder();
-            player.setItemInHand(interactionHand, myrialSwordPlaceholder);
-            level.addFreshEntity(new MyrialSwordEntity(player, level, interactionHand, myrialSwordPlaceholder, this.config));
+            player.setItemInHand(interactionHand, new ItemStack(ItemRegistry.MYRIAL_SWORD_PLACEHOLDER.get()));
+            level.addFreshEntity(new MyrialSwordEntity(player, level, interactionHand,
+                    (itemStack -> itemStack.getItem() instanceof MyrialSwordPlaceholder), this.config));
         }
         return super.use(level, player, interactionHand);
-    }
-
-    public ItemStack createPlaceholder() {
-        MyrialSwordPlaceholder myrialSwordPlaceholder = (MyrialSwordPlaceholder) ItemRegistry.MYRIAL_SWORD_PLACEHOLDER.get();
-        ItemStack itemStack = new ItemStack(myrialSwordPlaceholder);
-        myrialSwordPlaceholder.itemStack = itemStack;
-        return itemStack;
     }
 }

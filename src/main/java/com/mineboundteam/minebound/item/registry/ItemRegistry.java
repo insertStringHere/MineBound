@@ -125,7 +125,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
 
     public static final RegistryObject<MyrialSwordItem> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 7, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
-    public static final RegistryObject<MyrialSwordItem> MYRIAL_SWORD = ITEMS.register("myrial_sword", () -> new MyrialSword(Tiers.DIAMOND, 10, -2.4F, new Item.Properties().durability(-1).tab(MineBound.MINEBOUND_TAB), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
+    public static final RegistryObject<MyrialSwordItem> MYRIAL_SWORD = ITEMS.register("myrial_sword", () -> new MyrialSword(Tiers.DIAMOND, 10, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
     public static final RegistryObject<Item> MYRIAL_SWORD_PLACEHOLDER = ITEMS.register("myrial_sword_placeholder", () -> new MyrialSwordPlaceholder(new Item.Properties()));
 
     /* Shield */

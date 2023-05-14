@@ -26,8 +26,10 @@ import java.util.function.Predicate;
 
 public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     protected InteractionHand usedHand;
+    protected Predicate<ItemStack> placeholder;
     protected ItemStack swordPlaceholder;
     protected TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config;
+    protected int invSlot;
 
     /**
      * Derived from {@link LivingEntity}
@@ -44,11 +46,13 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     }
 
     public MyrialSwordEntityBase(EntityType<? extends ThrowableItemProjectile> pEntityType, Player player, Level pLevel,
-                                 InteractionHand usedHand, ItemStack swordPlaceholder, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
+                                 InteractionHand usedHand, Predicate<ItemStack> placeholder, TelekineticOffensiveSpell.TelekineticOffensiveSpellConfig config) {
         super(pEntityType, player, pLevel);
         this.usedHand = usedHand;
-        this.swordPlaceholder = swordPlaceholder;
+        this.placeholder = placeholder;
+        this.swordPlaceholder = player.getItemInHand(usedHand);
         this.config = config;
+        this.invSlot = player.getInventory().selected;
         this.setPos(PlayerUtil.getHandPos(player, usedHand));
         this.setNoGravity(true);
     }
@@ -74,7 +78,7 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         if (pResult.getEntity() instanceof LivingEntity entity && entity.hasLineOfSight(this)) {
             if (this.getOwner() != null && entity.is(this.getOwner())) {
                 this.discard();
-                this.getPlayerOwner().setItemInHand(usedHand, config.SWORD_ITEM.get().getDefaultInstance());
+                this.getPlayerOwner().getInventory().setItem(invSlot, config.SWORD_ITEM.get().getDefaultInstance());
             } else {
                 entity.hurt(DamageSource.playerAttack(this.getPlayerOwner()), config.PROJECTILE_DMG.get().floatValue());
             }
@@ -84,6 +88,10 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     @Override
     public void tick() {
         if (this.isControlledByLocalInstance()) {
+            if (this.getPlayerOwner() != null && usedHand != null) {
+                this.swordPlaceholder = this.getPlayerOwner().getItemInHand(usedHand);
+            }
+
             /**
              * Derived from {@link ProjectileUtil#getHitResult(Entity, Predicate)}
              * Derived from {@link ThrowableItemProjectile#tick()}
@@ -140,18 +148,19 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
 
     protected void move() {
         if (this.getOwner() == null || swordPlaceholder == null) return;
+
         this.move(MoverType.PLAYER, getMoveVector());
         // TODO: Modify this when model is implemented
-        this.setRot(this.getYRot() + 90, this.getOwner().getXRot());
+        this.setRot(this.getYRot() + 90, this.getPlayerOwner().getXRot());
     }
 
     protected Vec3 getMoveVector() {
         if (this.getOwner() == null || swordPlaceholder == null) return Vec3.ZERO;
 
-        if (swordPlaceholder.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
-            return PlayerUtil.getHandPos(this.getOwner(), this.usedHand).subtract(this.position()).scale(0.3);
+        if (!placeholder.test(swordPlaceholder) || swordPlaceholder.getOrCreateTag().getBoolean(MyrialSwordItem.RETURN_KEY)) {
+            return PlayerUtil.getHandPos(this.getPlayerOwner(), this.usedHand).subtract(this.position()).scale(0.3);
         }
 
-        return PlayerUtil.getShift(this.getOwner(), this.usedHand, this, config.PROJECTILE_RANGE.get());
+        return PlayerUtil.getShift(this.getPlayerOwner(), this.usedHand, this, config.PROJECTILE_RANGE.get());
     }
 }
