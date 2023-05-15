@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
@@ -88,7 +89,7 @@ public class FireDefensiveSpell extends ActiveSpellItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
         pTooltipComponents.add(new TextComponent("  - Functions identically to a ").withStyle(ColorUtil.Tooltip.defaultColor)
-                .append(new TextComponent("Flint and Steel").withStyle(ColorUtil.Tooltip.itemColor)));
+                .append(TooltipUtil.itemName(Items.FLINT_AND_STEEL)));
         pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per use"));
     }
 

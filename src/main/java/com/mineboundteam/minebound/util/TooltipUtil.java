@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.*;
+import net.minecraft.world.item.Item;
 
 import java.util.List;
 
@@ -33,8 +34,12 @@ public class TooltipUtil {
                 .append("]").withStyle(Style.EMPTY.withBold(false));
     }
 
-    public static TranslatableComponent level(int level) {
+    public static MutableComponent level(int level) {
         return new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level);
+    }
+
+    public static MutableComponent itemName(Item item) {
+        return new TranslatableComponent(item.getDescriptionId()).withStyle(ColorUtil.Tooltip.itemColor);
     }
 
     public static MutableComponent manaCost(Number manaCost, String description) {

@@ -79,7 +79,7 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
                 double velocity = entity.getDeltaMovement().lengthSqr();
                 reduceMana((int) (Math.ceil(velocity * 100 * config.MANA_COST.get())), player);
 
-                entity.move(MoverType.PLAYER, getShift(player, usedHand, entity));
+                entity.move(MoverType.PLAYER, PlayerUtil.getShift(player, usedHand, entity, config.HOLD_DIST.get()));
                 entity.resetFallDistance();
 
                 // Handle collision damage
@@ -106,15 +106,9 @@ public class TelekineticDefensiveSpell extends ActiveSpellItem {
             if (id != null) {
                 Entity e = level.getEntity(id);
                 if (e != null && e.isAlive() && e instanceof LivingEntity entity)
-                    entity.setDeltaMovement(getShift(player, usedHand, entity));
+                    entity.setDeltaMovement(PlayerUtil.getShift(player, usedHand, entity, config.HOLD_DIST.get()));
             }
         }
-    }
-
-    protected Vec3 getShift(Player player, InteractionHand usedHand, LivingEntity entity) {
-        Vec3 view = player.getViewVector(0);
-        Vec3 handPos = PlayerUtil.getHandPos(player, usedHand);
-        return view.scale(config.HOLD_DIST.get()).add(handPos).subtract(entity.position());
     }
 
     @Override
