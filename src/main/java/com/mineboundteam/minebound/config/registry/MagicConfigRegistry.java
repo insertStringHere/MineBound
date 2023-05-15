@@ -63,7 +63,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
     public static final ShieldUtilitySpell.ShieldUtilitySpellConfig SHIELD_UTILITY_4 = new ShieldUtilitySpell.ShieldUtilitySpellConfig(10, 40, 100, ArmorTier.SINGULARITY);
 
     /* Earth */
-
+    public static final EarthOffensiveSpell.EarthOffensiveSpellConfig EARTH_OFFENSIVE_1 = new EarthOffensiveSpell.EarthOffensiveSpellConfig(30, 3, 3, false, 0, ArmorTier.EFFIGY);
+    public static final EarthOffensiveSpell.EarthOffensiveSpellConfig EARTH_OFFENSIVE_2 = new EarthOffensiveSpell.EarthOffensiveSpellConfig(40, 5, 5, false, 0, ArmorTier.SUIT);
+    public static final EarthOffensiveSpell.EarthOffensiveSpellConfig EARTH_OFFENSIVE_4 = new EarthOffensiveSpell.EarthOffensiveSpellConfig(60, 7, 7, true, 100, ArmorTier.SINGULARITY);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_1 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.STONE, 4.0F, ArmorTier.EFFIGY);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_2 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.IRON, 6.0F, ArmorTier.SUIT);
     public static final EarthDefensiveSpell.EarthDefensiveSpellConfig EARTH_DEFENSIVE_3 = new EarthDefensiveSpell.EarthDefensiveSpellConfig(10, Tiers.DIAMOND, 9.0F, ArmorTier.SYNERGY);
@@ -144,6 +146,9 @@ public class MagicConfigRegistry extends ServerConfigRegistry implements IConfig
         builder.pop();
 
         builder.push("Earth");
+            EARTH_OFFENSIVE_1.build(builder);
+            EARTH_OFFENSIVE_2.build(builder);
+            EARTH_OFFENSIVE_4.build(builder);
             builder.push("Defensive");
                 EarthDefensiveSpell.vanillaBreak = builder.comment("True if breaking blocks should take time, like when using a pickaxe.").define("vanilla_break", true);
             builder.pop();

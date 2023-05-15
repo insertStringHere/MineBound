@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CMC",
+    "CEC",
+    "CMC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:mossy_cobblestone"
+    },
+    "M": {
+      "item": "minebound:myrial_steel_ingot"
+    },
+    "E": {
+      "item": "minebound:magic_earth_o2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_o4"
+  }
+}

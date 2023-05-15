@@ -74,7 +74,7 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
         if (selectedSpell.getItem() instanceof EnderDefensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
             if (isActive) {
-                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.config.DURATION_TICKS.get(), 0, false, false));
+                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.config.DURATION_TICKS.get(), 0, false, false), player);
                 reduceMana(spell.config.MANA_COST_PER_HIT.get(), player);
                 return true;
             }
