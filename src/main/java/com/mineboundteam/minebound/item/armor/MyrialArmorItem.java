@@ -42,6 +42,8 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
+    public static final String RECOVERY_TAG = "recovering";
+
     public MyrialArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties, ArmorTier pTier, ArmorConfig pConfig) {
         super(pMaterial, pSlot, pProperties.durability(pConfig.ENERGY.get()));
         this.config = pConfig;
