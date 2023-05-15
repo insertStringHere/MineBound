@@ -75,7 +75,7 @@ public class ElectricDefensiveSpell extends ActiveSpellItem {
     protected static boolean triggerSpell(Player player, LivingEntity entity, ItemStack selectedSpell) {
         if (selectedSpell.getItem() instanceof ElectricDefensiveSpell spell) {
             if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
-                entity.addEffect(new MobEffectInstance(EffectRegistry.ELECTRIC_DEBUFF.get(), spell.config.DURATION_TICKS.get(), spell.level.getValue()));
+                entity.addEffect(new MobEffectInstance(EffectRegistry.ELECTRIC_DEBUFF.get(), spell.config.DURATION_TICKS.get(), spell.level.getValue()), player);
                 reduceMana(spell.config.MANA_COST_PER_HIT.get(), player);
                 return true;
             }

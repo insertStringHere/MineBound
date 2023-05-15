@@ -140,7 +140,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
-
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_1 = ITEMS.register("magic_earth_o1", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_2 = ITEMS.register("magic_earth_o2", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_2));
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_4 = ITEMS.register("magic_earth_o4", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_4));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_1 = ITEMS.register("magic_earth_d1", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_2 = ITEMS.register("magic_earth_d2", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_3 = ITEMS.register("magic_earth_d3", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_3));
@@ -207,6 +209,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_4 = ITEMS.register("magic/magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_1 = ITEMS.register("magic/magic_earth_o1", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_2 = ITEMS.register("magic/magic_earth_o2", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_2));
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_4 = ITEMS.register("magic/magic_earth_o4", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_4));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_1 = ITEMS.register("magic/magic_earth_d1", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_2 = ITEMS.register("magic/magic_earth_d2", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_3 = ITEMS.register("magic/magic_earth_d3", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_3));
