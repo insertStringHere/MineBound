@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "minebound:item/myrial_machete"
+    "layer0": "minebound:item/myrial_sword"
   }
 }

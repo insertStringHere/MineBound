@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RGR",
+    "CEC",
+    "RGR"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:gravel"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "E": {
+      "item": "minebound:magic_earth_o1"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_earth_o2"
+  }
+}

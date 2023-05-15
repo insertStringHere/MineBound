@@ -5,16 +5,15 @@ import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.config.registry.MagicConfigRegistry;
 import com.mineboundteam.minebound.item.ArmorMaterials;
 import com.mineboundteam.minebound.item.MyriCorpseItem;
+import com.mineboundteam.minebound.item.MyrialSwordPlaceholder;
 import com.mineboundteam.minebound.item.ToolTier;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.item.tool.MyrialMachete;
+import com.mineboundteam.minebound.item.tool.MyrialSword;
+import com.mineboundteam.minebound.item.tool.MyrialSwordItem;
 import com.mineboundteam.minebound.magic.DefensiveSpells.*;
-import com.mineboundteam.minebound.magic.OffensiveSpells.EnderOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.NecroticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.ShieldOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.TelekineticOffensiveSpell;
-import com.mineboundteam.minebound.magic.OffensiveSpells.FireOffensiveSpell;
+import com.mineboundteam.minebound.magic.OffensiveSpells.*;
 import com.mineboundteam.minebound.magic.SpellItem;
 import com.mineboundteam.minebound.magic.UtilitySpells.*;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -117,6 +116,7 @@ public class ItemRegistry {
 
     /* Telekinetic */
     public static final RegistryObject<SpellItem> TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> TELEKINETIC_OFFENSIVE_2 = ITEMS.register("magic_telekinetic_o2", () -> new TelekineticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> TELEKINETIC_DEFENSIVE_2 = ITEMS.register("magic_telekinetic_d2", () -> new TelekineticDefensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> TELEKINETIC_DEFENSIVE_3 = ITEMS.register("magic_telekinetic_d3", () -> new TelekineticDefensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> TELEKINETIC_DEFENSIVE_4 = ITEMS.register("magic_telekinetic_d4", () -> new TelekineticDefensiveSpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_4));
@@ -124,7 +124,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_3 = ITEMS.register("magic_telekinetic_u3", () -> new TelekineticUtilitySpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_UTILITY_3));
     public static final RegistryObject<SpellItem> TELEKINETIC_UTILITY_4 = ITEMS.register("magic_telekinetic_u4", () -> new TelekineticUtilitySpell(spellItemProperties(), MagicConfigRegistry.TELEKINETIC_UTILITY_4));
 
-    public static final RegistryObject<Item> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 5, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
+    public static final RegistryObject<MyrialSwordItem> MYRIAL_MACHETE = ITEMS.register("myrial_machete", () -> new MyrialMachete(Tiers.IRON, 7, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
+    public static final RegistryObject<MyrialSwordItem> MYRIAL_SWORD = ITEMS.register("myrial_sword", () -> new MyrialSword(Tiers.DIAMOND, 10, -2.4F, new Item.Properties().durability(-1), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
+    public static final RegistryObject<Item> MYRIAL_SWORD_PLACEHOLDER = ITEMS.register("myrial_sword_placeholder", () -> new MyrialSwordPlaceholder(new Item.Properties()));
 
     /* Shield */
     public static final RegistryObject<SpellItem> SHIELD_OFFENSIVE_1 = ITEMS.register("magic_shield_o1", () -> new ShieldOffensiveSpell(spellItemProperties(), MagicConfigRegistry.SHIELD_OFFENSIVE_1));
@@ -138,7 +140,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> SHIELD_UTILITY_4 = ITEMS.register("magic_shield_u4", () -> new ShieldUtilitySpell(spellItemProperties(), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
-
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_1 = ITEMS.register("magic_earth_o1", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_2 = ITEMS.register("magic_earth_o2", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_2));
+    public static final RegistryObject<SpellItem> EARTH_OFFENSIVE_4 = ITEMS.register("magic_earth_o4", () -> new EarthOffensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_OFFENSIVE_4));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_1 = ITEMS.register("magic_earth_d1", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_2 = ITEMS.register("magic_earth_d2", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> EARTH_DEFENSIVE_3 = ITEMS.register("magic_earth_d3", () -> new EarthDefensiveSpell(spellItemProperties(), MagicConfigRegistry.EARTH_DEFENSIVE_3));
@@ -163,7 +167,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> ELECTRIC_UTILITY_4 = ITEMS.register("magic_electric_u4", () -> new ElectricUtilitySpell(spellItemProperties(), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
     /* Light */
-    public static final RegistryObject<SpellItem> LIGHT_DEFENSIVE_1 = ITEMS.register("magic_light_d1",() -> new LightDefensiveSpell(spellItemProperties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> LIGHT_DEFENSIVE_1 = ITEMS.register("magic_light_d1", () -> new LightDefensiveSpell(spellItemProperties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> LIGHT_UTILITY_2 = ITEMS.register("magic_light_u2", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_2));
     public static final RegistryObject<SpellItem> LIGHT_UTILITY_3 = ITEMS.register("magic_light_u3", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_3));
     public static final RegistryObject<SpellItem> LIGHT_UTILITY_4 = ITEMS.register("magic_light_u4", () -> new LightUtilitySpell(spellItemProperties(), MagicConfigRegistry.LIGHT_UTILITY_4));
@@ -171,7 +175,6 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_2 = ITEMS.register("magic_necrotic_o2", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_3 = ITEMS.register("magic_necrotic_o3", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_3));
     public static final RegistryObject<SpellItem> NECROTIC_OFFENSIVE_4 = ITEMS.register("magic_necrotic_o4", () -> new NecroticOffensiveSpell(spellItemProperties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_4));
-
 
 
     /* Dummy Spells */
@@ -186,6 +189,7 @@ public class ItemRegistry {
 
     /* Telekinetic */
     public static final RegistryObject<SpellItem> GUI_TELEKINETIC_OFFENSIVE_1 = ITEMS.register("magic/magic_telekinetic_o1", () -> new TelekineticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_TELEKINETIC_OFFENSIVE_2 = ITEMS.register("magic/magic_telekinetic_o2", () -> new TelekineticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_TELEKINETIC_DEFENSIVE_2 = ITEMS.register("magic/magic_telekinetic_d2", () -> new TelekineticDefensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_TELEKINETIC_DEFENSIVE_3 = ITEMS.register("magic/magic_telekinetic_d3", () -> new TelekineticDefensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_3));
     public static final RegistryObject<SpellItem> GUI_TELEKINETIC_DEFENSIVE_4 = ITEMS.register("magic/magic_telekinetic_d4", () -> new TelekineticDefensiveSpell(new Item.Properties(), MagicConfigRegistry.TELEKINETIC_DEFENSIVE_4));
@@ -205,6 +209,9 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_SHIELD_UTILITY_4 = ITEMS.register("magic/magic_shield_u4", () -> new ShieldUtilitySpell(new Item.Properties(), MagicConfigRegistry.SHIELD_UTILITY_4));
 
     /* Earth */
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_1 = ITEMS.register("magic/magic_earth_o1", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_2 = ITEMS.register("magic/magic_earth_o2", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_2));
+    public static final RegistryObject<SpellItem> GUI_EARTH_OFFENSIVE_4 = ITEMS.register("magic/magic_earth_o4", () -> new EarthOffensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_OFFENSIVE_4));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_1 = ITEMS.register("magic/magic_earth_d1", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_2 = ITEMS.register("magic/magic_earth_d2", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_EARTH_DEFENSIVE_3 = ITEMS.register("magic/magic_earth_d3", () -> new EarthDefensiveSpell(new Item.Properties(), MagicConfigRegistry.EARTH_DEFENSIVE_3));
@@ -229,7 +236,7 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_ELECTRIC_UTILITY_4 = ITEMS.register("magic/magic_electric_u4", () -> new ElectricUtilitySpell(new Item.Properties(), MagicConfigRegistry.ELECTRIC_UTILITY_4));
 
     /* Light */
-    public static final RegistryObject<SpellItem> GUI_LIGHT_DEFENSIVE_1 = ITEMS.register("magic/magic_light_d1",() -> new LightDefensiveSpell(new Item.Properties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
+    public static final RegistryObject<SpellItem> GUI_LIGHT_DEFENSIVE_1 = ITEMS.register("magic/magic_light_d1", () -> new LightDefensiveSpell(new Item.Properties(), MagicConfigRegistry.LIGHT_DEFENSIVE_1));
     public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_2 = ITEMS.register("magic/magic_light_u2", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_2));
     public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_3 = ITEMS.register("magic/magic_light_u3", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_3));
     public static final RegistryObject<SpellItem> GUI_LIGHT_UTILITY_4 = ITEMS.register("magic/magic_light_u4", () -> new LightUtilitySpell(new Item.Properties(), MagicConfigRegistry.LIGHT_UTILITY_4));
@@ -238,8 +245,6 @@ public class ItemRegistry {
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_2 = ITEMS.register("magic/magic_necrotic_o2", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_2));
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_3 = ITEMS.register("magic/magic_necrotic_o3", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_3));
     public static final RegistryObject<SpellItem> GUI_NECROTIC_OFFENSIVE_4 = ITEMS.register("magic/magic_necrotic_o4", () -> new NecroticOffensiveSpell(new Item.Properties(), MagicConfigRegistry.NECROTIC_OFFENSIVE_4));
-
-
 
 
     private static Item.Properties spellItemProperties() {
