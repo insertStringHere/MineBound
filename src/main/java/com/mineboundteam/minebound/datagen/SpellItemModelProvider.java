@@ -27,12 +27,17 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.FIRE_OFFENSIVE_1.get());
         generateModels(ItemRegistry.FIRE_OFFENSIVE_2.get());
         generateModels(ItemRegistry.FIRE_OFFENSIVE_4.get());
+        generateModels(ItemRegistry.FIRE_DEFENSIVE_1.get());
         generateModels(ItemRegistry.FIRE_UTILITY_2.get());
         generateModels(ItemRegistry.FIRE_UTILITY_3.get());
         generateModels(ItemRegistry.FIRE_UTILITY_4.get());
 
         /* Telekinetic */
         generateModels(ItemRegistry.TELEKINETIC_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.TELEKINETIC_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.TELEKINETIC_DEFENSIVE_2.get());
+        generateModels(ItemRegistry.TELEKINETIC_DEFENSIVE_3.get());
+        generateModels(ItemRegistry.TELEKINETIC_DEFENSIVE_4.get());
         generateModels(ItemRegistry.TELEKINETIC_UTILITY_2.get());
         generateModels(ItemRegistry.TELEKINETIC_UTILITY_3.get());
         generateModels(ItemRegistry.TELEKINETIC_UTILITY_4.get());
@@ -49,6 +54,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.SHIELD_UTILITY_4.get());
 
         /* Earth */
+        generateModels(ItemRegistry.EARTH_OFFENSIVE_1.get());
+        generateModels(ItemRegistry.EARTH_OFFENSIVE_2.get());
+        generateModels(ItemRegistry.EARTH_OFFENSIVE_4.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_1.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_2.get());
         generateModels(ItemRegistry.EARTH_DEFENSIVE_3.get());
@@ -65,6 +73,9 @@ public class SpellItemModelProvider extends ItemModelProvider {
         generateModels(ItemRegistry.ENDER_UTILITY_3.get());
 
         /* Electric */
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_1.get());
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_2.get());
+        generateModels(ItemRegistry.ELECTRIC_DEFENSIVE_3.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_2.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_3.get());
         generateModels(ItemRegistry.ELECTRIC_UTILITY_4.get());

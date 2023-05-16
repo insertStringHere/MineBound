@@ -7,6 +7,9 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -33,18 +36,15 @@ import java.util.List;
 public class NecroticOffensiveSpell extends ActiveSpellItem {
     public static DoubleValue FOOD_REDUCTION;
 
-    private final int manaCost;
-    private final double damageBoost;
-    private final double vampirePercent;
+    private final NecroticOffensiveSpellConfig config;
 
     public final static String ACTIVE_TAG = MineBound.MOD_ID + ".necrotic_offensive.active";
     public final static String TICK_TAG = MineBound.MOD_ID + ".necrotic_offensive.ticks";
 
     public NecroticOffensiveSpell(Properties properties, NecroticOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.NECROTIC, SpellType.OFFENSIVE);
-        manaCost = config.MANA_COST.get();
-        damageBoost = config.DMG_BOOST.get();
-        vampirePercent = config.HEALTH_AMT.get();
+
+        this.config = config;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
             if (ticks < 20)
                 ticks++;
             else {
-                reduceMana(manaCost, player);
+                reduceMana(config.MANA_COST.get(), player);
                 ticks = 0;
             }
             stack.getOrCreateTag().putInt(TICK_TAG, ticks);
@@ -83,14 +83,14 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
             for (ItemStack spell : spellStack) {
                 if (spell.getOrCreateTag().getBoolean(ACTIVE_TAG) && spell.getItem() instanceof NecroticOffensiveSpell spellItem) {
                     float amount = event.getAmount();
-                    amount += amount * spellItem.damageBoost;
+                    amount += amount * spellItem.config.DMG_BOOST.get();
                     event.setAmount(amount);
 
                     if (player.getHealth() < player.getMaxHealth())
-                        player.heal((float) (amount * spellItem.vampirePercent));
+                        player.heal((float) (amount * spellItem.config.HEALTH_AMT.get()));
                     else {
                         FoodData food = player.getFoodData();
-                        int recoveryAmt = (int) (amount * spellItem.vampirePercent * NecroticOffensiveSpell.FOOD_REDUCTION.get());
+                        int recoveryAmt = (int) (amount * spellItem.config.HEALTH_AMT.get() * NecroticOffensiveSpell.FOOD_REDUCTION.get());
                         recoveryAmt = recoveryAmt == 0 ? 1 : recoveryAmt;
 
                         if (food.getFoodLevel() < 20)
@@ -106,19 +106,16 @@ public class NecroticOffensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Increases damage by ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format("%.0f%%", damageBoost * 100)).withStyle(ChatFormatting.RED))
-                .append(" to all attacks performed by the user"));
-        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100)).withStyle(ChatFormatting.GOLD))
-                .append(" of damage dealt as health to user"));
-        pTooltipComponents.add(new TextComponent("  - If user health is full, restores ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(String.format("%.0f%%", vampirePercent * 100 * FOOD_REDUCTION.get())).withStyle(ChatFormatting.GOLD))
-                .append(" of damage dealt as hunger to user"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" per second of use"));
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Increases damage dealt by ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.percentage(config.DMG_BOOST.get())).withStyle(ColorUtil.Tooltip.damageColor)));
+        pTooltipComponents.add(new TextComponent("  - Restores ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.percentage(config.HEALTH_AMT.get())).withStyle(ChatFormatting.GOLD))
+                .append(" of damage dealt as health"));
+        pTooltipComponents.add(new TextComponent("  - If health is full, restores ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.percentage(config.HEALTH_AMT.get() * FOOD_REDUCTION.get())).withStyle(ChatFormatting.GOLD))
+                .append(" of damage dealt as hunger"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per second of use"));
     }
 
     public static class NecroticOffensiveSpellConfig implements IConfig {

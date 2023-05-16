@@ -1,27 +1,23 @@
 package com.mineboundteam.minebound.magic.UtilitySpells;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BiFunction;
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider.UtilityToggle;
+import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.config.IConfig;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.PassiveSpellItem;
 import com.mineboundteam.minebound.magic.SpellType;
-
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,15 +29,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.BiFunction;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class EarthUtilitySpell extends PassiveSpellItem {
@@ -71,7 +73,7 @@ public class EarthUtilitySpell extends PassiveSpellItem {
                     speedLevel += s.config.SPEED_LEVEL.get();
                 }
 
-                if(speedLevel > -1){
+                if (speedLevel > -1) {
                     int finalManaReduction = manaReduction;
                     player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> playerMana.setManaCapModifier("earth_utility", -finalManaReduction));
                     player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, speedLevel, false, false));
@@ -87,11 +89,11 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     protected static boolean doingSearch = false;
 
     static {
-        for(int i = -1; i <= 1; i++)
-            for(int j = -1; j <= 1; j++)
-                for(int k = -1; k <= 1; k++)
+        for (int i = -1; i <= 1; i++)
+            for (int j = -1; j <= 1; j++)
+                for (int k = -1; k <= 1; k++)
                     // stupid language
-                    if(!(i == 0 && i == j && j == k))
+                    if (!(i == 0 && i == j && j == k))
                         shifts.add(new Vec3(i, j, k));
     }
 
@@ -99,21 +101,21 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     // We want this to run first because it'll cancel and rerun for each selected block
     // we don't want a bunch of potential subscribe events to run for no reason on the initial break.
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onBreak(BlockEvent.BreakEvent event){
+    public static void onBreak(BlockEvent.BreakEvent event) {
         // While sending a blockbreak event from any other source, this should trigger.
         // But, since it breaks blocks too, there needs to be a check to prevent infinite recursion
-        if(!doingSearch && event.getPlayer() instanceof ServerPlayer player && !player.isCreative()){
+        if (!doingSearch && event.getPlayer() instanceof ServerPlayer player && !player.isCreative()) {
             // Check if the player even wants to be vein mining. If not, we can safely leave the method.
-            UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
-            if(toggle != null && !toggle.earth)
-                return;            
+            Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
+            if (toggle.isPresent() && !toggle.get().earth)
+                return;
 
             EarthUtilitySpell spell = getHighestSpellItem(EarthUtilitySpell.class, player);
-            Level level = player.level; 
+            Level level = player.level;
             BlockState block = event.getState();
 
             // If we're doing tag checking, make sure the block is vein-mineable 
-            if(spell == null || (USE_TAGS.get() && !block.getTags().anyMatch(t -> t.location().equals(VEIN_TAGS))))
+            if (spell == null || (USE_TAGS.get() && !block.getTags().anyMatch(t -> t.location().equals(VEIN_TAGS))))
                 return;
 
             // Simple breadth first search; could implement a quicker search using the block type as a heuristic
@@ -124,48 +126,48 @@ public class EarthUtilitySpell extends PassiveSpellItem {
             int minedBlocks = 0;
 
             BiFunction<BlockPos, Integer, Boolean> checkVals = (newPos, dist) -> {
-                for(BlockPosSearch val : open)
-                    if(val.loc.equals(newPos)) {
-                        if(val.notFoundDist > dist)
+                for (BlockPosSearch val : open)
+                    if (val.loc.equals(newPos)) {
+                        if (val.notFoundDist > dist)
                             val.notFoundDist = dist;
                         return true;
-                    }       
-                for(BlockPosSearch val : closed)
-                    if(val.loc.equals(newPos))
+                    }
+                for (BlockPosSearch val : closed)
+                    if (val.loc.equals(newPos))
                         return true;
-                
+
                 return false;
             };
 
             doingSearch = true;
-            while(!open.isEmpty() && minedBlocks <= spell.config.VEIN_EXTENT.get()) {
+            while (!open.isEmpty() && minedBlocks <= spell.config.VEIN_EXTENT.get()) {
                 BlockPosSearch current = open.removeFirst();
-                BlockState currBlock = level.getBlockState(current.loc); 
+                BlockState currBlock = level.getBlockState(current.loc);
 
-                if(currBlock.is(block.getBlock())) {
+                if (currBlock.is(block.getBlock())) {
                     // Post the block break event
                     BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, current.loc, currBlock, player);
                     MinecraftForge.EVENT_BUS.post(breakEvent);
 
                     // Handle if the event is canceled
-                    if (!breakEvent.isCanceled()){
+                    if (!breakEvent.isCanceled()) {
                         level.destroyBlock(current.loc, true);
                         minedBlocks++;
-                        current.notFoundDist = 0; 
+                        current.notFoundDist = 0;
                     }
                 }
-                
-                if(current.notFoundDist + 1 <= TOLERANCE.get())
-                    for(Vec3 shift : shifts){
+
+                if (current.notFoundDist + 1 <= TOLERANCE.get())
+                    for (Vec3 shift : shifts) {
                         BlockPos newPos = new BlockPos(new Vec3(current.loc.getX(), current.loc.getY(), current.loc.getZ()).add(shift));
 
-                        if(checkVals.apply(newPos, current.notFoundDist + 1))
+                        if (checkVals.apply(newPos, current.notFoundDist + 1))
                             continue;
-                        
+
 
                         open.addLast(new BlockPosSearch(newPos, current.notFoundDist + 1));
                     }
-                
+
                 closed.addLast(current);
             }
 
@@ -180,41 +182,33 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     @SuppressWarnings("resource")
     public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While equipped in a ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("utility slot").withStyle(ChatFormatting.DARK_PURPLE))
-                                       .append(":"));
         if (config.SPEED_LEVEL.get() > 0) {
-            pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Haste ")
-                                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + (config.SPEED_LEVEL.get() - 1))).withStyle(ChatFormatting.WHITE)));
+            pTooltipComponents.add(new TextComponent("  - Gives ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("Haste ").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED))
+                            .append(TooltipUtil.level(config.SPEED_LEVEL.get() - 1))));
         }
-        
-        pTooltipComponents.add(new TextComponent("  - Allows vein mining of up to ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.VEIN_EXTENT.get() + " blocks.").withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("Additional copies increase the level of ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("Haste").withStyle(ChatFormatting.WHITE))
-                                        .append(" effect"));
-        pTooltipComponents.add(new TextComponent("Reduces ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent("Manapool").withStyle(manaColorStyle))
-                                        .append(" by ").append(new TextComponent(config.MANA_REDUCTION.get() + "").withStyle(reductionColorStyle)));
-        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ChatFormatting.GRAY)
-                                        .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(manaColorStyle))); 
+
+        pTooltipComponents.add(TooltipUtil.enabledHeader);
+        pTooltipComponents.add(new TextComponent("    - Allows vein mining of up to ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.VEIN_EXTENT.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(new TextComponent("Additional copies increase the ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Haste").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.DIG_SPEED)))
+                .append(" effect level"));
+        pTooltipComponents.add(new TextComponent("Vein mining costs ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.MANA_COST.get() + " Mana").withStyle(ColorUtil.Tooltip.manaColorStyle)));
+        pTooltipComponents.add(TooltipUtil.manaReduction(config.MANA_REDUCTION.get()));
 
         LocalPlayer player = Minecraft.getInstance().player;
-        if(player != null) {
-            MutableComponent active = new TextComponent("Vein mining is currently ").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.BOLD);
-            UtilityToggle toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve().get();
-            if(toggle != null && toggle.earth)
-                pTooltipComponents.add(active.append(new TextComponent("ON").withStyle(ChatFormatting.GREEN)));
-            else
-                pTooltipComponents.add(active.append(new TextComponent("OFF").withStyle(ChatFormatting.RED)));
+        if (player != null) {
+            Optional<UtilityToggle> toggle = player.getCapability(PlayerUtilityToggleProvider.UTILITY_TOGGLE).resolve();
+            TooltipUtil.appendToggleTooltip(pTooltipComponents, ClientRegistry.EARTH_UTILITY_SPELL_TOGGLE, toggle.isPresent() && toggle.get().earth);
         }
     }
 
     public static class EarthUtilitySpellConfig implements IConfig {
 
         public IntValue MANA_REDUCTION;
-        public IntValue MANA_COST; 
+        public IntValue MANA_COST;
         public IntValue SPEED_LEVEL;
         public IntValue VEIN_EXTENT;
 
@@ -250,10 +244,10 @@ public class EarthUtilitySpell extends PassiveSpellItem {
     }
 
     protected static class BlockPosSearch {
-        BlockPos loc; 
+        BlockPos loc;
         int notFoundDist;
-        
-        public BlockPosSearch(BlockPos loc, int notFoundDist){
+
+        public BlockPosSearch(BlockPos loc, int notFoundDist) {
             this.loc = loc;
             this.notFoundDist = notFoundDist;
         }

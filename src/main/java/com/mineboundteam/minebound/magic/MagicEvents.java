@@ -1,9 +1,11 @@
 package com.mineboundteam.minebound.magic;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider.PlayerMana;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider;
+import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.PrimarySpellProvider.PrimarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SecondarySpellProvider.SecondarySelected;
 import com.mineboundteam.minebound.capabilities.PlayerUtilityToggleProvider;
@@ -18,6 +20,7 @@ import com.mineboundteam.minebound.config.registry.ArmorConfigRegistry;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
 import com.mineboundteam.minebound.magic.UtilitySpells.LightUtilitySpell;
+import com.mineboundteam.minebound.magic.events.MagicSelectedEvent;
 import com.mineboundteam.minebound.magic.helper.UseSpellHelper;
 import com.mineboundteam.minebound.magic.network.MagicAnimationSync;
 import com.mineboundteam.minebound.magic.network.MagicButtonSync;
@@ -29,9 +32,12 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -45,11 +51,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderArmEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -298,6 +306,49 @@ public class MagicEvents {
 
             CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ManaSync(mana.getMana(), totalMana, mana.getAvailableManaCap()));
         };
+    }
+
+    /**
+     * Whenever player changes armor or held item, post spell equip remove events
+     * @param event
+     */
+    @SubscribeEvent
+    public static void onArmorChanged(LivingEquipmentChangeEvent event){
+        if(event.getEntityLiving() instanceof ServerPlayer player){
+            if(event.getSlot().getType() == Type.HAND){
+                InteractionHand h = event.getSlot() == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+                
+                if(!event.getFrom().isEmpty() && event.getFrom().getItem() instanceof ActiveSpellItem)
+                    MinecraftForge.EVENT_BUS.post(new MagicSelectedEvent.Remove(player, event.getFrom(), new SelectedSpell(null, h, 0)));
+                if(!event.getTo().isEmpty() && event.getTo().getItem() instanceof ActiveSpellItem)
+                    MinecraftForge.EVENT_BUS.post(new MagicSelectedEvent.Select(player, event.getTo(), new SelectedSpell(null, h, 0)));
+            } else if(!event.getFrom().isEmpty() 
+                && event.getFrom().getItem() instanceof MyrialArmorItem 
+                && !event.getFrom().getOrCreateTagElement("minebound.spell").equals(event.getTo().getOrCreateTagElement("minebound.spell"))) {
+                SelectedSpell primary = player.getCapability(PlayerSelectedSpellsProvider.PRIMARY_SPELL).orElse(null);
+                SelectedSpell secondary = player.getCapability(PlayerSelectedSpellsProvider.SECONDARY_SPELL).orElse(null);
+
+                if(primary != null && event.getSlot() == primary.equippedSlot) {
+                    ListTag equippedSpells = ArmorNBTHelper.getSpellTag(event.getFrom(), ArmorNBTHelper.ACTIVE_SPELL);
+                    MagicSelectedEvent.Remove removeEvent = new MagicSelectedEvent.Remove(player, ItemStack.of(equippedSpells.getCompound(primary.index)), primary);
+                    
+                    MinecraftForge.EVENT_BUS.post(removeEvent);
+                    
+                    equippedSpells.set(primary.index, removeEvent.spell.serializeNBT());
+                    ArmorNBTHelper.saveSpellTag(event.getFrom(), ArmorNBTHelper.ACTIVE_SPELL, equippedSpells);
+                }
+                if(secondary != null && event.getSlot() == secondary.equippedSlot) {
+                    ListTag equippedSpells = ArmorNBTHelper.getSpellTag(event.getFrom(), ArmorNBTHelper.ACTIVE_SPELL);
+                    MagicSelectedEvent.Remove removeEvent = new MagicSelectedEvent.Remove(player, ItemStack.of(equippedSpells.getCompound(secondary.index)), secondary);
+                    
+                    MinecraftForge.EVENT_BUS.post(removeEvent);
+                    
+                    equippedSpells.set(secondary.index, removeEvent.spell.serializeNBT());
+                    ArmorNBTHelper.saveSpellTag(event.getFrom(), ArmorNBTHelper.ACTIVE_SPELL, equippedSpells);
+                }
+
+            }
+        }
     }
 
     private static final HashMap<ServerPlayer, CompoundTag> cacheData = new HashMap<>();

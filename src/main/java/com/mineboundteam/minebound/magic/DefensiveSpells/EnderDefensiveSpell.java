@@ -7,14 +7,15 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,22 +34,18 @@ import java.util.List;
 public class EnderDefensiveSpell extends ActiveSpellItem {
     public static final String ACTIVE_TAG = "minebound.ender_defensive.active";
 
-    private final int initialManaCost;
-    private final int manaCostPerHit;
-    private final int durationInTicks;
+    private final EnderDefensiveSpellConfig config;
 
     public EnderDefensiveSpell(Properties properties, EnderDefensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.DEFENSIVE);
 
-        this.initialManaCost = config.INITIAL_MANA_COST.get();
-        this.manaCostPerHit = config.MANA_COST_PER_HIT.get();
-        this.durationInTicks = config.DURATION_TICKS.get();
+        this.config = config;
     }
 
     @Override
     public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         stack.getOrCreateTag().putBoolean(ACTIVE_TAG, true);
-        reduceMana(initialManaCost, player);
+        reduceMana(config.INITIAL_MANA_COST.get(), player);
     }
 
     @Override
@@ -62,16 +59,13 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
 
     @SubscribeEvent
     public static void triggerSpell(LivingDamageEvent event) {
-        if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide() && event.getSource().getEntity() instanceof LivingEntity entity) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource().getEntity() instanceof LivingEntity entity) {
             boolean spellTriggered = triggerSpell(player, entity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL));
             if (!spellTriggered) {
                 spellTriggered = triggerSpell(player, entity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL));
             }
             if (!spellTriggered) {
-                spellTriggered = triggerSpell(player, entity, player.getItemBySlot(EquipmentSlot.MAINHAND));
-            }
-            if (!spellTriggered) {
-                triggerSpell(player, entity, player.getItemBySlot(EquipmentSlot.OFFHAND));
+                triggerSpell(player, entity, player.getUseItem());
             }
         }
     }
@@ -80,8 +74,8 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
         if (selectedSpell.getItem() instanceof EnderDefensiveSpell spell && selectedSpell.hasTag()) {
             boolean isActive = selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG);
             if (isActive) {
-                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.durationInTicks, 0, false, false));
-                reduceMana(spell.manaCostPerHit, player);
+                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, spell.config.DURATION_TICKS.get(), 0, false, false), player);
+                reduceMana(spell.config.MANA_COST_PER_HIT.get(), player);
                 return true;
             }
         }
@@ -91,17 +85,13 @@ public class EnderDefensiveSpell extends ActiveSpellItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent("levitate").withStyle(Style.EMPTY.withColor(MobEffects.LEVITATION.getColor())))
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - When hit by a mob, that mob will ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("levitate").withStyle(ColorUtil.Tooltip.effectColor(MobEffects.LEVITATION)))
                 .append(" for ")
-                .append(new TextComponent(durationInTicks / 20 + " seconds").withStyle(ChatFormatting.DARK_GREEN)));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(initialManaCost + " Mana").withStyle(manaColorStyle))
-                .append(" on initial cast").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCostPerHit + " Mana").withStyle(manaColorStyle))
-                .append(" each time the player is hit").withStyle(ChatFormatting.GRAY));
+                .append(new TextComponent(StringUtil.pluralize(config.DURATION_TICKS.get() / 20d, "second")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor)));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.INITIAL_MANA_COST.get(), " on initial cast"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST_PER_HIT.get(), " each time the player is hit"));
     }
 
     public static class EnderDefensiveSpellConfig implements IConfig {

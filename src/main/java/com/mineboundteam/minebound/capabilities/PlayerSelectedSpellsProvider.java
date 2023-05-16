@@ -51,7 +51,7 @@ public abstract class PlayerSelectedSpellsProvider implements ICapabilityProvide
         createSpell().loadNBTData(nbt);
     }
 
-    public static abstract class SelectedSpell{
+    public static class SelectedSpell{
         public EquipmentSlot equippedSlot;
         public InteractionHand usedHand;
         public int index = -1;

@@ -19,8 +19,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 @Mod(MineBound.MOD_ID)
 public class MineBound {
     public static final String MOD_ID = "minebound";
@@ -53,9 +51,6 @@ public class MineBound {
         }
     };
 
-    public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
-    public static final int REDUCTION_COLOR = 0xF6F116;
-
     public MineBound() {
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);
@@ -72,11 +67,5 @@ public class MineBound {
     private void commonSetup(final FMLCommonSetupEvent event) {
         CapabilitySync.registerPackets(event);
         MagicSync.registerPackets(event);
-    }
-
-
-    @SafeVarargs
-    public static <T> T randomlyChooseFrom(T... values) {
-        return values[new Random().nextInt(values.length)];
     }
 }

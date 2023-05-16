@@ -2,12 +2,12 @@ package com.mineboundteam.minebound.item.armor;
 
 import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.config.ArmorConfig;
-import com.mineboundteam.minebound.magic.SpellItem;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,12 +39,6 @@ import java.util.function.Consumer;
 public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
     private final ArmorConfig config;
     private final ArmorTier tier;
-    public static final ChatFormatting[] tierColors = new ChatFormatting[]{
-            ChatFormatting.YELLOW,
-            ChatFormatting.GOLD,
-            ChatFormatting.DARK_AQUA,
-            ChatFormatting.WHITE
-    };
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -62,22 +56,22 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("Tier ").withStyle(tierColors[tier.getValue()])
-                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + tier.getValue()).withStyle(tierColors[tier.getValue()])));
-        pTooltipComponents.add(new TextComponent("Manapool: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(SpellItem.manaColorStyle)));
+        pTooltipComponents.add(new TextComponent("Tier ").withStyle(ColorUtil.Tooltip.armorTierColors.get(tier))
+                .append(TooltipUtil.level(tier.getValue())));
+        pTooltipComponents.add(new TextComponent("Manapool: ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("+" + config.MANAPOOL.get()).withStyle(ColorUtil.Tooltip.manaColorStyle)));
         if (config.RECOVERY.get() > 0) {
-            pTooltipComponents.add(new TextComponent("Mana Recovery: ").withStyle(ChatFormatting.GRAY)
-                                           .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(SpellItem.manaColorStyle)));
+            pTooltipComponents.add(new TextComponent("Mana Recovery: ").withStyle(ColorUtil.Tooltip.defaultColor)
+                    .append(new TextComponent("+" + config.RECOVERY.get() + "/sec").withStyle(ColorUtil.Tooltip.manaColorStyle)));
         }
-        pTooltipComponents.add(new TextComponent("Active Magic slots: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.STORAGE_SLOTS.get() + "").withStyle(ChatFormatting.RED)));
-        pTooltipComponents.add(new TextComponent("Utility Magic slots: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(config.UTILITY_SLOTS.get() + "").withStyle(ChatFormatting.DARK_PURPLE)));
-        pTooltipComponents.add(new TextComponent("Energy: ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((config.ENERGY.get() - this.getDamage(pStack)) + "").withStyle(Style.EMPTY.withColor(pStack.getBarColor())))
-                                       .append(" / ")
-                                       .append(new TextComponent(config.ENERGY.get() + "").withStyle(ChatFormatting.GREEN)));
+        pTooltipComponents.add(new TextComponent("Active Magic slots: ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.STORAGE_SLOTS.get().toString()).withStyle(ChatFormatting.RED)));
+        pTooltipComponents.add(new TextComponent("Utility Magic slots: ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(config.UTILITY_SLOTS.get().toString()).withStyle(ColorUtil.Tooltip.utilityColor)));
+        pTooltipComponents.add(new TextComponent("Energy: ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(String.valueOf(config.ENERGY.get() - this.getDamage(pStack))).withStyle(Style.EMPTY.withColor(pStack.getBarColor())))
+                .append(" / ")
+                .append(new TextComponent(config.ENERGY.get().toString()).withStyle(ChatFormatting.GREEN)));
         // For spacing
         pTooltipComponents.add(new TextComponent(""));
     }
@@ -104,13 +98,13 @@ public class MyrialArmorItem extends GeoArmorItem implements IAnimatable {
 
     @Override
     public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
-        return false; 
+        return false;
     }
 
     @Override
     public boolean isEnchantable(ItemStack pStack) {
         return false;
-     }
+    }
 
     @Override
     public void registerControllers(AnimationData data) {
