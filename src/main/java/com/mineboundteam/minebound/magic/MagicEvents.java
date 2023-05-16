@@ -193,42 +193,47 @@ public class MagicEvents {
     protected static UUID healthReductionID = new UUID(237427279, 347509);
 
     protected static void handlePlayerArmor(Player player) {
-        var tier = new Object() {
-            ArmorTier max = null;
-        };
+        ArmorTier max = null;
 
         for (ItemStack item : player.getArmorSlots()) {
             if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem armorItem) {
-                boolean recovering = item.getOrCreateTag().getBoolean("recovery");
+                boolean recovering = item.getOrCreateTag().getBoolean(MyrialArmorItem.RECOVERY_TAG);
+                
+                // If armorItem is recovering, it won't contribute effects; it starts recovery at damage = 100%
                 if (armorItem.getDamage(item) >= armorItem.getMaxDamage(item))
                     recovering = true;
+                
+                // recovery stops at damage less than 25% (75% health remaining)
                 if (1.0d * armorItem.getDamage(item) / armorItem.getMaxDamage(item) <= 0.25d)
                     recovering = false;
 
-                if (tier.max == null || tier.max.getValue() < armorItem.getTier().getValue())
-                    tier.max = armorItem.getTier();
+                if (max == null || max.getValue() < armorItem.getTier().getValue())
+                    max = armorItem.getTier();
+                
 
                 int armorDamage = armorItem.getDamage(item);
-                if (armorDamage > 0) {
+                // Only recover roughly every quarter of a second
+                if (armorDamage > 0 && player.getRandom().nextInt(5) < 1) {
                     FoodData pFoodData = player.getFoodData();
-                    if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
-                        float f = Math.min(pFoodData.getSaturationLevel(), 6.0F);
-                        armorItem.setDamage(item, (int) (armorDamage - f / 6));
-                        pFoodData.addExhaustion(f / 16.0f);
-                    } else if (pFoodData.getFoodLevel() >= 16) {
-                        armorItem.setDamage(item, armorDamage - 1);
-                        pFoodData.addExhaustion(0.125f);
+                    if (pFoodData.getFoodLevel() >= 16) {
+                        if (pFoodData.getSaturationLevel() > 0 && pFoodData.getFoodLevel() >= 20) {
+                            armorItem.setDamage(item, (int) (armorDamage - pFoodData.getSaturationLevel()));
+                        } else {
+                            armorItem.setDamage(item, armorDamage - 1);
+                        }
+                        
+                        pFoodData.addExhaustion(0.25f);
                     }
-
+                    
                     if (armorItem.getDamage(item) < 0)
                         armorItem.setDamage(item, 0);
                 }
 
-                item.getOrCreateTag().putBoolean("recovering", recovering);
+                item.getOrCreateTag().putBoolean(MyrialArmorItem.RECOVERY_TAG, recovering);
             }
         }
 
-        int healthReduction = tier.max == null ? 0 : (tier.max.getValue() + 1) * -2;
+        int healthReduction = max == null ? 0 : (max.getValue() + 1) * -2;
         AttributeInstance healthAttribute = player.getAttribute(Attributes.MAX_HEALTH);
 
 
@@ -248,12 +253,10 @@ public class MagicEvents {
 
     protected static NonNullConsumer<PlayerMana> handlePlayerMana(Player player) {
         return mana -> {
-            int manaBoost = 0;
             int totalMana = mana.getBaseManaCap();
             int recBoost = 0;
 
             boolean totalArmorSet = true;
-            boolean availableArmorSet = true;
             ArmorTier tier = null;
             List<ItemStack> mArmors = new ArrayList<>();
 
@@ -266,12 +269,9 @@ public class MagicEvents {
                     ArmorConfig config = ((MyrialArmorItem) armorItem).getConfig();
                     totalMana += config.MANAPOOL.get();
 
-                    if (!armorStack.getOrCreateTag().getBoolean("recovery")) {
+                    if (!armorStack.getOrCreateTag().getBoolean(MyrialArmorItem.RECOVERY_TAG)) {
                         mArmors.add(player.getItemBySlot(slot));
-                        manaBoost += config.MANAPOOL.get();
                         recBoost += config.RECOVERY.get();
-                    } else {
-                        availableArmorSet = false;
                     }
 
                     if (tier == null)
@@ -279,30 +279,28 @@ public class MagicEvents {
                     if (tier == ((MyrialArmorItem) armorItem).getTier())
                         continue;
                 }
-                availableArmorSet = false;
                 totalArmorSet = false;
             }
 
-            if (totalArmorSet) {
+            if (totalArmorSet && mArmors.size() == 4) {
                 ArmorConfig setConfig = ArmorConfigRegistry.SET_BONUS_MAP.get(tier);
                 totalMana += setConfig.MANAPOOL.get();
-                if (availableArmorSet) {
-                    manaBoost += setConfig.MANAPOOL.get();
-                    recBoost += setConfig.RECOVERY.get();
-                }
+                recBoost += setConfig.RECOVERY.get();
             }
 
+
+
+            mana.setTotalManaCap(totalMana);
+            mana.addMana(mana.getManaRecRate() + recBoost); 
+            
             // if mana is recovered, calculate charge drained from armor durability
-            if (mana.getBaseManaCap() + manaBoost > mana.getMana()) {
+            if (mana.getAvailableManaCap() > mana.getMana()) {
                 for (ItemStack stack : mArmors) {
                     if (player.getRandom().nextInt(3) == 0 && stack.getDamageValue() < stack.getMaxDamage()) {
                         stack.setDamageValue(stack.getDamageValue() + 1);
                     }
                 }
             }
-
-            mana.setTotalManaCap(totalMana);
-            mana.addMana(mana.getManaRecRate() + recBoost);
 
             CapabilitySync.NET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ManaSync(mana.getMana(), totalMana, mana.getAvailableManaCap()));
         };
@@ -360,6 +358,7 @@ public class MagicEvents {
             for (ItemStack item : player.getArmorSlots()) {
                 if (!item.isEmpty() && item.getItem() instanceof MyrialArmorItem) {
                     CompoundTag armorItem = new CompoundTag();
+                    item.setDamageValue(0);
                     item.save(armorItem);
                     armorTag.put(Player.getEquipmentSlotForItem(item).getName(), armorItem);
                     item.shrink(1);

@@ -39,7 +39,7 @@
             }
         },
         {
-            "weight": 2,
+            "weight": 3,
             "element":{
                 "location": "minebound:base/big_crossway",
                 "processors": [
@@ -57,7 +57,7 @@
             }
         },
         {
-            "weight": 2,
+            "weight": 4,
             "element":{
                 "location": "minebound:base/small_crossway",
                 "processors": [
