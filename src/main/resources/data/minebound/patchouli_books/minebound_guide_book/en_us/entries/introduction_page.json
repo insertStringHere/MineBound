@@ -17,7 +17,7 @@
       },
       {
         "type": "patchouli:text",
-        "text": "To begin the mod, search for $(l:minebound:structures/crashed_ship)crashed ship$() structures in mountains or $(l:minebound:structures/ruined_base)ruined base$() structrues underground in the overworld or the nether. Finding and breaking $(l:minebound:myri/myri_corpses)my'ri corpses$() within, you'll be able to start crafting armor and spells."
+        "text": "To begin the mod, search for $(l:minebound:structures/crashed_ship)crashed ship$() structures in mountains or $(l:minebound:structures/ruined_base)ruined base$() structrues underground in the overworld or the nether. Finding and breaking $(l:minebound:myri/myri_corpse)my'ri corpses$() within, you'll be able to start crafting armor and spells."
       }
     ]
   }
