@@ -1,0 +1,40 @@
+{
+    "name": "Gilded Diamond Ingot",
+    "icon": "minebound:gilded_diamond_ingot",
+    "category": "minebound:alloys",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)A peculiar alloy you actually got the idea for from the my'ri. By carefully melding molten gold into diamond, using redstone as a stablizer, you create a stable ingot with the efficiency of gold yet the strength of diamond. In addition, the energy conduction of redstone is only amplified by the gold, providing a technological breakthrough!"
+        }, 
+        {
+            "type": "patchouli:text",
+            "text": "Craft in an $(l:minebound:blocks/alloy_furnace)alloy furnace$() by smelting diamond, gold ingots, and redstone dust"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_block",
+            "recipe2": "minebound:gilded_diamond_pickaxe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_sword",
+            "recipe2": "minebound:gilded_diamond_axe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_hoe",
+            "recipe2": "minebound:gilded_diamond_shovel"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_helmet",
+            "recipe2": "minebound:gilded_diamond_chestplate"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_leggings",
+            "recipe2": "minebound:gilded_diamond_boots"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Myrial Steel Ingot",
+    "icon": "minebound:myrial_steel_ingot",
+    "category": "minebound:items",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)Unsurprisingly, the my'ri found a metal as capable as conducting their powers as they are. The issue is that it's extremely durable, requiring something more powerful than diamond to extract. While netherite is a chore to find, at least myrial steel is plentiful.$()$(br2)Found as blocks in $(l:minebound:structures/crashed_ship)crashed ships$() and $(l:minebound:structures/ruined_base)ruined bases.$() Requires netherite to mine."
+        }, 
+        {
+            "type": "patchouli:crafting",
+            "recipe": "myrial_steel_block"
+        }
+    ]
+}
