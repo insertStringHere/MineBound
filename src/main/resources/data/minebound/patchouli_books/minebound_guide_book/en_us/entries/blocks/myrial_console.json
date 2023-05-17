@@ -1,0 +1,16 @@
+{
+    "name": "Myrial Console",
+    "icon": "minebound:myrial_console",
+    "category": "minebound:items",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)A computer console used by the my'ri to store data and calculate...something. You don't really care about their algorithms and schematics, you're far more interested in the specifics of their ability, and the pieces of this console might help in that endeavor."
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:myrial_console",
+            "text": "Found in $(l:minebound:structures/crashed_ship)crashed ships$() and $(l:minebound:structures/ruined_base)ruined bases.$() Requires netherite to mine."
+        }
+    ]
+}

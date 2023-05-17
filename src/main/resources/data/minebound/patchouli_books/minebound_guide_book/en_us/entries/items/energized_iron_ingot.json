@@ -1,0 +1,40 @@
+{
+    "name": "Energized Iron Ingot",
+    "icon": "minebound:energized_iron_ingot",
+    "category": "minebound:alloys",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)Thanks to the $(l:minebound:blocks/alloy_furnace)alloy furnace$()$(o), you can now smelt the energy-conductive properties of redstone into a durable metal like iron! You have big plans for this simple alloy, but find that you can also just use it for normal tools, all the properties more capable than plain iron."
+        }, 
+        {
+            "type": "patchouli:text",
+            "text": "Craft in an $(l:minebound:blocks/alloy_furnace)alloy furnace$() by smelting an iron ingot with redstone dust."
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:energized_iron_block",
+            "recipe2": "minebound:energized_iron_pickaxe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:energized_iron_sword",
+            "recipe2": "minebound:energized_iron_axe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:energized_iron_hoe",
+            "recipe2": "minebound:energized_iron_shovel"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:energized_iron_helmet",
+            "recipe2": "minebound:energized_iron_chestplate"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:energized_iron_leggings",
+            "recipe2": "minebound:energized_iron_boots"
+        }
+    ]
+}
