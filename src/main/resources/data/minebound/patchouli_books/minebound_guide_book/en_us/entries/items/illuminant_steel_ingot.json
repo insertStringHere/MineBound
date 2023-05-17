@@ -1,0 +1,40 @@
+{
+    "name": "Illuminant Steel Ingot",
+    "icon": "minebound:illuminant_steel_ingot",
+    "category": "minebound:alloys",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)Steel is iron on coke, and thanks to the innately magical properties of the nether's very own light source, alloying coal and glowstone with energized iron results in an even stronger metal with better energy conduction!"
+        }, 
+        {
+            "type": "patchouli:text",
+            "text": "Craft in an $(l:minebound:blocks/alloy_furnace)alloy furnace$() by smelting an $(l:minebound:items/energized_iron) with coal and glowstone dust."
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:illuminant_steel_block",
+            "recipe2": "minebound:illuminant_steel_pickaxe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:illuminant_steel_sword",
+            "recipe2": "minebound:illuminant_steel_axe"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:illuminant_steel_hoe",
+            "recipe2": "minebound:illuminant_steel_shovel"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:illuminant_steel_helmet",
+            "recipe2": "minebound:illuminant_steel_chestplate"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:illuminant_steel_leggings",
+            "recipe2": "minebound:illuminant_steel_boots"
+        }
+    ]
+}

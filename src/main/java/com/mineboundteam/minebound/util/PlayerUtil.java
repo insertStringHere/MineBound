@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.Vec3;
 
 public class PlayerUtil {
-    private static final Class[] validDisappearingItemMenus = new Class[]{
+    private static final Class<?>[] validDisappearingItemMenus = new Class[]{
             InventoryMenu.class,
             SelectSpellMenu.class,
             CreativeModeInventoryScreen.ItemPickerMenu.class,
@@ -39,7 +39,7 @@ public class PlayerUtil {
     }
 
     public static boolean isValidDisappearingItemMenu(AbstractContainerMenu menu) {
-        for (Class validMenu : validDisappearingItemMenus) {
+        for (Class<?> validMenu : validDisappearingItemMenus) {
             if (validMenu.isInstance(menu)) {
                 return true;
             }

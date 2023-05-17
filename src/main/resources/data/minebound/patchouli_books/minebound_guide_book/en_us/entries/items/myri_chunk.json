@@ -1,0 +1,11 @@
+{
+    "name": "Chunk of My'ri",
+    "icon": "minebound:myri_chunk",
+    "category": "minebound:items",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)A chunk of muscular flesh from a my'ri. Despite being removed, it still feels warm in your hand. You're sure you can use this somehow, perhaps incorperating it into armor could be...advantagous.$()$(br2)Dropped from $(l:minebound:myri/myri_corpse)myri corpses."
+        }
+    ]
+}
