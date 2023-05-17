@@ -9,7 +9,7 @@
         }, 
         {
             "type": "patchouli:text",
-            "text": "Craft in an $(l:minebound:blocks/alloy_furnace)alloy furnace$() by smelting an $(l:minebound:items/energized_iron) with coal and glowstone dust."
+            "text": "Craft in an $(l:minebound:blocks/alloy_furnace)alloy furnace$() by smelting an $(l:minebound:items/energized_iron_ingot)energized iron ingot$() with coal and glowstone dust."
         },
         {
             "type": "patchouli:crafting",

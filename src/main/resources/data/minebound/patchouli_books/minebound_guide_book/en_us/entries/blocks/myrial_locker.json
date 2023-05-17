@@ -1,16 +1,16 @@
 {
-    "name": "Myrial Console",
-    "icon": "minebound:myrial_console",
+    "name": "Myrial Locker",
+    "icon": "minebound:myrial_locker",
     "category": "minebound:items",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "$(o)A computer console used by the my'ri to store data and calculate...something. You don't really care about their algorithms and schematics, you're far more interested in the specifics of their ability, and the pieces of this console might help in that endeavor."
+            "text": "$(o)These simple storage units secure resources for the my'ri. Being made of $(l:minebound:items/myrial_steel_ingot)myrial steel$()$(o), they're pretty blast resistant. A good place to cache your goods. Unfortunately, for a locker, they don't seem to lock too well..."
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minebound:myrial_console",
-            "text": "Found in $(l:minebound:structures/crashed_ship)crashed ships$() and $(l:minebound:structures/ruined_base)ruined bases.$() Requires netherite to mine."
+            "text": "Found in $(l:minebound:structures/crashed_ship)crashed ships$() and $(l:minebound:structures/ruined_base)ruined bases.$() Requires netherite to mine. Drops various vanilla ores when broken."
         }
     ]
 }

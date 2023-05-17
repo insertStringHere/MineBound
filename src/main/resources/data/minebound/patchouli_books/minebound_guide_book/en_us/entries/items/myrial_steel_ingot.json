@@ -9,7 +9,7 @@
         }, 
         {
             "type": "patchouli:crafting",
-            "recipe": "myrial_steel_block"
+            "recipe": "minebound:myrial_steel_block"
         }
     ]
 }

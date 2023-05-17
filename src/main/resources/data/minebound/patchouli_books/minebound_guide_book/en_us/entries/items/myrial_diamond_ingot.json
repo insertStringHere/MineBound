@@ -5,7 +5,7 @@
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "$(o)Fusing diamond with the $(l:minebound:myrial_steel_ingot)myrial miracle metal$()$(o) results in an alloy on the same level as netherite...who would have guessed? That said, thanks to the presence of myrial steel, these bars are far more suited for conducting mana than netherite, making them the perfect final step for your $(l:minebound:magic/myrial_armors)quest$()$(o) to make yourself as powerful as a myri."
+            "text": "$(o)Fusing diamond with the $(l:minebound:items/myrial_steel_ingot)myrial miracle metal$()$(o) results in an alloy on the same level as netherite...who would have guessed? That said, thanks to the presence of myrial steel, these bars are far more suited for conducting mana than netherite, making them the perfect final step for your $(l:minebound:magic/myrial_armors)quest$()$(o) to make yourself as powerful as a myri."
         }, 
         {
             "type": "patchouli:text",
