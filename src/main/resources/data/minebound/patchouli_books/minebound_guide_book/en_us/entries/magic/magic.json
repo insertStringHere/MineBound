@@ -1,15 +1,15 @@
 {
   "name": "Magic of the My'ri",
   "icon": "minebound:myrial_machete",
-  "category": "minebound:magic",
+  "category": "minebound:introduction",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(o)According to your research, the My'ri have mastery of 8 Bases of Magic: Earth, Electric, Ender, Fire, Light, Necrotic, Shield, Telekinetic. Each Base can be mastered and harnessed by you, providing new capabilities of three types. These capabilities are: Attack, Defense, and Utility."
+      "text": "They My'ri have mastery of 8 Bases of Magic: Earth, Electric, Ender, Fire, Light, Necrotic, Shield, Telekinetic. Each Base can be mastered and harnessed by you, providing new capabilities of three types. These capabilities are: Attack, Defense, and Utility."
     },
     {
       "type": "patchouli:text",
-      "text": "$(o)Given the My'ri's natural abilties, they can easily harness the power of their magic spells. However, for you to completely harness all possible abilities you'll need to craft unqiue armors based on the physiology of the My'ri. These armors will allow you to harness the power of the My'ri"
+      "text": "Given the My'ri's natural abilties, they can easily harness the power of their magic spells. However, for you to completely harness all possible abilities you'll need to craft unqiue armors based on the physiology of the My'ri. These armors will allow you to harness the power of the My'ri"
     }
   ]
 }
