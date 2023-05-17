@@ -7,12 +7,16 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -31,122 +35,99 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MineBound.MOD_ID)
 public class ShieldOffensiveSpell extends ActiveSpellItem {
+    public static final String ACTIVE_TAG = "minebound.shield_offensive.active";
 
-    private final int manaCost;
-    private final double damageReduction;
-    private final double damageReflected;
+    private final ShieldOffensiveSpellConfig config;
 
     public ShieldOffensiveSpell(Properties properties, ShieldOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.SHIELD, SpellType.OFFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
-        this.damageReduction = config.DMG_REDUCTION.get();
-        this.damageReflected = config.DMG_REFLECTED.get();
-    }
-
-
-    @Override
-    public void use(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide()) {
-            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", true);
-        }
+        this.config = config;
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
+        stack.getOrCreateTag().putBoolean(ACTIVE_TAG, true);
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide()) {
-            stack.getOrCreateTag().putBoolean("minebound.shield_offensive.active", false);
-        }
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
+        stack.getOrCreateTag().putBoolean(ACTIVE_TAG, false);
     }
 
     @SubscribeEvent
     public static void triggerSpell(LivingAttackEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
+            if (event.getSource().getEntity() instanceof LivingEntity sourceEntity) {
                 boolean spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
                 if (!spellTriggered) {
                     spellTriggered = triggerLivingAttackEvent(player, sourceEntity, getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.MAIN_HAND), event);
-                }
-                if (!spellTriggered) {
-                    triggerLivingAttackEvent(player, sourceEntity, player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingAttackEvent(player, sourceEntity, player.getUseItem(), event);
                 }
             }
         }
     }
 
-    protected static boolean triggerLivingAttackEvent(Player player, Entity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
-        boolean spellTriggered = false;
-        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
-            if (isActive) {
+    protected static boolean triggerLivingAttackEvent(Player player, LivingEntity sourceEntity, ItemStack selectedSpell, LivingAttackEvent event) {
+        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) == 0) {
+                if ((1 - spell.config.DMG_REDUCTION.get()) == 0) {
                     event.setCanceled(true);
                 }
-                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.damageReflected));
-                reduceMana(spell.manaCost, player);
-                spellTriggered = true;
+                sourceEntity.hurt(DamageSource.thorns(player), (float) (dmgAmount * spell.config.DMG_REFLECTED.get()));
+                reduceMana(spell.config.MANA_COST.get(), player);
+                return true;
             }
         }
-        return spellTriggered;
+        return false;
     }
 
     @SubscribeEvent
     public static void triggerSpell(LivingHurtEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getEntityLiving() instanceof Player player) {
-            Entity sourceEntity = event.getSource().getEntity();
-            if (sourceEntity != null) {
+        if (event.getEntityLiving() instanceof ServerPlayer player && event.getSource() != DamageSource.STARVE && !event.getSource().isBypassInvul()) {
+            if (event.getSource().getEntity() instanceof LivingEntity) {
                 boolean spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.PRIMARY_SPELL), event);
                 if (!spellTriggered) {
                     spellTriggered = triggerLivingHurtEvent(getSelectedSpell(player, PlayerSelectedSpellsProvider.SECONDARY_SPELL), event);
                 }
                 if (!spellTriggered) {
-                    spellTriggered = triggerLivingHurtEvent(player.getItemInHand(InteractionHand.MAIN_HAND), event);
-                }
-                if (!spellTriggered) {
-                    triggerLivingHurtEvent(player.getItemInHand(InteractionHand.OFF_HAND), event);
+                    triggerLivingHurtEvent(player.getUseItem(), event);
                 }
             }
         }
     }
 
     protected static boolean triggerLivingHurtEvent(ItemStack selectedSpell, LivingHurtEvent event) {
-        boolean spellTriggered = false;
-        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell && selectedSpell.hasTag()) {
-            boolean isActive = selectedSpell.getOrCreateTag().getBoolean("minebound.shield_offensive.active");
-            if (isActive) {
+        if (selectedSpell.getItem() instanceof ShieldOffensiveSpell spell) {
+            if (selectedSpell.getOrCreateTag().getBoolean(ACTIVE_TAG)) {
                 float dmgAmount = event.getAmount();
-                if ((1 - spell.damageReduction) != 0) {
-                    event.setAmount((float) (dmgAmount * (1 - spell.damageReduction)));
+                if ((1 - spell.config.DMG_REDUCTION.get()) != 0) {
+                    event.setAmount((float) (dmgAmount * (1 - spell.config.DMG_REDUCTION.get())));
                 }
-                spellTriggered = true;
+                return true;
                 // LivingAttackEvent will fall through to LivingHurtEvent if not canceled, thus no need to thorns and reduce mana here
             }
         }
-        return spellTriggered;
+        return false;
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("While active:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (damageReduction * 100) + "%").withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent((int) (damageReflected * 100) + "%").withStyle(ChatFormatting.RED))
-                                       .append(" of the initial damage").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                                       .append(" per reflect").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("Spell is active while key bind is held").withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(new TextComponent("While active:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Reduces damage taken from mobs by ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.percentage(config.DMG_REDUCTION.get())).withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(new TextComponent("  - Reflects ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.percentage(config.DMG_REFLECTED.get())).withStyle(ColorUtil.Tooltip.damageColor))
+                .append(" of the initial damage"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per reflect"));
     }
 
     public static class ShieldOffensiveSpellConfig implements IConfig {

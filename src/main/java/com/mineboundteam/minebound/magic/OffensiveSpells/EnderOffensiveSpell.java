@@ -5,10 +5,15 @@ import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
 import com.mineboundteam.minebound.magic.MagicType;
 import com.mineboundteam.minebound.magic.SpellType;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.StringUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -21,50 +26,47 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class EnderOffensiveSpell extends ActiveSpellItem {
-    private final int manaCost;
-    private final int teleportDistance;
+    private final EnderOffensiveSpellConfig config;
 
     public EnderOffensiveSpell(Properties properties, EnderOffensiveSpellConfig config) {
         super(properties, config.LEVEL, MagicType.ENDER, SpellType.OFFENSIVE);
 
-        this.manaCost = config.MANA_COST.get();
-        this.teleportDistance = config.TP_DISTANCE.get();
+        this.config = config;
     }
 
     @Override
-    public void use(ItemStack stack, Level level, Player player) {
+    public void use(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
         if (!level.isClientSide()) {
-            BlockHitResult result = (BlockHitResult) player.pick(teleportDistance, 1f, false);
+            BlockHitResult result = (BlockHitResult) player.pick(config.TP_DISTANCE.get(), 1f, false);
             BlockPos pos = result.getBlockPos().relative(result.getDirection());
-            double dX = Math.abs(player.getX() - pos.getX() - 0.5);
+            double dX = Math.abs(player.getX() - pos.getX()) + 0.5;
             double dY = Math.abs(player.getY() - pos.getY());
-            double dZ = Math.abs(player.getZ() - pos.getZ() - 0.5);
+            double dZ = Math.abs(player.getZ() - pos.getZ()) + 0.5;
             // Only execute if player would move > 1 block
-            if (Math.floor(dX + dY + dZ) > 0) {
+            if (Math.floor(dX + dY + dZ) > 1) {
                 player.teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                reduceMana(manaCost, player);
+                level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
+                reduceMana(config.MANA_COST.get(), player);
             }
         }
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, Level level, Player player) {
+    public void onUsingTick(ItemStack stack, InteractionHand usedHand, Level level, Player player, int tickCount) {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, Player player) {
+    public void releaseUsing(ItemStack stack, InteractionHand usedHand, Level level, Player player) {
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(teleportDistance + " blocks").withStyle(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(new TextComponent("When activated:").withStyle(ColorUtil.Tooltip.defaultColor));
+        pTooltipComponents.add(new TextComponent("  - Teleports the player up to ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent(StringUtil.pluralize(config.TP_DISTANCE.get(), "block")).withStyle(ColorUtil.Tooltip.timeAndDistanceColor))
                 .append(" in the direction they are looking"));
-        pTooltipComponents.add(new TextComponent("Costs ").withStyle(ChatFormatting.GRAY)
-                .append(new TextComponent(manaCost + " Mana").withStyle(manaColorStyle))
-                .append(" per teleport"));
+        pTooltipComponents.add(TooltipUtil.manaCost(config.MANA_COST.get(), " per teleport"));
     }
 
     public static class EnderOffensiveSpellConfig implements IConfig {

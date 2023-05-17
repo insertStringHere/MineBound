@@ -1,0 +1,78 @@
+{
+    "name": "minebound:base/corridor",
+    "fallback" :"minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element":{
+                "location": "minebound:base/locker",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/wall",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.8
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element":{
+                "location": "minebound:base/balcony",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        },
+        {
+            "weight": 4,
+            "element":{
+                "location": "minebound:base/hall",
+                "processors": [
+                    {
+                        "processor_type": "minecraft:block_rot",
+                        "integrity": 0.7
+                    },
+                    {
+                        "processor_type": "minecraft:block_age",
+                        "mossiness": 0.25
+                    }
+                ],
+                "element_type":"single_pool_element",
+                "projection":"rigid"
+            }
+        }
+    ]
+}

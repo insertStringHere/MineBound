@@ -1,14 +1,12 @@
 package com.mineboundteam.minebound.magic;
 
-import com.mineboundteam.minebound.MineBound;
 import com.mineboundteam.minebound.capabilities.PlayerManaProvider;
 import com.mineboundteam.minebound.item.armor.ArmorTier;
 import com.mineboundteam.minebound.item.armor.MyrialArmorItem;
-import net.minecraft.ChatFormatting;
+import com.mineboundteam.minebound.util.ColorUtil;
+import com.mineboundteam.minebound.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -21,7 +19,6 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class SpellItem extends Item {
-    public static final Style manaColorStyle = Style.EMPTY.withColor(MineBound.MANA_COLOR);
     public final ArmorTier level;
     public final MagicType magicType;
     public final SpellType spellType;
@@ -42,8 +39,8 @@ public abstract class SpellItem extends Item {
                 // Reduce player's armor charge directly
                 if (underflow > 0) {
                     List<ItemStack> armors = StreamSupport.stream(p.getArmorSlots().spliterator(), false)
-                                                     .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
-                                                     .toList();
+                            .filter(slot -> slot.getItem() instanceof MyrialArmorItem)
+                            .toList();
 
                     if (armors.size() != 0) {
                         int amnt = underflow / armors.size();
@@ -63,16 +60,16 @@ public abstract class SpellItem extends Item {
 
                 // Reduce player health.
                 if (underflow > 0) {
-                    p.hurt(DamageSource.MAGIC, underflow / 3f);
+                    p.hurt(DamageSource.STARVE, underflow / 3f);
                 }
             });
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ChatFormatting.GRAY)
-                                       .append(new TextComponent("Tier ").withStyle(MyrialArmorItem.tierColors[level.getValue()]))
-                                       .append(new TranslatableComponent("tooltip." + MineBound.MOD_ID + ".level." + level.getValue()).withStyle(MyrialArmorItem.tierColors[level.getValue()]))
-                                       .append(" or higher armor"));
+        pTooltipComponents.add(new TextComponent("Can be equipped in ").withStyle(ColorUtil.Tooltip.defaultColor)
+                .append(new TextComponent("Tier ").withStyle(ColorUtil.Tooltip.armorTierColors.get(level))
+                        .append(TooltipUtil.level(level.getValue())))
+                .append(" or higher armor"));
     }
 }

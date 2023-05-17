@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "CEC",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minebound:illuminant_steel_ingot"
+    },
+    "E": {
+      "item": "minebound:magic_ender_d1"
+    },
+    "C": {
+      "item": "minecraft:chorus_fruit"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_ender_d3"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EME"
+  ],
+  "key": {
+    "M": {
+      "item": "minebound:myri_manasac"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_ender_d1"
+  }
+}

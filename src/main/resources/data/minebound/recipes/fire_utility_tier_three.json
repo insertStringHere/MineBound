@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "SFS",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minebound:illuminant_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:soul_torch"
+    },
+    "F": {
+      "item": "minebound:magic_fire_u2"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_fire_u3"
+  }
+}

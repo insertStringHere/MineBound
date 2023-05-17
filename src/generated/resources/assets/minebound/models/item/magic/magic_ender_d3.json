@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minebound:magic/ender/defensive",
+    "layer1": "minebound:magic/level3"
+  }
+}

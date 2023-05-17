@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "WMW",
+    "SGS"
+  ],
+  "key": {
+    "G": {
+      "item": "minebound:gilded_diamond_ingot"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    },
+    "M": {
+      "item": "minebound:magic_necrotic_o2"
+    },
+    "W": {
+      "item": "minecraft:wither_skeleton_skull"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_necrotic_o3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "CMC",
+    " G "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_block"
+    },
+    "M": {
+      "item": "minebound:magic_electric_d1"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_electric_d2"
+  }
+}

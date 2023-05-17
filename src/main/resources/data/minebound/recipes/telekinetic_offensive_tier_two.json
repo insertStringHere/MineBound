@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "DTD",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "D": {
+      "item": "minecraft:diamond_sword"
+    },
+    "T": {
+      "item": "minebound:magic_telekinetic_o1"
+    }
+  },
+  "result": {
+    "item": "minebound:magic_telekinetic_o2"
+  }
+}

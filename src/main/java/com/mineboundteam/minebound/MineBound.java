@@ -5,7 +5,6 @@ import com.mineboundteam.minebound.client.registry.ClientRegistry;
 import com.mineboundteam.minebound.entity.registry.EntityRegistry;
 import com.mineboundteam.minebound.item.registry.ItemRegistry;
 import com.mineboundteam.minebound.magic.network.MagicSync;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,14 +30,14 @@ public class MineBound {
         }
 
         @Override
-        public void fillItemList(NonNullList<ItemStack> list){
+        public void fillItemList(NonNullList<ItemStack> list) {
             super.fillItemList(list);
             list.sort((curr, next) -> {
-                if(curr.getItem() instanceof BlockItem && next.getItem() instanceof BlockItem)
+                if (curr.getItem() instanceof BlockItem && next.getItem() instanceof BlockItem)
                     return 0;
-                if(curr.getItem() instanceof BlockItem)
+                if (curr.getItem() instanceof BlockItem)
                     return -1;
-                if(next.getItem() instanceof BlockItem)
+                if (next.getItem() instanceof BlockItem)
                     return 1;
                 return 0;
             });
@@ -52,9 +51,7 @@ public class MineBound {
         }
     };
 
-    public static final int MANA_COLOR = (77 << 16) + (106 << 8) + (255);
-
-    public MineBound(){
+    public MineBound() {
         IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registry.RegisterMod(iEventBus);
         iEventBus.addListener(this::clientSetup);
@@ -67,7 +64,7 @@ public class MineBound {
         ClientRegistry.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event){
+    private void commonSetup(final FMLCommonSetupEvent event) {
         CapabilitySync.registerPackets(event);
         MagicSync.registerPackets(event);
     }

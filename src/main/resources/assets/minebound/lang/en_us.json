@@ -36,6 +36,8 @@
   "item.minebound.myrial_diamond_sword": "Myrial Diamond Sword",
 
   "item.minebound.myrial_machete": "Myrial Machete",
+  "item.minebound.myrial_sword": "Myrial Sword",
+  "item.minebound.myrial_sword_placeholder": "Myrial Sword",
 
   "item.minebound.myrial_effigy_helmet": "Myrial Effigy Headdress",
   "item.minebound.myrial_effigy_chestplate": "Myrial Effigy Chestpiece",
@@ -71,12 +73,36 @@
   "item.minebound.myrial_diamond_leggings": "Myrial Diamond Leggings",
   "item.minebound.myrial_diamond_boots": "Myrial Diamond Boots",
 
+  "item.minebound.magic_fire_o1": "Fire Offensive I",
+  "item.minebound.magic_fire_o2": "Fire Offensive II",
+  "item.minebound.magic_fire_o4": "Fire Offensive IV",
+  "item.minebound.magic_fire_d1": "Fire Defensive I",
+  "item.minebound.magic_fire_u2": "Fire Utility II",
+  "item.minebound.magic_fire_u3": "Fire Utility III",
+  "item.minebound.magic_fire_u4": "Fire Utility IV",
+
+  "item.minebound.magic.magic_fire_o1": "Fire Offensive I",
+  "item.minebound.magic.magic_fire_o2": "Fire Offensive II",
+  "item.minebound.magic.magic_fire_o4": "Fire Offensive IV",
+  "item.minebound.magic.magic_fire_d1": "Fire Defensive I",
+  "item.minebound.magic.magic_fire_u2": "Fire Utility II",
+  "item.minebound.magic.magic_fire_u3": "Fire Utility III",
+  "item.minebound.magic.magic_fire_u4": "Fire Utility IV",
+
   "item.minebound.magic_telekinetic_o1": "Telekinetic Offensive I",
+  "item.minebound.magic_telekinetic_o2": "Telekinetic Offensive II",
+  "item.minebound.magic_telekinetic_d2": "Telekinetic Defensive II",
+  "item.minebound.magic_telekinetic_d3": "Telekinetic Defensive III",
+  "item.minebound.magic_telekinetic_d4": "Telekinetic Defensive IV",
   "item.minebound.magic_telekinetic_u2": "Telekinetic Utility II",
   "item.minebound.magic_telekinetic_u3": "Telekinetic Utility III",
   "item.minebound.magic_telekinetic_u4": "Telekinetic Utility IV",
 
   "item.minebound.magic.magic_telekinetic_o1": "Telekinetic Offensive I",
+  "item.minebound.magic.magic_telekinetic_o2": "Telekinetic Offensive II",
+  "item.minebound.magic.magic_telekinetic_d2": "Telekinetic Defensive II",
+  "item.minebound.magic.magic_telekinetic_d3": "Telekinetic Defensive III",
+  "item.minebound.magic.magic_telekinetic_d4": "Telekinetic Defensive IV",
   "item.minebound.magic.magic_telekinetic_u2": "Telekinetic Utility II",
   "item.minebound.magic.magic_telekinetic_u3": "Telekinetic Utility III",
   "item.minebound.magic.magic_telekinetic_u4": "Telekinetic Utility IV",
@@ -84,17 +110,26 @@
   "item.minebound.magic_shield_o1": "Shield Offensive I",
   "item.minebound.magic_shield_o2": "Shield Offensive II",
   "item.minebound.magic_shield_o3": "Shield Offensive III",
+  "item.minebound.magic_shield_d1": "Shield Defensive I",
+  "item.minebound.magic_shield_d2": "Shield Defensive II",
+  "item.minebound.magic_shield_d3": "Shield Defensive III",
   "item.minebound.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic_shield_u4": "Shield Utility IV",
-  
+
   "item.minebound.magic.magic_shield_o1": "Shield Offensive I",
   "item.minebound.magic.magic_shield_o2": "Shield Offensive II",
   "item.minebound.magic.magic_shield_o3": "Shield Offensive III",
+  "item.minebound.magic.magic_shield_d1": "Shield Defensive I",
+  "item.minebound.magic.magic_shield_d2": "Shield Defensive II",
+  "item.minebound.magic.magic_shield_d3": "Shield Defensive III",
   "item.minebound.magic.magic_shield_u2": "Shield Utility II",
   "item.minebound.magic.magic_shield_u3": "Shield Utility III",
   "item.minebound.magic.magic_shield_u4": "Shield Utility IV",
-  
+
+  "item.minebound.magic_earth_o1": "Earth Offensive I",
+  "item.minebound.magic_earth_o2": "Earth Offensive II",
+  "item.minebound.magic_earth_o4": "Earth Offensive IV",
   "item.minebound.magic_earth_d1": "Earth Defensive I",
   "item.minebound.magic_earth_d2": "Earth Defensive II",
   "item.minebound.magic_earth_d3": "Earth Defensive III",
@@ -103,6 +138,9 @@
   "item.minebound.magic_earth_u3": "Earth Utility III",
   "item.minebound.magic_earth_u4": "Earth Utility IV",
 
+  "item.minebound.magic.magic_earth_o1": "Earth Offensive I",
+  "item.minebound.magic.magic_earth_o2": "Earth Offensive II",
+  "item.minebound.magic.magic_earth_o4": "Earth Offensive IV",
   "item.minebound.magic.magic_earth_d1": "Earth Defensive I",
   "item.minebound.magic.magic_earth_d2": "Earth Defensive II",
   "item.minebound.magic.magic_earth_d3": "Earth Defensive III",
@@ -112,20 +150,40 @@
   "item.minebound.magic.magic_earth_u4": "Earth Utility IV",
 
   "item.minebound.magic_ender_o3": "Ender Offensive III",
+  "item.minebound.magic_ender_d1": "Ender Defensive I",
+  "item.minebound.magic_ender_d3": "Ender Defensive III",
+  "item.minebound.magic_ender_d4": "Ender Defensive IV",
+  "item.minebound.magic_ender_u3": "Ender Utility III",
 
   "item.minebound.magic.magic_ender_o3": "Ender Offensive III",
-  
+  "item.minebound.magic.magic_ender_d1": "Ender Defensive I",
+  "item.minebound.magic.magic_ender_d3": "Ender Defensive III",
+  "item.minebound.magic.magic_ender_d4": "Ender Defensive IV",
+  "item.minebound.magic.magic_ender_u3": "Ender Utility III",
+
+  "item.minebound.magic_electric_d1": "Electric Defensive I",
+  "item.minebound.magic_electric_d2": "Electric Defensive II",
+  "item.minebound.magic_electric_d3": "Electric Defensive III",
   "item.minebound.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic_electric_u4": "Electric Utility IV",
 
+  "item.minebound.magic.magic_electric_d1": "Electric Defensive I",
+  "item.minebound.magic.magic_electric_d2": "Electric Defensive II",
+  "item.minebound.magic.magic_electric_d3": "Electric Defensive III",
   "item.minebound.magic.magic_electric_u2": "Electric Utility II",
   "item.minebound.magic.magic_electric_u3": "Electric Utility III",
   "item.minebound.magic.magic_electric_u4": "Electric Utility IV",
 
   "item.minebound.magic_light_d1": "Light Defensive I",
+  "item.minebound.magic_light_u2": "Light Utility II",
+  "item.minebound.magic_light_u3": "Light Utility III",
+  "item.minebound.magic_light_u4": "Light Utility IV",
 
   "item.minebound.magic.magic_light_d1": "Light Defensive I",
+  "item.minebound.magic.magic_light_u2": "Light Utility II",
+  "item.minebound.magic.magic_light_u3": "Light Utility III",
+  "item.minebound.magic.magic_light_u4": "Light Utility IV",
 
   "item.minebound.magic_necrotic_o2": "Necrotic Offensive II",
   "item.minebound.magic_necrotic_o3": "Necrotic Offensive III",
@@ -134,8 +192,7 @@
   "item.minebound.magic.magic_necrotic_o2": "Necrotic Offensive II",
   "item.minebound.magic.magic_necrotic_o3": "Necrotic Offensive III",
   "item.minebound.magic.magic_necrotic_o4": "Necrotic Offensive IV",
-  
-  
+
   "block.minebound.energized_iron_block": "Energized Iron Block",
   "block.minebound.illuminant_steel_block": "Illuminant Steel Block",
   "block.minebound.gilded_diamond_block": "Gilded Diamond Block",
@@ -155,10 +212,10 @@
   "container.minebound.passive_spells" : "Utility Magic",
 
   "key.categories.minebound": "Minebound",
-  "key.minebound.primary_magic": "Left Hand Magic",
-  "key.minebound.secondary_magic": "Right Hand Magic",
-  "key.minebound.primary_magic_select": "Select Left Hand Magic",
-  "key.minebound.secondary_magic_select": "Select Right Hand Magic",
+  "key.minebound.primary_magic": "Right Hand Magic",
+  "key.minebound.secondary_magic": "Left Hand Magic",
+  "key.minebound.primary_magic_select": "Select Right Hand Magic",
+  "key.minebound.secondary_magic_select": "Select Left Hand Magic",
   "key.minebound.fire_utility_spell_toggle": "Toggle Fire Utility Magic",
   "key.minebound.earth_utility_spell_toggle": "Toggle Earth Utility Magic",
   "key.minebound.light_utility_spell_toggle": "Toggle Light Utility Magic",
@@ -167,5 +224,13 @@
   "tooltip.minebound.level.0": "I",
   "tooltip.minebound.level.1": "II",
   "tooltip.minebound.level.2": "III",
-  "tooltip.minebound.level.3": "IV"
+  "tooltip.minebound.level.3": "IV",
+  "tooltip.minebound.level.4": "V",
+  "tooltip.minebound.level.5": "VI",
+  "tooltip.minebound.level.6": "VII",
+
+  "death.attack.minebound.electricity": "%1$s was electrified to death",
+  "death.attack.minebound.electricity.player": "%1$s was electrified to death by %2$s",
+
+  "effect.minebound.electric_debuff": "Electric Debuff"
 }

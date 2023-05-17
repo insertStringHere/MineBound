@@ -1,0 +1,10 @@
+{
+    "type": "minebound:myrial_base",
+    "biomes": "#minebound:base_spawn",
+    "adapt_noise": true,
+    "spawn_overrides": {},
+    "config": {
+        "start_pool": "minebound:base/start",
+        "size": 5
+    }
+}

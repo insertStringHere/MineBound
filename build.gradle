@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
-version = '0.2'
+version = '0.3-alpha'
 group = 'com.mineboundteam.minebound'
 archivesBaseName = 'MineBound-1.18.2'
 
@@ -35,6 +35,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'minebound'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//            args '--username', 'Dev2'
             mods {
                 minebound {
                     source sourceSets.main

@@ -3,7 +3,6 @@ package com.mineboundteam.minebound.magic.helper;
 import com.mineboundteam.minebound.capabilities.ArmorNBTHelper;
 import com.mineboundteam.minebound.capabilities.PlayerSelectedSpellsProvider.SelectedSpell;
 import com.mineboundteam.minebound.magic.ActiveSpellItem;
-
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +17,7 @@ public class UseSpellHelper {
 
                 ItemStack activeSpell = ItemStack.of(tagList.getCompound(selected.index));
                 if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                    spell.use(activeSpell, player.level, player);
+                    spell.use(activeSpell, selected.usedHand, player.level, player);
                 }
 
                 tagList.set(selected.index, activeSpell.serializeNBT());
@@ -35,7 +34,7 @@ public class UseSpellHelper {
 
                 ItemStack activeSpell = ItemStack.of(tagList.getCompound(selected.index));
                 if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                    spell.onUsingTick(activeSpell, player.level, player);
+                    spell.onUsingTick(activeSpell, selected.usedHand, player.level, player, count);
                 }
 
                 tagList.set(selected.index, activeSpell.serializeNBT());
@@ -52,9 +51,9 @@ public class UseSpellHelper {
 
                 ItemStack activeSpell = ItemStack.of(tagList.getCompound(selected.index));
                 if (activeSpell.getItem() instanceof ActiveSpellItem spell) {
-                    spell.releaseUsing(activeSpell, player.level, player);
+                    spell.releaseUsing(activeSpell, selected.usedHand, player.level, player);
                 }
-                
+
                 tagList.set(selected.index, activeSpell.serializeNBT());
                 ArmorNBTHelper.saveSpellTag(armor, ArmorNBTHelper.ACTIVE_SPELL, tagList);
             }
