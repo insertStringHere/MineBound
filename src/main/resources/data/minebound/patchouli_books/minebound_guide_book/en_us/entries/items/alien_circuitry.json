@@ -1,0 +1,16 @@
+{
+    "name": "Alien Circuitry",
+    "icon": "minebound:alien_circuitry",
+    "category": "minebound:items",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)An advanced piece of circuitry for running more advanced calculations than typical redstone can handle. Useful.$()$(br2)Can be found in $(l:minebound:blocks/myrial_console)myrial consoles."
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:alien_circuitry",
+            "recipe2": "minebound:alien_circuitry_mirrored"
+        }
+    ]
+}

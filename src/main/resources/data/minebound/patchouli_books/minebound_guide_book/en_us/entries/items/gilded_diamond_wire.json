@@ -1,0 +1,15 @@
+{
+    "name": "Gilded Diamond Wire",
+    "icon": "minebound:gilded_diamond_wire",
+    "category": "minebound:items",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)A strand of wire made from $(l:minebound:items/gilded_diamond_ingot)gilded diamond$(), useful for channeling more power than regular materials are capable. Expensive, but worthwhile.$()$(br2)Can be found in $(l:minebound:blocks/myrial_console)myrial consoles."
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minebound:gilded_diamond_wire"
+        }
+    ]
+}
