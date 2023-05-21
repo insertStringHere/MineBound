@@ -1,7 +1,6 @@
 package com.mineboundteam.minebound.util;
 
 import com.mineboundteam.minebound.inventory.SelectSpellMenu;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,7 +11,6 @@ public class PlayerUtil {
     private static final Class<?>[] validDisappearingItemMenus = new Class[]{
             InventoryMenu.class,
             SelectSpellMenu.class,
-            CreativeModeInventoryScreen.ItemPickerMenu.class,
     };
 
     public static Vec3 getLookDirection(Entity player) {

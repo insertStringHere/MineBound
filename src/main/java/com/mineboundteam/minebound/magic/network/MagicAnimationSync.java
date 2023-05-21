@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 public class MagicAnimationSync {
 
+    // TODO: currently the set of animations are updated in the key press and release, which seems to lose track of state. A possible alternative would be to have client keep track of local keydowns and sync them with the server directly when there's a change, but this would be more network intensive than the server trying to solve itself. 
     public static class ArmUsersMsg {
         public ConcurrentHashMap<Integer, Integer> players;
 
