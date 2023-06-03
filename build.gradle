@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
-version = '0.5'
+version = '1.0'
 group = 'com.mineboundteam.minebound'
 archivesBaseName = 'MineBound-1.18.2'
 
