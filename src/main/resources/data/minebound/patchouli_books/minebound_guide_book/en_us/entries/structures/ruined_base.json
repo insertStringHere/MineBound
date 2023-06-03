@@ -1,0 +1,17 @@
+{
+    "name": "Ruined Base",
+    "icon": "minebound:myrial_console",
+    "category": "minebound:introduction",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)A ruined underground outpost, made almost entirely of $(l:minebound:items/myrial_steel_ingot)myrial steel blocks.$()$(o) Inside there are numerous $(l:minebound:myri/myri_corpse)dead my'ri$()$(o), insinuating a bloodbath. The question is: who killed them? If you had to guess, the most likely answer is other my'ri. Perhaps the race isn't as unified as one would expect."
+        },
+        {
+            "type": "patchouli:image",
+            "images": ["minebound:textures/screen/patchouli/ruined_base.png"],
+            "border": true,
+            "text": "$(o)A grave for them, but a wealth of resources for you."
+        }
+    ]
+}

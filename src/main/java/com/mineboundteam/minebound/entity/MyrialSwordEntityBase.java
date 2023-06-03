@@ -34,8 +34,6 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
     protected double lerpX;
     protected double lerpY;
     protected double lerpZ;
-    protected double lerpYRot;
-    protected double lerpXRot;
 
     public MyrialSwordEntityBase(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -100,6 +98,9 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
 
         super.tick();
         this.move();
+        if (this.getOwner() != null) {
+            this.setRot(this.getOwner().getYRot(), this.getOwner().getXRot());
+        }
 
         /**
          * Derived from {@link LivingEntity#aiStep()}
@@ -112,11 +113,8 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
             double dX = this.getX() + (this.lerpX - this.getX()) / (double) this.lerpSteps;
             double dY = this.getY() + (this.lerpY - this.getY()) / (double) this.lerpSteps;
             double dZ = this.getZ() + (this.lerpZ - this.getZ()) / (double) this.lerpSteps;
-            float yRot = this.getYRot() + (float) (this.lerpYRot - (double) this.getYRot()) / (float) this.lerpSteps;
-            float xRot = this.getXRot() + (float) (this.lerpXRot - (double) this.getXRot()) / (float) this.lerpSteps;
             --this.lerpSteps;
             this.setPos(dX, dY, dZ);
-            this.setRot(yRot, xRot);
         }
     }
 
@@ -128,8 +126,6 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         this.lerpX = pX;
         this.lerpY = pY;
         this.lerpZ = pZ;
-        this.lerpYRot = pYaw;
-        this.lerpXRot = pPitch;
         this.lerpSteps = pPosRotationIncrements;
     }
 
@@ -141,8 +137,6 @@ public abstract class MyrialSwordEntityBase extends ThrowableItemProjectile {
         if (this.getOwner() == null || swordPlaceholder == null) return;
 
         this.move(MoverType.PLAYER, getMoveVector());
-        // TODO: Modify this when model is implemented
-        this.setRot(this.getYRot() + 90, this.getPlayerOwner().getXRot());
     }
 
     protected Vec3 getMoveVector() {
