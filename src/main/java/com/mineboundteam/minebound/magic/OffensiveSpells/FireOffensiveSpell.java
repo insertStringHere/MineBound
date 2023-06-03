@@ -58,7 +58,7 @@ public class FireOffensiveSpell extends ActiveSpellItem {
         Vec3 lookAngle = player.getLookAngle();
         Vec3 lookDirection = PlayerUtil.getLookDirection(player);
         Vec3 handPos = PlayerUtil.getHandPos(player, usedHand);
-        for (int i = 0; i < 360; i += 40) {
+        for (int i = 0; i < 360; i += 80) {
             // Don't worry, I don't understand this math either, and I wrote the damn thing! - Matt
             double xOffset = lookAngle.x - (level.getRandom().nextDouble() * ((lookDirection.z * Math.sin(i)) + (lookDirection.y * lookDirection.x * Math.cos(i)))) / 5d;
             double zOffset = lookAngle.z + (level.getRandom().nextDouble() * ((lookDirection.x * Math.sin(i)) - (lookDirection.y * lookDirection.z * Math.cos(i)))) / 5d;
