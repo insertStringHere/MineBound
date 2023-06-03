@@ -43,8 +43,8 @@ public class MyrialSwordRenderer extends EntityRenderer<MyrialSwordEntity> {
         // Rotate model so it always faces the player
         // Must do Y rotation then X rotation
         float yRot = pEntity.getViewYRot(pPartialTick);
-        pPoseStack.mulPose(Vector3f.YN.rotationDegrees(yRot));
-        float xRot = pEntity.getViewXRot(pPartialTick);
+        pPoseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+        float xRot = pEntity.getViewXRot(pPartialTick) + 90;
         pPoseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
         // Rotate model so it continually spins
         float spinRotation = ((float) pEntity.tickCount + pPartialTick) / 1.75F;
