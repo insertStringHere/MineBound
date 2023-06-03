@@ -1,0 +1,17 @@
+{
+    "name": "Crashed Ship",
+    "icon": "minebound:myrial_steel_plate",
+    "category": "minebound:introduction",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "$(o)These crashed ships are made of $(l:minebound:items/myrial_steel_ingot)myrial steel blocks$()$(o), a hardy insulator against the dangerous vaccuum of space. That said, you can only ever seem to find the front half of the ships, never the back. Do they break off in the atmosphere? Regardless, they always have some $(l:minebound:myri/myri_corpse)dead my'ri$()$(o) trapped inside, likely torn up by the crash. Hopefully torn up the crash and not something else."
+        },
+        {
+            "type": "patchouli:image",
+            "images": ["minebound:textures/screen/patchouli/crashed_ship.png"],
+            "border": true,
+            "text": "Found in mountain biomes in the overworld."
+        }
+    ]
+}

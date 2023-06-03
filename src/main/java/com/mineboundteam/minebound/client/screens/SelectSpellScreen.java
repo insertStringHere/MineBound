@@ -30,7 +30,6 @@ public class SelectSpellScreen extends AbstractContainerScreen<SelectSpellMenu> 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
         renderBackground(poseStack);
-        // TODO: Eventually this will need to be replaced with a custom item renderer for the spell icons
         super.render(poseStack, mouseX, mouseY, delta);
         renderTooltip(poseStack, mouseX, mouseY);
     }
