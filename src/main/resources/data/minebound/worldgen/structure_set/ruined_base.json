@@ -10,7 +10,7 @@
         "spread_type": "triangular",
         "frequency": 0.8,
         "spacing": 13,
-        "separation": 10,
+        "separation": 9,
         "salt": 1399283
     }
 }

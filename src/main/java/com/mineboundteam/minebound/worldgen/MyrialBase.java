@@ -53,12 +53,13 @@ public class MyrialBase extends StructureFeature<JigsawConfiguration> {
             if (pPredicate.test(context) && accessorField != null && accessorField instanceof LevelHeightAccessor heightAccessor) {
                 int minY = heightAccessor.getMinBuildHeight();
                 int maxY = (int)((context.getLowestY(0, 15) - minY) * (4.0 / 5.0)) + minY;
-                BlockPos blockpos = new BlockPos(context.chunkPos().getMinBlockX(), rand.nextInt(minY + 5, maxY), context.chunkPos().getMinBlockZ());
-                Pools.bootstrap();
-                return JigsawPlacement.addPieces(context, PoolElementStructurePiece::new, blockpos, true, false);
-            } else {
-                return Optional.empty();
+                if(minY + 5 < maxY){
+                    BlockPos blockpos = new BlockPos(context.chunkPos().getMinBlockX(), rand.nextInt(minY + 5, maxY), context.chunkPos().getMinBlockZ());
+                    Pools.bootstrap();
+                    return JigsawPlacement.addPieces(context, PoolElementStructurePiece::new, blockpos, true, false);
+                }
             }
+            return Optional.empty();
          });
     }
 }
