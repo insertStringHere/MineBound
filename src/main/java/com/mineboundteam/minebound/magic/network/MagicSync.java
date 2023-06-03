@@ -1,6 +1,7 @@
 package com.mineboundteam.minebound.magic.network;
 
 import com.mineboundteam.minebound.MineBound;
+import com.mineboundteam.minebound.magic.OffensiveSpells.ElectricOffensiveSpell;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -17,5 +18,6 @@ public class MagicSync {
                 MagicButtonSync::handleButtons);
         NET_CHANNEL.registerMessage(1, MagicButtonSync.ButtonHeldMsg.class, MagicButtonSync.ButtonHeldMsg::encode, MagicButtonSync.ButtonHeldMsg::decode, MagicButtonSync::handleButtonHeld);
         NET_CHANNEL.registerMessage(2, MagicAnimationSync.ArmUsersMsg.class, MagicAnimationSync.ArmUsersMsg::encode, MagicAnimationSync.ArmUsersMsg::decode, MagicAnimationSync::handleArmUsers);
+        NET_CHANNEL.registerMessage(3, ElectricOffensiveSpell.SpellRenderMsg.class, ElectricOffensiveSpell.SpellRenderMsg::encode, ElectricOffensiveSpell.SpellRenderMsg::decode, ElectricOffensiveSpell.SpellRenderMsg::handleSpellRecv);
     }
 }
